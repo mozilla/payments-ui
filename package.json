@@ -9,8 +9,10 @@
     "grunt-sass": "^0.18.1"
   },
   "devDependencies": {
+    "cog": "muffinresearch/cog",
     "grunt": "^0.4.5",
     "grunt-contrib-jshint": "^0.11.2",
+    "grunt-devserver": "^0.6.0",
     "grunt-sass": "^0.18.1"
   },
   "scripts": {

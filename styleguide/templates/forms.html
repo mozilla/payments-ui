@@ -1,0 +1,13 @@
+{% extends 'base-styleguide.html' %}
+
+{% block page %}
+<form id="checkout" action="/your/server/endpoint" method="post">
+  <input data-braintree-name="number" value="4111111111111111">
+  <input type="number" data-braintree-name="cvv" value="100">
+  <input type="number" data-braintree-name="expiration_month" value="10">
+  <input type="number" data-braintree-name="expiration_year" value="2020">
+  <input data-braintree-name="postal_code" value="94107">
+  <input data-braintree-name="cardholder_name" value="John Smith">
+  <button type="submit" id="submit">Pay</button>
+</form>
+{% endblock %}
