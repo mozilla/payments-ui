@@ -1,0 +1,29 @@
+{
+  "name": "moz-payments-ui",
+  "version": "0.0.1",
+  "description": "The client-side front-end for fxa payments.",
+  "main": "index.js",
+  "dependencies": {
+    "grunt-contrib-jshint": "^0.11.2",
+    "grunt": "^0.4.5",
+    "grunt-sass": "^0.18.1"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.11.2",
+    "grunt-sass": "^0.18.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mozilla/payments-ui.git"
+  },
+  "author": "Mozilla Payments Team",
+  "license": "MPL2.0",
+  "bugs": {
+    "url": "https://github.com/mozilla/payments-ui/issues"
+  },
+  "homepage": "https://github.com/mozilla/payments-ui#readme"
+}
