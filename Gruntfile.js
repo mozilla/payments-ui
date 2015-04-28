@@ -27,6 +27,17 @@ module.exports = function(grunt) {
       src: ['**']
     },
 
+    sass: {
+      options: {
+        sourceMap: true
+      },
+      dist: {
+        files: {
+          'public/css/main.css': 'public/scss/main.scss'
+        }
+      }
+    },
+
     // Styleguide builder task.
     cog: {
       styleguide: {
@@ -35,10 +46,17 @@ module.exports = function(grunt) {
           sourcecodeSelector: 'main',
           templateGlobals: {
             'projectName': 'Payments UI Styleguide',
+            // This is the path from the iframe folder to
+            // the static dir.
+            'appMedia': '../static'
           },
           templateConfig: {
             templatePaths: ['templates'],
-          }
+          },
+          copy: [
+            // src is relative to the styleguide project example.
+            {src: '../public/css/', target: 'static/css/'},
+          ],
         }
       }
     }
@@ -49,7 +67,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-devserver');
   grunt.loadNpmTasks('grunt-gh-pages');
+  grunt.loadNpmTasks('grunt-sass');
 
   grunt.registerTask('default', ['jshint']);
-  grunt.registerTask('publish-docs', ['cog', 'gh-pages']);
+  grunt.registerTask('build-docs', ['sass', 'cog']);
+  grunt.registerTask('publish-docs', ['build-docs', 'gh-pages']);
 };
