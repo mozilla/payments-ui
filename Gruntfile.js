@@ -59,11 +59,22 @@ module.exports = function(grunt) {
           ],
         }
       }
+    },
+
+    copy: {
+      normalize: {
+        cwd: 'node_modules/normalize.css/',
+        src: 'normalize.css',
+        dest: 'public/scss/lib/',
+        ext: '.scss',
+        expand: true,
+      },
     }
 
   });
 
   grunt.loadNpmTasks('cog');
+  grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-devserver');
   grunt.loadNpmTasks('grunt-gh-pages');
