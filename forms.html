@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="" dir="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Payments UI Styleguide | Forms</title>
+  <link rel="stylesheet" href="cog/lib/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="cog/css/styleguide.css">
+  <link rel="stylesheet" href="cog/lib/css/solarized_light.css"> </head>
+
+<body class="styleguide">
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header"> <a class="navbar-brand" href="index.html">Payments UI Styleguide</a> </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3 col-md-2 sidebar">
+        <ul class="nav nav-sidebar">
+          <li><a href="index.html">Index</a></li>
+          <li class="active"><a href="./forms.html">Forms</a></li>
+          <li><a href="./typography.html">Typography</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h1>Forms</h1>
+        <p>Here's some examples of the form fields used in the payments UI.</p>
+        <div class="panel panel-default">
+          <div class="panel-heading clearfix">
+            <h3 class="panel-title pull-left">Example <span class="size"></span></h3>
+            <div class="resize-buttons btn-group pull-right">
+              <button type="button" class="btn btn-default btn-xs" id="phone" data-vp-width="350" data-vp-height="598"> Phone </button>
+              <button type="button" class="btn btn-default btn-xs" id="tablet" data-vp-width="600" data-vp-height="887"> Tablet </button>
+              <button type="button" class="btn btn-default btn-xs full-screen hide-tui-only"> <span class="glyphicon glyphicon-fullscreen"></span> Full Screen </button>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="iframe-wrapper resizable">
+              <iframe src="iframe/forms.html"></iframe>
+            </div>
+          </div> <pre class="panel-footer"><code class="language-markup">&lt;form <span class="hljs-variable">id=</span><span class="hljs-string">"checkout"</span> <span class="hljs-variable">action=</span><span class="hljs-string">"/your/server/endpoint"</span> <span class="hljs-variable">method=</span><span class="hljs-string">"post"</span>&gt;
+  &lt;input <span class="hljs-variable">data-braintree-name=</span><span class="hljs-string">"number"</span> <span class="hljs-variable">value=</span><span class="hljs-string">"4111111111111111"</span>&gt;
+  &lt;input <span class="hljs-variable">type=</span><span class="hljs-string">"number"</span> <span class="hljs-variable">data-braintree-name=</span><span class="hljs-string">"cvv"</span> <span class="hljs-variable">value=</span><span class="hljs-string">"100"</span>&gt;
+  &lt;input <span class="hljs-variable">type=</span><span class="hljs-string">"number"</span> <span class="hljs-variable">data-braintree-name=</span><span class="hljs-string">"expiration_month"</span> <span class="hljs-variable">value=</span><span class="hljs-string">"10"</span>&gt;
+  &lt;input <span class="hljs-variable">type=</span><span class="hljs-string">"number"</span> <span class="hljs-variable">data-braintree-name=</span><span class="hljs-string">"expiration_year"</span> <span class="hljs-variable">value=</span><span class="hljs-string">"2020"</span>&gt;
+  &lt;input <span class="hljs-variable">data-braintree-name=</span><span class="hljs-string">"postal_code"</span> <span class="hljs-variable">value=</span><span class="hljs-string">"94107"</span>&gt;
+  &lt;input <span class="hljs-variable">data-braintree-name=</span><span class="hljs-string">"cardholder_name"</span> <span class="hljs-variable">value=</span><span class="hljs-string">"John Smith"</span>&gt;
+  &lt;button <span class="hljs-variable">type=</span><span class="hljs-string">"submit"</span> <span class="hljs-variable">id=</span><span class="hljs-string">"submit"</span>&gt;Pay&lt;/button&gt;
+&lt;/form&gt;</code></pre> </div>
+      </div>
+    </div>
+  </div>
+  <script src="cog/lib/jquery/js/jquery.min.js"></script>
+  <script src="cog/lib/bootstrap/js/bootstrap.min.js"></script>
+  <script src="cog/js/resize.js"></script>
+</body>
+
+</html>
