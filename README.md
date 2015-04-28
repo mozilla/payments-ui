@@ -14,4 +14,10 @@ Then run `npm install` to install the local deps.
 
 The styleguide is based on the styles and templates that live in the tree.
 
-It can be build statically with the `grunt cog` command.
+It can be build statically with the `grunt build-docs` command.
+
+The styleguide is published here: http://mozilla.github.io/payments-ui/
+
+## Updating the styleguide
+
+Run `grunt publish-docs`
