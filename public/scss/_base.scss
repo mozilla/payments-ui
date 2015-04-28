@@ -1,13 +1,10 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   @include font();
   color: $text-color;
   font-size: $base-font;
-}
-
-::-webkit-input-placeholder,
-:-moz-placeholder,
-::-moz-placeholder,
-:-ms-input-placeholder {
-  color: $input-placeholder-color !important;
-  opacity: 1;
+  padding: 10px;
 }

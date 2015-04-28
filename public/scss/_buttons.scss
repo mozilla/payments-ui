@@ -10,6 +10,7 @@ button {
   border: 0;
   color: $message-text-color;
   cursor: pointer;
+  margin: 10px 0;
   transition-duration: $short-transition;
   transition-property: background-color;
   width: 100%;
