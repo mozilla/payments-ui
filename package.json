@@ -9,7 +9,7 @@
     "grunt-sass": "^0.18.1"
   },
   "devDependencies": {
-    "cog": "muffinresearch/cog",
+    "cog": "git://github.com/muffinresearch/cog.git#d92213a",
     "grunt": "^0.4.5",
     "grunt-contrib-jshint": "^0.11.2",
     "grunt-devserver": "^0.6.0",
