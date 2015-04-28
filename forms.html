@@ -42,13 +42,12 @@
               <iframe src="iframe/forms.html"></iframe>
             </div>
           </div> <pre class="panel-footer"><code class="language-markup">&lt;form <span class="hljs-variable">id=</span><span class="hljs-string">"checkout"</span> <span class="hljs-variable">action=</span><span class="hljs-string">"/your/server/endpoint"</span> <span class="hljs-variable">method=</span><span class="hljs-string">"post"</span>&gt;
-  &lt;input <span class="hljs-variable">data-braintree-name=</span><span class="hljs-string">"number"</span> <span class="hljs-variable">value=</span><span class="hljs-string">"4111111111111111"</span>&gt;
-  &lt;input <span class="hljs-variable">type=</span><span class="hljs-string">"number"</span> <span class="hljs-variable">data-braintree-name=</span><span class="hljs-string">"cvv"</span> <span class="hljs-variable">value=</span><span class="hljs-string">"100"</span>&gt;
-  &lt;input <span class="hljs-variable">type=</span><span class="hljs-string">"number"</span> <span class="hljs-variable">data-braintree-name=</span><span class="hljs-string">"expiration_month"</span> <span class="hljs-variable">value=</span><span class="hljs-string">"10"</span>&gt;
-  &lt;input <span class="hljs-variable">type=</span><span class="hljs-string">"number"</span> <span class="hljs-variable">data-braintree-name=</span><span class="hljs-string">"expiration_year"</span> <span class="hljs-variable">value=</span><span class="hljs-string">"2020"</span>&gt;
-  &lt;input <span class="hljs-variable">data-braintree-name=</span><span class="hljs-string">"postal_code"</span> <span class="hljs-variable">value=</span><span class="hljs-string">"94107"</span>&gt;
-  &lt;input <span class="hljs-variable">data-braintree-name=</span><span class="hljs-string">"cardholder_name"</span> <span class="hljs-variable">value=</span><span class="hljs-string">"John Smith"</span>&gt;
-  &lt;button <span class="hljs-variable">type=</span><span class="hljs-string">"submit"</span> <span class="hljs-variable">id=</span><span class="hljs-string">"submit"</span>&gt;Pay&lt;/button&gt;
+  &lt;input <span class="hljs-variable">placeholder=</span><span class="hljs-string">"Card holder name"</span> <span class="hljs-variable">data-braintree-name=</span><span class="hljs-string">"cardholder_name"</span>&gt;
+  &lt;input <span class="hljs-variable">placeholder=</span><span class="hljs-string">"Card number"</span> <span class="hljs-variable">data-braintree-name=</span><span class="hljs-string">"number"</span>&gt;
+  &lt;input <span class="hljs-variable">class=</span><span class="hljs-string">"month"</span> <span class="hljs-variable">placeholder=</span><span class="hljs-string">"MM"</span> <span class="hljs-variable">data-braintree-name=</span><span class="hljs-string">"expiration_month"</span>&gt;
+  &lt;input <span class="hljs-variable">class=</span><span class="hljs-string">"year"</span> <span class="hljs-variable">placeholder=</span><span class="hljs-string">"YY"</span> <span class="hljs-variable">data-braintree-name=</span><span class="hljs-string">"expiration_year"</span>&gt;
+  &lt;input <span class="hljs-variable">class=</span><span class="hljs-string">"cvv"</span> <span class="hljs-variable">placeholder=</span><span class="hljs-string">"CVV"</span> <span class="hljs-variable">data-braintree-name=</span><span class="hljs-string">"cvv"</span>&gt;
+  &lt;button disabled <span class="hljs-variable">type=</span><span class="hljs-string">"submit"</span> <span class="hljs-variable">id=</span><span class="hljs-string">"submit"</span>&gt;Subscribe&lt;/button&gt;
 &lt;/form&gt;</code></pre> </div>
       </div>
     </div>
