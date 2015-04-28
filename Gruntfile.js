@@ -21,7 +21,8 @@ module.exports = function(grunt) {
     'gh-pages': {
       options: {
         base: 'styleguide/build',
-        message: 'Updating docs'
+        message: 'Updating docs',
+        repo: 'git@github.com:mozilla/payments-ui.git'
       },
       src: ['**']
     },
