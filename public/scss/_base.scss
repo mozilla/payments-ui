@@ -8,3 +8,8 @@ body {
   font-size: $base-font;
   padding: 10px;
 }
+
+h1,h2,h3,h4,h5,h6 {
+  @include header-font();
+  font-weight: bold;
+}
