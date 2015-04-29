@@ -12,11 +12,14 @@
 <body>
   <main>
     <form id="checkout" action="/your/server/endpoint" method="post">
-      <input placeholder="Card holder name" data-braintree-name="cardholder_name">
-      <input placeholder="Card number" data-braintree-name="number">
-      <input class="month" placeholder="MM" data-braintree-name="expiration_month">
-      <input class="year" placeholder="YY" data-braintree-name="expiration_year">
-      <input class="cvv" placeholder="CVV" data-braintree-name="cvv">
+      <label> <span>Card holder name</span>
+        <input placeholder="Card holder name" data-braintree-name="cardholder_name"> </label>
+      <label> <span>Card number</span>
+        <input placeholder="Card number" data-braintree-name="number"> </label>
+      <label> <span>Card expiration date</span>
+        <input placeholder="MM/YY" class="expiration" data-braintree-name="expiration_date"> </label>
+      <label> <span>Card verification value</span>
+        <input class="cvv" placeholder="CVV" data-braintree-name="cvv"> </label>
       <button disabled type="submit" id="submit">Subscribe</button>
     </form>
   </main>

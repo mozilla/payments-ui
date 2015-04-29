@@ -509,21 +509,21 @@ input {
     border-color: #0095dd; }
   input.invalid {
     border-color: #d63920; }
-  input.cvv, input.month, input.year {
+  input.cvv, input.expiration {
     float: left;
-    width: 5em; }
-    input.cvv::-webkit-input-placeholder, input.month::-webkit-input-placeholder, input.year::-webkit-input-placeholder {
+    text-align: center;
+    width: 7em; }
+    input.cvv::-webkit-input-placeholder, input.expiration::-webkit-input-placeholder {
       text-align: center !important; }
-    input.cvv:-moz-placeholder, input.month:-moz-placeholder, input.year:-moz-placeholder {
+    input.cvv:-moz-placeholder, input.expiration:-moz-placeholder {
       text-align: center !important; }
-    input.cvv::-moz-placeholder, input.month::-moz-placeholder, input.year::-moz-placeholder {
+    input.cvv::-moz-placeholder, input.expiration::-moz-placeholder {
       text-align: center !important; }
-    input.cvv:-ms-input-placeholder, input.month:-ms-input-placeholder, input.year:-ms-input-placeholder {
+    input.cvv:-ms-input-placeholder, input.expiration:-ms-input-placeholder {
       text-align: center !important; }
   input.cvv {
-    float: right; }
-  input.year {
-    margin-left: .5em; }
+    float: right;
+    width: 5em; }
   html[dir='ltr'] input {
     padding: 0 0 0 20px; }
   html[dir='rtl'] input {
@@ -549,5 +549,19 @@ input {
 
 input:focus ~ .input-help-focused, label:active ~ .input-help-focused, label:focus ~ .input-help-focused {
   opacity: 1; }
+
+/*
+ * Hide only visually, but have it available for screen readers:
+ * http://snook.ca/archives/html_and_css/hiding-content-for-accessibility
+ */
+.visuallyhidden, label span {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px; }
 
 /*# sourceMappingURL=main.css.map */

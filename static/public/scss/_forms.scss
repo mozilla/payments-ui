@@ -50,10 +50,10 @@ input {
   }
 
   &.cvv,
-  &.month,
-  &.year {
+  &.expiration {
     float: left;
-    width: 5em;
+    text-align: center;
+    width: 7em;
 
     &::-webkit-input-placeholder {
       @include center-text();
@@ -74,10 +74,7 @@ input {
 
   &.cvv {
     float: right;
-  }
-
-  &.year {
-    margin-left: .5em;
+    width: 5em;
   }
 
   html[dir='ltr'] & {
@@ -124,4 +121,8 @@ input:focus ~ .input-help-focused,
 label:active ~ .input-help-focused,
 label:focus ~ .input-help-focused {
   opacity: 1;
+}
+
+label span {
+  @extend .visuallyhidden;
 }
