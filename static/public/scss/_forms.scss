@@ -1,0 +1,127 @@
+input {
+  transition: border-color $short-transition;
+
+  // kills inset shadow on iOS browsers
+  -webkit-appearance: none;
+  background-color: $mobile-html-background-color;
+  border: 1px solid $input-row-border-color;
+  box-shadow: inset 0 1px 1px $input-row-box-shadow-color;
+  color: $input-text-color;
+  margin: 10px 0;
+  padding: 0.5em;
+  outline: none;
+  position: relative;
+  transition-duration: $short-transition;
+  transition-property: border-color;
+  width: 100%;
+  z-index: 2;
+
+  // Nuke the number field spinner.
+  &[type=number] {
+    -moz-appearance: textfield;
+  }
+
+  &[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+
+  @include respond-to('big') {
+    border-radius: $big-border-radius;
+    font-size: $medium-font;
+    height: 45px;
+  }
+
+  @include respond-to('small') {
+    border-radius: $small-border-radius;
+    font-size: $base-font + $media-adjustment;
+    height: 40px;
+  }
+
+  &:hover {
+    border-color: $input-row-hover-border-color;
+  }
+
+  &:focus {
+    border-color: $input-row-focus-border-color;
+  }
+
+  &.invalid {
+    border-color: $error-background-color;
+  }
+
+  &.cvv,
+  &.month,
+  &.year {
+    float: left;
+    width: 5em;
+
+    &::-webkit-input-placeholder {
+      @include center-text();
+    }
+
+    &:-moz-placeholder {
+      @include center-text();
+    }
+
+    &::-moz-placeholder {
+      @include center-text();
+    }
+
+    &:-ms-input-placeholder {
+      @include center-text();
+    }
+  }
+
+  &.cvv {
+    float: right;
+  }
+
+  &.year {
+    margin-left: .5em;
+  }
+
+  html[dir='ltr'] & {
+    padding: 0 0 0 $input-left-right-padding;
+  }
+
+  html[dir='rtl'] & {
+    padding: 0  $input-left-right-padding 0 0;
+  }
+
+  &[type='checkbox']:hover,
+  &[type='checkbox']:focus {
+    border: 1px solid $input-row-focus-border-color;
+  }
+
+  &::-webkit-input-placeholder {
+    @include placeholder();
+  }
+
+  &:-moz-placeholder {
+    @include placeholder();
+  }
+
+  &::-moz-placeholder {
+    @include placeholder();
+  }
+
+  &:-ms-input-placeholder {
+    @include placeholder();
+  }
+}
+
+.input-help {
+  color: $input-placeholder-color;
+  margin-top: 6px;
+  transition: opacity $medium-transition;
+
+  @include respond-to('small') {
+    font-size: $small-font;
+  }
+}
+
+input:focus ~ .input-help-focused,
+label:active ~ .input-help-focused,
+label:focus ~ .input-help-focused {
+  opacity: 1;
+}

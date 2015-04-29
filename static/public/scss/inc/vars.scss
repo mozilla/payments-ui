@@ -1,0 +1,47 @@
+// Font Family Vars
+$default-font: "Clear Sans", Helvetica, Arial, sans-serif;
+$header-font: "Fira Sans", Helvetica, Arial, sans-serif;
+
+// Colours
+$button-background-color: #0095dd;
+$button-background-disabled-color: #8a9ba8;
+$button-background-hover-color: #08c;
+
+$error-background-color: #d63920;
+$error-text-color: #d63920;
+
+$input-border-color: #424f59;
+$input-text-color: #424f59;
+$input-placeholder-color: #8a9ba8;
+$input-row-border-color: #8a9ba8;
+$input-row-focus-border-color: #0095dd;
+$input-row-hover-border-color: #424f59;
+$input-row-box-shadow-color: #f2f2f2;
+$input-left-right-padding: 20px;
+
+$message-text-color: #fff;
+$mobile-html-background-color: #fff;
+
+$text-color: #424f59;
+
+// Font-Size Variables
+$large-font: 24px;
+$medium-font: 18px;
+$base-font: 14px;
+$small-font: 12px;
+$media-adjustment: 2px;
+
+// Animation Variables
+$short-transition: 150ms;
+$medium-transition: $short-transition * 3;
+$long-transition: $short-transition * 7;
+
+// Breakpoints.
+$breakpoints: (
+  small: '(max-width: 520px), (orientation:landscape) and (min-width:481px) and (max-height: 480px)',
+  big: '(min-width: 521px)'
+);
+
+// Border-Radius Variables
+$small-border-radius: 4px;
+$big-border-radius: 4px;

@@ -1,0 +1,41 @@
+@mixin font() {
+  font-family: $default-font;
+}
+
+@mixin header-font() {
+  font-family: $header-font;
+}
+
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media #{map-get($breakpoints, $breakpoint)} {
+      @content;
+    }
+  }
+  @else {
+    @warn 'Unfortunately, no value could be retrieved from `#{$breakpoint}`. '
+    + 'Please make sure it is defined in `$breakpoints` map.';
+  }
+}
+
+@mixin placeholder() {
+  color: $input-placeholder-color !important;
+}
+
+@mixin center-text() {
+  text-align: center !important;
+}
+
+@mixin font-face($local-name, $path, $family, $font-weight, $font-style:'normal') {
+  $filepath: "../fonts/" + $path;
+  @font-face {
+    font-family: "#{$family}";
+    src: url($filepath + ".eot");
+    src: local($local-name),
+         url($filepath + ".eot?#iefix") format('embedded-opentype'),
+         url($filepath + ".woff") format('woff'),
+         url($filepath + ".ttf")  format('truetype');
+    font-weight: unquote($font-weight);
+    font-style: unquote($font-style);
+  }
+}
