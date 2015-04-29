@@ -69,6 +69,12 @@ module.exports = function(grunt) {
         ext: '.scss',
         expand: true,
       },
+      braintree: {
+        cwd: 'node_modules/braintree-web/dist',
+        src: 'braintree.js',
+        dest: 'public/lib/js/',
+        expand: true,
+      }
     }
 
   });

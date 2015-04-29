@@ -4,6 +4,7 @@
   "description": "The client-side front-end for fxa payments.",
   "main": "index.js",
   "dependencies": {
+    "braintree-web": "^2.7.2",
     "grunt": "^0.4.5",
     "grunt-contrib-jshint": "^0.11.2",
     "grunt-sass": "^0.18.1",
