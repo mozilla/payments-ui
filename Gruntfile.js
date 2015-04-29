@@ -48,32 +48,43 @@ module.exports = function(grunt) {
             'projectName': 'Payments UI Styleguide',
             // This is the path from the iframe folder to
             // the static dir.
-            'appMedia': '../static'
+            'appMedia': '../static/public'
           },
           templateConfig: {
             templatePaths: ['templates'],
           },
           copy: [
             // src is relative to the styleguide project example.
-            {src: '../public/css/', target: 'static/css/'},
+            {src: '../public/', target: 'static/public'},
           ],
         }
       }
     },
 
     copy: {
-      normalize: {
-        cwd: 'node_modules/normalize.css/',
-        src: 'normalize.css',
-        dest: 'public/scss/lib/',
-        ext: '.scss',
-        expand: true,
-      },
-      braintree: {
-        cwd: 'node_modules/braintree-web/dist',
-        src: 'braintree.js',
-        dest: 'public/lib/js/',
-        expand: true,
+      nodedeps: {
+        files: [{
+            cwd: 'node_modules/normalize.css/',
+            expand: true,
+            src: 'normalize.css',
+            dest: 'public/scss/lib/',
+            ext: '.scss',
+          }, {
+            cwd: 'node_modules/braintree/dist/',
+            expand: true,
+            src: 'braintree.js',
+            dest: 'public/lib/js/',
+          }, {
+            cwd: 'node_modules/connect-fonts-clearsans/fonts/default/',
+            expand: true,
+            src: '*',
+            dest: 'public/fonts/clearsans/',
+          }, {
+            cwd: 'node_modules/connect-fonts-firasans/fonts/default/',
+            expand: true,
+            src: '*',
+            dest: 'public/fonts/firasans/',
+        }]
       }
     }
 

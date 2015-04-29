@@ -5,6 +5,8 @@
   "main": "index.js",
   "dependencies": {
     "braintree-web": "^2.7.2",
+    "connect-fonts-clearsans": "0.0.1",
+    "connect-fonts-firasans": "0.0.4",
     "grunt": "^0.4.5",
     "grunt-contrib-jshint": "^0.11.2",
     "grunt-sass": "^0.18.1",
