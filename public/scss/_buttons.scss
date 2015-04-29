@@ -3,7 +3,7 @@
   text-decoration: none;
 }
 
-.button,
+a.button,
 button {
   @include font();
   background: $button-background-color;
@@ -13,19 +13,19 @@ button {
   margin: 10px 0;
   transition-duration: $short-transition;
   transition-property: background-color;
+  text-align: center;
   width: 100%;
+  line-height: 1.5em;
 
   @include respond-to('big') {
     border-radius: $big-border-radius;
     font-size: $large-font;
-    height: 63px;
     padding: 15px 0;
   }
 
   @include respond-to('small') {
     border-radius: $small-border-radius;
     font-size: $medium-font + $media-adjustment;
-    height: 44px;
     padding: 8px 0;
   }
 
@@ -34,14 +34,15 @@ button {
   &:focus {
     background: $button-background-hover-color;
   }
+
+  &:disabled,
+  &.disabled {
+    background: $button-background-disabled-color;
+    cursor: auto;
+  }
+
 }
 
-button:disabled,
-button.disabled,
-.button:disabled {
-  background: $button-background-disabled-color;
-  cursor: auto;
-}
 
 button::-moz-focus-inner {
   border: 0;
