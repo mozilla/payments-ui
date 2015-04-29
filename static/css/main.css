@@ -330,7 +330,7 @@ body {
   display: inline-block;
   text-decoration: none; }
 
-.button, button {
+a.button, button {
   font-family: "Clear Sans", Helvetica, Arial, sans-serif;
   background: #0095dd;
   border: 0;
@@ -339,25 +339,24 @@ body {
   margin: 10px 0;
   transition-duration: 150ms;
   transition-property: background-color;
-  width: 100%; }
+  text-align: center;
+  width: 100%;
+  line-height: 1.5em; }
   @media (min-width: 521px) {
-    .button, button {
+    a.button, button {
       border-radius: 4px;
       font-size: 24px;
-      height: 63px;
       padding: 15px 0; } }
   @media (max-width: 520px), (orientation:landscape) and (min-width:481px) and (max-height: 480px) {
-    .button, button {
+    a.button, button {
       border-radius: 4px;
       font-size: 20px;
-      height: 44px;
       padding: 8px 0; } }
-  .button:active, .button:hover, .button:focus, button:active, button:hover, button:focus {
+  a.button:active, a.button:hover, a.button:focus, button:active, button:hover, button:focus {
     background: #08c; }
-
-button:disabled, button.disabled, .button:disabled {
-  background: #8a9ba8;
-  cursor: auto; }
+  a.button:disabled, a.button.disabled, button:disabled, button.disabled {
+    background: #8a9ba8;
+    cursor: auto; }
 
 button::-moz-focus-inner {
   border: 0;
