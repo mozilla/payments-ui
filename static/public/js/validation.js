@@ -52,6 +52,7 @@ define([
       if (data.card === null) {
         $cardIconPlaceHolder.removeClass(removeCardClasses);
       } else if (data.card && data.card.type) {
+        $cardIconPlaceHolder.removeClass(removeCardClasses);
         $cardIconPlaceHolder.addClass('cctype-' + data.card.type);
       }
 
