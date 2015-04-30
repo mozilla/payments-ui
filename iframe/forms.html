@@ -9,20 +9,21 @@
   <title>Payments</title>
 </head>
 
-<body>
+<body data-static-url="../static/public">
   <main>
     <form id="checkout" action="/your/server/endpoint" method="post">
-      <label> <span>Card holder name</span>
+      <label> <span class="vh">Card holder name</span>
         <input placeholder="Card holder name" data-braintree-name="cardholder_name"> </label>
-      <label> <span>Card number</span>
-        <input placeholder="Card number" data-braintree-name="number"> </label>
-      <label> <span>Card expiration date</span>
-        <input placeholder="MM/YY" class="expiration" data-braintree-name="expiration_date"> </label>
-      <label> <span>Card verification value</span>
+      <label> <span class="vh">Card number</span> <span class="card-icon"></span>
+        <input class="card-number" placeholder="Card number" data-braintree-name="number" value="4111111"> </label>
+      <label> <span class="vh">Card expiration date</span>
+        <input class="expiration" placeholder="MM/YY" data-braintree-name="expiration_date"> </label>
+      <label> <span class="vh">Card verification value</span>
         <input class="cvv" placeholder="CVV" data-braintree-name="cvv"> </label>
       <button disabled type="submit" id="submit">Subscribe</button>
     </form>
   </main>
+  <script src="../static/public/lib/js/require.js" data-main="../static/public/js/main.js"></script>
 </body>
 
 </html>
