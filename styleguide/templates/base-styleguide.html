@@ -7,9 +7,10 @@
     <link rel="stylesheet" href="{{ appMedia }}/css/main.css">
     <title>Payments</title>
   </head>
-  <body>
+  <body data-static-url="{{ appMedia }}">
     <main>
       {% block page %}{% endblock %}
     </main>
+    <script src="{{ appMedia }}/lib/js/require.js" data-main="{{ appMedia }}/js/main.js"></script>
   </body>
 </html>

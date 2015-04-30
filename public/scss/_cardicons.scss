@@ -1,0 +1,46 @@
+
+.card-icon {
+    display: none;
+    background-image: url('../img/credit-cards-sprite.svg');
+    background-repeat: no-repeat;
+    background-size: 40px auto;
+    width: 40px;
+    height: 30px;
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    margin-top: -13px;
+    z-index: 10;
+}
+
+.card-icon[class*="cctype-"] {
+    display: block;
+}
+
+.cctype-visa {
+    background-position: 0 0;
+}
+
+.cctype-american-express  {
+    background-position: 0 16.62%;
+}
+
+.cctype-master-card {
+    background-position: 0 33.241%;
+}
+
+.cctype-diners-club {
+    background-position: 0 49.861%;
+}
+
+.cctype-jcb {
+    background-position: 0 66.482%;
+}
+
+.cctype-discover {
+    background-position: 0 83.102%;
+}
+
+.cctype-cvv {
+    background-position: 0 100%;
+}

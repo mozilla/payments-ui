@@ -1,3 +1,8 @@
+label {
+  position: relative;
+  display: block;
+}
+
 input {
   transition: border-color $short-transition;
 
@@ -121,8 +126,4 @@ input:focus ~ .input-help-focused,
 label:active ~ .input-help-focused,
 label:focus ~ .input-help-focused {
   opacity: 1;
-}
-
-label span {
-  @extend .visuallyhidden;
 }
