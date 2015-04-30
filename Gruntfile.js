@@ -97,6 +97,16 @@ module.exports = function(grunt) {
             expand: true,
             src: '*',
             dest: 'public/fonts/firasans/',
+          }, {
+            cwd: 'node_modules/jquery/dist',
+            expand: true,
+            src: 'jquery.min.js',
+            dest: 'public/lib/js/',
+          }, {
+            cwd: 'node_modules/requirejs/',
+            expand: true,
+            src: 'require.js',
+            dest: 'public/lib/js/',
         }]
       }
     }
