@@ -36,7 +36,7 @@ define([
         $elm.addClass(invalidClass);
         $elm.removeClass(maybeValidClass);
 
-        if (data.card) {
+        if (typeof data.card !== 'undefined') {
           $cardIconPlaceHolder.removeClass(removeCardClasses);
         }
         return;
