@@ -70,10 +70,23 @@ module.exports = function(grunt) {
             dest: 'public/scss/lib/',
             ext: '.scss',
           }, {
-            cwd: 'node_modules/braintree/dist/',
+            cwd: 'node_modules/braintree-web/dist/',
             expand: true,
             src: 'braintree.js',
             dest: 'public/lib/js/',
+            filter: 'isFile',
+            ext: '.min.js'
+          }, {
+            cwd: 'node_modules/card-validator/dist/js',
+            expand: true,
+            src: 'app.built.min.js',
+            dest: 'public/lib/js/',
+            // Currently card validator doesn't ship dist. This check
+            // looks for the prescence of the src.
+            filter: 'isFile',
+            rename: function(dest, src) {
+              return dest + 'card-validator.min.js';
+            }
           }, {
             cwd: 'node_modules/connect-fonts-clearsans/fonts/default/',
             expand: true,
