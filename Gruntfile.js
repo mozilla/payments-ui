@@ -109,6 +109,42 @@ module.exports = function(grunt) {
             dest: 'public/lib/js/',
         }]
       }
+    },
+
+    svg_sprite: {
+      cardicons: {
+        // Target basics
+        expand: true,
+        cwd: 'node_modules/payment-icons/min/flat',
+        src: ['*.svg'],
+        dest: 'public',
+
+        options: {
+          shape: {
+            dimension: {
+              maxWidth: 40,
+              maxHeight: 40,
+            }
+          },
+          mode: {
+            css: {
+              layout: 'vertical',
+              common: 'card-icon',
+              dimensions: true,
+              padding: 10,
+              prefix: '.cctype-%s',
+              dest: 'scss',
+              sprite: '../img/cardicons-sprite.svg',
+              bust: false,
+              render: {
+                scss: {
+                  dest: '_cardicons-sprite.scss',
+                }
+              }
+            }
+          }
+        }
+      }
     }
 
   });
@@ -119,6 +155,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-devserver');
   grunt.loadNpmTasks('grunt-gh-pages');
   grunt.loadNpmTasks('grunt-sass');
+  grunt.loadNpmTasks('grunt-svg-sprite');
 
   grunt.registerTask('default', ['jshint']);
   grunt.registerTask('build-docs', ['sass', 'cog']);
