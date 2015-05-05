@@ -475,41 +475,42 @@ button::-moz-focus-inner {
   padding: 0; }
 
 .card-icon {
-  display: none;
-  background-image: url('../img/credit-cards-sprite.svg');
-  background-repeat: no-repeat;
-  background-size: 40px auto;
+  background: url(../img/cardicons-sprite.svg) no-repeat; }
+
+.cctype-amex {
+  background-position: 0 0;
   width: 40px;
-  height: 30px;
-  position: absolute;
-  right: 5px;
-  top: 50%;
-  margin-top: -13px;
-  z-index: 10; }
+  height: 25.05px; }
 
-.card-icon[class*="cctype-"] {
-  display: block; }
-
-.cctype-visa {
-  background-position: 0 0; }
-
-.cctype-american-express {
-  background-position: 0 16.62%; }
-
-.cctype-master-card {
-  background-position: 0 33.241%; }
-
-.cctype-diners-club {
-  background-position: 0 49.861%; }
-
-.cctype-jcb {
-  background-position: 0 66.482%; }
+.cctype-diners {
+  background-position: 0 16.5731769505%;
+  width: 40px;
+  height: 25.12px; }
 
 .cctype-discover {
-  background-position: 0 83.102%; }
+  background-position: 0 33.2672253855%;
+  width: 40px;
+  height: 25.69px; }
 
-.cctype-cvv {
-  background-position: 0 100%; }
+.cctype-jcb {
+  background-position: 0 49.7195308516%;
+  width: 40px;
+  height: 25.12px; }
+
+.cctype-maestro {
+  background-position: 0 66.2927078021%;
+  width: 40px;
+  height: 25.12px; }
+
+.cctype-mastercard {
+  background-position: 0 82.8658847527%;
+  width: 40px;
+  height: 25.12px; }
+
+.cctype-visa {
+  background-position: 0 99.4390617032%;
+  width: 40px;
+  height: 25.12px; }
 
 label {
   position: relative;
@@ -590,6 +591,18 @@ input {
 
 input:focus ~ .input-help-focused, label:active ~ .input-help-focused, label:focus ~ .input-help-focused {
   opacity: 1; }
+
+.card-icon {
+  opacity: 0;
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  margin-top: -13px;
+  z-index: 10; }
+
+.card-icon[class*="cctype-"] {
+  opacity: 1;
+  transition: opacity 450ms; }
 
 /*
  * Hide only visually, but have it available for screen readers:

@@ -21,6 +21,11 @@ define([
       'cvv'
     ];
 
+    var classMapping = {
+      'american-express': 'amex',
+      'master-card': 'mastercard',
+    };
+
     // Function to be passed to $.removeClass to remove all
     // classes starting with 'card-'
     function removeCardClasses(index, classes) {
@@ -53,7 +58,8 @@ define([
         $cardIconPlaceHolder.removeClass(removeCardClasses);
       } else if (data.card && data.card.type) {
         $cardIconPlaceHolder.removeClass(removeCardClasses);
-        $cardIconPlaceHolder.addClass('cctype-' + data.card.type);
+        var cardClass = classMapping[data.card.type] || data.card.type;
+        $cardIconPlaceHolder.addClass('cctype-' + cardClass);
       }
 
       // It's good to go...
