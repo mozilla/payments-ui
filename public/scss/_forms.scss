@@ -127,3 +127,17 @@ label:active ~ .input-help-focused,
 label:focus ~ .input-help-focused {
   opacity: 1;
 }
+
+.card-icon {
+    opacity: 0;
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    margin-top: -13px;
+    z-index: 10;
+}
+
+.card-icon[class*="cctype-"] {
+    opacity: 1;
+    transition: opacity $medium-transition;
+}
