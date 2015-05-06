@@ -11,6 +11,7 @@ define([
     options = options || {};
     var invalidClass = options.invalidClass || 'invalid';
     var maybeValidClass = options.maybeValidClass || 'maybeValid';
+    var validClass = options.validClass || 'valid';
     var $cardIconPlaceHolder = $('.card-icon');
 
     var inputEvents = options.inputEvents || 'input propertychange';
@@ -23,6 +24,7 @@ define([
 
     var classMapping = {
       'american-express': 'amex',
+      'diners-club': 'diners',
       'master-card': 'mastercard',
     };
 
@@ -56,10 +58,13 @@ define([
       // Add a card type when detected.
       if (data.card === null) {
         $cardIconPlaceHolder.removeClass(removeCardClasses);
+        $elm.trigger('cardTypeChanged');
       } else if (data.card && data.card.type) {
         $cardIconPlaceHolder.removeClass(removeCardClasses);
-        var cardClass = classMapping[data.card.type] || data.card.type;
+        var cardType = data.card.type;
+        var cardClass = classMapping[cardType] || cardType;
         $cardIconPlaceHolder.addClass('cctype-' + cardClass);
+        $elm.trigger('cardTypeChanged', cardType);
       }
 
       // It's good to go...
@@ -71,9 +76,7 @@ define([
 
     function checkVal($elm, type) {
       if (validValidationTypes.indexOf(type) > -1) {
-        var value = $elm.val();
-        console.log(value);
-        handleValidatonData($elm, cc[type](value));
+        handleValidatonData($elm, cc[type]($elm.val()));
       } else {
         throw new Error('ValidateType ' + type + 'is invalid');
       }
@@ -81,8 +84,9 @@ define([
 
     function checkFuncFactory(type) {
       return function($elm) {
-        $elm.on(inputEvents, function() {
+        $elm.on('keydown keypress paste', function(e) {
           checkVal($elm, type);
+          return true;
         });
         checkVal($elm, type);
         return $elm;
