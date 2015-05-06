@@ -13,12 +13,13 @@
     paths : {
       'require': '../lib/js/require',
       'card-validator': '../lib/js/card-validator.min',
+      'formatter': '../lib/js/formatter.min',
       'jquery': '../lib/js/jquery.min',
     },
     shim : {
       'jquery': {
         exports: '$'
-      },
+      }
     }
   };
 
