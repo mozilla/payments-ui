@@ -107,6 +107,11 @@ module.exports = function(grunt) {
             expand: true,
             src: 'require.js',
             dest: 'public/lib/js/',
+          }, {
+            cwd: 'node_modules/formatter.js/dist/',
+            expand: true,
+            src: 'formatter.min.js',
+            dest: 'public/lib/js/',
         }]
       }
     },

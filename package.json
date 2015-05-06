@@ -8,6 +8,7 @@
     "card-validator": "^1.0.0",
     "connect-fonts-clearsans": "0.0.1",
     "connect-fonts-firasans": "0.0.4",
+    "formatter.js": "^0.1.5",
     "jquery": "^2.1.4",
     "normalize.css": "^3.0.3",
     "requirejs": "^2.1.17"
@@ -37,5 +38,4 @@
     "url": "https://github.com/mozilla/payments-ui/issues"
   },
   "homepage": "https://github.com/mozilla/payments-ui#readme",
-  "something": "foo"
 }
