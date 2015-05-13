@@ -11,6 +11,8 @@
     "formatter.js": "^0.1.5",
     "jquery": "^2.1.4",
     "normalize.css": "^3.0.3",
+    "react": "^0.13.3",
+    "react-maskedinput": "git@github.com:insin/react-maskedinput.git#4b3cafae3c",
     "requirejs": "^2.1.17"
   },
   "devDependencies": {
