@@ -3,3 +3,4 @@ bower_components
 .grunt
 styleguide/build
 public/css/*
+npm-debug.log
