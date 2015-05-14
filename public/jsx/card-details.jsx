@@ -35,14 +35,17 @@ module.exports = React.createClass({
       var val = that.state[field.id];
       var cardClassName;
       var fieldClass;
+      // Operate on a copy of the classNames list.
+      var fieldClassNames = field.classNames && field.classNames.slice ? field.classNames.slice(0) : [];
 
       // Validate the value
       if (val) {
         var valData = CardValidator[field.validator](val.replace(/_/g, ''));
         var isValid = valData.isValid === true;
         var maybeValid = valData.isPotentiallyValid !== undefined ? valData.isPotentiallyValid : true;
-        fieldClass = !isValid && !maybeValid ? 'invalid' : null;
-
+        if (!isValid && !maybeValid) {
+          fieldClassNames.push('invalid');
+        }
         // Handle a card type if detected.
         if (valData.card) {
           var card = valData.card;
@@ -50,12 +53,26 @@ module.exports = React.createClass({
         }
       }
 
+      if (fieldClassNames.length) {
+        fieldClass = fieldClassNames.join(' ');
+      }
+
+      var type = field.type || 'text';
+
       fields.push(
         <label htmlFor={field.id} key={field.id}>
           <span className="vh">{field.label ? field.label : field.placeholder}</span>
           { cardClassName ? <span className={cardClassName}></span> : null }
-          <MaskedInput className={fieldClass} id={field.id} pattern={field.pattern}
-                       placeholder={field.placeholder} onChange={that.handleChange.bind(that, index)} />
+          { field.pattern ?
+            (
+              <MaskedInput type={type} className={fieldClass}
+                           id={field.id} pattern={field.pattern} placeholder={field.placeholder}
+                           onChange={that.handleChange.bind(that, index)} />
+            ) : (
+              <input type={type} className={fieldClass} id={field.id}
+                     placeholder={field.placeholder} />
+            )
+          }
         </label>
       );
     });

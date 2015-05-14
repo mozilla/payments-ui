@@ -4,21 +4,32 @@ var React = require('react');
 // The core field props passed into <CardDetails>
 var fields = [
   {
-    placeholder: 'Credit Card',
-    pattern:  '1111 1111 1111 1111',
-    validator: 'number',
+    placeholder: 'Card holder name',
+    id: 'card-holder',
+  }, {
     id: 'card',
+    inputmode: 'numeric',
+    pattern:  '1111 1111 1111 1111',
+    placeholder: 'Card number',
+    type: 'tel',
+    validator: 'number',
   }, {
-    label: 'Expiry Date',
-    placeholder: 'MM/YY',
-    pattern: '11/11',
-    validator: 'expirationDate',
+    classNames: ['expiration'],
     id: 'expiration',
+    inputmode: 'numeric',
+    label: 'Expiry Date',
+    pattern: '11/11',
+    placeholder: 'MM/YY',
+    type: 'tel',
+    validator: 'expirationDate',
   }, {
-    placeholder: 'CVV',
-    pattern: '111',
-    validator: 'cvv',
+    classNames: ['cvv'],
     id: 'cvv',
+    inputmode: 'numeric',
+    pattern: '111',
+    placeholder: 'CVV',
+    type: 'tel',
+    validator: 'cvv',
   }
 ];
 
