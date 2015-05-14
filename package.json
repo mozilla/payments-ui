@@ -12,22 +12,29 @@
     "jquery": "^2.1.4",
     "normalize.css": "^3.0.3",
     "react": "^0.13.3",
-    "react-maskedinput": "git@github.com:insin/react-maskedinput.git#4b3cafae3c",
+    "react-maskedinput": "^2.0.0",
     "requirejs": "^2.1.17"
   },
   "devDependencies": {
     "cog": "git://github.com/muffinresearch/cog.git#d92213a",
     "grunt": "^0.4.5",
+    "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-copy": "^0.8.0",
     "grunt-contrib-jshint": "^0.11.2",
+    "grunt-contrib-watch": "^0.6.1",
     "grunt-devserver": "^0.6.0",
     "grunt-gh-pages": "^0.10.0",
+    "grunt-react": "^0.12.2",
     "grunt-sass": "^0.18.1",
     "grunt-svg-sprite": "^1.1.2",
     "grunt-webpack": "^1.0.8",
+    "jsx-loader": "^0.13.2",
     "load-grunt-configs": "^0.4.3",
     "load-grunt-tasks": "^3.1.0",
-    "payment-icons": "git://github.com/muffinresearch/payment-icons.git#0.0.4"
+    "node-libs-browser": "^0.5.0",
+    "payment-icons": "git://github.com/muffinresearch/payment-icons.git#0.0.4",
+    "webpack": "^1.9.5",
+    "webpack-dev-server": "^1.8.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
