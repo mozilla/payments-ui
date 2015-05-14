@@ -1,17 +1,12 @@
+var path = require('path');
+
 module.exports = {
-  entry: "./public/js/main.js",
+  entry: './public/js/main.js',
   output: {
-    filename: "public/js/bundle.js",
+    path: path.join(__dirname, 'public/js/'),
+    filename: 'bundle.js',
+    publicPath: 'js/',
   },
-  stats: {
-    // Configure the console output
-    colors: true,
-    modules: true,
-    reasons: true
-  },
-  failOnError: true, // don't report error to grunt if webpack find errors
-  //watch: true, // use webpacks watcher
-  //keepalive: true, // don't finish the grunt task
   module: {
     loaders: [
       { test: /\.jsx$/, loader: 'jsx-loader' }
