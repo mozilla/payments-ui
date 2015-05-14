@@ -6,6 +6,7 @@ module.exports = React.createClass({
 
   getInitialState: function() {
     return {
+      cardholder: '',
       card: '',
       expiration: '',
       cvv: ''
@@ -30,6 +31,9 @@ module.exports = React.createClass({
   render: function() {
     var fields = [];
     var that = this;
+    var allValid = true;
+    var disabled;
+
     this.props.fields.map(function(field, index) {
 
       var val = that.state[field.id];
@@ -39,12 +43,13 @@ module.exports = React.createClass({
       var fieldClassNames = field.classNames && field.classNames.slice ? field.classNames.slice(0) : [];
 
       // Validate the value
-      if (val) {
+      if (val && field.validator) {
         var valData = CardValidator[field.validator](val.replace(/_/g, ''));
         var isValid = valData.isValid === true;
         var maybeValid = valData.isPotentiallyValid !== undefined ? valData.isPotentiallyValid : true;
-        if (!isValid && !maybeValid) {
+        if (!isValid) {
           fieldClassNames.push('invalid');
+          allValid = false;
         }
         // Handle a card type if detected.
         if (valData.card) {
@@ -57,7 +62,12 @@ module.exports = React.createClass({
         fieldClass = fieldClassNames.join(' ');
       }
 
+      if (val === '') {
+        allValid = false;
+      }
+
       var type = field.type || 'text';
+      disabled = allValid === false || null;
 
       fields.push(
         <label htmlFor={field.id} key={field.id}>
@@ -70,7 +80,8 @@ module.exports = React.createClass({
                            onChange={that.handleChange.bind(that, index)} />
             ) : (
               <input type={type} className={fieldClass} id={field.id}
-                     placeholder={field.placeholder} />
+                     placeholder={field.placeholder}
+                     onChange={that.handleChange.bind(that, index)} />
             )
           }
         </label>
@@ -80,6 +91,7 @@ module.exports = React.createClass({
     return (
       <form>
         {fields}
+        <button disabled={disabled} type="submit">Subscribe</button>
       </form>
     );
   }

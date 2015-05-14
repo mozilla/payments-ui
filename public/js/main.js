@@ -4,8 +4,8 @@ var React = require('react');
 // The core field props passed into <CardDetails>
 var fields = [
   {
+    id: 'cardholder',
     placeholder: 'Card holder name',
-    id: 'card-holder',
   }, {
     id: 'card',
     inputmode: 'numeric',
