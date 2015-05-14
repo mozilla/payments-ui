@@ -22,6 +22,7 @@
     "grunt-gh-pages": "^0.10.0",
     "grunt-sass": "^0.18.1",
     "grunt-svg-sprite": "^1.1.2",
+    "load-grunt-configs": "^0.4.3",
     "load-grunt-tasks": "^3.1.0",
     "payment-icons": "git://github.com/muffinresearch/payment-icons.git#0.0.4"
   },
