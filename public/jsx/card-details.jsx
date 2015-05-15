@@ -67,13 +67,15 @@ module.exports = React.createClass({
   },
 
   render: function() {
-    var fields = [];
+    var fieldList = [];
     var that = this;
     var allValid = true;
     var disabled;
     var detectedCard = null;
 
-    this.props.fields.map(function(field, index) {
+    var { fields, ...formAttrs } = this.props;
+
+    fields.map(function(field, index) {
       // This uses ES7 'destructuring assignments' to
       // pass every key *not* starting with '...' to
       // vars and the remaining key value pairs are left
@@ -139,7 +141,7 @@ module.exports = React.createClass({
       var type = field.type || 'text';
       disabled = allValid === false || null;
 
-      fields.push(
+      fieldList.push(
         <label htmlFor={field.id} key={field.id}>
           <span className="vh">{label}</span>
           { cardClassName ? <span className={cardClassName}></span> : null }
@@ -166,8 +168,8 @@ module.exports = React.createClass({
     });
 
     return (
-      <form>
-        {fields}
+      <form {...formAttrs} >
+        {fieldList}
         <button disabled={disabled} type="submit">Subscribe</button>
       </form>
     );
