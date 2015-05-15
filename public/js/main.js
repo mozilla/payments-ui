@@ -1,75 +1,31 @@
-require(['require-config'], function() {
+var CardDetails = require('card-details');
+var React = require('react');
 
-  // Main Entry point of the app.
-  require([
-    'formatter',
-    'validation'
-  ], function(Formatter, validation){
+// The core field props passed into <CardDetails>
+var fields = [
+  {
+    'data-braintree-name': 'cardholder_name',
+    'id': 'cardholder',
+    'placeholder': 'Card holder name',
+  }, {
+    'data-braintree-name': 'number',
+    'id': 'card',
+    'type': 'tel',
+    'validator': 'number',
+  }, {
+    'classNames': ['expiration'],
+    'data-braintree-name': 'expiration_date',
+    'id': 'expiration',
+    'type': 'tel',
+    'validator': 'expirationDate',
+  }, {
+    'classNames': ['cvv'],
+    'data-braintree-name': 'cvv',
+    'id': 'cvv',
+    'type': 'tel',
+    'validator': 'cvv',
+  }
+];
 
-    'use strict';
-
-    var Validate = new validation.Validate();
-    console.log('Payment UI Started');
-
-    var $cardField = $('.card-number');
-    var $expiryField = $('.expiration');
-    var $cvvField = $('.cvv');
-    var cardType = null;
-
-    var patterns = {
-      'default': {
-        card: '{{9999}} {{9999}} {{9999}} {{9999}}',
-        code: '{{999}}',
-        codeName: 'CVV',
-      },
-      'american-express': {
-        card: '{{9999}} {{999999}} {{99999}}',
-        code: '{{9999}}',
-        codeName: 'CID',
-      },
-      'diners-club': {
-        card: '{{9999}} {{999999}} {{9999}}',
-        code: '{{999}}',
-        codeName: 'CVV',
-      },
-    };
-
-    var formattedCard = new Formatter($cardField[0], {
-      'pattern': patterns.default.card,
-    });
-
-    var formattedExpiryDate = new Formatter($expiryField[0], {
-      'pattern': '{{99}}/{{99}}',
-    });
-
-    var formattedCVV = new Formatter($cvvField[0], {
-      'pattern': patterns.default.code,
-    });
-
-    formattedCard.resetPattern();
-    formattedExpiryDate.resetPattern();
-    formattedCVV.resetPattern();
-
-    Validate.cardNumber($cardField, onCardTypeChange);
-    Validate.expiryDate($expiryField);
-    Validate.cvv($cvvField);
-
-    $cardField.on('cardTypeChanged', onCardTypeChange);
-
-    function onCardTypeChange(e, type) {
-      var newCardType = type || 'default';
-      if (newCardType === cardType) {
-        console.log('No-op card type change');
-        return;
-      } else {
-        console.log('Updating card type to', newCardType);
-        var pattern = patterns[newCardType] || patterns.default;
-        formattedCard.resetPattern(pattern.card);
-        formattedCVV.resetPattern(pattern.code);
-        $cvvField.attr('placeholder', pattern.codeName);
-      }
-      cardType = newCardType;
-    }
-
-  });
-});
+var root = React.createElement(CardDetails, {fields: fields});
+React.render(root, document.getElementById('view'));
