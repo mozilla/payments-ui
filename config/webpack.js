@@ -10,7 +10,7 @@ module.exports = {
       reasons: true
     },
     failOnError: true, // don't report error to grunt if webpack find errors
-    //watch: true, // use webpacks watcher
+    watch: true, // use webpacks watcher
     //keepalive: true, // don't finish the grunt task
   },
 };

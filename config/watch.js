@@ -5,12 +5,5 @@ module.exports = {
     options: {
       debounceDelay: 250
     }
-  },
-  jsx: {
-    files: 'jsx/**/*.jsx',
-    tasks: ['react'],
-    options: {
-      debounceDelay: 250
-    }
   }
 };

@@ -8,7 +8,7 @@ module.exports = {
     contentBase: 'public'
   },
   start: {
-    keepAlive: true,
+    keepAlive: false,
     webpack: {
       devtool: "eval",
       debug: true
