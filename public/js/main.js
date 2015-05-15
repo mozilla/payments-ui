@@ -4,32 +4,26 @@ var React = require('react');
 // The core field props passed into <CardDetails>
 var fields = [
   {
-    id: 'cardholder',
-    placeholder: 'Card holder name',
+    'data-braintree-name': 'cardholder_name',
+    'id': 'cardholder',
+    'placeholder': 'Card holder name',
   }, {
-    id: 'card',
-    inputmode: 'numeric',
-    pattern:  '1111 1111 1111 1111',
-    placeholder: 'Card number',
-    type: 'tel',
-    validator: 'number',
+    'data-braintree-name': 'number',
+    'id': 'card',
+    'type': 'tel',
+    'validator': 'number',
   }, {
-    classNames: ['expiration'],
-    id: 'expiration',
-    inputmode: 'numeric',
-    label: 'Expiry Date',
-    pattern: '11/11',
-    placeholder: 'MM/YY',
-    type: 'tel',
-    validator: 'expirationDate',
+    'classNames': ['expiration'],
+    'data-braintree-name': 'expiration_date',
+    'id': 'expiration',
+    'type': 'tel',
+    'validator': 'expirationDate',
   }, {
-    classNames: ['cvv'],
-    id: 'cvv',
-    inputmode: 'numeric',
-    pattern: '111',
-    placeholder: 'CVV',
-    type: 'tel',
-    validator: 'cvv',
+    'classNames': ['cvv'],
+    'data-braintree-name': 'cvv',
+    'id': 'cvv',
+    'type': 'tel',
+    'validator': 'cvv',
   }
 ];
 

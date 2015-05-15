@@ -3,6 +3,5 @@ bower_components
 .grunt
 styleguide/build
 public/css/*
-public/js/components/*.js
 npm-debug.log
 public/js/bundle.js
