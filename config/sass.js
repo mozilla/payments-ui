@@ -1,6 +1,7 @@
 module.exports = {
   options: {
-    sourceMap: true
+    sourceMap: true,
+    imagePath: '../img'
   },
   dist: {
     files: {

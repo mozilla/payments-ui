@@ -1,5 +1,7 @@
 var CardDetails = require('card-details');
 var React = require('react');
+var $ = require('jquery');
+var braintree = require('braintree-web');
 
 // The core field props passed into <CardDetails>
 var fields = [
@@ -27,5 +29,34 @@ var fields = [
   }
 ];
 
-var root = React.createElement(CardDetails, {fields: fields});
-React.render(root, document.getElementById('view'));
+var braintreeFormId = 'braintree-form';
+
+var token = $.ajax({
+  data: {},
+  method: 'post',
+  url: '/braintree/token/generate/',
+  dataType: 'json',
+}).then(function(data) {
+
+  var root = React.createElement(CardDetails, {
+    // The field data for building up the form
+    // in react.
+    fields: fields,
+    // All of these just end up as HTML attrs on our form.
+    'data-token': data.token,
+    'id': braintreeFormId,
+    'method': 'post',
+    // TODO update this with a real endpoint.
+    'action': '/braintree/',
+  });
+
+  React.render(root, document.getElementById('view'));
+
+  $('#braintree-form').on('submit', function(e) {
+    e.preventDefault();
+    braintree.setup($(this).data('token'), 'custom', {
+      id: braintreeFormId
+    });
+  });
+
+});
