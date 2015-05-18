@@ -34,7 +34,7 @@ var braintreeFormId = 'braintree-form';
 var token = $.ajax({
   data: {},
   method: 'post',
-  url: '/braintree/token/generate/',
+  url: '/api/braintree/token/generate/',
   dataType: 'json',
 }).then(function(data) {
 
