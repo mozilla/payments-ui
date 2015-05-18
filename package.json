@@ -8,6 +8,7 @@
     "card-validator": "^1.0.0",
     "connect-fonts-clearsans": "0.0.1",
     "connect-fonts-firasans": "0.0.4",
+    "jquery": "^2.1.4",
     "normalize.css": "^3.0.3",
     "react": "^0.13.3",
     "react-maskedinput": "^2.0.0"
