@@ -23,7 +23,7 @@
     "grunt-devserver": "^0.6.0",
     "grunt-gh-pages": "^0.10.0",
     "grunt-react": "^0.12.2",
-    "grunt-sass": "^0.18.1",
+    "grunt-sass": "1.0.0",
     "grunt-svg-sprite": "^1.1.2",
     "grunt-webpack": "^1.0.8",
     "jsx-loader": "^0.13.2",
