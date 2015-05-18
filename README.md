@@ -5,6 +5,19 @@
 
 This project comprises all styles, behaviour and interfaces for mozilla/payments
 
+## Watching for file changes in development.
+
+We're using webpack to build a JS bundle
+
+### Under docker
+
+If you're using payments-env to have the complete payments-ui you'll want to use
+`grunt start` to watch for file changes.
+
+### Standalone
+
+If you're running things standalone then `grunt service` runs the webpack dev-server.
+
 ## Dependency installation and updates
 
 Install grunt-cli globally with `npm install -g grunt-cli`
@@ -20,31 +33,11 @@ track dep versions in one place.
 Normally built artifacts aren't committed. However, to manage dep changes more
 tightly libs (JS, CSS + fonts) are committed to the tree.
 
+JS libs are committed from node\_modules as webpack knows how to find deps in
+node\_modules.
+
 Whilst this creates noise it does help ensure deps in the browser
 are identical and can't get mangled by a broken deps installation.
-
-### Building card-validator when updated
-
-By default the card-validator package doesn't ship built files.
-
-If card-validator is updated to build it you need to do the following:
-
-```shell
-cd node_modules/card-validator
-npm install
-node_modules/bin/gulp build
-```
-
-Then from the project root run:
-
-```shell
-grunt copy
-```
-
-You should see git pick-up the modifications to card-validator.min.js
-
-Hopefully in due course card-validator will be updated to negate the need
-to do this.
 
 ## Styleguide
 
@@ -54,6 +47,8 @@ It can be build statically with the `grunt build-docs` command.
 
 The styleguide is published here: http://mozilla.github.io/payments-ui/
 
-## Updating the styleguide
+### Updating the styleguide
 
 Run `grunt publish-docs`
+
+
