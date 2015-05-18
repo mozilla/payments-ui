@@ -10,6 +10,6 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['jshint']);
   grunt.registerTask('build-docs', ['sass', 'cog']);
   grunt.registerTask('publish-docs', ['build-docs', 'gh-pages']);
-  grunt.registerTask('serve', ['webpack-dev-server:start', 'watch:sass']);
-  grunt.registerTask('start', ['webpack', 'watch:sass']);
+  grunt.registerTask('serve', ['sass', 'webpack-dev-server:start', 'watch:sass']);
+  grunt.registerTask('start', ['sass', 'webpack', 'watch:sass']);
 };
