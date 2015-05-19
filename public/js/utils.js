@@ -1,3 +1,5 @@
+'use strict';
+
 /**
 * Populates an object with defaults if the key is not yet defined.
 * Similar to _.defaults except this takes only a single defaults object.
@@ -7,8 +9,6 @@
 */
 
 exports.defaults = function(object, defaults) {
-  'use strict';
-
   object = object || {};
   Object.keys(defaults).forEach(function(key) {
     if (typeof object[key] === 'undefined') {

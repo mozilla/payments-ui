@@ -1,6 +1,6 @@
-module.exports = function(grunt) {
-  'use strict';
+'use strict';
 
+module.exports = function(grunt) {
   grunt.loadNpmTasks('cog');
   // load all grunt tasks matching the ['grunt-*', '@*/grunt-*'] patterns
   require('load-grunt-tasks')(grunt);
@@ -14,5 +14,5 @@ module.exports = function(grunt) {
   grunt.registerTask('serve',
                      ['sass', 'webpack-dev-server:start', 'watch:sass']);
   grunt.registerTask('start', ['sass', 'webpack', 'watch:sass']);
-  grunt.registerTask('test', ['eslint', 'karma:run']);
+  grunt.registerTask('test', ['karma:run', 'eslint']);
 };

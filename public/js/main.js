@@ -1,9 +1,12 @@
+'use strict';
+
 var CardDetails = require('card-details');
 var React = require('react');
 var $ = require('jquery');
 var braintree = require('braintree-web');
 
 var braintreeFormId = 'braintree-form';
+
 
 $.ajax({
   data: {},
@@ -12,7 +15,6 @@ $.ajax({
   dataType: 'json',
 }).then(function(data) {
 
-  'use strict';
 
   var root = React.createElement(CardDetails, {
     // All of these just end up as HTML attrs on our form.

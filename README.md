@@ -24,12 +24,11 @@ If you're running things standalone then `grunt service` runs the webpack dev-se
 
 ### JavaScript Linting.
 
-We're using eslint for JavaScript linting. You may need the following packages:
+We're using eslint for JavaScript linting. Most editors will have instructions for
+enabling eslint (see below for how to configure vim + syntastic). Alternatively
+just run the `grunt eslint` command which is self-contained.
 
-
-Or alternatively just run the `grunt eslint` command which is selfcontained.
-
-#### Vim settings (Syntastic)
+#### Eslint Vim settings (Syntastic)
 
 You'll need the packages listed below installed globally:
 
