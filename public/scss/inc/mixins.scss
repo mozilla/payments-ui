@@ -42,7 +42,7 @@
 
 // Image management
 @mixin hidpi-background-image($filename, $background-size: 'mixed', $extension: png) {
-  background-image: image-url("#{$filename}.#{$extension}");
+  background-image: url("../img/#{$filename}.#{$extension}");
   @if ($background-size != 'mixed') {
     background-size: $background-size;
   }
