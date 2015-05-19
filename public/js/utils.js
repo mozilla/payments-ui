@@ -5,7 +5,10 @@
 * @param {object} defaults - the defaults to use
 * @returns {object}
 */
+
 exports.defaults = function(object, defaults) {
+  'use strict';
+
   object = object || {};
   Object.keys(defaults).forEach(function(key) {
     if (typeof object[key] === 'undefined') {
