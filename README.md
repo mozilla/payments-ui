@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/mozilla/payments-ui.svg)](https://travis-ci.org/mozilla/payments-ui)
 [![Dependency Status](https://david-dm.org/mozilla/payments-ui.svg)](https://david-dm.org/mozilla/payments-ui)
 [![devDependency Status](https://david-dm.org/mozilla/payments-ui/dev-status.svg)](https://david-dm.org/mozilla/payments-ui#info=devDependencies)
 
