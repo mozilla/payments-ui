@@ -18,6 +18,10 @@ If you're using payments-env to have the complete payments-ui you'll want to use
 
 If you're running things standalone then `grunt service` runs the webpack dev-server.
 
+## Tests
+
+To run the tests run: `grunt test`
+
 ## Dependency installation and updates
 
 Install grunt-cli globally with `npm install -g grunt-cli`
@@ -40,6 +44,8 @@ Whilst this creates noise it does help ensure deps in the browser
 are identical and can't get mangled by a broken deps installation.
 
 ## Styleguide
+
+**Note: the styleguide is in need of an update since the switch to react**
 
 The styleguide is based on the styles and templates that live in the tree.
 
