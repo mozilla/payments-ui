@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/mozilla/payments-ui.svg)](https://travis-ci.org/mozilla/payments-ui)
 [![Dependency Status](https://david-dm.org/mozilla/payments-ui.svg)](https://david-dm.org/mozilla/payments-ui)
 [![devDependency Status](https://david-dm.org/mozilla/payments-ui/dev-status.svg)](https://david-dm.org/mozilla/payments-ui#info=devDependencies)
 
@@ -5,34 +6,57 @@
 
 This project comprises all styles, behaviour and interfaces for mozilla/payments
 
-## Watching for file changes in development.
+
+## Developers
+
+### Watching for file changes in development.
 
 We're using webpack to build a JS bundle
 
-### Under docker
+#### Under docker
 
 If you're using payments-env to have the complete payments-ui you'll want to use
 `grunt start` to watch for file changes.
 
-### Standalone
+#### Standalone
 
 If you're running things standalone then `grunt service` runs the webpack dev-server.
 
-## Tests
+### JavaScript Linting.
+
+We're using eslint for JavaScript linting. Most editors will have instructions for
+enabling eslint (see below for how to configure vim + syntastic). Alternatively
+just run the `grunt eslint` command which is self-contained.
+
+#### Eslint Vim settings (Syntastic)
+
+You'll need the packages listed below installed globally:
+
+```sh
+npm install -g eslint babel-eslint eslint-plugin-react
+```
+
+Using syntastic, the following snippet turns on eslint selectively for projects with a .eslintrc.
+
+```vim
+autocmd FileType javascript let b:syntastic_checkers = findfile('.eslintrc', '.;') != '' ? ['eslint'] : ['jshint']
+```
+
+### Tests
 
 To run the tests run: `grunt test`
 
-## Dependency installation and updates
+### Dependency installation and updates
 
 Install grunt-cli globally with `npm install -g grunt-cli`
 Then run `npm install` to install the local deps.
 
-### npm deps only
+#### npm deps only
 
 We're aiming to only use npm packaged deps rather than bower. This is to be able to
 track dep versions in one place.
 
-### Libraries + external deps
+#### Libraries + external deps
 
 Normally built artifacts aren't committed. However, to manage dep changes more
 tightly libs (JS, CSS + fonts) are committed to the tree.

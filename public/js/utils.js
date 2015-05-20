@@ -1,3 +1,5 @@
+'use strict';
+
 /**
 * Populates an object with defaults if the key is not yet defined.
 * Similar to _.defaults except this takes only a single defaults object.
@@ -5,6 +7,7 @@
 * @param {object} defaults - the defaults to use
 * @returns {object}
 */
+
 exports.defaults = function(object, defaults) {
   object = object || {};
   Object.keys(defaults).forEach(function(key) {

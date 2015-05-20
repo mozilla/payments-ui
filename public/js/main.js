@@ -1,3 +1,5 @@
+'use strict';
+
 var CardDetails = require('card-details');
 var React = require('react');
 var $ = require('jquery');
@@ -5,12 +7,14 @@ var braintree = require('braintree-web');
 
 var braintreeFormId = 'braintree-form';
 
-var token = $.ajax({
+
+$.ajax({
   data: {},
   method: 'post',
   url: '/api/braintree/token/generate/',
   dataType: 'json',
 }).then(function(data) {
+
 
   var root = React.createElement(CardDetails, {
     // All of these just end up as HTML attrs on our form.
@@ -27,8 +31,7 @@ var token = $.ajax({
   $('#braintree-form').on('submit', function(e) {
     e.preventDefault();
     braintree.setup($(this).data('token'), 'custom', {
-      id: braintreeFormId
+      id: braintreeFormId,
     });
   });
-
 });
