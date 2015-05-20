@@ -4,8 +4,9 @@ module.exports = {
       'public/js/*.js',
       'public/jsx/*.jsx',
       '!public/js/bundle.js',
-      'tests/*.jsx',
+      'tests/*.*',
       'Gruntfile.js',
+      'config/*.js',
     ],
   },
 };

@@ -1,6 +1,6 @@
 var grunt = require('grunt');
 
-module.exports  = {
+module.exports = {
   options: {
     logLevel: grunt.option('log-level') || 'ERROR',
   },

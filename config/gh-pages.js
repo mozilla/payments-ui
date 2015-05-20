@@ -4,5 +4,5 @@ module.exports = {
     message: 'Updating docs',
     repo: 'git@github.com:mozilla/payments-ui.git'
   },
-  src: ['**']
+  src: ['**'],
 };

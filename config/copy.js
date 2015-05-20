@@ -5,17 +5,17 @@ module.exports = {
       expand: true,
       src: 'normalize.css',
       dest: 'public/scss/lib/',
-      ext: '.scss'
+      ext: '.scss',
     }, {
       cwd: 'node_modules/connect-fonts-clearsans/fonts/default/',
       expand: true,
       src: '*',
-      dest: 'public/fonts/clearsans/'
+      dest: 'public/fonts/clearsans/',
     }, {
       cwd: 'node_modules/connect-fonts-firasans/fonts/default/',
       expand: true,
       src: '*',
-      dest: 'public/fonts/firasans/'
-    }]
-  }
+      dest: 'public/fonts/firasans/',
+    }],
+  },
 };

@@ -1,7 +1,6 @@
 'use strict';
 
 var path = require('path');
-var webpack = require('webpack');
 
 module.exports = {
   entry: './public/js/main.js',
@@ -20,7 +19,4 @@ module.exports = {
     extensions: ['', '.js', '.jsx', '.json'],
     modulesDirectories: ['public/js/', 'public/jsx/', 'node_modules'],
   },
-  plugins: [
-    new webpack.IgnorePlugin(/jsdom$/),
-  ],
 };

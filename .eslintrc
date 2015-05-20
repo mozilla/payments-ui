@@ -1,8 +1,9 @@
 {
-  // Bable parser required to support the spread operator
+  // Babel parser required to support the spread operator
   // in jsx. See: https://github.com/eslint/espree/issues/116
   "parser": "babel-eslint",
   "env": {
+    "node": true,
     "browser": true,
   },
   "plugins": [
