@@ -1,11 +1,11 @@
-var webpack = require('webpack');
+'use strict';
+
 var webpackConfig = require('./webpack.config.js');
 
 // Remove the bits from the shared config
 // that we don't want for tests.
 delete webpackConfig.output;
 delete webpackConfig.entry;
-
 
 module.exports = function (config) {
   config.set({
@@ -15,19 +15,18 @@ module.exports = function (config) {
     singleRun: true,
     frameworks: [
       'mocha',
-      'chai'
+      'chai',
     ],
     files: [
-      'tests/test.index.js',
-      { pattern: 'tests/**/test*.jsx', included: false, served: false, watched: true }
+      'tests/test-loader.js',
     ],
     preprocessors: {
-      'tests/test.index.js': ['webpack', 'sourcemap']
+      'tests/test-loader.js': ['webpack', 'sourcemap'],
     },
     reporters: ['mocha'],
     webpack: webpackConfig,
     webpackServer: {
-      noInfo: true
+      noInfo: true,
     },
     plugins: [
       'karma-mocha',
@@ -35,7 +34,7 @@ module.exports = function (config) {
       'karma-chai',
       'karma-firefox-launcher',
       'karma-sourcemap-loader',
-      'karma-webpack'
-    ]
+      'karma-webpack',
+    ],
   });
 };

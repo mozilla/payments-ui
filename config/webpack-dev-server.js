@@ -10,7 +10,7 @@ module.exports = {
   start: {
     keepAlive: false,
     webpack: {
-      devtool: "eval",
+      devtool: 'eval',
       debug: true
     }
   }

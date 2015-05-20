@@ -5,15 +5,15 @@ module.exports = {
       sourcecodeSelector: 'main',
       templateGlobals: {
         projectName: 'Payments UI Styleguide',
-        appMedia: '../static/public'
+        appMedia: '../static/public',
       },
       templateConfig: {
-        templatePaths: ['templates']
+        templatePaths: ['templates'],
       },
       copy: [{
         src: '../public/',
-        target: 'static/public'
-      }]
-    }
-  }
+        target: 'static/public',
+      }],
+    },
+  },
 };

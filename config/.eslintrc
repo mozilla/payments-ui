@@ -2,4 +2,9 @@
   "env": {
     "node": true,
   },
+  "rules": {
+    "eol-last": 0,
+    "comma-dangle": 0,
+    "global-strict": 0,
+  }
 }

@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
   testCards: {
     amex: '378282246310005',
@@ -7,4 +9,4 @@ module.exports = {
     mastercard: '5555555555554444',
     visa: '4111111111111111',
   },
-}
+};
