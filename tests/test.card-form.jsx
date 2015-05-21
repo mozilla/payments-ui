@@ -1,7 +1,7 @@
 'use strict';
 
 
-var CardDetails = require('card-details');
+var CardDetails = require('components/card-form');
 
 var helpers = require('./helpers');
 
