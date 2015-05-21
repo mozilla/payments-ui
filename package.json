@@ -43,7 +43,7 @@
     "load-grunt-configs": "^0.4.3",
     "load-grunt-tasks": "^3.1.0",
     "mocha": "^2.2.5",
-    "node-libs-browser": "^0.5.0",
+    "node-libs-browser": "0.5.0",
     "payment-icons": "git://github.com/muffinresearch/payment-icons.git#0.0.4",
     "webpack": "^1.9.5",
     "webpack-dev-server": "^1.8.2"
