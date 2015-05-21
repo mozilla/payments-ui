@@ -8,7 +8,7 @@ var utils = require('utils');
 
 module.exports = React.createClass({
 
-  displayName: 'CardDetails',
+  displayName: 'CardForm',
 
   propTypes: {
     fields: React.PropTypes.array.isRequired,

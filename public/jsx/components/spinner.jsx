@@ -5,10 +5,15 @@ var React = require('react');
 var Spinner = React.createClass({
   displayName: 'Spinner',
   propTypes: {
-    label: React.PropTypes.string.isRequired,
+    text: React.PropTypes.string.isRequired,
   },
   render: function() {
-    return <div className="spinner">{this.props.label}</div>;
+    return (
+      <div className="spinner-cont">
+        <div className="spinner" />
+        <span className="text">{this.props.text}</span>
+      </div>
+    );
   },
 });
 

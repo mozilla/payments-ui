@@ -21,8 +21,6 @@ module.exports = {
     modulesDirectories: [
       'public/js/',
       'public/jsx/',
-      'public/jsx/views/',
-      'public/jsx/components/',
       'node_modules',
     ],
   },
