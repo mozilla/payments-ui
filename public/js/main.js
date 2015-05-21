@@ -40,11 +40,28 @@ $.ajax({
     React.render(root, document.getElementById('view'));
 
     // TODO Move this into card-details.
+    braintree.setup(data.token, 'custom', {
+      id: braintreeFormId,
+      onPaymentMethodReceived: function(payment) {
+        console.log('received nonce:', payment.nonce);
+        console.log('received payment:', payment);
+        $.ajax({
+          data: {
+            pay_method_nonce: payment.nonce,
+            plan_id: 'mozilla-concrete-brick',
+          },
+          url: '/api/braintree/subscriptions/',
+          method: 'post',
+          dataType: 'json',
+        }).then(function(subscribeData) {
+          console.log('successfully subscribed?', subscribeData);
+        });
+      },
+    });
+
     $('#braintree-form').on('submit', function(e) {
+      console.log('form submitted');
       e.preventDefault();
-      braintree.setup($(this).data('token'), 'custom', {
-        id: braintreeFormId,
-      });
     });
   });
 
