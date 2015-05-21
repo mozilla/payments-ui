@@ -10,6 +10,7 @@
     "connect-fonts-firasans": "0.0.4",
     "jquery": "^2.1.4",
     "normalize.css": "^3.0.3",
+    "query-string": "^2.1.0",
     "react": "^0.13.3",
     "react-maskedinput": "^2.0.0"
   },
