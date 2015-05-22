@@ -1,7 +1,7 @@
 'use strict';
 
 
-var CardDetails = require('components/card-form');
+var CardForm = require('components/card-form');
 
 var helpers = require('./helpers');
 
@@ -23,7 +23,7 @@ describe('Card Details', function() {
   beforeEach(function() {
     React = require('react');
     TestUtils = require('react/lib/ReactTestUtils');
-    cardForm = TestUtils.renderIntoDocument(<CardDetails />);
+    cardForm = TestUtils.renderIntoDocument(<CardForm />);
   });
 
   function testCard(cardType) {
