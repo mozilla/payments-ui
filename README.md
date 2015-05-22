@@ -81,4 +81,16 @@ The styleguide is published here: http://mozilla.github.io/payments-ui/
 
 Run `grunt publish-docs`
 
+## Localization (l10n)
 
+We're using grunt-i18n-abide to run the extraction commands.
+
+Because we're using React we need to operate on the compiled JS file. This also means we aren't running extraction
+on un-used code.
+
+To run an extraction do the following:
+
+```
+npm install
+grunt webpack abideExtract
+```

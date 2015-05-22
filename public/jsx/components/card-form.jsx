@@ -5,6 +5,7 @@ var MaskedInput = require('react-maskedinput');
 var CardValidator = require('card-validator');
 
 var utils = require('utils');
+var gettext = utils.gettext;
 
 module.exports = React.createClass({
 
@@ -20,7 +21,7 @@ module.exports = React.createClass({
         {
           'data-braintree-name': 'cardholder_name',
           'id': 'cardholder',
-          'placeholder': 'Card holder name',
+          'placeholder': gettext('Card holder name'),
         }, {
           'data-braintree-name': 'number',
           'id': 'card',
@@ -57,14 +58,14 @@ module.exports = React.createClass({
     'default': {
       number: {
         pattern: '1111 1111 1111 1111',
-        placeholder: 'Card number',
+        placeholder: gettext('Card number'),
       },
       cvv: {
         pattern: '111',
-        placeholder: 'CVV',
+        placeholder: gettext('CVV'),
       },
       expirationDate: {
-        label: 'Expiry Date',
+        label: gettext('Expiry Date'),
         pattern: '11/11',
         placeholder: 'MM/YY',
       },
@@ -75,7 +76,7 @@ module.exports = React.createClass({
       },
       cvv: {
         pattern: '1111',
-        placeholder: 'CID',
+        placeholder: gettext('CID'),
       },
     },
     'diners-club': {
@@ -84,7 +85,7 @@ module.exports = React.createClass({
       },
       cvv: {
         pattern: '111',
-        placeholder: 'CVV',
+        placeholder: gettext('CVV'),
       },
     },
   },

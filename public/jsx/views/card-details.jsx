@@ -6,6 +6,8 @@ var React = require('react');
 var CardForm = require('components/card-form');
 var Spinner = require('components/spinner');
 
+var gettext = require('utils').gettext;
+
 
 module.exports = React.createClass({
 
@@ -50,7 +52,7 @@ module.exports = React.createClass({
         id="braintree-form"
         method="post"/>);
     } else {
-      return <Spinner text="Setting up"/>;
+      return <Spinner text={gettext('Setting up')}/>;
     }
   },
 });
