@@ -27,3 +27,17 @@
     width: 33px;
   }
 }
+
+.spinner-cont {
+
+  margin: 0 auto;
+  max-width: 100%;
+  width: 300px;
+
+  .text {
+    display: block;
+    margin: 0 auto;
+    padding: 10px;
+    text-align: center;
+  }
+}

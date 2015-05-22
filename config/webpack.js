@@ -3,6 +3,7 @@ var webpackConfig = require('../webpack.config.js');
 module.exports = {
   options: webpackConfig,
   payment: {
+    devtool: 'source-map',
     stats: {
       // Configure the console output
       colors: true,

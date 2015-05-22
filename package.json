@@ -12,7 +12,8 @@
     "normalize.css": "^3.0.3",
     "query-string": "^2.1.0",
     "react": "^0.13.3",
-    "react-maskedinput": "^2.0.0"
+    "react-maskedinput": "^2.0.0",
+    "react-router": "^0.13.3"
   },
   "devDependencies": {
     "babel-eslint": "^3.1.5",

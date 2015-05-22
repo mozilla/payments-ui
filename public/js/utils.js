@@ -17,3 +17,8 @@ exports.defaults = function(object, defaults) {
   });
   return object;
 };
+
+
+exports.getMountNode = function() {
+  return document.getElementById('view');
+};
