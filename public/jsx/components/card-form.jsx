@@ -1,8 +1,11 @@
 'use strict';
 
-var React = require('react');
-var MaskedInput = require('react-maskedinput');
+var $ = require('jquery');
 var CardValidator = require('card-validator');
+var MaskedInput = require('react-maskedinput');
+var Navigation = require('react-router').Navigation;
+var React = require('react');
+var braintree = require('braintree-web');
 
 var utils = require('utils');
 var gettext = utils.gettext;
@@ -12,8 +15,12 @@ module.exports = React.createClass({
   displayName: 'CardForm',
 
   propTypes: {
+    'data-token': React.PropTypes.string.isRequired,
+    'id': React.PropTypes.string.isRequired,
     fields: React.PropTypes.array.isRequired,
   },
+
+  mixins: [Navigation],
 
   getDefaultProps: function() {
     return {
@@ -47,11 +54,16 @@ module.exports = React.createClass({
 
   getInitialState: function() {
     return {
+      isSubmitting: false,
       cardholder: '',
       card: '',
       expiration: '',
       cvv: '',
     };
+  },
+
+  contextTypes: {
+    router: React.PropTypes.func,
   },
 
   cardPatterns: {
@@ -98,6 +110,39 @@ module.exports = React.createClass({
     this.setState(stateChange);
   },
 
+  handleSubmit: function(e) {
+    var { router } = this.context;
+    e.preventDefault();
+    this.setState({isSubmitting: true});
+    var client = new braintree.api.Client({
+      clientToken: this.props['data-token'],
+    });
+    client.tokenizeCard({
+      number: this.state.card,
+      expirationDate: this.state.expiration,
+      cvv: this.state.cvv,
+      cardholderName: this.state.cardholder,
+    }, function(err, nonce) {
+      if (err) {
+        // TODO: error handling
+        console.log(err);
+      } else {
+        $.ajax({
+          data: {
+            pay_method_nonce: nonce,
+            plan_id: 'mozilla-concrete-brick',
+          },
+          url: '/api/braintree/subscriptions/',
+          method: 'post',
+          dataType: 'json',
+        }).then(function() {
+          console.log('Successfully subscribed + completed payment');
+          router.transitionTo('complete');
+        });
+      }
+    });
+  },
+
   // Just a convenience mapping for cards from card-validator
   // to shorted classes used in CSS.
   cardTypeMap: {
@@ -110,7 +155,7 @@ module.exports = React.createClass({
     var fieldList = [];
     var that = this;
     var allValid = true;
-    var disabled;
+    var isButtonDisabled;
     var detectedCard = null;
 
     var { fields, ...formAttrs } = this.props;
@@ -182,7 +227,8 @@ module.exports = React.createClass({
       }
 
       var type = field.type || 'text';
-      disabled = allValid === false || null;
+
+      isButtonDisabled = that.state.isSubmitting || allValid === false || null;
 
       fieldList.push(
         <label htmlFor={field.id} key={field.id}>
@@ -208,9 +254,11 @@ module.exports = React.createClass({
     });
 
     return (
-      <form {...formAttrs} >
+      <form {...formAttrs} onSubmit={this.handleSubmit}>
         {fieldList}
-        <button disabled={disabled} type="submit">Subscribe</button>
+        <button className={this.state.isSubmitting ? 'spinner' : null}
+                disabled={isButtonDisabled}
+                type="submit">Subscribe</button>
       </form>
     );
   },
