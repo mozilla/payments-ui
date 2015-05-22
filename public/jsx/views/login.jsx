@@ -5,6 +5,7 @@ var React = require('react');
 var Navigation = require('react-router').Navigation;
 
 var Spinner = require('components/spinner');
+var gettext = require('utils').gettext;
 
 
 module.exports = React.createClass({
@@ -54,6 +55,6 @@ module.exports = React.createClass({
   },
 
   render: function() {
-    return <Spinner text="Logging in"/>;
+    return <Spinner text={gettext('Logging in')}/>;
   },
 });

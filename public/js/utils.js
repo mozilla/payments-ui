@@ -19,6 +19,12 @@ exports.defaults = function(object, defaults) {
 };
 
 
-exports.getMountNode = function() {
-  return document.getElementById('view');
+exports.getMountNode = function(node) {
+  return node || document.getElementById('view');
+};
+
+
+exports.gettext = function(string) {
+  // Initial no-op gettext stand-in.
+  return string;
 };

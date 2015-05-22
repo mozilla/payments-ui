@@ -1,0 +1,41 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Language-Team: none\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2015-05-22 13:31+0000\n"
+"Language: sv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2015-05-22 13:31+0000\n"
+"Last-Translator: Automatically generated\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: public/dist/bundle.js:9432
+msgid "Setting up"
+msgstr ""
+
+#: public/dist/bundle.js:9499
+msgid "Logging in"
+msgstr ""
+
+#: public/dist/bundle.js:9610
+msgid "Card holder name"
+msgstr ""
+
+#: public/dist/bundle.js:9647
+msgid "Card number"
+msgstr ""
+
+#: public/dist/bundle.js:9651 public/dist/bundle.js:9674
+msgid "CVV"
+msgstr ""
+
+#: public/dist/bundle.js:9654
+msgid "Expiry Date"
+msgstr ""
+
+#: public/dist/bundle.js:9665
+msgid "CID"
+msgstr ""
