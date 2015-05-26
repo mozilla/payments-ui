@@ -1,7 +1,11 @@
 module.exports = {
-  lib: [
+  deps: [
     'public/lib',
     'public/scss/lib',
     'public/fonts',
   ],
+  dist: [
+    'public/css',
+    'public/dist'
+  ]
 };
