@@ -38,6 +38,6 @@ module.exports = {
       repo: 'https://' + process.env.GH_TOKEN + '@github.com/mozilla/payments-ui.git',
       message: 'publish docker build branch (auto)' + getDeployMessage(),
     },
-    src: ['**'],
+    src: ['public/**/*', 'Dockerfile'],
   }
 };
