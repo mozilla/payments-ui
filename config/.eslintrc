@@ -5,6 +5,8 @@
   "rules": {
     "eol-last": 0,
     "comma-dangle": 0,
+    "strict": 0,
     "global-strict": 0,
+    "max-len": 0,
   }
 }

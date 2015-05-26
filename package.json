@@ -26,7 +26,7 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-devserver": "^0.6.0",
     "grunt-eslint": "^13.0.0",
-    "grunt-gh-pages": "^0.10.0",
+    "grunt-gh-pages": "0.10.0",
     "grunt-i18n-abide": "git://github.com/mozilla/grunt-i18n-abide.git#c8127304fd",
     "grunt-karma": "^0.10.1",
     "grunt-react": "^0.12.2",
@@ -50,7 +50,8 @@
     "webpack-dev-server": "^1.8.2"
   },
   "scripts": {
-    "test": "node -e \"require('grunt').cli()\" null sass webpack test"
+    "test": "node -e \"require('grunt').cli()\" null sass webpack test",
+    "publish-docker": "node -e \"require('grunt').cli()\" null build publish-docker"
   },
   "repository": {
     "type": "git",
