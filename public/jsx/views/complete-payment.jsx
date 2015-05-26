@@ -21,7 +21,7 @@ module.exports = React.createClass({
       <div className="complete">
         <h1>Payment complete!</h1>
         <span className="product">{this.props.productName}</span>
-        <span className="tick"></span>
+        <img className="tick" src="/img/tick.svg" />
       </div>
     );
   },

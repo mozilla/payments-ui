@@ -16,11 +16,11 @@ h1,h2,h3,h4,h5,h6 {
 
 .complete {
   text-align: center;
+
   .tick {
     display: block;
     width: 188px;
     height: 188px;
-    background: url('../img/tick.svg') no-repeat 0 0;
     margin: 50px auto 0;
   }
 }
