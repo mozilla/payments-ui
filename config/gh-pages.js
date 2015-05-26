@@ -35,7 +35,7 @@ module.exports = {
         name: process.env.GH_USER,
         email: process.env.GH_EMAIL,
       },
-      repo: 'https://' + process.env.GH_TOKEN + '@github.com:mozilla/payments-ui.git',
+      repo: 'https://' + process.env.GH_TOKEN + '@github.com/mozilla/payments-ui.git',
       message: 'publish docker build branch (auto)' + getDeployMessage(),
     },
     src: ['**'],
