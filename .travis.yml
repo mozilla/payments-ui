@@ -1,15 +1,21 @@
 language: node_js
 sudo: false
 node_js:
-  - 0.10
+- 0.10
 before_script:
-  - npm rebuild
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
+- npm rebuild
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
 script: npm test
 notifications:
   irc:
     channels:
-      - "irc.mozilla.org#payments"
+    - irc.mozilla.org#payments
     on_success: change
     on_failure: always
+after_success: npm run-script publish-docker > /dev/null 2>&1
+env:
+  global:
+  - secure: bqDGvEj0F7QFKVhX3s13lu0XY5FXja/LSkLS09OZezAdCUwU055GnII7yeLy4joyAWk8R1dZK73J9oQC0XPAGGttNSUda85RVil2t7ZEZR9YuvOs/7BsiJJiZ04MiD9W4k+8x9CLWVQgx6On/yih4nM5x6RpbnMJ/g0LcHp28+c=
+  - secure: rglWlHKUdkfNu6Pnq5gUaqbOPoVdiAq/ntslBuxadm7hSOS5yeQ4UCeLoQ7hMxg7Mf8eVAbEF62nv8yaycHfj5cEUKd3mdvWn69bwQlz3F9qD+DWW8xFPrZV2FdeaS4BF1McKyRQ/JNa6EafVuuuKn0f/NVI/7eQOIeOqAHbB6g=
+  - secure: ry91G3/q9orss7kke7h3dH9USpkgZI8p1GbyghXS/j70lE0g6FIGwr3oYOOlvyV3a7JzxizqPy9iCAMYj26UMWPA3H5U0jmFG0AuDk/8eQNylnU4AukrbNiQd0zRzH3jlk/+DkQeWZZa9r0fiA0dAGPo+46dI4nZ4oyYERWOSE4=
