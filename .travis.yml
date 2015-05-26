@@ -13,7 +13,7 @@ notifications:
     - irc.mozilla.org#payments
     on_success: change
     on_failure: always
-after_success: npm run-script publish-docker
+after_success: npm run-script publish-docker > /dev/null 2>&1
 env:
   global:
   - secure: mMNLXed479uVOTmBXudgHVDVtddqKU3YrpMW/vOVeSF7v1rti5OHBCzuJHHWty2stzRhDw/H1PpuA0cuDdO7JsLpmChidJwUP1LTXqUJOXRvGW3XWS8lYp+C/PtitfBn7Zswu3Luy2H1FSiH6042AHCdn7MeSFW1vFOuzFMbjC8=
