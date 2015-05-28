@@ -26,10 +26,6 @@ module.exports = React.createClass({
     return {
       fields: [
         {
-          'data-braintree-name': 'cardholder_name',
-          'id': 'cardholder',
-          'placeholder': gettext('Card holder name'),
-        }, {
           'data-braintree-name': 'number',
           'id': 'card',
           'ref': 'card',
