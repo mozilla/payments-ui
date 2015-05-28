@@ -1,0 +1,48 @@
+
+//used to spin loader elements
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner-cont {
+  margin: 0 auto;
+  max-width: 100%;
+  width: 300px;
+
+  .text {
+    display: block;
+    margin: 0 auto;
+    padding: 10px;
+    text-align: center;
+  }
+}
+
+.spinner:after {
+  margin: 130px auto 0;
+  content: '';
+  animation: 0.9s spin infinite linear;
+  display: block;
+  overflow: hidden;
+  text-indent: 100%;
+  font-size: 0;
+  white-space: nowrap;
+  @include hidpi-background-image('spinnerlight', 36px 36px);
+  height: 36px;
+  width: 36px;
+}
+
+button.spinner {
+  text-indent: 0;
+  font-size: 0;
+  &:after {
+    @include hidpi-background-image('spinnerwhite', 33px 33px);
+    margin: 0 auto;
+    height: 33px;
+    width: 33px;
+  }
+}

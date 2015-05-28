@@ -1,0 +1,35 @@
+// $local-name, $path, $family, $font-weight, $font-style="normal"
+
+// Fira Sans
+@include font-face('Fira Sans Regular', 'firasans/firasans-regular', 'Fira Sans', 400);
+@include font-face('Fira Sans Regular Italic', 'firasans/firasans-regularitalic', 'Fira Sans', 400, 'italic');
+
+@include font-face('Fira Sans Medium', 'firasans/firasans-medium', 'Fira Sans', 500);
+@include font-face('Fira Sans Medium Italic', 'firasans/firasans-mediumitalic', 'Fira Sans', 500, 'italic');
+
+@include font-face('Fira Sans Bold', 'firasans/firasans-bold', 'Fira Sans', 700);
+@include font-face('Fira Sans Bold Italic', 'firasans/firasans-bolditalic', 'Fira Sans', 700, 'italic');
+
+// Clear Sans
+@include font-face('Clear Sans Regular', 'clearsans/clearsans-regular', 'Clear Sans', 400);
+@include font-face('Clear Sans Italic', 'clearsans/clearsans-italic', 'Clear Sans', 400, 'italic');
+
+@include font-face('Clear Sans Medium', 'clearsans/clearsans-medium', 'Clear Sans', 500);
+@include font-face('Clear Sans Medium Italic', 'clearsans/clearsans-mediumitalic', 'Clear Sans', 500, 'italic');
+
+@include font-face('Clear Sans Bold', 'clearsans/clearsans-bold', 'Clear Sans', 700);
+@include font-face('Clear Sans Bold Italic', 'clearsans/clearsans-bolditalic', 'Clear Sans', 700, 'italic');
+
+h1,h2,h3,h4,h5,h6 {
+  @include header-font();
+  font-weight: bold;
+  line-height: 1.35em;
+  margin: .75em 0;
+}
+
+h1 { font-size: 150%; }
+h2 { font-size: 140%; }
+h3 { font-size: 130%; }
+h4 { font-size: 120%; }
+h5 { font-size: 110%; }
+h6 { font-size: 100%; }
