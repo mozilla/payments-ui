@@ -29,8 +29,8 @@ module.exports = {
       // silent option prevents decrypted credentials leaking into
       // travis logs. See https://github.com/tschaub/grunt-gh-pages#optionssilent
       silent: true,
-      branch: 'docker',
-      clone: '.grunt/grunt-gh-pages/docker/',
+      branch: 'docker-hub-build',
+      clone: '.grunt/grunt-gh-pages/docker-hub-build/',
       user: {
         name: process.env.GH_USER,
         email: process.env.GH_EMAIL,
