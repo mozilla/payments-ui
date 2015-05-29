@@ -1,6 +1,20 @@
+
+form {
+  padding-top: 2em;
+}
+
 label {
-  position: relative;
   display: block;
+  position: relative;
+
+  &.cvv {
+    float: right;
+  }
+
+  &.expiration {
+    float: left;
+  }
+
 }
 
 input {
@@ -50,12 +64,12 @@ input {
     border-color: $input-row-focus-border-color;
   }
 
-  &.invalid {
+  .invalid & {
     border-color: $error-background-color;
   }
 
-  &.cvv,
-  &.expiration {
+  .cvv &,
+  .expiration & {
     float: left;
     text-align: center;
     width: 7em;
@@ -77,7 +91,7 @@ input {
     }
   }
 
-  &.cvv {
+  .cvv & {
     float: right;
     width: 5em;
   }
