@@ -9285,8 +9285,8 @@
 	var RouteHandler = Router.RouteHandler;
 	
 	var CardDetails = __webpack_require__(198);
-	var CompletePayment = __webpack_require__(240);
-	var Login = __webpack_require__(241);
+	var CompletePayment = __webpack_require__(241);
+	var Login = __webpack_require__(242);
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -32812,7 +32812,7 @@
 	var React = __webpack_require__(3);
 	
 	var CardForm = __webpack_require__(199);
-	var Spinner = __webpack_require__(239);
+	var Spinner = __webpack_require__(240);
 	
 	var gettext = __webpack_require__(238).gettext;
 	
@@ -32881,6 +32881,7 @@
 	
 	var utils = __webpack_require__(238);
 	var gettext = utils.gettext;
+	var InputError = __webpack_require__(239);
 	
 	module.exports = React.createClass({
 	
@@ -32903,12 +32904,18 @@
 	          'ref': 'card',
 	          'type': 'tel',
 	          'validator': 'number',
+	          'error': {
+	            'message': utils.gettext('Incorrect card number'),
+	          },
 	        }, {
 	          'classNames': ['expiration'],
 	          'data-braintree-name': 'expiration_date',
 	          'id': 'expiration',
 	          'type': 'tel',
 	          'validator': 'expirationDate',
+	          'error': {
+	            'message': utils.gettext('Invalid expiry date'),
+	          },
 	        }, {
 	          'classNames': ['cvv'],
 	          'data-braintree-name': 'cvv',
@@ -33029,13 +33036,15 @@
 	    var $__0=     this.props,fields=$__0.fields,formAttrs=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{fields:1});
 	
 	    fields.map(function(field, index) {
+	      var showFieldError = false;
+	
 	      // This uses ES7 'destructuring assignments' to
 	      // pass every key *not* starting with '...' to
 	      // vars and the remaining key value pairs are left
 	      // to be passed into the element with {...attrs}
 	      // helps a lot to DRY things up.
 	      var $__0=   
-	                 field,label=$__0.label,placeholder=$__0.placeholder,validator=$__0.validator,classNames=$__0.classNames,pattern=$__0.pattern,attrs=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{label:1,placeholder:1,validator:1,classNames:1,pattern:1});
+	                  field,label=$__0.label,placeholder=$__0.placeholder,validator=$__0.validator,classNames=$__0.classNames,pattern=$__0.pattern,error=$__0.error,attrs=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{label:1,placeholder:1,validator:1,classNames:1,pattern:1,error:1});
 	
 	      var val = that.state[field.id];
 	      var cardClassName;
@@ -33049,6 +33058,10 @@
 	        // We strip out the '_' added to the value by react-masked-input.
 	        var valData = CardValidator[validator](val.replace(/_/g, ''));
 	        var isValid = valData.isValid === true;
+	        var isPotentiallyValid = valData.isPotentiallyValid;
+	
+	        // Show an error when we know the field is truly invalid
+	        showFieldError = !isValid && !isPotentiallyValid;
 	
 	        if (!isValid) {
 	          fieldClassNames.push('invalid');
@@ -33099,20 +33112,19 @@
 	      isButtonDisabled = that.state.isSubmitting || allValid === false || null;
 	
 	      fieldList.push(
-	        React.createElement("label", {htmlFor: field.id, key: field.id}, 
+	        React.createElement("label", {className: fieldClass, key: field.id, htmlFor: field.id}, 
 	          React.createElement("span", {className: "vh"}, label), 
 	           cardClassName ? React.createElement("span", {className: cardClassName, 
 	                                  ref: "card-icon"}) : null, 
+	           showFieldError ? React.createElement(InputError, {text: error.message}) : null, 
 	           pattern ?
 	            React.createElement(MaskedInput, React.__spread({},  attrs, 
-	                         {className: fieldClass, 
-	                         onChange: that.handleChange.bind(that, index), 
+	                         {onChange: that.handleChange.bind(that, index), 
 	                         pattern: pattern, 
 	                         placeholder: placeholder, 
 	                         type: type})
 	            ) : React.createElement("input", React.__spread({},  attrs, 
-	                        {className: fieldClass, 
-	                        onChange: that.handleChange.bind(that, index), 
+	                        {onChange: that.handleChange.bind(that, index), 
 	                        placeholder: placeholder, 
 	                        type: type})
 	            )
@@ -37174,6 +37186,39 @@
 	
 	var React = __webpack_require__(3);
 	
+	var InputError = React.createClass({
+	  displayName: 'InputError',
+	
+	  propTypes: {
+	    optModifier: React.PropTypes.oneOf(['center', 'right', 'left']),
+	    text: React.PropTypes.string.isRequired,
+	  },
+	
+	  render: function() {
+	    var $__0=     this.props,text=$__0.text,toolTipAttrs=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{text:1});
+	
+	    var errorClassList = ['tooltip'];
+	    errorClassList.push(this.props.optModifier || 'left');
+	    var errorClass = errorClassList.join(' ');
+	
+	    return (
+	      React.createElement("span", React.__spread({},  toolTipAttrs, 
+	            {className: errorClass}), text)
+	    );
+	  },
+	});
+	
+	module.exports = InputError;
+
+
+/***/ },
+/* 240 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(3);
+	
 	var Spinner = React.createClass({
 	  displayName: 'Spinner',
 	  propTypes: {
@@ -37193,7 +37238,7 @@
 
 
 /***/ },
-/* 240 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37227,7 +37272,7 @@
 
 
 /***/ },
-/* 241 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37236,7 +37281,7 @@
 	var React = __webpack_require__(3);
 	var Navigation = __webpack_require__(159).Navigation;
 	
-	var Spinner = __webpack_require__(239);
+	var Spinner = __webpack_require__(240);
 	var gettext = __webpack_require__(238).gettext;
 	
 	

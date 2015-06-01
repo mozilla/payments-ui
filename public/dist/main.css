@@ -566,9 +566,16 @@ button::-moz-focus-inner {
   width: 40px;
   height: 25.12px; }
 
+form {
+  padding-top: 2em; }
+
 label {
-  position: relative;
-  display: block; }
+  display: block;
+  position: relative; }
+  label.cvv {
+    float: right; }
+  label.expiration {
+    float: left; }
 
 input {
   transition: border-color 150ms;
@@ -603,26 +610,26 @@ input {
     border-color: #424f59; }
   input:focus {
     border-color: #0095dd; }
-  input.invalid {
+  .invalid input {
     border-color: #d63920; }
-  input.cvv,
-  input.expiration {
+  .cvv input,
+  .expiration input {
     float: left;
     text-align: center;
     width: 7em; }
-    input.cvv::-webkit-input-placeholder,
-    input.expiration::-webkit-input-placeholder {
+    .cvv input::-webkit-input-placeholder,
+    .expiration input::-webkit-input-placeholder {
       text-align: center !important; }
-    input.cvv:-moz-placeholder,
-    input.expiration:-moz-placeholder {
+    .cvv input:-moz-placeholder,
+    .expiration input:-moz-placeholder {
       text-align: center !important; }
-    input.cvv::-moz-placeholder,
-    input.expiration::-moz-placeholder {
+    .cvv input::-moz-placeholder,
+    .expiration input::-moz-placeholder {
       text-align: center !important; }
-    input.cvv:-ms-input-placeholder,
-    input.expiration:-ms-input-placeholder {
+    .cvv input:-ms-input-placeholder,
+    .expiration input:-ms-input-placeholder {
       text-align: center !important; }
-  input.cvv {
+  .cvv input {
     float: right;
     width: 5em; }
   html[dir='ltr'] input {
@@ -726,5 +733,41 @@ button.spinner {
     @media (min--moz-device-pixel-ratio: 1.3), (-o-min-device-pixel-ratio: 2.6/2), (-webkit-min-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
       button.spinner:after {
         background-image: image-url("spinnerwhite@2x.png"); } }
+
+.tooltip {
+  opacity: 1;
+  transition: 0.1s opacity 150ms;
+  display: block;
+  color: #fff;
+  background: #F91200;
+  padding: 0.5em 0.75em 0.7em;
+  z-index: 10;
+  top: -0.5em;
+  position: absolute;
+  white-space: nowrap;
+  top: -2.1em; }
+  .tooltip:before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 1em dashed transparent;
+    border-right: 1em dashed transparent;
+    border-top: 1em solid #F91200;
+    border-bottom: 0;
+    top: 100%;
+    left: 0.5em;
+    position: absolute;
+    z-index: 9; }
+  .tooltip.right {
+    right: 0; }
+    .tooltip.right:before {
+      left: inherit;
+      right: 0.5em;
+      text-align: right; }
+  .tooltip.center {
+    left: 50%;
+    transform: translateX(-50%); }
+    .tooltip.center:before {
+      left: calc(50% - 1em); }
 
 /*# sourceMappingURL=main.css.map */
