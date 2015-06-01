@@ -1,0 +1,46 @@
+.tooltip {
+  opacity: 1;
+  transition: 0.1s opacity $short-transition;
+  display: block;
+  color: #fff;
+  background: #F91200;
+  padding: 0.5em 0.75em 0.7em;
+  z-index: 10;
+  top: -0.5em;
+  position: absolute;
+  white-space: nowrap;
+  top: -2.1em;
+
+  &:before {
+    content: '';
+    width: 0;
+    height: 0;
+    // Dashed fixes anti-aliasing in ff.
+    border-left: 1em dashed transparent;
+    border-right: 1em dashed transparent;
+    border-top: 1em solid #F91200;
+    border-bottom: 0;
+    top: 100%;
+    left: 0.5em;
+    position: absolute;
+    z-index: 9;
+  }
+
+  &.right {
+    right: 0;
+
+    &:before {
+      left: inherit;
+      right: 0.5em;
+      text-align: right;
+    }
+  }
+
+  &.center {
+    left: 50%;
+    transform: translateX(-50%);
+    &:before {
+      left: calc(50% - 1em);
+    }
+  }
+}
