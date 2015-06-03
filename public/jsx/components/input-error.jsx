@@ -1,25 +1,26 @@
 'use strict';
 
+var classNames = require('classnames');
 var React = require('react');
+
 
 var InputError = React.createClass({
   displayName: 'InputError',
 
   propTypes: {
-    optModifier: React.PropTypes.oneOf(['center', 'right', 'left']),
-    text: React.PropTypes.string.isRequired,
+    errorMessage: React.PropTypes.string.isRequired,
+    errorModifier: React.PropTypes.oneOf(['center', 'right', 'left']),
   },
 
   render: function() {
-    var { text, ...toolTipAttrs } = this.props;
-
-    var errorClassList = ['tooltip'];
-    errorClassList.push(this.props.optModifier || 'left');
-    var errorClass = errorClassList.join(' ');
-
+    var { errorMessage, ...toolTipAttrs } = this.props;
+    var errorClass = classNames([
+      'tooltip',
+      this.props.errorModifier || 'left',
+    ]);
     return (
       <span {...toolTipAttrs}
-            className={errorClass}>{text}</span>
+            className={errorClass}>{errorMessage}</span>
     );
   },
 });

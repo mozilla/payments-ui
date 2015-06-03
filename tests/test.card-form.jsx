@@ -8,6 +8,7 @@ var helpers = require('./helpers');
 var React;
 var TestUtils;
 
+
 describe('Card Details', function() {
 
   var cardForm;
@@ -23,19 +24,32 @@ describe('Card Details', function() {
   beforeEach(function() {
     React = require('react');
     TestUtils = require('react/lib/ReactTestUtils');
-    cardForm = TestUtils.renderIntoDocument(<CardForm />);
+    cardForm = TestUtils.renderIntoDocument(
+      <CardForm data-token="whatever" id="something"/>
+    );
   });
 
   function testCard(cardType) {
     return function() {
       cardForm.setState({'card': helpers.testCards[cardType]});
-      var cardIcon = React.findDOMNode(cardForm.refs['card-icon']);
-      assert.include(cardIcon.className, 'cctype-' + cardType);
+      var cardIcon = TestUtils.findRenderedDOMComponentWithClass(
+        cardForm, 'card-icon');
+      assert.include(cardIcon.props.className, 'cctype-' + cardType);
     };
   }
 
   cards.forEach(function(card) {
     it('Detects ' + card, testCard(card));
+  });
+
+  it('renders a token', function() {
+    var formNode = cardForm.getDOMNode();
+    assert.equal(formNode.getAttribute('data-token'), 'whatever');
+  });
+
+  it('renders an id', function() {
+    var formNode = cardForm.getDOMNode();
+    assert.equal(formNode.getAttribute('id'), 'something');
   });
 
 });
