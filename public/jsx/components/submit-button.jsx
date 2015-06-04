@@ -11,6 +11,7 @@ var SubmitButton = React.createClass({
   propTypes: {
     isDisabled: React.PropTypes.bool,
     showSpinner: React.PropTypes.bool,
+    text: React.PropTypes.string.isRequired,
   },
 
   render: function() {
@@ -30,7 +31,7 @@ var SubmitButton = React.createClass({
       <button {...buttonAttrs}
         className={buttonClassNames}
         disabled={isDisabled}
-        type="submit">{gettext('Subscribe')}</button>
+        type="submit">{this.props.text}</button>
     );
   },
 });
