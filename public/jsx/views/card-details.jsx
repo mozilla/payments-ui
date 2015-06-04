@@ -30,6 +30,7 @@ module.exports = React.createClass({
   },
 
   componentDidMount: function() {
+    console.log('Requesting braintree token');
     $.ajax({
       method: 'post',
       url: this.props.apiSource,
