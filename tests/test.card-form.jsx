@@ -7,6 +7,7 @@ var helpers = require('./helpers');
 
 var React;
 var TestUtils;
+var findByClass;
 
 describe('Card Details', function() {
 
@@ -23,19 +24,39 @@ describe('Card Details', function() {
   beforeEach(function() {
     React = require('react');
     TestUtils = require('react/lib/ReactTestUtils');
-    cardForm = TestUtils.renderIntoDocument(<CardForm />);
+    cardForm = TestUtils.renderIntoDocument(
+      <CardForm data-token="whatever" id="something"/>
+    );
+    findByClass = function(component, className){
+      return TestUtils.findRenderedDOMComponentWithClass(component, className);
+    };
   });
 
   function testCard(cardType) {
     return function() {
-      cardForm.setState({'card': helpers.testCards[cardType]});
-      var cardIcon = React.findDOMNode(cardForm.refs['card-icon']);
-      assert.include(cardIcon.className, 'cctype-' + cardType);
+      cardForm.handleChange({
+        target: {
+          value: helpers.testCards[cardType],
+          id: 'card',
+        },
+      });
+      var cardIcon = findByClass(cardForm, 'card-icon');
+      assert.include(cardIcon.props.className, 'cctype-' + cardType);
     };
   }
 
   cards.forEach(function(card) {
     it('Detects ' + card, testCard(card));
+  });
+
+  it('renders a token', function() {
+    var formNode = cardForm.getDOMNode();
+    assert.equal(formNode.getAttribute('data-token'), 'whatever');
+  });
+
+  it('renders an id', function() {
+    var formNode = cardForm.getDOMNode();
+    assert.equal(formNode.getAttribute('id'), 'something');
   });
 
 });
