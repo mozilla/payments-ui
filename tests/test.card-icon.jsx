@@ -1,12 +1,9 @@
 'use strict';
 
-
-var CardIcon = require('components/card-icon');
-
-var helpers = require('./helpers');
-
 var React;
 var TestUtils;
+
+var CardIcon = require('components/card-icon');
 
 
 describe('Card Icon', function() {
@@ -25,7 +22,7 @@ describe('Card Icon', function() {
     React = require('react');
     TestUtils = require('react/lib/ReactTestUtils');
     cardIcon = TestUtils.renderIntoDocument(
-      <CardIcon cardType="amex" />
+      <CardIcon cardType="american-express" />
     );
   });
 

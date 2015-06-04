@@ -2,6 +2,7 @@
 
 var classNames = require('classnames');
 var React = require('react');
+var gettext = require('utils').gettext;
 
 
 var SubmitButton = React.createClass({
@@ -27,9 +28,9 @@ var SubmitButton = React.createClass({
 
     return (
       <button {...buttonAttrs}
-              className={buttonClassNames}
-              disabled={isDisabled}
-              type="submit">Subscribe</button>
+        className={buttonClassNames}
+        disabled={isDisabled}
+        type="submit">{gettext('Subscribe')}</button>
     );
   },
 });

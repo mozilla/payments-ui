@@ -10,6 +10,7 @@
 
 exports.defaults = function(object, defaults) {
   object = object || {};
+  defaults = defaults || {};
   Object.keys(defaults).forEach(function(key) {
     if (typeof object[key] === 'undefined') {
       object[key] = defaults[key];

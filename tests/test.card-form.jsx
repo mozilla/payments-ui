@@ -7,7 +7,7 @@ var helpers = require('./helpers');
 
 var React;
 var TestUtils;
-
+var findByClass;
 
 describe('Card Details', function() {
 
@@ -27,13 +27,20 @@ describe('Card Details', function() {
     cardForm = TestUtils.renderIntoDocument(
       <CardForm data-token="whatever" id="something"/>
     );
+    findByClass = function(component, className){
+      return TestUtils.findRenderedDOMComponentWithClass(component, className);
+    };
   });
 
   function testCard(cardType) {
     return function() {
-      cardForm.setState({'card': helpers.testCards[cardType]});
-      var cardIcon = TestUtils.findRenderedDOMComponentWithClass(
-        cardForm, 'card-icon');
+      cardForm.handleChange({
+        target: {
+          value: helpers.testCards[cardType],
+          id: 'card',
+        },
+      });
+      var cardIcon = findByClass(cardForm, 'card-icon');
       assert.include(cardIcon.props.className, 'cctype-' + cardType);
     };
   }

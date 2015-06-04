@@ -6,13 +6,13 @@ var Navigation = require('react-router').Navigation;
 var React = require('react');
 var braintree = require('braintree-web');
 
+var errorCodes = require('error-codes');
 var utils = require('utils');
+var gettext = utils.gettext;
 
 var CardInput = require('components/card-input');
 var SubmitButton = require('components/submit-button');
 
-var cardPatterns = require('card-patterns');
-var errorCodes = require('error-codes');
 
 module.exports = React.createClass({
 
@@ -20,46 +20,18 @@ module.exports = React.createClass({
 
   propTypes: {
     'data-token': React.PropTypes.string.isRequired,
-    card: React.PropTypes.object,
-    cvv: React.PropTypes.object,
-    expiration: React.PropTypes.object,
-    id: React.PropTypes.string.isRequired,
+    'card': React.PropTypes.object,
+    'cvv': React.PropTypes.object,
+    'expiration': React.PropTypes.object,
+    'id': React.PropTypes.string.isRequired,
   },
 
   mixins: [Navigation],
 
-  getDefaultProps: function() {
-    return {
-      card: {
-        'errorMessage': utils.gettext('Incorrect card number'),
-        'id': 'card',
-        'data-braintree-name': 'number',
-        'type': 'tel',
-        'validator': CardValidator.number,
-      },
-      expiration: {
-        'classNames': ['expiration'],
-        'data-braintree-name': 'expiration_date',
-        'errorMessage': utils.gettext('Invalid expiry date'),
-        'id': 'expiration',
-        'type': 'tel',
-        'validator': CardValidator.expirationDate,
-      },
-      cvv: {
-        'classNames': ['cvv'],
-        'data-braintree-name': 'cvv',
-        'errorMessage': utils.gettext('Invalid CVV'),
-        'errorModifier': 'right',
-        'id': 'cvv',
-        'type': 'tel',
-        'validator': CardValidator.cvv,
-      },
-    };
-  },
-
   getInitialState: function() {
     return {
       isSubmitting: false,
+      cardType: null,
       errors: {},
       card: '',
       expiration: '',
@@ -67,22 +39,70 @@ module.exports = React.createClass({
     };
   },
 
+  fieldProps: {
+    card: {
+      'classNames': ['card'],
+      'errorMessage': gettext('Incorrect card number'),
+      'id': 'card',
+      'data-braintree-name': 'number',
+      'placeholder': gettext('Card number'),
+      'type': 'tel',
+      'validator': CardValidator.number,
+    },
+    expiration: {
+      'classNames': ['expiration'],
+      'data-braintree-name': 'expiration_date',
+      'errorMessage': gettext('Invalid expiry date'),
+      'id': 'expiration',
+      // Expiration pattern doesn't change based on card type.
+      'pattern': '11/11',
+      'placeholder': 'MM/YY',
+      'type': 'tel',
+      'validator': CardValidator.expirationDate,
+    },
+    cvv: {
+      'classNames': ['cvv'],
+      'data-braintree-name': 'cvv',
+      'errorMessage': gettext('Invalid CVV'),
+      'errorModifier': 'right',
+      'id': 'cvv',
+      'type': 'tel',
+      'validator': CardValidator.cvv,
+    },
+  },
+
   contextTypes: {
     router: React.PropTypes.func,
   },
 
-  cardPatterns: cardPatterns,
-
   handleChange: function(e) {
     var errors = this.state.errors;
+    var fieldId = e.target.id;
+    var val = e.target.value;
+
+    var fieldProps = this.fieldProps[fieldId];
+    var valData = fieldProps.validator(this.stripPlaceholder(val));
+    fieldProps.hasVal = val.length > 0 || false;
+    fieldProps.isValid = valData.isValid === true;
+    fieldProps.showError = !valData.isValid && !valData.isPotentiallyValid;
+
     // Remove existing API error on value change.
-    if (errors.fields && errors.fields[e.target.id]) {
-      delete errors.fields[e.target.id];
+    if (errors.fields && errors.fields[fieldId]) {
+      delete errors.fields[fieldId];
     }
-    this.setState({
+
+    var newState = {
       errors: errors,
       [e.target.id]: e.target.value,
-    });
+    };
+
+    // Only the card field has card data upon validation.
+    if (fieldId === 'card') {
+      var cardData = valData.card || {};
+      newState.cardType = cardData.type;
+    }
+
+    this.setState(newState);
   },
 
   handleSubmit: function(e) {
@@ -131,6 +151,7 @@ module.exports = React.createClass({
       fields: {},
       generic: [],
     };
+    var that = this;
     if (errors.error_response && errors.error_response.braintree) {
       var apiErrors = errors.error_response.braintree;
       // Iterate over the error object and create a new data
@@ -146,6 +167,8 @@ module.exports = React.createClass({
               newErrors.fields[errorObj.field] = [];
             }
             newErrors.fields[errorObj.field].push(errorObj);
+            that.fieldProps[errorObj.field].showError = true;
+            that.fieldProps[errorObj.field].isValid = false;
           } else {
             newErrors.generic.push(errorObj);
           }
@@ -159,73 +182,31 @@ module.exports = React.createClass({
     return val ? val.replace(/_/g, '') : '';
   },
 
-  updatePattern: function(fieldId, cardType) {
-    // Update the pattern for card + cvv field if card was detected.
-    if (cardType && this.cardPatterns[cardType]) {
-      return utils.defaults(
-        this.cardPatterns[cardType][fieldId] || {},
-        this.cardPatterns.default[fieldId]
-      );
-    } else {
-      return this.cardPatterns.default[fieldId];
-    }
-  },
-
   render: function() {
+
     var formIsValid = true;
-    var { card, expiration, cvv, ...formAttrs } = this.props;
-
-    // Initial Field Props
-    var fieldProps = {
-      card: card,
-      expiration: expiration,
-      cvv: cvv,
-    };
-
     var that = this;
-    // Iterating over the fieldProps augment the initial
-    // props with dynamic updates.
-    Object.keys(fieldProps).forEach(function(key) {
-      var val = that.stripPlaceholder(that.state[key]);
-      var fieldData = fieldProps[key];
-      var valData = fieldData.validator(val);
-      var cardData = valData.card || {};
-      var id = fieldData.id;
-      fieldData.type = fieldData.type || 'text';
-      fieldData.hasVal = val.length > 0 || false;
-      fieldData.isValid = valData.isValid === true;
-      fieldData.showError = !valData.isValid && !valData.isPotentiallyValid;
-      fieldData.cardType = cardData.type ? cardData.type : null;
-      fieldData.onChangeHandler = that.handleChange;
 
-      if (fieldData.showError === true || fieldData.hasVal === false) {
-        formIsValid = false;
-      }
-
-      // Handle Card Pattern changes.
-      // TODO: there's a bug in the InputMask that means
-      // pattern changes are no-op.
-      var patternData = that.updatePattern(id, fieldData.cardType);
-      fieldData.pattern = patternData.pattern;
-      fieldData.placeholder = patternData.placeholder;
-      fieldData.label = patternData.label || patternData.placeholder;
-
-      // Handle field level API errors.
-      if (that.state.errors.fields && that.state.errors.fields[id]) {
-        fieldData.isValid = false;
-        fieldData.showError = true;
-        fieldData.errorMessage = that.state.errors.fields[id][0].message;
+    // Update form validity based on fieldProps.
+    Object.keys(this.fieldProps).forEach(function(field) {
+      if (!that.fieldProps[field].isValid) {
         formIsValid = false;
       }
     });
 
     return (
-      <form {...formAttrs} onSubmit={this.handleSubmit}>
-        <CardInput {...fieldProps.card} />
-        <CardInput {...fieldProps.expiration} />
-        <CardInput {...fieldProps.cvv} />
+      <form {...this.props} onSubmit={this.handleSubmit}>
+        <CardInput {...this.fieldProps.card}
+          cardType={this.state.cardType}
+          onChangeHandler={this.handleChange} />
+        <CardInput {...this.fieldProps.expiration}
+          cardType={this.state.cardType}
+          onChangeHandler={this.handleChange} />
+        <CardInput {...this.fieldProps.cvv}
+          cardType={this.state.cardType}
+          onChangeHandler={this.handleChange} />
         <SubmitButton isDisabled={!formIsValid}
-                      showSpinner={this.state.isSubmitting} />
+          showSpinner={this.state.isSubmitting} />
       </form>
     );
   },
