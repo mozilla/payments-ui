@@ -6,7 +6,6 @@ var Navigation = require('react-router').Navigation;
 var React = require('react');
 var braintree = require('braintree-web');
 
-var errorCodes = require('error-codes');
 var utils = require('utils');
 var gettext = utils.gettext;
 
@@ -42,7 +41,10 @@ module.exports = React.createClass({
   fieldProps: {
     card: {
       'classNames': ['card'],
-      'errorMessage': gettext('Incorrect card number'),
+      'errors': {
+        invalid: gettext('Incorrect card number'),
+        declined: gettext('Card was declined'),
+      },
       'id': 'card',
       'data-braintree-name': 'number',
       'placeholder': gettext('Card number'),
@@ -52,7 +54,9 @@ module.exports = React.createClass({
     expiration: {
       'classNames': ['expiration'],
       'data-braintree-name': 'expiration_date',
-      'errorMessage': gettext('Invalid expiry date'),
+      'errors': {
+        invalid: gettext('Invalid expiry date'),
+      },
       'id': 'expiration',
       // Expiration pattern doesn't change based on card type.
       'pattern': '11/11',
@@ -63,7 +67,9 @@ module.exports = React.createClass({
     cvv: {
       'classNames': ['cvv'],
       'data-braintree-name': 'cvv',
-      'errorMessage': gettext('Invalid CVV'),
+      'errors': {
+        invalid: gettext('Invalid CVV'),
+      },
       'errorModifier': 'right',
       'id': 'cvv',
       'type': 'tel',
@@ -76,7 +82,6 @@ module.exports = React.createClass({
   },
 
   handleChange: function(e) {
-    var errors = this.state.errors;
     var fieldId = e.target.id;
     var val = e.target.value;
 
@@ -85,14 +90,9 @@ module.exports = React.createClass({
     fieldProps.hasVal = val.length > 0 || false;
     fieldProps.isValid = valData.isValid === true;
     fieldProps.showError = !valData.isValid && !valData.isPotentiallyValid;
-
-    // Remove existing API error on value change.
-    if (errors.fields && errors.fields[fieldId]) {
-      delete errors.fields[fieldId];
-    }
+    fieldProps.errorMessage = fieldProps.errors.invalid;
 
     var newState = {
-      errors: errors,
       [e.target.id]: e.target.value,
     };
 
@@ -135,22 +135,28 @@ module.exports = React.createClass({
           console.log('Successfully subscribed + completed payment');
           router.transitionTo('complete');
         }).fail(function($xhr) {
-          var errors = this.processApiErrors($xhr.responseJSON);
-          this.setState({
-            isSubmitting: false,
-            errors: errors,
-          });
+          this.processApiErrors($xhr.responseJSON);
         });
       }
     });
   },
 
+  errorKeyToFieldMap: {
+    '__all__': {
+      field: 'card',
+      error: 'declined',
+    },
+    'fraud': {
+      field: 'card',
+      error: 'declined',
+    },
+    'cvv': {
+      field: 'cvv',
+      error: 'invalid',
+    },
+  },
+
   processApiErrors: function(errors) {
-    errors = errors || {};
-    var newErrors = {
-      fields: {},
-      generic: [],
-    };
     var that = this;
     if (errors.error_response && errors.error_response.braintree) {
       var apiErrors = errors.error_response.braintree;
@@ -158,24 +164,20 @@ module.exports = React.createClass({
       // structure keyed by field or otherwise push onto
       // a list of generic errors.
       Object.keys(apiErrors).forEach(function(key) {
-        var errorList = apiErrors[key];
-        for (var i = 0; i < errorList.length; i += 1) {
-          var errorObj = errorCodes[errorList[i].code] || errorCodes.default;
-          errorObj.code = errorList[i].code;
-          if (errorObj.field) {
-            if (!newErrors.fields[errorObj.field]){
-              newErrors.fields[errorObj.field] = [];
-            }
-            newErrors.fields[errorObj.field].push(errorObj);
-            that.fieldProps[errorObj.field].showError = true;
-            that.fieldProps[errorObj.field].isValid = false;
-          } else {
-            newErrors.generic.push(errorObj);
-          }
+        console.log('API ErrorMessage: ' + JSON.stringify(apiErrors[key]));
+        var errorData = that.errorKeyToFieldMap[key] || {};
+        var field = errorData.field;
+        if (field) {
+          var fieldData = that.fieldProps[field];
+          fieldData.isValid = false;
+          fieldData.showError = true;
+          fieldData.errorMessage = fieldData.errors[errorData.error];
         }
       });
     }
-    return newErrors;
+    this.setState({
+      isSubmitting: false,
+    });
   },
 
   stripPlaceholder: function(val) {

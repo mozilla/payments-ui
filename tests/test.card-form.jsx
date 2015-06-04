@@ -59,4 +59,47 @@ describe('Card Details', function() {
     assert.equal(formNode.getAttribute('id'), 'something');
   });
 
+  it('shows a card error on invalid input', function() {
+    cardForm.handleChange({
+      target: {
+        value: helpers.testCards.invalidVisa,
+        id: 'card',
+      },
+    });
+    var card = findByClass(cardForm, 'card');
+    assert.include(card.props.className, 'invalid');
+    var cardError = findByClass(card, 'tooltip');
+    assert.ok(TestUtils.isCompositeComponent(cardError));
+  });
+
+  it('shows a expiration error on invalid input', function() {
+    cardForm.handleChange({
+      target: {
+        value: '13/__',
+        id: 'expiration',
+      },
+    });
+    var expiration = findByClass(cardForm, 'expiration');
+    assert.include(expiration.props.className, 'invalid');
+    var expirationError = findByClass(expiration, 'tooltip');
+    assert.ok(TestUtils.isCompositeComponent(expirationError));
+  });
+
+  it('shows a cvv message on an api error', function() {
+    cardForm.processApiErrors(helpers.cvvError);
+    var cvv = findByClass(cardForm, 'cvv');
+    assert.include(cvv.props.className, 'invalid');
+    var cvvError = findByClass(cvv, 'tooltip');
+    assert.ok(TestUtils.isCompositeComponent(cvvError));
+  });
+
+  it('shows a card declined message', function() {
+    cardForm.processApiErrors(helpers.declinedError);
+    var card = findByClass(cardForm, 'card');
+    assert.include(card.props.className, 'invalid');
+    var cardError = findByClass(card, 'tooltip');
+    assert.include(cardError.props.children, 'declined');
+    assert.ok(TestUtils.isCompositeComponent(cardError));
+  });
+
 });
