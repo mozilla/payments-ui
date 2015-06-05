@@ -2,7 +2,6 @@
 
 var classNames = require('classnames');
 var React = require('react');
-var gettext = require('utils').gettext;
 
 
 var SubmitButton = React.createClass({
@@ -11,18 +10,20 @@ var SubmitButton = React.createClass({
   propTypes: {
     isDisabled: React.PropTypes.bool,
     showSpinner: React.PropTypes.bool,
+    text: React.PropTypes.string.isRequired,
   },
 
   render: function() {
 
-    var { isDisabled, ...buttonAttrs } = this.props;
+    var { isDisabled, text, showSpinner, ...buttonAttrs } = this.props;
+
     var buttonClassNames = classNames({
-      'spinner': this.props.showSpinner,
+      'spinner': showSpinner,
     });
 
     // If we're showing the spinner we want the
     // button to be automagically disabled.
-    if (this.props.showSpinner) {
+    if (showSpinner) {
       isDisabled = true;
     }
 
@@ -30,7 +31,7 @@ var SubmitButton = React.createClass({
       <button {...buttonAttrs}
         className={buttonClassNames}
         disabled={isDisabled}
-        type="submit">{gettext('Subscribe')}</button>
+        type="submit">{text}</button>
     );
   },
 });
