@@ -26,7 +26,11 @@ module.exports = React.createClass({
       // Nothing sensitive should be sent whilst
       // that's the case.
       console.log('Telling parent to close modal.');
-      window.parent.postMessage('close', '*');
+      // Stringifying the object is necessary for
+      // IE9 support.
+      window.parent.postMessage(JSON.stringify({
+        event: 'purchase-completed',
+      }), '*');
     } else {
       console.log('Not iframed. No-op');
     }

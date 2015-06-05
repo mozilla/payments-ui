@@ -30,8 +30,8 @@ describe('CompletePayment', function() {
 
     TestUtils.Simulate.click(this.button, event);
     assert.equal(event.preventDefault.callCount, 1);
-    assert.equal(window.parent.postMessage.callCount, 1);
-    assert.ok(window.parent.postMessage.calledWith('close', '*'));
+    assert.ok(window.parent.postMessage.calledWith(
+      JSON.stringify({event: 'purchase-completed'}), '*'));
   });
 
 });
