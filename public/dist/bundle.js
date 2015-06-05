@@ -33081,7 +33081,8 @@
 	          {cardType: this.state.cardType, 
 	          onChangeHandler: this.handleChange})), 
 	        React.createElement(SubmitButton, {isDisabled: !formIsValid, 
-	          showSpinner: this.state.isSubmitting})
+	          showSpinner: this.state.isSubmitting, 
+	          text: gettext('Subscribe')})
 	      )
 	    );
 	  },
@@ -37390,7 +37391,6 @@
 	
 	var classNames = __webpack_require__(239);
 	var React = __webpack_require__(3);
-	var gettext = __webpack_require__(236).gettext;
 	
 	
 	var SubmitButton = React.createClass({
@@ -37399,18 +37399,20 @@
 	  propTypes: {
 	    isDisabled: React.PropTypes.bool,
 	    showSpinner: React.PropTypes.bool,
+	    text: React.PropTypes.string.isRequired,
 	  },
 	
 	  render: function() {
 	
-	    var $__0=     this.props,isDisabled=$__0.isDisabled,buttonAttrs=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{isDisabled:1});
+	    var $__0=       this.props,isDisabled=$__0.isDisabled,text=$__0.text,showSpinner=$__0.showSpinner,buttonAttrs=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{isDisabled:1,text:1,showSpinner:1});
+	
 	    var buttonClassNames = classNames({
-	      'spinner': this.props.showSpinner,
+	      'spinner': showSpinner,
 	    });
 	
 	    // If we're showing the spinner we want the
 	    // button to be automagically disabled.
-	    if (this.props.showSpinner) {
+	    if (showSpinner) {
 	      isDisabled = true;
 	    }
 	
@@ -37418,7 +37420,7 @@
 	      React.createElement("button", React.__spread({},  buttonAttrs, 
 	        {className: buttonClassNames, 
 	        disabled: isDisabled, 
-	        type: "submit"}), gettext('Subscribe'))
+	        type: "submit"}), text)
 	    );
 	  },
 	});
@@ -37460,6 +37462,9 @@
 	
 	var React = __webpack_require__(3);
 	
+	var SubmitButton = __webpack_require__(243);
+	var gettext = __webpack_require__(236).gettext;
+	
 	module.exports = React.createClass({
 	
 	  displayName: 'CompleteView',
@@ -37474,12 +37479,30 @@
 	    };
 	  },
 	
+	  handleClick: function(e) {
+	    e.preventDefault();
+	    if (window.parent !== window) {
+	      // Note: the targetOrigin is wide open.
+	      // Nothing sensitive should be sent whilst
+	      // that's the case.
+	      console.log('Telling parent to close modal.');
+	      // Stringifying the object is necessary for
+	      // IE9 support.
+	      window.parent.postMessage(JSON.stringify({
+	        event: 'purchase-completed',
+	      }), '*');
+	    } else {
+	      console.log('Not iframed. No-op');
+	    }
+	  },
+	
 	  render: function() {
 	    return (
 	      React.createElement("div", {className: "complete"}, 
 	        React.createElement("h1", null, "Payment complete!"), 
 	        React.createElement("span", {className: "product"}, this.props.productName), 
-	        React.createElement("img", {className: "tick", src: "/img/tick.svg"})
+	        React.createElement("img", {className: "tick", src: "/img/tick.svg"}), 
+	        React.createElement(SubmitButton, {text: gettext('OK'), onClick: this.handleClick})
 	      )
 	    );
 	  },

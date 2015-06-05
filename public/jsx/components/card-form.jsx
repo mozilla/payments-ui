@@ -208,7 +208,8 @@ module.exports = React.createClass({
           cardType={this.state.cardType}
           onChangeHandler={this.handleChange} />
         <SubmitButton isDisabled={!formIsValid}
-          showSpinner={this.state.isSubmitting} />
+          showSpinner={this.state.isSubmitting}
+          text={gettext('Subscribe')} />
       </form>
     );
   },
