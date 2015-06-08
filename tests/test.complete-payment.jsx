@@ -11,7 +11,7 @@ describe('CompletePayment', function() {
   beforeEach(function() {
     React = require('react');
     TestUtils = require('react/lib/ReactTestUtils');
-    this.completePayment = TestUtils.renderIntoDocument(
+    this.CompletePayment = TestUtils.renderIntoDocument(
       <CompletePayment />
     );
     sinon.stub(window.parent, 'postMessage');
@@ -26,7 +26,7 @@ describe('CompletePayment', function() {
       preventDefault: sinon.stub(),
     };
     this.button = TestUtils.findRenderedDOMComponentWithTag(
-      this.completePayment, 'button');
+      this.CompletePayment, 'button');
 
     TestUtils.Simulate.click(this.button, event);
     assert.equal(event.preventDefault.callCount, 1);

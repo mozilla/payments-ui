@@ -11,7 +11,7 @@ var utils = require('utils');
 var gettext = utils.gettext;
 
 
-var CardInput = React.createClass({
+module.exports = React.createClass({
 
   displayName: 'CardInput',
 
@@ -114,5 +114,3 @@ var CardInput = React.createClass({
     );
   },
 });
-
-module.exports = CardInput;

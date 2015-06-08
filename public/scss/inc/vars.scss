@@ -2,10 +2,15 @@
 $default-font: "Clear Sans", Helvetica, Arial, sans-serif;
 $header-font: "Fira Sans", Helvetica, Arial, sans-serif;
 
-// Colours
+// Colour Vars
+$baby-blue: #E0F1FA;
+$light-blue: #0096dc;
+$uniform-blue: #0080D8;
+
 $button-background-color: #0095dd;
 $button-background-disabled-color: #8a9ba8;
 $button-background-hover-color: #08c;
+$default-focus-color: $light-blue;
 
 $error-background-color: #d63920;
 $error-text-color: #d63920;
@@ -19,6 +24,9 @@ $input-row-hover-border-color: #424f59;
 $input-row-box-shadow-color: #f2f2f2;
 $input-left-right-padding: 20px;
 
+$radio-selected-background : $baby-blue;
+$radio-selected-border: $uniform-blue;
+
 $message-text-color: #fff;
 $mobile-html-background-color: #fff;
 
@@ -30,6 +38,7 @@ $medium-font: 18px;
 $base-font: 14px;
 $small-font: 12px;
 $media-adjustment: 2px;
+
 
 // Animation Variables
 $short-transition: 150ms;

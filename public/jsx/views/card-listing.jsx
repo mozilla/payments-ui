@@ -4,13 +4,14 @@ var $ = require('jquery');
 var React = require('react');
 var Navigation = require('react-router').Navigation;
 
+var CardList = require('components/card-list');
 var Spinner = require('components/spinner');
 var gettext = require('utils').gettext;
 
 
 module.exports = React.createClass({
 
-  displayName: 'LoginView',
+  displayName: 'CardListingView',
 
   propTypes: {
     apiSource: React.PropTypes.string.isRequired,
@@ -20,13 +21,13 @@ module.exports = React.createClass({
 
   getDefaultProps: function() {
     return {
-      apiSource: '/api/auth/sign-in/',
+      apiSource: '/api/braintree/mozilla/paymethod/',
     };
   },
 
   getInitialState: function() {
     return {
-      is_logged_in: false,
+      cards: null,
     };
   },
 
@@ -36,17 +37,23 @@ module.exports = React.createClass({
       data: {
         access_token: router.getCurrentQuery().access_token,
       },
-      method: 'post',
+      method: 'get',
       url: this.props.apiSource,
       context: this,
-    }).then(function() {
+    }).then(function(data) {
       if (this.isMounted()) {
-        this.setState({'is_logged_in': true}); // eslint-disable-line
-        this.transitionTo('card-listing');
+        // Ignore react/no-did-mount-set-state eslint warning
+        if (data.length) {
+          console.log('Card data found, showing card form');
+          this.setState({cards: data}); // eslint-disable-line
+        } else {
+          console.log('No card data found, showing card form');
+          this.transitionTo('card-form');
+        }
       }
     }).fail(function() {
       // TODO: some error state.
-      console.log('login failed');
+      console.log('Card list retrieval failed');
     });
   },
 
@@ -55,6 +62,10 @@ module.exports = React.createClass({
   },
 
   render: function() {
-    return <Spinner text={gettext('Logging in')}/>;
+    if (this.state.cards) {
+     return <CardList cards={this.state.cards}/>;
+    } else {
+     return <Spinner text={gettext('Reticulating splines')}/>;
+    }
   },
 });

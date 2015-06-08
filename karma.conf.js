@@ -7,6 +7,7 @@ var webpackConfig = require('./webpack.config.js');
 delete webpackConfig.output;
 delete webpackConfig.entry;
 
+
 module.exports = function (config) {
   config.set({
     basePath: '',

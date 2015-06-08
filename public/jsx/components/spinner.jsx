@@ -2,7 +2,7 @@
 
 var React = require('react');
 
-var Spinner = React.createClass({
+module.exports = React.createClass({
   displayName: 'Spinner',
   propTypes: {
     text: React.PropTypes.string.isRequired,
@@ -16,5 +16,3 @@ var Spinner = React.createClass({
     );
   },
 });
-
-module.exports = Spinner;

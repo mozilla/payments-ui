@@ -4,7 +4,7 @@ var classNames = require('classnames');
 var React = require('react');
 
 
-var SubmitButton = React.createClass({
+module.exports = React.createClass({
   displayName: 'SubmitButton',
 
   propTypes: {
@@ -35,5 +35,3 @@ var SubmitButton = React.createClass({
     );
   },
 });
-
-module.exports = SubmitButton;
