@@ -9312,7 +9312,7 @@
 	
 	module.exports = {
 	  init: function() {
-	    Router.run(routes, Router.HistoryLocation, function(Root) {
+	    Router.run(routes, Router.HashLocation, function(Root) {
 	      // Doesn't actually render anything.
 	      React.render(React.createElement(Root, null), document.body);
 	    });
