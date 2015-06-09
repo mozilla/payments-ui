@@ -4,7 +4,7 @@ var classNames = require('classnames');
 var React = require('react');
 
 
-var InputError = React.createClass({
+module.exports = React.createClass({
   displayName: 'InputError',
 
   propTypes: {
@@ -24,5 +24,3 @@ var InputError = React.createClass({
     );
   },
 });
-
-module.exports = InputError;

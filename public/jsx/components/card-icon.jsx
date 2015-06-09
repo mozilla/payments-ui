@@ -4,7 +4,7 @@ var classNames = require('classnames');
 var React = require('react');
 
 
-var CardIcon = React.createClass({
+module.exports = React.createClass({
   displayName: 'CardIcon',
 
   propTypes: {
@@ -14,6 +14,7 @@ var CardIcon = React.createClass({
       'discover',
       'jcb',
       'maestro',
+      'mastercard',
       'master-card',
       'visa',
     ]),
@@ -37,5 +38,3 @@ var CardIcon = React.createClass({
     return cardType ? <span className={cardClassName} /> : null;
   },
 });
-
-module.exports = CardIcon;

@@ -1,5 +1,7 @@
 'use strict';
 
+var TestUtils = require('react/lib/ReactTestUtils');
+
 module.exports = {
   testCards: {
     amex: '378282246310005',
@@ -30,4 +32,13 @@ module.exports = {
       },
     },
   },
+
+  findByClass: function(component, className){
+    return TestUtils.findRenderedDOMComponentWithClass(component, className);
+  },
+
+  findByTag: function(component, tag){
+    return TestUtils.findRenderedDOMComponentWithTag(component, tag);
+  },
+
 };
