@@ -29,9 +29,17 @@ module.exports = React.createClass({
       method: 'post',
       url: '/api/auth/sign-in/',
       context: this,
-    }).then(function() {
+    }).then(function(data) {
       if (this.isMounted()) {
         this.setState({'is_logged_in': true}); // eslint-disable-line
+
+        console.log('setting CSRF token for subsequent requests:', data.csrf_token);
+        $.ajaxSetup({
+          headers: {
+            "X-CSRFToken": data.csrf_token,
+          },
+        });
+
         this.transitionTo('card-listing');
       }
     }).fail(function() {
