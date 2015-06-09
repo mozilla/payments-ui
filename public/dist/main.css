@@ -487,6 +487,36 @@ h1, h2, h3, h4, h5, h6 {
     right: 20px;
     max-width: calc(100% - 40px); }
 
+.card-listing {
+  margin: 0;
+  padding: 0; }
+  .card-listing .card-item {
+    list-style-type: none;
+    margin: 10px 0;
+    position: relative; }
+    .card-listing .card-item input[type=radio] {
+      opacity: 0;
+      position: absolute; }
+      .card-listing .card-item input[type=radio]:checked + label,
+      .card-listing .card-item input[type=radio]:hover + label,
+      .card-listing .card-item input[type=radio]:focus + label {
+        cursor: pointer;
+        border: 1px solid #0080D8;
+        border-radius: 5px;
+        background: #E0F1FA;
+        transition: all 450ms; }
+    .card-listing .card-item label {
+      border: 1px solid transparent;
+      display: block;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 1em 15px 1em 60px;
+      position: relative;
+      text-align: right;
+      width: 100%; }
+    .card-listing .card-item .card-icon {
+      left: 15px; }
+
 .button {
   display: inline-block;
   text-decoration: none; }
@@ -523,6 +553,11 @@ button {
   button:hover,
   button:focus {
     background: #08c; }
+  a.button:focus,
+  button:focus {
+    border-color: #0096dc;
+    box-shadow: 0 0 5px 0 #0096dc;
+    outline: none; }
   a.button:disabled,
   a.button.disabled,
   button:disabled,
@@ -615,9 +650,11 @@ input {
   input:hover {
     border-color: #424f59; }
   input:focus {
-    border-color: #0095dd; }
+    border-color: #0096dc;
+    box-shadow: 0 0 1px 0 #0096dc; }
   .invalid input {
-    border-color: #d63920; }
+    border-color: #d63920;
+    box-shadow: 0 0 1px 0 #d63920; }
   .cvv input,
   .expiration input {
     float: left;

@@ -19,21 +19,11 @@ module.exports = React.createClass({
     };
   },
 
-  propTypes: {
-    apiSource: React.PropTypes.string.isRequired,
-  },
-
-  getDefaultProps: function() {
-    return {
-      apiSource: '/api/braintree/token/generate/',
-    };
-  },
-
   componentDidMount: function() {
     console.log('Requesting braintree token');
     $.ajax({
       method: 'post',
-      url: this.props.apiSource,
+      url: '/api/braintree/token/generate/',
       context: this,
     }).then(function(data) {
       if (this.isMounted()) {

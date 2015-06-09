@@ -35,6 +35,10 @@ button {
     background: $button-background-hover-color;
   }
 
+  &:focus {
+    @include focus();
+  }
+
   &:disabled,
   &.disabled {
     background: $button-background-disabled-color;

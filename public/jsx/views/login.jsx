@@ -12,17 +12,7 @@ module.exports = React.createClass({
 
   displayName: 'LoginView',
 
-  propTypes: {
-    apiSource: React.PropTypes.string.isRequired,
-  },
-
   mixins: [Navigation],
-
-  getDefaultProps: function() {
-    return {
-      apiSource: '/api/auth/sign-in/',
-    };
-  },
 
   getInitialState: function() {
     return {
@@ -37,12 +27,12 @@ module.exports = React.createClass({
         access_token: router.getCurrentQuery().access_token,
       },
       method: 'post',
-      url: this.props.apiSource,
+      url: '/api/auth/sign-in/',
       context: this,
     }).then(function() {
       if (this.isMounted()) {
         this.setState({'is_logged_in': true}); // eslint-disable-line
-        this.transitionTo('card-form');
+        this.transitionTo('card-listing');
       }
     }).fail(function() {
       // TODO: some error state.

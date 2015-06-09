@@ -61,11 +61,13 @@ input {
   }
 
   &:focus {
-    border-color: $input-row-focus-border-color;
+    border-color: $default-focus-color;
+    box-shadow: 0 0 1px 0 $default-focus-color;
   }
 
   .invalid & {
     border-color: $error-background-color;
+    box-shadow: 0 0 1px 0 $error-background-color;
   }
 
   .cvv &,

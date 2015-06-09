@@ -26,6 +26,12 @@
   text-align: center !important;
 }
 
+@mixin focus() {
+  border-color: $default-focus-color;
+  box-shadow:0 0 5px 0 $default-focus-color;
+  outline:none;
+}
+
 @mixin font-face($local-name, $path, $family, $font-weight, $font-style:'normal') {
   $filepath: "../fonts/" + $path;
   @font-face {
