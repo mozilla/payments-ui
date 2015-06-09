@@ -22,11 +22,7 @@ module.exports = React.createClass({
   },
 
   componentDidMount: function() {
-    var { router } = this.context;
     $.ajax({
-      data: {
-        access_token: router.getCurrentQuery().access_token,
-      },
       method: 'get',
       url: '/api/braintree/mozilla/paymethod/',
       context: this,
