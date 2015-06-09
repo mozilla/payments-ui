@@ -4,7 +4,7 @@ var $ = require('jquery');
 var React = require('react');
 var Navigation = require('react-router').Navigation;
 
-var CardList = require('components/card-list');
+var CardChoice = require('components/card-choice');
 var Spinner = require('components/spinner');
 var gettext = require('utils').gettext;
 
@@ -63,9 +63,9 @@ module.exports = React.createClass({
 
   render: function() {
     if (this.state.cards) {
-     return <CardList cards={this.state.cards}/>;
+     return <CardChoice cards={this.state.cards}/>;
     } else {
-     return <Spinner text={gettext('Reticulating splines')}/>;
+     return <Spinner text={gettext('Loading')}/>;
     }
   },
 });

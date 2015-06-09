@@ -11,7 +11,7 @@ var gettext = require('utils').gettext;
 
 
 module.exports = React.createClass({
-  displayName: 'CardList',
+  displayName: 'CardChoice',
 
   propTypes: {
     cards: React.PropTypes.array.isRequired,

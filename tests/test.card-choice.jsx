@@ -1,14 +1,14 @@
 'use strict';
 
 
-var CardList = require('components/card-list');
+var CardChoice = require('components/card-choice');
 
 var helpers = require('./helpers');
 
 var React;
 var TestUtils;
 
-describe('Card List', function() {
+describe('Card Choice', function() {
 
   var cards = [
     'amex',
@@ -55,19 +55,19 @@ describe('Card List', function() {
   beforeEach(function() {
     React = require('react');
     TestUtils = require('react/lib/ReactTestUtils');
-    this.CardList = TestUtils.renderIntoDocument(
-      <CardList cards={cardListData} />
+    this.CardChoice = TestUtils.renderIntoDocument(
+      <CardChoice cards={cardListData} />
     );
-    sinon.spy(this.CardList, 'setState');
+    sinon.spy(this.CardChoice, 'setState');
   });
 
   afterEach(function() {
-    this.CardList.setState.restore();
+    this.CardChoice.setState.restore();
   });
 
   function testCardType(cardType) {
     return function() {
-      var cardIcon = helpers.findByClass(this.CardList, 'cctype-' + cardType);
+      var cardIcon = helpers.findByClass(this.CardChoice, 'cctype-' + cardType);
       assert.notEqual(cardIcon, null);
     };
   }
@@ -82,25 +82,25 @@ describe('Card List', function() {
         value: 'whatevar',
       },
     };
-    this.CardList.handleCardChange(event);
-    assert.ok(this.CardList.setState.calledWith({
+    this.CardChoice.handleCardChange(event);
+    assert.ok(this.CardChoice.setState.calledWith({
       'card': 'whatevar',
     }), 'setState should be called');
   });
 
   it('Has a disabled button when no card is selected', function() {
-    var submitButton = helpers.findByTag(this.CardList, 'button');
+    var submitButton = helpers.findByTag(this.CardChoice, 'button');
     assert.notEqual(submitButton.getDOMNode().getAttribute('disabled'), null);
   });
 
   it('has button enabled when selection is made', function() {
-    var submitButton = helpers.findByTag(this.CardList, 'button');
+    var submitButton = helpers.findByTag(this.CardChoice, 'button');
     var event = {
       target: {
         value: '/braintree/mozilla/paymethod/6/',
       },
     };
-    this.CardList.handleCardChange(event);
+    this.CardChoice.handleCardChange(event);
     assert.equal(submitButton.getDOMNode().getAttribute('disabled'), null);
   });
 
