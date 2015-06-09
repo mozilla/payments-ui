@@ -13,17 +13,7 @@ module.exports = React.createClass({
 
   displayName: 'CardListingView',
 
-  propTypes: {
-    apiSource: React.PropTypes.string.isRequired,
-  },
-
   mixins: [Navigation],
-
-  getDefaultProps: function() {
-    return {
-      apiSource: '/api/braintree/mozilla/paymethod/',
-    };
-  },
 
   getInitialState: function() {
     return {
@@ -38,7 +28,7 @@ module.exports = React.createClass({
         access_token: router.getCurrentQuery().access_token,
       },
       method: 'get',
-      url: this.props.apiSource,
+      url: '/api/braintree/mozilla/paymethod/',
       context: this,
     }).then(function(data) {
       if (this.isMounted()) {
