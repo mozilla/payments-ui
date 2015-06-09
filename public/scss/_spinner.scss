@@ -40,9 +40,9 @@ button.spinner {
   text-indent: 0;
   font-size: 0;
   &:after {
-    @include hidpi-background-image('spinnerwhite', 33px 33px);
+    @include hidpi-background-image('spinnerwhite', 30px 30px);
     margin: 0 auto;
-    height: 33px;
-    width: 33px;
+    height: 30px;
+    width: 30px;
   }
 }
