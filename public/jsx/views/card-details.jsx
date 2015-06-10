@@ -4,6 +4,7 @@ var $ = require('jquery');
 var React = require('react');
 
 var CardForm = require('components/card-form');
+var ProductDetail = require('components/product-detail');
 var Spinner = require('components/spinner');
 
 var gettext = require('utils').gettext;
@@ -36,12 +37,20 @@ module.exports = React.createClass({
   },
 
   render: function() {
+
     if (this.state.braintree_token) {
-      return (<CardForm
-        action="/braintree/"
-        data-token={this.state.braintree_token}
-        id="braintree-form"
-        method="post"/>);
+      return (
+        <div className="card-details">
+          <ProductDetail productId={this.props.productId} />
+          <CardForm
+            action="/braintree/"
+            data-token={this.state.braintree_token}
+            id="braintree-form"
+            method="post"
+            productId={this.props.productId}
+          />
+        </div>
+      );
     } else {
       return <Spinner text={gettext('Setting up')}/>;
     }

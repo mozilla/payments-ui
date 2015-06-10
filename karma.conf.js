@@ -31,11 +31,11 @@ module.exports = function (config) {
       noInfo: true,
     },
     plugins: [
+      'karma-sinon',
       'karma-mocha',
       'karma-mocha-reporter',
       'karma-chai',
       'karma-firefox-launcher',
-      'karma-sinon',
       'karma-sourcemap-loader',
       'karma-webpack',
     ],
