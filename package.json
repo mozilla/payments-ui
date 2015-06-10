@@ -50,6 +50,7 @@
     "mocha": "^2.2.5",
     "node-libs-browser": "0.5.0",
     "payment-icons": "git://github.com/muffinresearch/payment-icons.git#0.0.4",
+    "sinon": "1.14.1",
     "webpack": "^1.9.5",
     "webpack-dev-server": "^1.8.2"
   },
