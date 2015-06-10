@@ -1,0 +1,10 @@
+{
+  "description": {
+    "en": "Some mortar"
+  }, 
+  "img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/mortar.png", 
+  "currency": "USD", 
+  "amount": "5.00", 
+  "active": true, 
+  "id": "mozilla-concrete-mortar"
+}
