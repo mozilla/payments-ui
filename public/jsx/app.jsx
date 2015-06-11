@@ -11,10 +11,25 @@ var CompletePayment = require('views/complete-payment');
 var Login = require('views/login');
 
 var App = React.createClass({
+
   displayName: 'App',
+
+  getInitialState: function() {
+    var {router} = this.context;
+    var productId = router.getCurrentQuery().product;
+
+    return {
+      productId: productId,
+    };
+  },
+
+  contextTypes: {
+    router: React.PropTypes.func,
+  },
+
   render () {
     return (
-      <RouteHandler/>
+      <RouteHandler productId={this.state.productId} />
     );
   },
 });

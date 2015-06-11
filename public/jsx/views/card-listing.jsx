@@ -5,6 +5,7 @@ var React = require('react');
 var Navigation = require('react-router').Navigation;
 
 var CardChoice = require('components/card-choice');
+var ProductDetail = require('components/product-detail');
 var Spinner = require('components/spinner');
 var gettext = require('utils').gettext;
 
@@ -49,9 +50,17 @@ module.exports = React.createClass({
 
   render: function() {
     if (this.state.cards) {
-     return <CardChoice cards={this.state.cards}/>;
+      return (
+        <div className="card-listing">
+          <ProductDetail productId={this.props.productId} />
+          <CardChoice
+            cards={this.state.cards}
+            productId={this.props.productId}
+          />
+        </div>
+      );
     } else {
-     return <Spinner text={gettext('Loading')}/>;
+      return <Spinner text={gettext('Loading')}/>;
     }
   },
 });

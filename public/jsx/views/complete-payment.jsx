@@ -2,21 +2,18 @@
 
 var React = require('react');
 
+var ProductDetail = require('components/product-detail');
 var SubmitButton = require('components/submit-button');
+
 var gettext = require('utils').gettext;
+
 
 module.exports = React.createClass({
 
   displayName: 'CompleteView',
 
   propTypes: {
-    productName: React.PropTypes.string.isRequired,
-  },
-
-  getDefaultProps: function() {
-    return {
-      productName: 'Mozilla Concrete',
-    };
+    productId: React.PropTypes.string.isRequired,
   },
 
   handleClick: function(e) {
@@ -39,9 +36,12 @@ module.exports = React.createClass({
   render: function() {
     return (
       <div className="complete">
-        <h1>Payment complete!</h1>
-        <span className="product">{this.props.productName}</span>
-        <img className="tick" src="/img/tick.svg" />
+        <ProductDetail productId={this.props.productId} />
+        <p className="accepted">{gettext('Payment Accepted')}</p>
+        <p className="receipt">
+          {gettext('Your receipt has been sent to')}
+          <span>/dev/null</span>
+        </p>
         <SubmitButton text={gettext('OK')} onClick={this.handleClick} />
       </div>
     );
