@@ -10,6 +10,7 @@
     "connect-fonts-clearsans": "0.0.1",
     "connect-fonts-firasans": "0.0.4",
     "jquery": "^2.1.4",
+    "mozilla-payments-config": "0.0.4",
     "normalize.css": "^3.0.3",
     "query-string": "^2.1.0",
     "react": "^0.13.3",
@@ -34,6 +35,7 @@
     "grunt-sass": "1.0.0",
     "grunt-svg-sprite": "^1.1.2",
     "grunt-webpack": "^1.0.8",
+    "json-loader": "^0.5.2",
     "jsx-loader": "^0.13.2",
     "karma": "^0.12.31",
     "karma-chai": "^0.1.0",
@@ -48,6 +50,7 @@
     "mocha": "^2.2.5",
     "node-libs-browser": "0.5.0",
     "payment-icons": "git://github.com/muffinresearch/payment-icons.git#0.0.4",
+    "sinon": "1.14.1",
     "webpack": "^1.9.5",
     "webpack-dev-server": "^1.8.2"
   },

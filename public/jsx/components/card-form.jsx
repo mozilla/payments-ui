@@ -23,6 +23,7 @@ module.exports = React.createClass({
     'cvv': React.PropTypes.object,
     'expiration': React.PropTypes.object,
     'id': React.PropTypes.string.isRequired,
+    'productId': React.PropTypes.string.isRequired,
   },
 
   mixins: [Navigation],
@@ -125,7 +126,7 @@ module.exports = React.createClass({
         $.ajax({
           data: {
             pay_method_nonce: nonce,
-            plan_id: 'mozilla-concrete-brick',
+            plan_id: that.props.productId,
           },
           url: '/api/braintree/subscriptions/',
           method: 'post',

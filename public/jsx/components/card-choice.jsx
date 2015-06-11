@@ -39,7 +39,7 @@ module.exports = React.createClass({
     $.ajax({
       data: {
         pay_method_uri: this.state.card,
-        plan_id: 'mozilla-concrete-brick',
+        plan_id: this.props.productId,
       },
       url: '/api/braintree/subscriptions/',
       method: 'post',

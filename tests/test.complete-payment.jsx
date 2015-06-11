@@ -12,7 +12,7 @@ describe('CompletePayment', function() {
     React = require('react');
     TestUtils = require('react/lib/ReactTestUtils');
     this.CompletePayment = TestUtils.renderIntoDocument(
-      <CompletePayment />
+      <CompletePayment productId='mozilla-concrete-brick' />
     );
     sinon.stub(window.parent, 'postMessage');
   });
