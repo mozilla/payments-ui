@@ -1,8 +1,11 @@
 {
   "description": {
-    "en": "Some mortar"
+    "en": "Mortar"
   }, 
   "img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/mortar.png", 
+  "price": {
+    "en": "$5.00"
+  }, 
   "currency": "USD", 
   "amount": "5.00", 
   "active": true, 
