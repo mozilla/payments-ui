@@ -105,3 +105,32 @@ describe('Card Choice', function() {
   });
 
 });
+
+describe('Single Card Choice', function() {
+
+    var cardListData = [{
+        'id': 1,
+        'resource_uri': '/braintree/mozilla/paymethod/1/',
+        'truncated_id': '4444',
+        'type_name': 'MasterCard',
+       },
+     ];
+
+    beforeEach(function() {
+      React = require('react');
+      TestUtils = require('react/lib/ReactTestUtils');
+      this.CardChoice = TestUtils.renderIntoDocument(
+        <CardChoice cards={cardListData} />
+      );
+    });
+
+    it('Has the card selected when just one card', function() {
+        var input = helpers.findByTag(this.CardChoice, 'input');
+        assert.equal(input.getDOMNode().getAttribute('checked'), '');
+    });
+
+    it('Has the submit button enabled when just one card', function() {
+      var submitButton = helpers.findByTag(this.CardChoice, 'button');
+      assert.equal(submitButton.getDOMNode().getAttribute('disabled'), null);
+    });
+});

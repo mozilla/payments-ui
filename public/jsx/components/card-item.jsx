@@ -26,7 +26,8 @@ module.exports = React.createClass({
         <CardIcon cardType={cardType} />
         <input id={inputId} type="radio"
                onChange={this.props.onChangeHandler}
-               value={this.props.resource_uri} name="card" />
+               value={this.props.resource_uri} name="card"
+               checked={this.props.checked} />
         <label htmlFor={inputId}
                className="text">{cardText}</label>
       </li>

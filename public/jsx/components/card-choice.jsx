@@ -22,7 +22,8 @@ module.exports = React.createClass({
   getInitialState: function() {
     return {
       isSubmitting: false,
-      card: null,
+      card: this.props.cards.length === 1 ? this.props.cards[0].resource_uri : null,
+
     };
   },
 
@@ -64,7 +65,8 @@ module.exports = React.createClass({
     for (var i = 0; i < cardData.length; i += 1) {
       var card = cardData[i];
       cardList.push(<CardItem {...card} key={'ci-' + i}
-                     onChangeHandler={this.handleCardChange} />);
+                     onChangeHandler={this.handleCardChange}
+                     checked={this.state.card} />);
     }
 
     var formIsValid = this.state.card !== null;
