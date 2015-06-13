@@ -66,7 +66,7 @@ module.exports = React.createClass({
       var card = cardData[i];
       cardList.push(<CardItem {...card} key={'ci-' + i}
                      onChangeHandler={this.handleCardChange}
-                     checked={this.state.card} />);
+                     checked={this.state.card === card.resource_uri} />);
     }
 
     var formIsValid = this.state.card !== null;
