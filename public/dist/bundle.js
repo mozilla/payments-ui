@@ -32921,7 +32921,8 @@
 	  getInitialState: function() {
 	    return {
 	      isSubmitting: false,
-	      card: null,
+	      card: this.props.cards.length === 1 ? this.props.cards[0].resource_uri : null,
+	
 	    };
 	  },
 	
@@ -32963,7 +32964,8 @@
 	    for (var i = 0; i < cardData.length; i += 1) {
 	      var card = cardData[i];
 	      cardList.push(React.createElement(CardItem, React.__spread({},  card, {key: 'ci-' + i, 
-	                     onChangeHandler: this.handleCardChange})));
+	                     onChangeHandler: this.handleCardChange, 
+	                     checked: this.state.card === card.resource_uri})));
 	    }
 	
 	    var formIsValid = this.state.card !== null;
@@ -33015,7 +33017,8 @@
 	        React.createElement(CardIcon, {cardType: cardType}), 
 	        React.createElement("input", {id: inputId, type: "radio", 
 	               onChange: this.props.onChangeHandler, 
-	               value: this.props.resource_uri, name: "card"}), 
+	               value: this.props.resource_uri, name: "card", 
+	               checked: this.props.checked}), 
 	        React.createElement("label", {htmlFor: inputId, 
 	               className: "text"}, cardText)
 	      )
