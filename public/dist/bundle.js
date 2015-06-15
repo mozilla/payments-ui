@@ -33240,7 +33240,7 @@
 	    // l10n. Also let's add a localized currency symbol.
 	    return (
 	      React.createElement("div", {className: "product"}, 
-	        React.createElement("h1", {className: "title"}, productData.id), 
+	        React.createElement("h1", {className: "title"}, productData.description.en), 
 	        React.createElement("span", {className: "price"}, 
 	          productData.amount + ' ' +
 	           productData.currency + ' ' +

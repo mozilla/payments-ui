@@ -25,7 +25,7 @@ module.exports = React.createClass({
     // l10n. Also let's add a localized currency symbol.
     return (
       <div className="product">
-        <h1 className="title">{productData.id}</h1>
+        <h1 className="title">{productData.description.en}</h1>
         <span className="price">
           {productData.amount + ' ' +
            productData.currency + ' ' +
