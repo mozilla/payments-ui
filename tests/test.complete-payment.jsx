@@ -4,11 +4,19 @@ var React;
 var TestUtils;
 
 var CompletePayment = require('views/complete-payment');
+var UserStore = require('user-store');
+
+var helpers = require('./helpers');
 
 
 describe('CompletePayment', function() {
 
   beforeEach(function() {
+    this.email = 'buyer@somewhere.org';
+    sinon.stub(UserStore, 'getCurrentUser', (function() {
+      return {email: this.email};
+    }).bind(this));
+
     React = require('react');
     TestUtils = require('react/lib/ReactTestUtils');
     this.CompletePayment = TestUtils.renderIntoDocument(
@@ -19,6 +27,12 @@ describe('CompletePayment', function() {
 
   afterEach(function() {
     window.parent.postMessage.restore();
+    UserStore.getCurrentUser.restore();
+  });
+
+  it('should show where the receipt was emailed', function() {
+    var email = helpers.findByClass(this.CompletePayment, 'email');
+    assert.equal(email.getDOMNode().textContent, this.email);
   });
 
   it('should fire handleClick when OK button is clicked', function() {
