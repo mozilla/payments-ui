@@ -76,6 +76,18 @@ describe('Card Choice', function() {
     it('Displays each card type ' + card, testCardType(card));
   });
 
+  it('Checked prop is updated when card is selected', function() {
+    var event = {
+      target: {
+        value: '/braintree/mozilla/paymethod/5/',
+      },
+    };
+    this.CardChoice.handleCardChange(event);
+    var input = TestUtils.scryRenderedDOMComponentsWithTag(
+        this.CardChoice, 'input')[4];
+    assert.equal(input.props.checked, true);
+  });
+
   it('State is updated when card is selected', function() {
     var event = {
       target: {
@@ -104,4 +116,33 @@ describe('Card Choice', function() {
     assert.equal(submitButton.getDOMNode().getAttribute('disabled'), null);
   });
 
+});
+
+describe('Single Card Choice', function() {
+
+    var cardListData = [{
+        'id': 1,
+        'resource_uri': '/braintree/mozilla/paymethod/1/',
+        'truncated_id': '4444',
+        'type_name': 'MasterCard',
+       },
+     ];
+
+    beforeEach(function() {
+      React = require('react');
+      TestUtils = require('react/lib/ReactTestUtils');
+      this.CardChoice = TestUtils.renderIntoDocument(
+        <CardChoice cards={cardListData} />
+      );
+    });
+
+    it('Has the card selected when just one card', function() {
+        var input = helpers.findByTag(this.CardChoice, 'input');
+        assert.equal(input.getDOMNode().getAttribute('checked'), '');
+    });
+
+    it('Has the submit button enabled when just one card', function() {
+      var submitButton = helpers.findByTag(this.CardChoice, 'button');
+      assert.equal(submitButton.getDOMNode().getAttribute('disabled'), null);
+    });
 });
