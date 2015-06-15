@@ -14,6 +14,10 @@ var App = React.createClass({
 
   displayName: 'App',
 
+  contextTypes: {
+    router: React.PropTypes.func,
+  },
+
   getInitialState: function() {
     var {router} = this.context;
     var productId = router.getCurrentQuery().product;
@@ -21,10 +25,6 @@ var App = React.createClass({
     return {
       productId: productId,
     };
-  },
-
-  contextTypes: {
-    router: React.PropTypes.func,
   },
 
   render () {
