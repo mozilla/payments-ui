@@ -76,6 +76,18 @@ describe('Card Choice', function() {
     it('Displays each card type ' + card, testCardType(card));
   });
 
+  it('Checked prop is updated when card is selected', function() {
+    var event = {
+      target: {
+        value: '/braintree/mozilla/paymethod/5/',
+      },
+    };
+    this.CardChoice.handleCardChange(event);
+    var input = TestUtils.scryRenderedDOMComponentsWithTag(
+        this.CardChoice, 'input')[4];
+    assert.equal(input.props.checked, true);
+  });
+
   it('State is updated when card is selected', function() {
     var event = {
       target: {
