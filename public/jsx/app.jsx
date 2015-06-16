@@ -10,6 +10,8 @@ var CardListing = require('views/card-listing');
 var CompletePayment = require('views/complete-payment');
 var Login = require('views/login');
 
+var products = require('products');
+
 var App = React.createClass({
 
   displayName: 'App',
@@ -28,8 +30,14 @@ var App = React.createClass({
   },
 
   render () {
+    var img = {
+        backgroundImage: 'url(' + products[this.state.productId].img + ')',
+    };
     return (
-      <RouteHandler productId={this.state.productId} />
+      <main>
+        <div id="logo" style={img}></div>
+        <RouteHandler productId={this.state.productId} />
+      </main>
     );
   },
 });
