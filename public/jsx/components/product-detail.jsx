@@ -21,14 +21,11 @@ module.exports = React.createClass({
       throw new Error('Invalid product: ' + productId);
     }
 
-    // TODO: this should use string formatting for
-    // l10n. Also let's add a localized currency symbol.
     return (
       <div className="product">
         <h1 className="title">{productData.description.en}</h1>
         <span className="price">
-          {productData.amount + ' ' +
-           productData.currency + ' ' +
+          {productData.price.en + ' ' +
            gettext('per month')}</span>
       </div>
     );
