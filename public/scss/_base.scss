@@ -18,8 +18,8 @@ h1,h2,h3,h4,h5,h6 {
   text-align: center;
 
   .accepted {
-    padding: 50px 0;
-    font-size: 30px;
+    padding: 20px 0;
+    font-size: 1.75em;
   }
 
   .receipt {
@@ -31,10 +31,6 @@ h1,h2,h3,h4,h5,h6 {
   }
 
   button {
-    position: absolute;
-    bottom: 15px;
-    left: 20px;
-    right: 20px;
     max-width: calc(100% - 40px);
   }
 }

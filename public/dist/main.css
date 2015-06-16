@@ -476,17 +476,13 @@ h1, h2, h3, h4, h5, h6 {
 .complete {
   text-align: center; }
   .complete .accepted {
-    padding: 50px 0;
-    font-size: 30px; }
+    padding: 20px 0;
+    font-size: 1.75em; }
   .complete .receipt {
     padding-bottom: 1em; }
     .complete .receipt span {
       display: block; }
   .complete button {
-    position: absolute;
-    bottom: 15px;
-    left: 20px;
-    right: 20px;
     max-width: calc(100% - 40px); }
 
 main {
