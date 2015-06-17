@@ -9287,7 +9287,7 @@
 	var CardDetails = __webpack_require__(198);
 	var CardListing = __webpack_require__(249);
 	var CompletePayment = __webpack_require__(252);
-	var Login = __webpack_require__(258);
+	var Login = __webpack_require__(260);
 	
 	var products = __webpack_require__(200);
 	
@@ -37834,7 +37834,10 @@
 
 	'use strict';
 	
-	var dispatcher = __webpack_require__(254);
+	var assign = __webpack_require__(254);
+	var EventEmitter = __webpack_require__(255).EventEmitter;
+	
+	var dispatcher = __webpack_require__(256);
 	
 	
 	function UserStore(localDispatcher) {
@@ -37842,7 +37845,7 @@
 	  // A read-only object that reports user state.
 	  // The object listens to the central dispatcher
 	  // for messages and alters internal state accordingly.
-	  // Top-level views can read store properties
+	  // Top-level views can read user properties
 	  // and/or listen to change events (not yet implemented).
 	  //
 	  this.currentUser = null;
@@ -37850,37 +37853,401 @@
 	    if (payload.actionType === 'set-user') {
 	      console.log('UserStore: storing current user:', payload.user);
 	      this.currentUser = payload.user;
+	      this.emit('set-user');
 	    }
 	  }).bind(this));
 	}
 	
 	
-	UserStore.prototype.getCurrentUser = function() {
-	  if (!this.currentUser) {
-	    throw new Error('no user has been set');
-	  }
-	  return this.currentUser;
-	};
+	UserStore.prototype = assign({}, EventEmitter.prototype, {
+	
+	  getCurrentUser: function() {
+	    if (!this.currentUser) {
+	      throw new Error('no user has been set');
+	    }
+	    return this.currentUser;
+	  },
+	
+	  addSetUserListener: function(handler) {
+	    this.on('set-user', handler);
+	  },
+	
+	  removeSetUserListener: function(handler) {
+	    this.removeListener('set-user', handler);
+	  },
+	
+	});
 	
 	
 	module.exports = new UserStore(dispatcher);
-	module.exports.Class = UserStore;
 
 
 /***/ },
 /* 254 */
+/***/ function(module, exports) {
+
+	'use strict';
+	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+	
+	function ToObject(val) {
+		if (val == null) {
+			throw new TypeError('Object.assign cannot be called with null or undefined');
+		}
+	
+		return Object(val);
+	}
+	
+	function ownEnumerableKeys(obj) {
+		var keys = Object.getOwnPropertyNames(obj);
+	
+		if (Object.getOwnPropertySymbols) {
+			keys = keys.concat(Object.getOwnPropertySymbols(obj));
+		}
+	
+		return keys.filter(function (key) {
+			return propIsEnumerable.call(obj, key);
+		});
+	}
+	
+	module.exports = Object.assign || function (target, source) {
+		var from;
+		var keys;
+		var to = ToObject(target);
+	
+		for (var s = 1; s < arguments.length; s++) {
+			from = arguments[s];
+			keys = ownEnumerableKeys(Object(from));
+	
+			for (var i = 0; i < keys.length; i++) {
+				to[keys[i]] = from[keys[i]];
+			}
+		}
+	
+		return to;
+	};
+
+
+/***/ },
+/* 255 */
+/***/ function(module, exports) {
+
+	// Copyright Joyent, Inc. and other Node contributors.
+	//
+	// Permission is hereby granted, free of charge, to any person obtaining a
+	// copy of this software and associated documentation files (the
+	// "Software"), to deal in the Software without restriction, including
+	// without limitation the rights to use, copy, modify, merge, publish,
+	// distribute, sublicense, and/or sell copies of the Software, and to permit
+	// persons to whom the Software is furnished to do so, subject to the
+	// following conditions:
+	//
+	// The above copyright notice and this permission notice shall be included
+	// in all copies or substantial portions of the Software.
+	//
+	// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+	// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+	// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+	// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+	// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+	// USE OR OTHER DEALINGS IN THE SOFTWARE.
+	
+	function EventEmitter() {
+	  this._events = this._events || {};
+	  this._maxListeners = this._maxListeners || undefined;
+	}
+	module.exports = EventEmitter;
+	
+	// Backwards-compat with node 0.10.x
+	EventEmitter.EventEmitter = EventEmitter;
+	
+	EventEmitter.prototype._events = undefined;
+	EventEmitter.prototype._maxListeners = undefined;
+	
+	// By default EventEmitters will print a warning if more than 10 listeners are
+	// added to it. This is a useful default which helps finding memory leaks.
+	EventEmitter.defaultMaxListeners = 10;
+	
+	// Obviously not all Emitters should be limited to 10. This function allows
+	// that to be increased. Set to zero for unlimited.
+	EventEmitter.prototype.setMaxListeners = function(n) {
+	  if (!isNumber(n) || n < 0 || isNaN(n))
+	    throw TypeError('n must be a positive number');
+	  this._maxListeners = n;
+	  return this;
+	};
+	
+	EventEmitter.prototype.emit = function(type) {
+	  var er, handler, len, args, i, listeners;
+	
+	  if (!this._events)
+	    this._events = {};
+	
+	  // If there is no 'error' event listener then throw.
+	  if (type === 'error') {
+	    if (!this._events.error ||
+	        (isObject(this._events.error) && !this._events.error.length)) {
+	      er = arguments[1];
+	      if (er instanceof Error) {
+	        throw er; // Unhandled 'error' event
+	      }
+	      throw TypeError('Uncaught, unspecified "error" event.');
+	    }
+	  }
+	
+	  handler = this._events[type];
+	
+	  if (isUndefined(handler))
+	    return false;
+	
+	  if (isFunction(handler)) {
+	    switch (arguments.length) {
+	      // fast cases
+	      case 1:
+	        handler.call(this);
+	        break;
+	      case 2:
+	        handler.call(this, arguments[1]);
+	        break;
+	      case 3:
+	        handler.call(this, arguments[1], arguments[2]);
+	        break;
+	      // slower
+	      default:
+	        len = arguments.length;
+	        args = new Array(len - 1);
+	        for (i = 1; i < len; i++)
+	          args[i - 1] = arguments[i];
+	        handler.apply(this, args);
+	    }
+	  } else if (isObject(handler)) {
+	    len = arguments.length;
+	    args = new Array(len - 1);
+	    for (i = 1; i < len; i++)
+	      args[i - 1] = arguments[i];
+	
+	    listeners = handler.slice();
+	    len = listeners.length;
+	    for (i = 0; i < len; i++)
+	      listeners[i].apply(this, args);
+	  }
+	
+	  return true;
+	};
+	
+	EventEmitter.prototype.addListener = function(type, listener) {
+	  var m;
+	
+	  if (!isFunction(listener))
+	    throw TypeError('listener must be a function');
+	
+	  if (!this._events)
+	    this._events = {};
+	
+	  // To avoid recursion in the case that type === "newListener"! Before
+	  // adding it to the listeners, first emit "newListener".
+	  if (this._events.newListener)
+	    this.emit('newListener', type,
+	              isFunction(listener.listener) ?
+	              listener.listener : listener);
+	
+	  if (!this._events[type])
+	    // Optimize the case of one listener. Don't need the extra array object.
+	    this._events[type] = listener;
+	  else if (isObject(this._events[type]))
+	    // If we've already got an array, just append.
+	    this._events[type].push(listener);
+	  else
+	    // Adding the second element, need to change to array.
+	    this._events[type] = [this._events[type], listener];
+	
+	  // Check for listener leak
+	  if (isObject(this._events[type]) && !this._events[type].warned) {
+	    var m;
+	    if (!isUndefined(this._maxListeners)) {
+	      m = this._maxListeners;
+	    } else {
+	      m = EventEmitter.defaultMaxListeners;
+	    }
+	
+	    if (m && m > 0 && this._events[type].length > m) {
+	      this._events[type].warned = true;
+	      console.error('(node) warning: possible EventEmitter memory ' +
+	                    'leak detected. %d listeners added. ' +
+	                    'Use emitter.setMaxListeners() to increase limit.',
+	                    this._events[type].length);
+	      if (typeof console.trace === 'function') {
+	        // not supported in IE 10
+	        console.trace();
+	      }
+	    }
+	  }
+	
+	  return this;
+	};
+	
+	EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+	
+	EventEmitter.prototype.once = function(type, listener) {
+	  if (!isFunction(listener))
+	    throw TypeError('listener must be a function');
+	
+	  var fired = false;
+	
+	  function g() {
+	    this.removeListener(type, g);
+	
+	    if (!fired) {
+	      fired = true;
+	      listener.apply(this, arguments);
+	    }
+	  }
+	
+	  g.listener = listener;
+	  this.on(type, g);
+	
+	  return this;
+	};
+	
+	// emits a 'removeListener' event iff the listener was removed
+	EventEmitter.prototype.removeListener = function(type, listener) {
+	  var list, position, length, i;
+	
+	  if (!isFunction(listener))
+	    throw TypeError('listener must be a function');
+	
+	  if (!this._events || !this._events[type])
+	    return this;
+	
+	  list = this._events[type];
+	  length = list.length;
+	  position = -1;
+	
+	  if (list === listener ||
+	      (isFunction(list.listener) && list.listener === listener)) {
+	    delete this._events[type];
+	    if (this._events.removeListener)
+	      this.emit('removeListener', type, listener);
+	
+	  } else if (isObject(list)) {
+	    for (i = length; i-- > 0;) {
+	      if (list[i] === listener ||
+	          (list[i].listener && list[i].listener === listener)) {
+	        position = i;
+	        break;
+	      }
+	    }
+	
+	    if (position < 0)
+	      return this;
+	
+	    if (list.length === 1) {
+	      list.length = 0;
+	      delete this._events[type];
+	    } else {
+	      list.splice(position, 1);
+	    }
+	
+	    if (this._events.removeListener)
+	      this.emit('removeListener', type, listener);
+	  }
+	
+	  return this;
+	};
+	
+	EventEmitter.prototype.removeAllListeners = function(type) {
+	  var key, listeners;
+	
+	  if (!this._events)
+	    return this;
+	
+	  // not listening for removeListener, no need to emit
+	  if (!this._events.removeListener) {
+	    if (arguments.length === 0)
+	      this._events = {};
+	    else if (this._events[type])
+	      delete this._events[type];
+	    return this;
+	  }
+	
+	  // emit removeListener for all listeners on all events
+	  if (arguments.length === 0) {
+	    for (key in this._events) {
+	      if (key === 'removeListener') continue;
+	      this.removeAllListeners(key);
+	    }
+	    this.removeAllListeners('removeListener');
+	    this._events = {};
+	    return this;
+	  }
+	
+	  listeners = this._events[type];
+	
+	  if (isFunction(listeners)) {
+	    this.removeListener(type, listeners);
+	  } else {
+	    // LIFO order
+	    while (listeners.length)
+	      this.removeListener(type, listeners[listeners.length - 1]);
+	  }
+	  delete this._events[type];
+	
+	  return this;
+	};
+	
+	EventEmitter.prototype.listeners = function(type) {
+	  var ret;
+	  if (!this._events || !this._events[type])
+	    ret = [];
+	  else if (isFunction(this._events[type]))
+	    ret = [this._events[type]];
+	  else
+	    ret = this._events[type].slice();
+	  return ret;
+	};
+	
+	EventEmitter.listenerCount = function(emitter, type) {
+	  var ret;
+	  if (!emitter._events || !emitter._events[type])
+	    ret = 0;
+	  else if (isFunction(emitter._events[type]))
+	    ret = 1;
+	  else
+	    ret = emitter._events[type].length;
+	  return ret;
+	};
+	
+	function isFunction(arg) {
+	  return typeof arg === 'function';
+	}
+	
+	function isNumber(arg) {
+	  return typeof arg === 'number';
+	}
+	
+	function isObject(arg) {
+	  return typeof arg === 'object' && arg !== null;
+	}
+	
+	function isUndefined(arg) {
+	  return arg === void 0;
+	}
+
+
+/***/ },
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Dispatcher = __webpack_require__(255).Dispatcher;
+	var Dispatcher = __webpack_require__(257).Dispatcher;
 	
 	// Create a shared dispatcher for the application.
 	module.exports = new Dispatcher();
 
 
 /***/ },
-/* 255 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -37892,11 +38259,11 @@
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 */
 	
-	module.exports.Dispatcher = __webpack_require__(256)
+	module.exports.Dispatcher = __webpack_require__(258)
 
 
 /***/ },
-/* 256 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -37913,7 +38280,7 @@
 	
 	"use strict";
 	
-	var invariant = __webpack_require__(257);
+	var invariant = __webpack_require__(259);
 	
 	var _lastID = 1;
 	var _prefix = 'ID_';
@@ -38152,7 +38519,7 @@
 
 
 /***/ },
-/* 257 */
+/* 259 */
 /***/ function(module, exports) {
 
 	/**
@@ -38211,7 +38578,7 @@
 
 
 /***/ },
-/* 258 */
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38220,7 +38587,8 @@
 	var React = __webpack_require__(3);
 	var Navigation = __webpack_require__(159).Navigation;
 	
-	var UserActions = __webpack_require__(259);
+	var UserActions = __webpack_require__(261);
+	var UserStore = __webpack_require__(253);
 	var Spinner = __webpack_require__(248);
 	var gettext = __webpack_require__(203).gettext;
 	
@@ -38228,85 +38596,107 @@
 	module.exports = React.createClass({
 	
 	  displayName: 'LoginView',
-	
 	  mixins: [Navigation],
-	
-	  getInitialState: function() {
-	    return {
-	      is_logged_in: false,
-	    };
-	  },
-	
-	  componentDidMount: function() {
-	    var $__0=    this.context,router=$__0.router;
-	    $.ajax({
-	      data: {
-	        access_token: router.getCurrentQuery().access_token,
-	      },
-	      method: 'post',
-	      url: '/api/auth/sign-in/',
-	      context: this,
-	    }).then(function(data) {
-	      if (this.isMounted()) {
-	        this.setState({'is_logged_in': true}); // eslint-disable-line
-	
-	        UserActions.setCurrentUser({email: data.buyer_email});
-	
-	        console.log('setting CSRF token for subsequent requests:', data.csrf_token);
-	        $.ajaxSetup({
-	          headers: {
-	            "X-CSRFToken": data.csrf_token,
-	          },
-	        });
-	
-	        this.transitionTo('card-listing');
-	      }
-	    }).fail(function() {
-	      // TODO: some error state.
-	      console.log('login failed');
-	    });
-	  },
 	
 	  contextTypes: {
 	    router: React.PropTypes.func,
 	  },
 	
+	  componentDidMount: function() {
+	    var $__0=    this.context,router=$__0.router;
+	    UserStore.addSetUserListener(this.onSetUser);
+	    UserActions.signIn(router.getCurrentQuery().access_token);
+	  },
+	
+	  componentWillUnmount: function() {
+	    UserStore.removeSetUserListener(this.onSetUser);
+	  },
+	
+	  onSetUser: function() {
+	    if (!this.isMounted()) {
+	      console.log('ignoring events while unmounted');
+	      return;
+	    }
+	    var user = UserStore.getCurrentUser();
+	    if (user.is_logged_in) {
+	      console.log('current user is logged in; continuing to card-listing');
+	      this.transitionTo('card-listing');
+	    } else if (!user.is_logged_in) {
+	      // TODO: some error state.
+	      console.error('user did not log in successfully');
+	    }
+	  },
+	
 	  render: function() {
 	    return React.createElement(Spinner, {text: gettext('Logging in')});
 	  },
+	
 	});
 
 
 /***/ },
-/* 259 */
+/* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var dispatcher = __webpack_require__(254);
+	var $ = __webpack_require__(1);
+	var assign = __webpack_require__(254);
 	
+	var dispatcher = __webpack_require__(256);
 	
-	function UserActions(localDispatcher) {
-	  //
-	  // A helper object to perform user-related actions.
-	  // Each action will dispatch messages so that stores can
-	  // update their state accordingly.
-	  //
-	  this.dispatcher = localDispatcher;
-	}
+	//
+	// A helper object to perform user-related actions.
+	// Each action will dispatch messages so that stores can
+	// update their state accordingly.
+	//
 	
+	module.exports = assign({}, {
 	
-	UserActions.prototype.setCurrentUser = function(user) {
-	  console.log('UserActions: setting current user', user);
-	  this.dispatcher.dispatch({
-	    actionType: 'set-user',
-	    user: user,
-	  });
-	};
+	  signIn: function(accessToken) {
 	
+	    $.ajax({
+	      data: {
+	        access_token: accessToken,
+	      },
+	      method: 'post',
+	      url: '/api/auth/sign-in/',
+	      context: this,
+	    }).then(function(data) {
 	
-	module.exports = new UserActions(dispatcher);
-	module.exports.Class = UserActions;
+	      console.log('login succeeded');
+	      this.setCurrentUser({
+	        email: data.buyer_email,
+	        is_logged_in: true,
+	      });
+	
+	      console.log('setting CSRF token for subsequent requests:',
+	                  data.csrf_token);
+	      $.ajaxSetup({
+	        headers: {
+	          'X-CSRFToken': data.csrf_token,
+	        },
+	      });
+	
+	    }).fail(function() {
+	
+	      console.log('login failed');
+	      this.setCurrentUser({
+	        email: null,
+	        is_logged_in: false,
+	      });
+	    });
+	  },
+	
+	  setCurrentUser: function(user) {
+	    console.log('UserActions: setting current user', user);
+	    dispatcher.dispatch({
+	      actionType: 'set-user',
+	      user: user,
+	    });
+	  },
+	
+	});
 
 
 /***/ }
