@@ -1,11 +1,17 @@
 'use strict';
 
+var RewirePlugin = require('rewire-webpack');
 var webpackConfig = require('./webpack.config.js');
 
 // Remove the bits from the shared config
 // that we don't want for tests.
 delete webpackConfig.output;
 delete webpackConfig.entry;
+
+// Add this just for testing:
+webpackConfig.plugins = [
+  new RewirePlugin(),
+];
 
 
 module.exports = function (config) {
