@@ -46,4 +46,3 @@ UserStore.prototype = assign({}, EventEmitter.prototype, {
 
 
 module.exports = new UserStore(dispatcher);
-module.exports.Class = UserStore;

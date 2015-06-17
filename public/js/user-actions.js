@@ -5,26 +5,17 @@ var assign = require('object-assign');
 
 var dispatcher = require('dispatcher');
 
+//
+// A helper object to perform user-related actions.
+// Each action will dispatch messages so that stores can
+// update their state accordingly.
+//
 
-function UserActions(localDispatcher) {
-  //
-  // A helper object to perform user-related actions.
-  // Each action will dispatch messages so that stores can
-  // update their state accordingly.
-  //
-  this.dispatcher = localDispatcher;
-}
+module.exports = assign({}, {
 
+  signIn: function(accessToken) {
 
-UserActions.prototype = assign({}, {
-
-  signIn: function(accessToken, opt) {
-    opt = opt || {};
-    if (!opt.jquery) {
-      opt.jquery = $;
-    }
-
-    opt.jquery.ajax({
+    $.ajax({
       data: {
         access_token: accessToken,
       },
@@ -41,7 +32,7 @@ UserActions.prototype = assign({}, {
 
       console.log('setting CSRF token for subsequent requests:',
                   data.csrf_token);
-      opt.jquery.ajaxSetup({
+      $.ajaxSetup({
         headers: {
           'X-CSRFToken': data.csrf_token,
         },
@@ -59,14 +50,10 @@ UserActions.prototype = assign({}, {
 
   setCurrentUser: function(user) {
     console.log('UserActions: setting current user', user);
-    this.dispatcher.dispatch({
+    dispatcher.dispatch({
       actionType: 'set-user',
       user: user,
     });
   },
 
 });
-
-
-module.exports = new UserActions(dispatcher);
-module.exports.Class = UserActions;

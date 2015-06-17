@@ -14,8 +14,6 @@ module.exports = React.createClass({
 
   displayName: 'LoginView',
   mixins: [Navigation],
-  UserActions: UserActions,
-  UserStore: UserStore,
 
   contextTypes: {
     router: React.PropTypes.func,
@@ -23,12 +21,12 @@ module.exports = React.createClass({
 
   componentDidMount: function() {
     var { router } = this.context;
-    this.UserStore.addSetUserListener(this.onSetUser);
-    this.UserActions.signIn(router.getCurrentQuery().access_token);
+    UserStore.addSetUserListener(this.onSetUser);
+    UserActions.signIn(router.getCurrentQuery().access_token);
   },
 
   componentWillUnmount: function() {
-    this.UserStore.removeSetUserListener(this.onSetUser);
+    UserStore.removeSetUserListener(this.onSetUser);
   },
 
   onSetUser: function() {
@@ -36,7 +34,7 @@ module.exports = React.createClass({
       console.log('ignoring events while unmounted');
       return;
     }
-    var user = this.UserStore.getCurrentUser();
+    var user = UserStore.getCurrentUser();
     if (user.is_logged_in) {
       console.log('current user is logged in; continuing to card-listing');
       this.transitionTo('card-listing');
