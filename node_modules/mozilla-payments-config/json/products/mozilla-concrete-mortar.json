@@ -6,6 +6,14 @@
   "price": {
     "en": "$5.00"
   }, 
+  "seller": {
+    "url": "http://pay.dev.mozaws.net/", 
+    "terms": "http://pay.dev.mozaws.net/terms/", 
+    "id": "mozilla-concrete", 
+    "name": {
+      "en": "Mozilla Concrete"
+    }
+  }, 
   "currency": "USD", 
   "amount": "5.00", 
   "active": true, 

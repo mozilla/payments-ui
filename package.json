@@ -12,7 +12,7 @@
     "events": "^1.0.2",
     "flux": "^2.0.3",
     "jquery": "^2.1.4",
-    "mozilla-payments-config": "0.0.6",
+    "mozilla-payments-config": "0.0.8",
     "normalize.css": "^3.0.3",
     "object-assign": "^3.0.0",
     "query-string": "^2.1.0",
