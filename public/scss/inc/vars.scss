@@ -6,8 +6,10 @@ $header-font: "Fira Sans", Helvetica, Arial, sans-serif;
 $baby-blue: #E0F1FA;
 $light-blue: #0096dc;
 $uniform-blue: #0080D8;
+// Not sure what those other blues are, this is the one that counts.
+$the-real-blue: #0095dd;
 
-$button-background-color: #0095dd;
+$button-background-color: $the-real-blue;
 $button-background-disabled-color: #8a9ba8;
 $button-background-hover-color: #08c;
 $default-focus-color: $light-blue;
@@ -19,7 +21,7 @@ $input-border-color: #424f59;
 $input-text-color: #424f59;
 $input-placeholder-color: #8a9ba8;
 $input-row-border-color: #8a9ba8;
-$input-row-focus-border-color: #0095dd;
+$input-row-focus-border-color: $the-real-blue;
 $input-row-hover-border-color: #424f59;
 $input-row-box-shadow-color: #f2f2f2;
 $input-left-right-padding: 20px;
