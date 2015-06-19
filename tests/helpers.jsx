@@ -2,7 +2,6 @@
 
 var assign = require('object-assign');
 var React = require('react');
-var Router = require('react-router');
 
 var TestUtils = require('react/lib/ReactTestUtils');
 
@@ -45,29 +44,17 @@ module.exports = {
     return TestUtils.findRenderedDOMComponentWithTag(component, tag);
   },
 
-  getRoutedComponent: function(targetComponent, componentProps) {
+  getRoutedComponent: function(TargetComponent, componentProps) {
     //
-    // Initialize a component with a router so it can be tested.
+    // Initialize a component with a stub router so it can be tested.
     //
-    // targetComponent
+    // TargetComponent
     //  This is the React component class that you want to test.
     //
     // componentProps
     //  Optional object of properties to render the component with.
     //
-    // inspired by http://bit.ly/1G0FX72
-    //
     componentProps = componentProps || {};
-
-    var transitionSpy = sinon.spy();
-    var component;
-    var Route = Router.Route;
-    var TestLocation = Router.TestLocation;
-    var location = new TestLocation(['/test']);
-
-    var routes = (
-      <Route name="test" path="/test" handler={targetComponent} />
-    );
 
     function RouterStub() {}
 
@@ -80,55 +67,31 @@ module.exports = {
       getCurrentPath () {},
       getCurrentRoutes () {},
       getCurrentPathname () {},
-      getCurrentParams () {},
-      getCurrentQuery () {},
+      getCurrentParams () {
+        return {};
+      },
+      getCurrentQuery () {
+        return {};
+      },
       isActive () {},
       getRouteAtDepth() {},
       setRouteComponentAtDepth() {},
     });
 
-    var StubRouterContext = function(Component, props) {
+    var transitionSpy = sinon.spy(RouterStub, 'transitionTo');
 
-      // Stub out transitionTo() because it will only create errors saying
-      // that no route exists (because we stubbed out routes).
-      Component.transitionTo = transitionSpy;
-
-      return React.createClass({
-        displayName: 'StubRouterContext',
-
-        childContextTypes: {
-          router: React.PropTypes.func,
-          routeDepth: React.PropTypes.number,
-        },
-
-        getChildContext () {
-          return {
-            router: RouterStub,
-            routeDepth: 0,
-          };
-        },
-
-        render () {
-          return <Component {...props} />;
-        },
-      });
-    };
-
-    Router.run(routes, location, function (handler, props) {
-      props = props || {};
-      assign(props, componentProps);
-
-      /*eslint-disable new-cap */
-      var TestSubject = StubRouterContext(handler, props);
-      /*eslint-enable */
-      var mainComponent = React.render(<TestSubject />, global.document.body);
-
-      // Now we can fetch our component that was rendered with a router.
-      component = TestUtils.findRenderedComponentWithType(
-        mainComponent, targetComponent
-      );
-
+    var FakeRouter = React.createClass({
+      render () {
+        return React.withContext({router: RouterStub}, function() {
+          return <TargetComponent {...componentProps} />;
+        });
+      },
     });
+
+    var container = TestUtils.renderIntoDocument(<FakeRouter />);
+    var component = TestUtils.findRenderedComponentWithType(
+      container, TargetComponent
+    );
 
     return {
       component: component,
