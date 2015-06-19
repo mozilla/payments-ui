@@ -9286,7 +9286,7 @@
 	
 	var CardDetails = __webpack_require__(198);
 	var CardListing = __webpack_require__(249);
-	var CompletePayment = __webpack_require__(252);
+	var CompletePayment = __webpack_require__(259);
 	var Login = __webpack_require__(260);
 	
 	var products = __webpack_require__(200);
@@ -37326,13 +37326,13 @@
 
 	'use strict';
 	
-	var $ = __webpack_require__(1);
 	var React = __webpack_require__(3);
 	var Navigation = __webpack_require__(159).Navigation;
 	
 	var CardChoice = __webpack_require__(250);
 	var ProductDetail = __webpack_require__(199);
 	var Spinner = __webpack_require__(248);
+	var UserStore = __webpack_require__(252);
 	var gettext = __webpack_require__(203).gettext;
 	
 	
@@ -37349,25 +37349,16 @@
 	  },
 	
 	  componentDidMount: function() {
-	    $.ajax({
-	      method: 'get',
-	      url: '/api/braintree/mozilla/paymethod/',
-	      context: this,
-	    }).then(function(data) {
-	      if (this.isMounted()) {
-	        // Ignore react/no-did-mount-set-state eslint warning
-	        if (data.length) {
-	          console.log('Card data found, showing card form');
-	          this.setState({cards: data}); // eslint-disable-line
-	        } else {
-	          console.log('No card data found, showing card form');
-	          this.transitionTo('card-form');
-	        }
-	      }
-	    }).fail(function() {
-	      // TODO: some error state.
-	      console.log('Card list retrieval failed');
-	    });
+	    var user = UserStore.getLoggedInUser();
+	    console.log('got logged in user:', user);
+	
+	    if (user.payment_methods.length) {
+	      console.log('Card data found, showing card form');
+	      this.setState({cards: user.payment_methods});
+	    } else {
+	      console.log('No card data found, showing card form');
+	      this.transitionTo('card-form');
+	    }
 	  },
 	
 	  contextTypes: {
@@ -37533,72 +37524,10 @@
 
 	'use strict';
 	
-	var React = __webpack_require__(3);
+	var assign = __webpack_require__(253);
+	var EventEmitter = __webpack_require__(254).EventEmitter;
 	
-	var UserStore = __webpack_require__(253);
-	var ProductDetail = __webpack_require__(199);
-	var SubmitButton = __webpack_require__(247);
-	
-	var gettext = __webpack_require__(203).gettext;
-	
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'CompleteView',
-	
-	  propTypes: {
-	    productId: React.PropTypes.string.isRequired,
-	  },
-	
-	  getInitialState: function() {
-	    return {
-	      user: UserStore.getCurrentUser(),
-	    }
-	  },
-	
-	  handleClick: function(e) {
-	    e.preventDefault();
-	    if (window.parent !== window) {
-	      // Note: the targetOrigin is wide open.
-	      // Nothing sensitive should be sent whilst
-	      // that's the case.
-	      console.log('Telling parent to close modal.');
-	      // Stringifying the object is necessary for
-	      // IE9 support.
-	      window.parent.postMessage(JSON.stringify({
-	        event: 'purchase-completed',
-	      }), '*');
-	    } else {
-	      console.log('Not iframed. No-op');
-	    }
-	  },
-	
-	  render: function() {
-	    return (
-	      React.createElement("div", {className: "complete"}, 
-	        React.createElement(ProductDetail, {productId: this.props.productId}), 
-	        React.createElement("p", {className: "accepted"}, gettext('Payment Accepted')), 
-	        React.createElement("p", {className: "receipt"}, 
-	          gettext('Your receipt has been sent to'), 
-	          React.createElement("span", {className: "email"}, this.state.user.email)
-	        ), 
-	        React.createElement(SubmitButton, {text: gettext('OK'), onClick: this.handleClick})
-	      )
-	    );
-	  },
-	});
-
-
-/***/ },
-/* 253 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var assign = __webpack_require__(254);
-	var EventEmitter = __webpack_require__(255).EventEmitter;
-	
-	var dispatcher = __webpack_require__(256);
+	var dispatcher = __webpack_require__(255);
 	
 	
 	function UserStore(localDispatcher) {
@@ -37613,6 +37542,10 @@
 	  localDispatcher.register((function(payload) {
 	    if (payload.actionType === 'set-user') {
 	      console.log('UserStore: storing current user:', payload.user);
+	      //
+	      // Example:
+	      // {email: 'f@f.com', is_logged_in: true, payment_methods: []}
+	      //
 	      this.currentUser = payload.user;
 	      this.emit('set-user');
 	    }
@@ -37627,6 +37560,14 @@
 	      throw new Error('no user has been set');
 	    }
 	    return this.currentUser;
+	  },
+	
+	  getLoggedInUser: function() {
+	    var user = this.getCurrentUser();
+	    if (!user.is_logged_in) {
+	      throw new Error('the current user is not logged in');
+	    }
+	    return user;
 	  },
 	
 	  addSetUserListener: function(handler) {
@@ -37644,7 +37585,7 @@
 
 
 /***/ },
-/* 254 */
+/* 253 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -37689,7 +37630,7 @@
 
 
 /***/ },
-/* 255 */
+/* 254 */
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -37996,19 +37937,19 @@
 
 
 /***/ },
-/* 256 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Dispatcher = __webpack_require__(257).Dispatcher;
+	var Dispatcher = __webpack_require__(256).Dispatcher;
 	
 	// Create a shared dispatcher for the application.
 	module.exports = new Dispatcher();
 
 
 /***/ },
-/* 257 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -38020,11 +37961,11 @@
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 */
 	
-	module.exports.Dispatcher = __webpack_require__(258)
+	module.exports.Dispatcher = __webpack_require__(257)
 
 
 /***/ },
-/* 258 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -38041,7 +37982,7 @@
 	
 	"use strict";
 	
-	var invariant = __webpack_require__(259);
+	var invariant = __webpack_require__(258);
 	
 	var _lastID = 1;
 	var _prefix = 'ID_';
@@ -38280,7 +38221,7 @@
 
 
 /***/ },
-/* 259 */
+/* 258 */
 /***/ function(module, exports) {
 
 	/**
@@ -38339,6 +38280,68 @@
 
 
 /***/ },
+/* 259 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(3);
+	
+	var UserStore = __webpack_require__(252);
+	var ProductDetail = __webpack_require__(199);
+	var SubmitButton = __webpack_require__(247);
+	
+	var gettext = __webpack_require__(203).gettext;
+	
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'CompleteView',
+	
+	  propTypes: {
+	    productId: React.PropTypes.string.isRequired,
+	  },
+	
+	  getInitialState: function() {
+	    return {
+	      user: UserStore.getCurrentUser(),
+	    }
+	  },
+	
+	  handleClick: function(e) {
+	    e.preventDefault();
+	    if (window.parent !== window) {
+	      // Note: the targetOrigin is wide open.
+	      // Nothing sensitive should be sent whilst
+	      // that's the case.
+	      console.log('Telling parent to close modal.');
+	      // Stringifying the object is necessary for
+	      // IE9 support.
+	      window.parent.postMessage(JSON.stringify({
+	        event: 'purchase-completed',
+	      }), '*');
+	    } else {
+	      console.log('Not iframed. No-op');
+	    }
+	  },
+	
+	  render: function() {
+	    return (
+	      React.createElement("div", {className: "complete"}, 
+	        React.createElement(ProductDetail, {productId: this.props.productId}), 
+	        React.createElement("p", {className: "accepted"}, gettext('Payment Accepted')), 
+	        React.createElement("p", {className: "receipt"}, 
+	          gettext('Your receipt has been sent to'), 
+	          React.createElement("span", {className: "email"}, this.state.user.email)
+	        ), 
+	        React.createElement(SubmitButton, {text: gettext('OK'), onClick: this.handleClick})
+	      )
+	    );
+	  },
+	});
+
+
+/***/ },
 /* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -38349,7 +38352,7 @@
 	var Navigation = __webpack_require__(159).Navigation;
 	
 	var UserActions = __webpack_require__(261);
-	var UserStore = __webpack_require__(253);
+	var UserStore = __webpack_require__(252);
 	var Spinner = __webpack_require__(248);
 	var gettext = __webpack_require__(203).gettext;
 	
@@ -38402,9 +38405,9 @@
 	'use strict';
 	
 	var $ = __webpack_require__(1);
-	var assign = __webpack_require__(254);
+	var assign = __webpack_require__(253);
 	
-	var dispatcher = __webpack_require__(256);
+	var dispatcher = __webpack_require__(255);
 	
 	//
 	// A helper object to perform user-related actions.
@@ -38428,6 +38431,7 @@
 	      console.log('login succeeded');
 	      this.setCurrentUser({
 	        email: data.buyer_email,
+	        payment_methods: data.payment_methods,
 	        is_logged_in: true,
 	      });
 	
