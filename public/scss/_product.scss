@@ -1,13 +1,18 @@
 .product {
+  display: block;
+  text-align: center;
+  @include header-font();
 
   .title {
+    font-size: $medium-font;
     font-weight: normal;
-    text-align: center;
+    padding-bottom: 0.35em;
+    margin: 0em;
   }
 
   .price {
-    display: block;
-    text-align: center;
+    font-size: $very-large-font;
+    line-height: 1em;
+    font-weight: 200;
   }
-
 }

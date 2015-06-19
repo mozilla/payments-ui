@@ -23,10 +23,10 @@ module.exports = React.createClass({
 
     return (
       <div className="product">
-        <h1 className="title">{productData.description.en}</h1>
-        <span className="price">
-          {productData.price.en + ' ' +
-           gettext('per month')}</span>
+        <h1 className="title">{productData.seller.name.en}</h1>
+        <div>{productData.description.en}</div>
+        <div className="price">{productData.price.en}</div>
+        <div>{gettext('per month')}</div>
       </div>
     );
   },
