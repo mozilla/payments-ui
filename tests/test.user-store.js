@@ -12,12 +12,11 @@ describe('UserStore', function() {
     opt = opt || {};
     opt.user = opt.user || {
       email: 'foo@bar.com',
-      is_logged_in: true,
       payment_methods: [],
     };
 
     dispatch({
-      actionType: 'set-user',
+      actionType: 'user-signed-in',
       user: opt.user,
     });
 
@@ -45,28 +44,18 @@ describe('UserStore', function() {
     this.emitSpy = sinon.spy(userStore, 'emit');
   });
 
-  it('should let you get the current user', function() {
+  it('should let you get the signed in user', function() {
     var user = dispatchUser();
-    assert.equal(userStore.getCurrentUser(), user);
+    assert.equal(userStore.getSignedInUser(), user);
   });
 
-  it('should let you get the logged in user', function() {
-    var user = dispatchUser();
-    assert.equal(userStore.getLoggedInUser(), user);
-  });
-
-  it('should emit a set-user event', function() {
+  it('should emit a user-signed-in event', function() {
     dispatchUser();
-    assert.equal(this.emitSpy.firstCall.args[0], 'set-user');
+    assert.equal(this.emitSpy.firstCall.args[0], 'user-signed-in');
   });
 
-  it('should throw an error if user has not been set', function() {
-    assert.throws(userStore.getCurrentUser, Error);
-  });
-
-  it('should throw an error if user is not logged in', function() {
-    dispatchUser({user: {is_logged_in: false}});
-    assert.throws(userStore.getLoggedInUser, Error);
+  it('should throw an error if user is not signed in', function() {
+    assert.throws(userStore.getSignedInUser, Error);
   });
 
 });

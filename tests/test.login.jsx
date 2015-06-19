@@ -32,28 +32,21 @@ describe('Login', function() {
 
   it('should listen to user change', function() {
     var view = mountView();
-    assert.equal(UserStore.addSetUserListener.firstCall.args[0],
-                 view.component.onSetUser);
+    assert.equal(UserStore.addSignInListener.firstCall.args[0],
+                 view.component.onUserSignIn);
   });
 
   it('should clean up user listeners', function() {
     var view = mountView();
     view.component.componentWillUnmount();
-    assert.equal(UserStore.removeSetUserListener.firstCall.args[0],
-                 view.component.onSetUser);
+    assert.equal(UserStore.removeSignInListener.firstCall.args[0],
+                 view.component.onUserSignIn);
   });
 
   it('should navigate to card-listing when user signs in', function() {
-    UserStore.getCurrentUser = function() {
-      return {
-        is_logged_in: true,
-      };
-    };
     var view = mountView();
-    view.component.onSetUser();
+    view.component.onUserSignIn();
     assert.equal(view.transitionSpy.firstCall.args[0], 'card-listing');
   });
-
-  // TODO: add a test for sign-in failures when we know what to do there.
 
 });

@@ -3,6 +3,7 @@
 var $ = require('jquery');
 var assign = require('object-assign');
 
+var AppActions = require('app-actions');
 var dispatcher = require('dispatcher');
 
 //
@@ -24,11 +25,10 @@ module.exports = assign({}, {
       context: this,
     }).then(function(data) {
 
-      console.log('login succeeded');
-      this.setCurrentUser({
+      console.log('login succeeded, setting user');
+      this.setSignedInUser({
         email: data.buyer_email,
         payment_methods: data.payment_methods,
-        is_logged_in: true,
       });
 
       console.log('setting CSRF token for subsequent requests:',
@@ -41,18 +41,15 @@ module.exports = assign({}, {
 
     }).fail(function() {
 
-      console.log('login failed');
-      this.setCurrentUser({
-        email: null,
-        is_logged_in: false,
-      });
+      AppActions.setError('user login failed');
+
     });
   },
 
-  setCurrentUser: function(user) {
-    console.log('UserActions: setting current user', user);
+  setSignedInUser: function(user) {
+    console.log('UserActions: setting signed in user', user);
     dispatcher.dispatch({
-      actionType: 'set-user',
+      actionType: 'user-signed-in',
       user: user,
     });
   },

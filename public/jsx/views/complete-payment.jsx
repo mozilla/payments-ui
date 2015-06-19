@@ -19,7 +19,7 @@ module.exports = React.createClass({
 
   getInitialState: function() {
     return {
-      user: UserStore.getCurrentUser(),
+      user: UserStore.getSignedInUser(),
     }
   },
 

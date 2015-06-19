@@ -16,14 +16,14 @@ function UserStore(localDispatcher) {
   //
   this.currentUser = null;
   localDispatcher.register((function(payload) {
-    if (payload.actionType === 'set-user') {
-      console.log('UserStore: storing current user:', payload.user);
+    if (payload.actionType === 'user-signed-in') {
+      console.log('UserStore: storing signed in user:', payload.user);
       //
       // Example:
-      // {email: 'f@f.com', is_logged_in: true, payment_methods: []}
+      // {email: 'f@f.com', payment_methods: []}
       //
       this.currentUser = payload.user;
-      this.emit('set-user');
+      this.emit('user-signed-in');
     }
   }).bind(this));
 }
@@ -31,27 +31,19 @@ function UserStore(localDispatcher) {
 
 UserStore.prototype = assign({}, EventEmitter.prototype, {
 
-  getCurrentUser: function() {
+  getSignedInUser: function() {
     if (!this.currentUser) {
-      throw new Error('no user has been set');
+      throw new Error('user is not signed in');
     }
     return this.currentUser;
   },
 
-  getLoggedInUser: function() {
-    var user = this.getCurrentUser();
-    if (!user.is_logged_in) {
-      throw new Error('the current user is not logged in');
-    }
-    return user;
+  addSignInListener: function(handler) {
+    this.on('user-signed-in', handler);
   },
 
-  addSetUserListener: function(handler) {
-    this.on('set-user', handler);
-  },
-
-  removeSetUserListener: function(handler) {
-    this.removeListener('set-user', handler);
+  removeSignInListener: function(handler) {
+    this.removeListener('user-signed-in', handler);
   },
 
 });

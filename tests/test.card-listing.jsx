@@ -25,7 +25,7 @@ describe('CardListingView', function() {
   }
 
   function setUser(user) {
-    UserStore.getLoggedInUser = function() {
+    UserStore.getSignedInUser = function() {
       return user;
     };
   }

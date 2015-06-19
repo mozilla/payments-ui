@@ -5,9 +5,11 @@ var Router = require('react-router');
 var Route = Router.Route;
 var RouteHandler = Router.RouteHandler;
 
+var AppStore = require('app-store');
 var CardDetails = require('views/card-details');
 var CardListing = require('views/card-listing');
 var CompletePayment = require('views/complete-payment');
+var ErrorMessage = require('components/error');
 var Login = require('views/login');
 
 var products = require('products');
@@ -25,8 +27,21 @@ var App = React.createClass({
     var productId = router.getCurrentQuery().product;
 
     return {
+      error: AppStore.getError(),
       productId: productId,
     };
+  },
+
+  componentDidMount: function() {
+    AppStore.addErrorListener(this.onError);
+  },
+
+  componentWillUnmount: function() {
+    AppStore.removeErrorListener(this.onError);
+  },
+
+  onError: function() {
+    this.setState({error: AppStore.getError()});
   },
 
   render () {
@@ -36,7 +51,11 @@ var App = React.createClass({
     return (
       <main>
         <div id="logo" style={img}></div>
-        <RouteHandler productId={this.state.productId} />
+        {
+          this.state.error ?
+            <ErrorMessage /> :
+            <RouteHandler productId={this.state.productId} />
+        }
       </main>
     );
   },
@@ -55,6 +74,7 @@ var routes = (
 );
 
 module.exports = {
+  component: App,
   init: function() {
     Router.run(routes, Router.HashLocation, function(Root) {
       // Doesn't actually render anything.
