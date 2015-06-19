@@ -18,6 +18,10 @@ function UserStore(localDispatcher) {
   localDispatcher.register((function(payload) {
     if (payload.actionType === 'set-user') {
       console.log('UserStore: storing current user:', payload.user);
+      //
+      // Example:
+      // {email: 'f@f.com', is_logged_in: true, payment_methods: []}
+      //
       this.currentUser = payload.user;
       this.emit('set-user');
     }
@@ -32,6 +36,14 @@ UserStore.prototype = assign({}, EventEmitter.prototype, {
       throw new Error('no user has been set');
     }
     return this.currentUser;
+  },
+
+  getLoggedInUser: function() {
+    var user = this.getCurrentUser();
+    if (!user.is_logged_in) {
+      throw new Error('the current user is not logged in');
+    }
+    return user;
   },
 
   addSetUserListener: function(handler) {

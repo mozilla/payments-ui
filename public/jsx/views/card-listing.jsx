@@ -1,12 +1,12 @@
 'use strict';
 
-var $ = require('jquery');
 var React = require('react');
 var Navigation = require('react-router').Navigation;
 
 var CardChoice = require('components/card-choice');
 var ProductDetail = require('components/product-detail');
 var Spinner = require('components/spinner');
+var UserStore = require('user-store');
 var gettext = require('utils').gettext;
 
 
@@ -23,25 +23,16 @@ module.exports = React.createClass({
   },
 
   componentDidMount: function() {
-    $.ajax({
-      method: 'get',
-      url: '/api/braintree/mozilla/paymethod/',
-      context: this,
-    }).then(function(data) {
-      if (this.isMounted()) {
-        // Ignore react/no-did-mount-set-state eslint warning
-        if (data.length) {
-          console.log('Card data found, showing card form');
-          this.setState({cards: data}); // eslint-disable-line
-        } else {
-          console.log('No card data found, showing card form');
-          this.transitionTo('card-form');
-        }
-      }
-    }).fail(function() {
-      // TODO: some error state.
-      console.log('Card list retrieval failed');
-    });
+    var user = UserStore.getLoggedInUser();
+    console.log('got logged in user:', user);
+
+    if (user.payment_methods.length) {
+      console.log('Card data found, showing card form');
+      this.setState({cards: user.payment_methods});
+    } else {
+      console.log('No card data found, showing card form');
+      this.transitionTo('card-form');
+    }
   },
 
   contextTypes: {
