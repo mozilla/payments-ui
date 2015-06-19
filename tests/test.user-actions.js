@@ -29,7 +29,21 @@ describe('UserActions', function() {
     return {
       buyer_email: 'person@somehwere.com',
       csrf_token: 'some-csrf-token',
+      payment_methods: [],
     };
+  }
+
+  function setApiSignInResult(opt) {
+    opt = opt || {};
+    opt.data = opt.data || fakeSignInResult();
+
+    opt.jqueryOpt = opt.jqueryOpt || {};
+    opt.jqueryOpt.returnedData = opt.data;
+
+    var jquery = helpers.fakeJquery(opt.jqueryOpt);
+    userActions.__set__('$', jquery.stub);
+
+    return opt.data;
   }
 
   it('should dispatch current user', function() {
@@ -42,22 +56,43 @@ describe('UserActions', function() {
   });
 
   it('should set user from sign-in', function() {
+    var data = setApiSignInResult();
+    var setUser = sinon.spy(userActions, 'setCurrentUser');
+
+    userActions.signIn('access-token');
+
+    var userData = setUser.firstCall.args[0];
+    assert.equal(userData.email, data.buyer_email);
+    assert.equal(userData.is_logged_in, true);
+  });
+
+  it('should set saved payment methods', function() {
     var data = fakeSignInResult();
-    var jquery = helpers.fakeJquery({returnedData: data});
-    userActions.__set__('$', jquery.stub);
+    var payMethods = [{'provider_id': '3vr3ym'}];
+    data.payment_methods = payMethods;
+    setApiSignInResult({data: data});
 
     var setUser = sinon.spy(userActions, 'setCurrentUser');
 
     userActions.signIn('access-token');
 
-    assert.deepEqual(setUser.firstCall.args[0],
-                     {email: data.buyer_email, is_logged_in: true});
+    var userData = setUser.firstCall.args[0];
+    assert.equal(userData.payment_methods, payMethods);
+  });
+
+  it('should set empty payment methods', function() {
+    setApiSignInResult();
+    var setUser = sinon.spy(userActions, 'setCurrentUser');
+
+    userActions.signIn('access-token');
+
+    var userData = setUser.firstCall.args[0];
+    assert.deepEqual(userData.payment_methods, []);
   });
 
   it('should sign-in with access token', function() {
     var jquery = helpers.fakeJquery({returnedData: fakeSignInResult()});
     userActions.__set__('$', jquery.stub);
-
     userActions.signIn('access-token');
 
     assert.equal(jquery.ajaxSpy.firstCall.args[0].data.access_token,
@@ -68,7 +103,6 @@ describe('UserActions', function() {
     var data = fakeSignInResult();
     var jquery = helpers.fakeJquery({returnedData: data});
     userActions.__set__('$', jquery.stub);
-
     userActions.signIn('access-token');
 
     assert.deepEqual(jquery.ajaxSetupSpy.firstCall.args[0].headers,
@@ -76,14 +110,14 @@ describe('UserActions', function() {
   });
 
   it('should set signed out user on failure', function() {
-    var jquery = helpers.fakeJquery({result: 'fail'});
-    userActions.__set__('$', jquery.stub);
+    setApiSignInResult({jqueryOpt: {result: 'fail'}});
     var setUser = sinon.spy(userActions, 'setCurrentUser');
 
     userActions.signIn('access-token');
 
-    assert.deepEqual(setUser.firstCall.args[0],
-                     {email: null, is_logged_in: false});
+    var userData = setUser.firstCall.args[0];
+    assert.equal(userData.email, null);
+    assert.equal(userData.is_logged_in, false);
   });
 
 });

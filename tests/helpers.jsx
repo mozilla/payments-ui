@@ -45,17 +45,26 @@ module.exports = {
     return TestUtils.findRenderedDOMComponentWithTag(component, tag);
   },
 
-  getRoutedComponent: function(targetComponent) {
+  getRoutedComponent: function(targetComponent, componentProps) {
     //
     // Initialize a component with a router so it can be tested.
     //
+    // targetComponent
+    //  This is the React component class that you want to test.
+    //
+    // componentProps
+    //  Optional object of properties to render the component with.
+    //
     // inspired by http://bit.ly/1G0FX72
     //
+    componentProps = componentProps || {};
 
+    var transitionSpy = sinon.spy();
     var component;
     var Route = Router.Route;
     var TestLocation = Router.TestLocation;
     var location = new TestLocation(['/test']);
+
     var routes = (
       <Route name="test" path="/test" handler={targetComponent} />
     );
@@ -63,10 +72,26 @@ module.exports = {
     function RouterStub() {}
 
     assign(RouterStub, {
-      transitionTo: function() {},
+      makePath () {},
+      makeHref () {},
+      transitionTo () {},
+      replaceWith () {},
+      goBack () {},
+      getCurrentPath () {},
+      getCurrentRoutes () {},
+      getCurrentPathname () {},
+      getCurrentParams () {},
+      getCurrentQuery () {},
+      isActive () {},
+      getRouteAtDepth() {},
+      setRouteComponentAtDepth() {},
     });
 
     var StubRouterContext = function(Component, props) {
+
+      // Stub out transitionTo() because it will only create errors saying
+      // that no route exists (because we stubbed out routes).
+      Component.transitionTo = transitionSpy;
 
       return React.createClass({
         displayName: 'StubRouterContext',
@@ -91,27 +116,24 @@ module.exports = {
 
     Router.run(routes, location, function (handler, props) {
       props = props || {};
+      assign(props, componentProps);
 
       /*eslint-disable new-cap */
       var TestSubject = StubRouterContext(handler, props);
       /*eslint-enable */
       var mainComponent = React.render(<TestSubject />, global.document.body);
+
       // Now we can fetch our component that was rendered with a router.
       component = TestUtils.findRenderedComponentWithType(
         mainComponent, targetComponent
       );
-
-      // Stub out transitionTo() because it will only create errors saying
-      // that no route exists (because we stubbed out routes).
-      component.transitionTo = function(path) {
-        console.log('component under test transitioned to:', path);
-      };
 
     });
 
     return {
       component: component,
       router: RouterStub,
+      transitionSpy: transitionSpy,
     };
   },
 
@@ -172,6 +194,7 @@ module.exports = {
       },
       UserStore: {
         getCurrentUser: sinon.spy(),
+        getLoggedInUser: sinon.spy(),
         addSetUserListener: sinon.spy(),
         removeSetUserListener: sinon.spy(),
       },

@@ -27,6 +27,7 @@ module.exports = assign({}, {
       console.log('login succeeded');
       this.setCurrentUser({
         email: data.buyer_email,
+        payment_methods: data.payment_methods,
         is_logged_in: true,
       });
 

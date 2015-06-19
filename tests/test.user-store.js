@@ -8,13 +8,20 @@ describe('UserStore', function() {
   var userStore;
   var dispatch;
 
-  function dispatchUser() {
-    var user = {email: 'foo@bar.com'};
+  function dispatchUser(opt) {
+    opt = opt || {};
+    opt.user = opt.user || {
+      email: 'foo@bar.com',
+      is_logged_in: true,
+      payment_methods: [],
+    };
+
     dispatch({
       actionType: 'set-user',
-      user: user,
+      user: opt.user,
     });
-    return user;
+
+    return opt.user;
   }
 
   beforeEach(function() {
@@ -38,9 +45,14 @@ describe('UserStore', function() {
     this.emitSpy = sinon.spy(userStore, 'emit');
   });
 
-  it('should respond to set-user actions', function() {
+  it('should let you get the current user', function() {
     var user = dispatchUser();
     assert.equal(userStore.getCurrentUser(), user);
+  });
+
+  it('should let you get the logged in user', function() {
+    var user = dispatchUser();
+    assert.equal(userStore.getLoggedInUser(), user);
   });
 
   it('should emit a set-user event', function() {
@@ -50,6 +62,11 @@ describe('UserStore', function() {
 
   it('should throw an error if user has not been set', function() {
     assert.throws(userStore.getCurrentUser, Error);
+  });
+
+  it('should throw an error if user is not logged in', function() {
+    dispatchUser({user: {is_logged_in: false}});
+    assert.throws(userStore.getLoggedInUser, Error);
   });
 
 });
