@@ -354,6 +354,20 @@ th {
 
 @font-face {
   font-family: "Fira Sans";
+  src: url("../fonts/firasans/firasans-light.eot");
+  src: local("Fira Sans Regular"), url("../fonts/firasans/firasans-light.eot?#iefix") format("embedded-opentype"), url("../fonts/firasans/firasans-light.woff") format("woff"), url("../fonts/firasans/firasans-light.ttf") format("truetype");
+  font-weight: 200;
+  font-style: normal; }
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url("../fonts/firasans/firasans-lightitalic.eot");
+  src: local("Fira Sans Regular Italic"), url("../fonts/firasans/firasans-lightitalic.eot?#iefix") format("embedded-opentype"), url("../fonts/firasans/firasans-lightitalic.woff") format("woff"), url("../fonts/firasans/firasans-lightitalic.ttf") format("truetype");
+  font-weight: 200;
+  font-style: italic; }
+
+@font-face {
+  font-family: "Fira Sans";
   src: url("../fonts/firasans/firasans-regular.eot");
   src: local("Fira Sans Regular"), url("../fonts/firasans/firasans-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/firasans/firasans-regular.woff") format("woff"), url("../fonts/firasans/firasans-regular.ttf") format("truetype");
   font-weight: 400;
@@ -438,7 +452,6 @@ th {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: "Fira Sans", Helvetica, Arial, sans-serif;
-  font-weight: bold;
   line-height: 1.35em;
   margin: .75em 0; }
 
@@ -470,8 +483,7 @@ body {
   padding: 5px; }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Fira Sans", Helvetica, Arial, sans-serif;
-  font-weight: bold; }
+  font-family: "Fira Sans", Helvetica, Arial, sans-serif; }
 
 .complete {
   text-align: center; }
@@ -532,6 +544,10 @@ main {
       width: 100%; }
     .card-listing .card-item .card-icon {
       left: 15px; }
+
+.complete .accepted {
+  font-family: "Fira Sans", Helvetica, Arial, sans-serif;
+  font-weight: 200; }
 
 .button {
   display: inline-block;
@@ -624,7 +640,7 @@ button::-moz-focus-inner {
   height: 25.12px; }
 
 form {
-  padding-top: 2em; }
+  padding-top: 1em; }
 
 label {
   display: block;
@@ -732,13 +748,19 @@ label:focus ~ .input-help-focused {
   opacity: 1;
   transition: opacity 450ms; }
 
-.product .title {
-  font-weight: normal;
-  text-align: center; }
-
-.product .price {
+.product {
   display: block;
-  text-align: center; }
+  text-align: center;
+  font-family: "Fira Sans", Helvetica, Arial, sans-serif; }
+  .product .title {
+    font-size: 18px;
+    font-weight: normal;
+    padding-bottom: 0.35em;
+    margin: 0em; }
+  .product .price {
+    font-size: 42px;
+    line-height: 1em;
+    font-weight: 200; }
 
 /*
  * Hide only visually, but have it available for screen readers:

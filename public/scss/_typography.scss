@@ -1,6 +1,9 @@
 // $local-name, $path, $family, $font-weight, $font-style="normal"
 
 // Fira Sans
+@include font-face('Fira Sans Regular', 'firasans/firasans-light', 'Fira Sans', 200);
+@include font-face('Fira Sans Regular Italic', 'firasans/firasans-lightitalic', 'Fira Sans', 200, 'italic');
+
 @include font-face('Fira Sans Regular', 'firasans/firasans-regular', 'Fira Sans', 400);
 @include font-face('Fira Sans Regular Italic', 'firasans/firasans-regularitalic', 'Fira Sans', 400, 'italic');
 
@@ -22,7 +25,6 @@
 
 h1,h2,h3,h4,h5,h6 {
   @include header-font();
-  font-weight: bold;
   line-height: 1.35em;
   margin: .75em 0;
 }

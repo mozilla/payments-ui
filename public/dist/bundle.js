@@ -32922,10 +32922,10 @@
 	
 	    return (
 	      React.createElement("div", {className: "product"}, 
-	        React.createElement("h1", {className: "title"}, productData.description.en), 
-	        React.createElement("span", {className: "price"}, 
-	          productData.price.en + ' ' +
-	           gettext('per month'))
+	        React.createElement("h1", {className: "title"}, productData.seller.name.en), 
+	        React.createElement("div", null, productData.description.en), 
+	        React.createElement("div", {className: "price"}, productData.price.en), 
+	        React.createElement("div", null, gettext('per month'))
 	      )
 	    );
 	  },
@@ -32956,6 +32956,14 @@
 		"price": {
 			"en": "$10.00"
 		},
+		"seller": {
+			"url": "http://pay.dev.mozaws.net/",
+			"terms": "http://pay.dev.mozaws.net/terms/",
+			"id": "mozilla-concrete",
+			"name": {
+				"en": "Mozilla Concrete"
+			}
+		},
 		"currency": "USD",
 		"amount": "10.00",
 		"active": true,
@@ -32973,6 +32981,14 @@
 		"img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/mortar.png",
 		"price": {
 			"en": "$5.00"
+		},
+		"seller": {
+			"url": "http://pay.dev.mozaws.net/",
+			"terms": "http://pay.dev.mozaws.net/terms/",
+			"id": "mozilla-concrete",
+			"name": {
+				"en": "Mozilla Concrete"
+			}
 		},
 		"currency": "USD",
 		"amount": "5.00",
