@@ -9284,12 +9284,14 @@
 	var Route = Router.Route;
 	var RouteHandler = Router.RouteHandler;
 	
-	var CardDetails = __webpack_require__(198);
-	var CardListing = __webpack_require__(249);
-	var CompletePayment = __webpack_require__(259);
-	var Login = __webpack_require__(260);
+	var AppStore = __webpack_require__(198);
+	var CardDetails = __webpack_require__(205);
+	var CardListing = __webpack_require__(256);
+	var CompletePayment = __webpack_require__(260);
+	var ErrorMessage = __webpack_require__(261);
+	var Login = __webpack_require__(262);
 	
-	var products = __webpack_require__(200);
+	var products = __webpack_require__(207);
 	
 	var App = React.createClass({
 	
@@ -9304,8 +9306,21 @@
 	    var productId = router.getCurrentQuery().product;
 	
 	    return {
+	      error: AppStore.getError(),
 	      productId: productId,
 	    };
+	  },
+	
+	  componentDidMount: function() {
+	    AppStore.addErrorListener(this.onError);
+	  },
+	
+	  componentWillUnmount: function() {
+	    AppStore.removeErrorListener(this.onError);
+	  },
+	
+	  onError: function() {
+	    this.setState({error: AppStore.getError()});
 	  },
 	
 	  render:function () {
@@ -9315,7 +9330,11 @@
 	    return (
 	      React.createElement("main", null, 
 	        React.createElement("div", {id: "logo", style: img}), 
-	        React.createElement(RouteHandler, {productId: this.state.productId})
+	        
+	          this.state.error ?
+	            React.createElement(ErrorMessage, null) :
+	            React.createElement(RouteHandler, {productId: this.state.productId})
+	        
 	      )
 	    );
 	  },
@@ -9334,6 +9353,7 @@
 	);
 	
 	module.exports = {
+	  component: App,
 	  init: function() {
 	    Router.run(routes, Router.HashLocation, function(Root) {
 	      // Doesn't actually render anything.
@@ -32835,14 +32855,755 @@
 
 	'use strict';
 	
+	var assign = __webpack_require__(199);
+	var EventEmitter = __webpack_require__(200).EventEmitter;
+	
+	var dispatcher = __webpack_require__(201);
+	
+	
+	function AppStore(localDispatcher) {
+	  this.error = null;
+	  localDispatcher.register((function(payload) {
+	    if (payload.actionType === 'set-app-error') {
+	      // Example:
+	      //   {debugMessage: 'detailed message but not one to show the user'}
+	      this.error = payload.error;
+	      console.error('encountered app error:', this.error);
+	      this.emit('set-app-error');
+	    }
+	  }).bind(this));
+	}
+	
+	
+	AppStore.prototype = assign({}, EventEmitter.prototype, {
+	
+	  getError: function() {
+	    return this.error;
+	  },
+	
+	  addErrorListener: function(handler) {
+	    this.on('set-app-error', handler);
+	  },
+	
+	  removeErrorListener: function(handler) {
+	    this.removeListener('set-app-error', handler);
+	  },
+	
+	});
+	
+	
+	module.exports = new AppStore(dispatcher);
+
+
+/***/ },
+/* 199 */
+/***/ function(module, exports) {
+
+	'use strict';
+	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+	
+	function ToObject(val) {
+		if (val == null) {
+			throw new TypeError('Object.assign cannot be called with null or undefined');
+		}
+	
+		return Object(val);
+	}
+	
+	function ownEnumerableKeys(obj) {
+		var keys = Object.getOwnPropertyNames(obj);
+	
+		if (Object.getOwnPropertySymbols) {
+			keys = keys.concat(Object.getOwnPropertySymbols(obj));
+		}
+	
+		return keys.filter(function (key) {
+			return propIsEnumerable.call(obj, key);
+		});
+	}
+	
+	module.exports = Object.assign || function (target, source) {
+		var from;
+		var keys;
+		var to = ToObject(target);
+	
+		for (var s = 1; s < arguments.length; s++) {
+			from = arguments[s];
+			keys = ownEnumerableKeys(Object(from));
+	
+			for (var i = 0; i < keys.length; i++) {
+				to[keys[i]] = from[keys[i]];
+			}
+		}
+	
+		return to;
+	};
+
+
+/***/ },
+/* 200 */
+/***/ function(module, exports) {
+
+	// Copyright Joyent, Inc. and other Node contributors.
+	//
+	// Permission is hereby granted, free of charge, to any person obtaining a
+	// copy of this software and associated documentation files (the
+	// "Software"), to deal in the Software without restriction, including
+	// without limitation the rights to use, copy, modify, merge, publish,
+	// distribute, sublicense, and/or sell copies of the Software, and to permit
+	// persons to whom the Software is furnished to do so, subject to the
+	// following conditions:
+	//
+	// The above copyright notice and this permission notice shall be included
+	// in all copies or substantial portions of the Software.
+	//
+	// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+	// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+	// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+	// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+	// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+	// USE OR OTHER DEALINGS IN THE SOFTWARE.
+	
+	function EventEmitter() {
+	  this._events = this._events || {};
+	  this._maxListeners = this._maxListeners || undefined;
+	}
+	module.exports = EventEmitter;
+	
+	// Backwards-compat with node 0.10.x
+	EventEmitter.EventEmitter = EventEmitter;
+	
+	EventEmitter.prototype._events = undefined;
+	EventEmitter.prototype._maxListeners = undefined;
+	
+	// By default EventEmitters will print a warning if more than 10 listeners are
+	// added to it. This is a useful default which helps finding memory leaks.
+	EventEmitter.defaultMaxListeners = 10;
+	
+	// Obviously not all Emitters should be limited to 10. This function allows
+	// that to be increased. Set to zero for unlimited.
+	EventEmitter.prototype.setMaxListeners = function(n) {
+	  if (!isNumber(n) || n < 0 || isNaN(n))
+	    throw TypeError('n must be a positive number');
+	  this._maxListeners = n;
+	  return this;
+	};
+	
+	EventEmitter.prototype.emit = function(type) {
+	  var er, handler, len, args, i, listeners;
+	
+	  if (!this._events)
+	    this._events = {};
+	
+	  // If there is no 'error' event listener then throw.
+	  if (type === 'error') {
+	    if (!this._events.error ||
+	        (isObject(this._events.error) && !this._events.error.length)) {
+	      er = arguments[1];
+	      if (er instanceof Error) {
+	        throw er; // Unhandled 'error' event
+	      }
+	      throw TypeError('Uncaught, unspecified "error" event.');
+	    }
+	  }
+	
+	  handler = this._events[type];
+	
+	  if (isUndefined(handler))
+	    return false;
+	
+	  if (isFunction(handler)) {
+	    switch (arguments.length) {
+	      // fast cases
+	      case 1:
+	        handler.call(this);
+	        break;
+	      case 2:
+	        handler.call(this, arguments[1]);
+	        break;
+	      case 3:
+	        handler.call(this, arguments[1], arguments[2]);
+	        break;
+	      // slower
+	      default:
+	        len = arguments.length;
+	        args = new Array(len - 1);
+	        for (i = 1; i < len; i++)
+	          args[i - 1] = arguments[i];
+	        handler.apply(this, args);
+	    }
+	  } else if (isObject(handler)) {
+	    len = arguments.length;
+	    args = new Array(len - 1);
+	    for (i = 1; i < len; i++)
+	      args[i - 1] = arguments[i];
+	
+	    listeners = handler.slice();
+	    len = listeners.length;
+	    for (i = 0; i < len; i++)
+	      listeners[i].apply(this, args);
+	  }
+	
+	  return true;
+	};
+	
+	EventEmitter.prototype.addListener = function(type, listener) {
+	  var m;
+	
+	  if (!isFunction(listener))
+	    throw TypeError('listener must be a function');
+	
+	  if (!this._events)
+	    this._events = {};
+	
+	  // To avoid recursion in the case that type === "newListener"! Before
+	  // adding it to the listeners, first emit "newListener".
+	  if (this._events.newListener)
+	    this.emit('newListener', type,
+	              isFunction(listener.listener) ?
+	              listener.listener : listener);
+	
+	  if (!this._events[type])
+	    // Optimize the case of one listener. Don't need the extra array object.
+	    this._events[type] = listener;
+	  else if (isObject(this._events[type]))
+	    // If we've already got an array, just append.
+	    this._events[type].push(listener);
+	  else
+	    // Adding the second element, need to change to array.
+	    this._events[type] = [this._events[type], listener];
+	
+	  // Check for listener leak
+	  if (isObject(this._events[type]) && !this._events[type].warned) {
+	    var m;
+	    if (!isUndefined(this._maxListeners)) {
+	      m = this._maxListeners;
+	    } else {
+	      m = EventEmitter.defaultMaxListeners;
+	    }
+	
+	    if (m && m > 0 && this._events[type].length > m) {
+	      this._events[type].warned = true;
+	      console.error('(node) warning: possible EventEmitter memory ' +
+	                    'leak detected. %d listeners added. ' +
+	                    'Use emitter.setMaxListeners() to increase limit.',
+	                    this._events[type].length);
+	      if (typeof console.trace === 'function') {
+	        // not supported in IE 10
+	        console.trace();
+	      }
+	    }
+	  }
+	
+	  return this;
+	};
+	
+	EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+	
+	EventEmitter.prototype.once = function(type, listener) {
+	  if (!isFunction(listener))
+	    throw TypeError('listener must be a function');
+	
+	  var fired = false;
+	
+	  function g() {
+	    this.removeListener(type, g);
+	
+	    if (!fired) {
+	      fired = true;
+	      listener.apply(this, arguments);
+	    }
+	  }
+	
+	  g.listener = listener;
+	  this.on(type, g);
+	
+	  return this;
+	};
+	
+	// emits a 'removeListener' event iff the listener was removed
+	EventEmitter.prototype.removeListener = function(type, listener) {
+	  var list, position, length, i;
+	
+	  if (!isFunction(listener))
+	    throw TypeError('listener must be a function');
+	
+	  if (!this._events || !this._events[type])
+	    return this;
+	
+	  list = this._events[type];
+	  length = list.length;
+	  position = -1;
+	
+	  if (list === listener ||
+	      (isFunction(list.listener) && list.listener === listener)) {
+	    delete this._events[type];
+	    if (this._events.removeListener)
+	      this.emit('removeListener', type, listener);
+	
+	  } else if (isObject(list)) {
+	    for (i = length; i-- > 0;) {
+	      if (list[i] === listener ||
+	          (list[i].listener && list[i].listener === listener)) {
+	        position = i;
+	        break;
+	      }
+	    }
+	
+	    if (position < 0)
+	      return this;
+	
+	    if (list.length === 1) {
+	      list.length = 0;
+	      delete this._events[type];
+	    } else {
+	      list.splice(position, 1);
+	    }
+	
+	    if (this._events.removeListener)
+	      this.emit('removeListener', type, listener);
+	  }
+	
+	  return this;
+	};
+	
+	EventEmitter.prototype.removeAllListeners = function(type) {
+	  var key, listeners;
+	
+	  if (!this._events)
+	    return this;
+	
+	  // not listening for removeListener, no need to emit
+	  if (!this._events.removeListener) {
+	    if (arguments.length === 0)
+	      this._events = {};
+	    else if (this._events[type])
+	      delete this._events[type];
+	    return this;
+	  }
+	
+	  // emit removeListener for all listeners on all events
+	  if (arguments.length === 0) {
+	    for (key in this._events) {
+	      if (key === 'removeListener') continue;
+	      this.removeAllListeners(key);
+	    }
+	    this.removeAllListeners('removeListener');
+	    this._events = {};
+	    return this;
+	  }
+	
+	  listeners = this._events[type];
+	
+	  if (isFunction(listeners)) {
+	    this.removeListener(type, listeners);
+	  } else {
+	    // LIFO order
+	    while (listeners.length)
+	      this.removeListener(type, listeners[listeners.length - 1]);
+	  }
+	  delete this._events[type];
+	
+	  return this;
+	};
+	
+	EventEmitter.prototype.listeners = function(type) {
+	  var ret;
+	  if (!this._events || !this._events[type])
+	    ret = [];
+	  else if (isFunction(this._events[type]))
+	    ret = [this._events[type]];
+	  else
+	    ret = this._events[type].slice();
+	  return ret;
+	};
+	
+	EventEmitter.listenerCount = function(emitter, type) {
+	  var ret;
+	  if (!emitter._events || !emitter._events[type])
+	    ret = 0;
+	  else if (isFunction(emitter._events[type]))
+	    ret = 1;
+	  else
+	    ret = emitter._events[type].length;
+	  return ret;
+	};
+	
+	function isFunction(arg) {
+	  return typeof arg === 'function';
+	}
+	
+	function isNumber(arg) {
+	  return typeof arg === 'number';
+	}
+	
+	function isObject(arg) {
+	  return typeof arg === 'object' && arg !== null;
+	}
+	
+	function isUndefined(arg) {
+	  return arg === void 0;
+	}
+
+
+/***/ },
+/* 201 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var Dispatcher = __webpack_require__(202).Dispatcher;
+	
+	// Create a shared dispatcher for the application.
+	module.exports = new Dispatcher();
+
+
+/***/ },
+/* 202 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 */
+	
+	module.exports.Dispatcher = __webpack_require__(203)
+
+
+/***/ },
+/* 203 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	 * Copyright (c) 2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule Dispatcher
+	 * @typechecks
+	 */
+	
+	"use strict";
+	
+	var invariant = __webpack_require__(204);
+	
+	var _lastID = 1;
+	var _prefix = 'ID_';
+	
+	/**
+	 * Dispatcher is used to broadcast payloads to registered callbacks. This is
+	 * different from generic pub-sub systems in two ways:
+	 *
+	 *   1) Callbacks are not subscribed to particular events. Every payload is
+	 *      dispatched to every registered callback.
+	 *   2) Callbacks can be deferred in whole or part until other callbacks have
+	 *      been executed.
+	 *
+	 * For example, consider this hypothetical flight destination form, which
+	 * selects a default city when a country is selected:
+	 *
+	 *   var flightDispatcher = new Dispatcher();
+	 *
+	 *   // Keeps track of which country is selected
+	 *   var CountryStore = {country: null};
+	 *
+	 *   // Keeps track of which city is selected
+	 *   var CityStore = {city: null};
+	 *
+	 *   // Keeps track of the base flight price of the selected city
+	 *   var FlightPriceStore = {price: null}
+	 *
+	 * When a user changes the selected city, we dispatch the payload:
+	 *
+	 *   flightDispatcher.dispatch({
+	 *     actionType: 'city-update',
+	 *     selectedCity: 'paris'
+	 *   });
+	 *
+	 * This payload is digested by `CityStore`:
+	 *
+	 *   flightDispatcher.register(function(payload) {
+	 *     if (payload.actionType === 'city-update') {
+	 *       CityStore.city = payload.selectedCity;
+	 *     }
+	 *   });
+	 *
+	 * When the user selects a country, we dispatch the payload:
+	 *
+	 *   flightDispatcher.dispatch({
+	 *     actionType: 'country-update',
+	 *     selectedCountry: 'australia'
+	 *   });
+	 *
+	 * This payload is digested by both stores:
+	 *
+	 *    CountryStore.dispatchToken = flightDispatcher.register(function(payload) {
+	 *     if (payload.actionType === 'country-update') {
+	 *       CountryStore.country = payload.selectedCountry;
+	 *     }
+	 *   });
+	 *
+	 * When the callback to update `CountryStore` is registered, we save a reference
+	 * to the returned token. Using this token with `waitFor()`, we can guarantee
+	 * that `CountryStore` is updated before the callback that updates `CityStore`
+	 * needs to query its data.
+	 *
+	 *   CityStore.dispatchToken = flightDispatcher.register(function(payload) {
+	 *     if (payload.actionType === 'country-update') {
+	 *       // `CountryStore.country` may not be updated.
+	 *       flightDispatcher.waitFor([CountryStore.dispatchToken]);
+	 *       // `CountryStore.country` is now guaranteed to be updated.
+	 *
+	 *       // Select the default city for the new country
+	 *       CityStore.city = getDefaultCityForCountry(CountryStore.country);
+	 *     }
+	 *   });
+	 *
+	 * The usage of `waitFor()` can be chained, for example:
+	 *
+	 *   FlightPriceStore.dispatchToken =
+	 *     flightDispatcher.register(function(payload) {
+	 *       switch (payload.actionType) {
+	 *         case 'country-update':
+	 *           flightDispatcher.waitFor([CityStore.dispatchToken]);
+	 *           FlightPriceStore.price =
+	 *             getFlightPriceStore(CountryStore.country, CityStore.city);
+	 *           break;
+	 *
+	 *         case 'city-update':
+	 *           FlightPriceStore.price =
+	 *             FlightPriceStore(CountryStore.country, CityStore.city);
+	 *           break;
+	 *     }
+	 *   });
+	 *
+	 * The `country-update` payload will be guaranteed to invoke the stores'
+	 * registered callbacks in order: `CountryStore`, `CityStore`, then
+	 * `FlightPriceStore`.
+	 */
+	
+	  function Dispatcher() {
+	    this.$Dispatcher_callbacks = {};
+	    this.$Dispatcher_isPending = {};
+	    this.$Dispatcher_isHandled = {};
+	    this.$Dispatcher_isDispatching = false;
+	    this.$Dispatcher_pendingPayload = null;
+	  }
+	
+	  /**
+	   * Registers a callback to be invoked with every dispatched payload. Returns
+	   * a token that can be used with `waitFor()`.
+	   *
+	   * @param {function} callback
+	   * @return {string}
+	   */
+	  Dispatcher.prototype.register=function(callback) {
+	    var id = _prefix + _lastID++;
+	    this.$Dispatcher_callbacks[id] = callback;
+	    return id;
+	  };
+	
+	  /**
+	   * Removes a callback based on its token.
+	   *
+	   * @param {string} id
+	   */
+	  Dispatcher.prototype.unregister=function(id) {
+	    invariant(
+	      this.$Dispatcher_callbacks[id],
+	      'Dispatcher.unregister(...): `%s` does not map to a registered callback.',
+	      id
+	    );
+	    delete this.$Dispatcher_callbacks[id];
+	  };
+	
+	  /**
+	   * Waits for the callbacks specified to be invoked before continuing execution
+	   * of the current callback. This method should only be used by a callback in
+	   * response to a dispatched payload.
+	   *
+	   * @param {array<string>} ids
+	   */
+	  Dispatcher.prototype.waitFor=function(ids) {
+	    invariant(
+	      this.$Dispatcher_isDispatching,
+	      'Dispatcher.waitFor(...): Must be invoked while dispatching.'
+	    );
+	    for (var ii = 0; ii < ids.length; ii++) {
+	      var id = ids[ii];
+	      if (this.$Dispatcher_isPending[id]) {
+	        invariant(
+	          this.$Dispatcher_isHandled[id],
+	          'Dispatcher.waitFor(...): Circular dependency detected while ' +
+	          'waiting for `%s`.',
+	          id
+	        );
+	        continue;
+	      }
+	      invariant(
+	        this.$Dispatcher_callbacks[id],
+	        'Dispatcher.waitFor(...): `%s` does not map to a registered callback.',
+	        id
+	      );
+	      this.$Dispatcher_invokeCallback(id);
+	    }
+	  };
+	
+	  /**
+	   * Dispatches a payload to all registered callbacks.
+	   *
+	   * @param {object} payload
+	   */
+	  Dispatcher.prototype.dispatch=function(payload) {
+	    invariant(
+	      !this.$Dispatcher_isDispatching,
+	      'Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch.'
+	    );
+	    this.$Dispatcher_startDispatching(payload);
+	    try {
+	      for (var id in this.$Dispatcher_callbacks) {
+	        if (this.$Dispatcher_isPending[id]) {
+	          continue;
+	        }
+	        this.$Dispatcher_invokeCallback(id);
+	      }
+	    } finally {
+	      this.$Dispatcher_stopDispatching();
+	    }
+	  };
+	
+	  /**
+	   * Is this Dispatcher currently dispatching.
+	   *
+	   * @return {boolean}
+	   */
+	  Dispatcher.prototype.isDispatching=function() {
+	    return this.$Dispatcher_isDispatching;
+	  };
+	
+	  /**
+	   * Call the callback stored with the given id. Also do some internal
+	   * bookkeeping.
+	   *
+	   * @param {string} id
+	   * @internal
+	   */
+	  Dispatcher.prototype.$Dispatcher_invokeCallback=function(id) {
+	    this.$Dispatcher_isPending[id] = true;
+	    this.$Dispatcher_callbacks[id](this.$Dispatcher_pendingPayload);
+	    this.$Dispatcher_isHandled[id] = true;
+	  };
+	
+	  /**
+	   * Set up bookkeeping needed when dispatching.
+	   *
+	   * @param {object} payload
+	   * @internal
+	   */
+	  Dispatcher.prototype.$Dispatcher_startDispatching=function(payload) {
+	    for (var id in this.$Dispatcher_callbacks) {
+	      this.$Dispatcher_isPending[id] = false;
+	      this.$Dispatcher_isHandled[id] = false;
+	    }
+	    this.$Dispatcher_pendingPayload = payload;
+	    this.$Dispatcher_isDispatching = true;
+	  };
+	
+	  /**
+	   * Clear bookkeeping used for dispatching.
+	   *
+	   * @internal
+	   */
+	  Dispatcher.prototype.$Dispatcher_stopDispatching=function() {
+	    this.$Dispatcher_pendingPayload = null;
+	    this.$Dispatcher_isDispatching = false;
+	  };
+	
+	
+	module.exports = Dispatcher;
+
+
+/***/ },
+/* 204 */
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright (c) 2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule invariant
+	 */
+	
+	"use strict";
+	
+	/**
+	 * Use invariant() to assert state which your program assumes to be true.
+	 *
+	 * Provide sprintf-style format (only %s is supported) and arguments
+	 * to provide information about what broke and what you were
+	 * expecting.
+	 *
+	 * The invariant message will be stripped in production, but the invariant
+	 * will remain to ensure logic does not differ in production.
+	 */
+	
+	var invariant = function(condition, format, a, b, c, d, e, f) {
+	  if (false) {
+	    if (format === undefined) {
+	      throw new Error('invariant requires an error message argument');
+	    }
+	  }
+	
+	  if (!condition) {
+	    var error;
+	    if (format === undefined) {
+	      error = new Error(
+	        'Minified exception occurred; use the non-minified dev environment ' +
+	        'for the full error message and additional helpful warnings.'
+	      );
+	    } else {
+	      var args = [a, b, c, d, e, f];
+	      var argIndex = 0;
+	      error = new Error(
+	        'Invariant Violation: ' +
+	        format.replace(/%s/g, function() { return args[argIndex++]; })
+	      );
+	    }
+	
+	    error.framesToPop = 1; // we don't care about invariant's own frame
+	    throw error;
+	  }
+	};
+	
+	module.exports = invariant;
+
+
+/***/ },
+/* 205 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
 	var $ = __webpack_require__(1);
 	var React = __webpack_require__(3);
 	
-	var CardForm = __webpack_require__(204);
-	var ProductDetail = __webpack_require__(199);
-	var Spinner = __webpack_require__(248);
+	var CardForm = __webpack_require__(211);
+	var ProductDetail = __webpack_require__(206);
+	var Spinner = __webpack_require__(255);
 	
-	var gettext = __webpack_require__(203).gettext;
+	var gettext = __webpack_require__(210).gettext;
 	
 	
 	module.exports = React.createClass({
@@ -32894,14 +33655,14 @@
 
 
 /***/ },
-/* 199 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(3);
-	var products = __webpack_require__(200);
-	var gettext = __webpack_require__(203).gettext;
+	var products = __webpack_require__(207);
+	var gettext = __webpack_require__(210).gettext;
 	
 	module.exports = React.createClass({
 	
@@ -32933,19 +33694,19 @@
 
 
 /***/ },
-/* 200 */
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	module.exports = {
-	  'mozilla-concrete-brick': __webpack_require__(201),
-	  'mozilla-concrete-mortar': __webpack_require__(202),
+	  'mozilla-concrete-brick': __webpack_require__(208),
+	  'mozilla-concrete-mortar': __webpack_require__(209),
 	};
 
 
 /***/ },
-/* 201 */
+/* 208 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -32971,7 +33732,7 @@
 	}
 
 /***/ },
-/* 202 */
+/* 209 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -32997,7 +33758,7 @@
 	}
 
 /***/ },
-/* 203 */
+/* 210 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -33034,22 +33795,22 @@
 
 
 /***/ },
-/* 204 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var $ = __webpack_require__(1);
-	var CardValidator = __webpack_require__(206);
+	var CardValidator = __webpack_require__(213);
 	var Navigation = __webpack_require__(159).Navigation;
 	var React = __webpack_require__(3);
-	var braintree = __webpack_require__(205);
+	var braintree = __webpack_require__(212);
 	
-	var utils = __webpack_require__(203);
+	var utils = __webpack_require__(210);
 	var gettext = utils.gettext;
 	
-	var CardInput = __webpack_require__(241);
-	var SubmitButton = __webpack_require__(247);
+	var CardInput = __webpack_require__(248);
+	var SubmitButton = __webpack_require__(254);
 	
 	
 	module.exports = React.createClass({
@@ -33257,7 +34018,7 @@
 
 
 /***/ },
-/* 205 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var require;var require;/* WEBPACK VAR INJECTION */(function(global) {!function(){function t(e,n){e instanceof t?(this.enc=e.enc,this.pos=e.pos):(this.enc=e,this.pos=n)}function e(t,e,n,i,r){this.stream=t,this.header=e,this.length=n,this.tag=i,this.sub=r}function n(t){var e,n,i="";for(e=0;e+3<=t.length;e+=3)n=parseInt(t.substring(e,e+3),16),i+=ee.charAt(n>>6)+ee.charAt(63&n);for(e+1==t.length?(n=parseInt(t.substring(e,e+1),16),i+=ee.charAt(n<<2)):e+2==t.length&&(n=parseInt(t.substring(e,e+2),16),i+=ee.charAt(n>>2)+ee.charAt((3&n)<<4));(3&i.length)>0;)i+=ne;return i}function i(t){var e,n,i,r="",o=0;for(e=0;e<t.length&&t.charAt(e)!=ne;++e)i=ee.indexOf(t.charAt(e)),0>i||(0==o?(r+=l(i>>2),n=3&i,o=1):1==o?(r+=l(n<<2|i>>4),n=15&i,o=2):2==o?(r+=l(n),r+=l(i>>2),n=3&i,o=3):(r+=l(n<<2|i>>4),r+=l(15&i),o=0));return 1==o&&(r+=l(n<<2)),r}function r(t){var e,n=i(t),r=new Array;for(e=0;2*e<n.length;++e)r[e]=parseInt(n.substring(2*e,2*e+2),16);return r}function o(t,e,n){null!=t&&("number"==typeof t?this.fromNumber(t,e,n):null==e&&"string"!=typeof t?this.fromString(t,256):this.fromString(t,e))}function s(){return new o(null)}function a(t,e,n,i,r,o){for(;--o>=0;){var s=e*this[t++]+n[i]+r;r=Math.floor(s/67108864),n[i++]=67108863&s}return r}function u(t,e,n,i,r,o){for(var s=32767&e,a=e>>15;--o>=0;){var u=32767&this[t],c=this[t++]>>15,l=a*u+c*s;u=s*u+((32767&l)<<15)+n[i]+(1073741823&r),r=(u>>>30)+(l>>>15)+a*c+(r>>>30),n[i++]=1073741823&u}return r}function c(t,e,n,i,r,o){for(var s=16383&e,a=e>>14;--o>=0;){var u=16383&this[t],c=this[t++]>>14,l=a*u+c*s;u=s*u+((16383&l)<<14)+n[i]+r,r=(u>>28)+(l>>14)+a*c,n[i++]=268435455&u}return r}function l(t){return ue.charAt(t)}function p(t,e){var n=ce[t.charCodeAt(e)];return null==n?-1:n}function h(t){for(var e=this.t-1;e>=0;--e)t[e]=this[e];t.t=this.t,t.s=this.s}function d(t){this.t=1,this.s=0>t?-1:0,t>0?this[0]=t:-1>t?this[0]=t+this.DV:this.t=0}function f(t){var e=s();return e.fromInt(t),e}function m(t,e){var n;if(16==e)n=4;else if(8==e)n=3;else if(256==e)n=8;else if(2==e)n=1;else if(32==e)n=5;else{if(4!=e)return void this.fromRadix(t,e);n=2}this.t=0,this.s=0;for(var i=t.length,r=!1,s=0;--i>=0;){var a=8==n?255&t[i]:p(t,i);0>a?"-"==t.charAt(i)&&(r=!0):(r=!1,0==s?this[this.t++]=a:s+n>this.DB?(this[this.t-1]|=(a&(1<<this.DB-s)-1)<<s,this[this.t++]=a>>this.DB-s):this[this.t-1]|=a<<s,s+=n,s>=this.DB&&(s-=this.DB))}8==n&&0!=(128&t[0])&&(this.s=-1,s>0&&(this[this.t-1]|=(1<<this.DB-s)-1<<s)),this.clamp(),r&&o.ZERO.subTo(this,this)}function y(){for(var t=this.s&this.DM;this.t>0&&this[this.t-1]==t;)--this.t}function g(t){if(this.s<0)return"-"+this.negate().toString(t);var e;if(16==t)e=4;else if(8==t)e=3;else if(2==t)e=1;else if(32==t)e=5;else{if(4!=t)return this.toRadix(t);e=2}var n,i=(1<<e)-1,r=!1,o="",s=this.t,a=this.DB-s*this.DB%e;if(s-->0)for(a<this.DB&&(n=this[s]>>a)>0&&(r=!0,o=l(n));s>=0;)e>a?(n=(this[s]&(1<<a)-1)<<e-a,n|=this[--s]>>(a+=this.DB-e)):(n=this[s]>>(a-=e)&i,0>=a&&(a+=this.DB,--s)),n>0&&(r=!0),r&&(o+=l(n));return r?o:"0"}function b(){var t=s();return o.ZERO.subTo(this,t),t}function v(){return this.s<0?this.negate():this}function _(t){var e=this.s-t.s;if(0!=e)return e;var n=this.t;if(e=n-t.t,0!=e)return this.s<0?-e:e;for(;--n>=0;)if(0!=(e=this[n]-t[n]))return e;return 0}function E(t){var e,n=1;return 0!=(e=t>>>16)&&(t=e,n+=16),0!=(e=t>>8)&&(t=e,n+=8),0!=(e=t>>4)&&(t=e,n+=4),0!=(e=t>>2)&&(t=e,n+=2),0!=(e=t>>1)&&(t=e,n+=1),n}function w(){return this.t<=0?0:this.DB*(this.t-1)+E(this[this.t-1]^this.s&this.DM)}function A(t,e){var n;for(n=this.t-1;n>=0;--n)e[n+t]=this[n];for(n=t-1;n>=0;--n)e[n]=0;e.t=this.t+t,e.s=this.s}function C(t,e){for(var n=t;n<this.t;++n)e[n-t]=this[n];e.t=Math.max(this.t-t,0),e.s=this.s}function S(t,e){var n,i=t%this.DB,r=this.DB-i,o=(1<<r)-1,s=Math.floor(t/this.DB),a=this.s<<i&this.DM;for(n=this.t-1;n>=0;--n)e[n+s+1]=this[n]>>r|a,a=(this[n]&o)<<i;for(n=s-1;n>=0;--n)e[n]=0;e[s]=a,e.t=this.t+s+1,e.s=this.s,e.clamp()}function T(t,e){e.s=this.s;var n=Math.floor(t/this.DB);if(n>=this.t)return void(e.t=0);var i=t%this.DB,r=this.DB-i,o=(1<<i)-1;e[0]=this[n]>>i;for(var s=n+1;s<this.t;++s)e[s-n-1]|=(this[s]&o)<<r,e[s-n]=this[s]>>i;i>0&&(e[this.t-n-1]|=(this.s&o)<<r),e.t=this.t-n,e.clamp()}function x(t,e){for(var n=0,i=0,r=Math.min(t.t,this.t);r>n;)i+=this[n]-t[n],e[n++]=i&this.DM,i>>=this.DB;if(t.t<this.t){for(i-=t.s;n<this.t;)i+=this[n],e[n++]=i&this.DM,i>>=this.DB;i+=this.s}else{for(i+=this.s;n<t.t;)i-=t[n],e[n++]=i&this.DM,i>>=this.DB;i-=t.s}e.s=0>i?-1:0,-1>i?e[n++]=this.DV+i:i>0&&(e[n++]=i),e.t=n,e.clamp()}function P(t,e){var n=this.abs(),i=t.abs(),r=n.t;for(e.t=r+i.t;--r>=0;)e[r]=0;for(r=0;r<i.t;++r)e[r+n.t]=n.am(0,i[r],e,r,0,n.t);e.s=0,e.clamp(),this.s!=t.s&&o.ZERO.subTo(e,e)}function N(t){for(var e=this.abs(),n=t.t=2*e.t;--n>=0;)t[n]=0;for(n=0;n<e.t-1;++n){var i=e.am(n,e[n],t,2*n,0,1);(t[n+e.t]+=e.am(n+1,2*e[n],t,2*n+1,i,e.t-n-1))>=e.DV&&(t[n+e.t]-=e.DV,t[n+e.t+1]=1)}t.t>0&&(t[t.t-1]+=e.am(n,e[n],t,2*n,0,1)),t.s=0,t.clamp()}function O(t,e,n){var i=t.abs();if(!(i.t<=0)){var r=this.abs();if(r.t<i.t)return null!=e&&e.fromInt(0),void(null!=n&&this.copyTo(n));null==n&&(n=s());var a=s(),u=this.s,c=t.s,l=this.DB-E(i[i.t-1]);l>0?(i.lShiftTo(l,a),r.lShiftTo(l,n)):(i.copyTo(a),r.copyTo(n));var p=a.t,h=a[p-1];if(0!=h){var d=h*(1<<this.F1)+(p>1?a[p-2]>>this.F2:0),f=this.FV/d,m=(1<<this.F1)/d,y=1<<this.F2,g=n.t,b=g-p,v=null==e?s():e;for(a.dlShiftTo(b,v),n.compareTo(v)>=0&&(n[n.t++]=1,n.subTo(v,n)),o.ONE.dlShiftTo(p,v),v.subTo(a,a);a.t<p;)a[a.t++]=0;for(;--b>=0;){var _=n[--g]==h?this.DM:Math.floor(n[g]*f+(n[g-1]+y)*m);if((n[g]+=a.am(0,_,n,b,0,p))<_)for(a.dlShiftTo(b,v),n.subTo(v,n);n[g]<--_;)n.subTo(v,n)}null!=e&&(n.drShiftTo(p,e),u!=c&&o.ZERO.subTo(e,e)),n.t=p,n.clamp(),l>0&&n.rShiftTo(l,n),0>u&&o.ZERO.subTo(n,n)}}}function I(t){var e=s();return this.abs().divRemTo(t,null,e),this.s<0&&e.compareTo(o.ZERO)>0&&t.subTo(e,e),e}function R(t){this.m=t}function k(t){return t.s<0||t.compareTo(this.m)>=0?t.mod(this.m):t}function D(t){return t}function M(t){t.divRemTo(this.m,null,t)}function U(t,e,n){t.multiplyTo(e,n),this.reduce(n)}function F(t,e){t.squareTo(e),this.reduce(e)}function L(){if(this.t<1)return 0;var t=this[0];if(0==(1&t))return 0;var e=3&t;return e=e*(2-(15&t)*e)&15,e=e*(2-(255&t)*e)&255,e=e*(2-((65535&t)*e&65535))&65535,e=e*(2-t*e%this.DV)%this.DV,e>0?this.DV-e:-e}function B(t){this.m=t,this.mp=t.invDigit(),this.mpl=32767&this.mp,this.mph=this.mp>>15,this.um=(1<<t.DB-15)-1,this.mt2=2*t.t}function z(t){var e=s();return t.abs().dlShiftTo(this.m.t,e),e.divRemTo(this.m,null,e),t.s<0&&e.compareTo(o.ZERO)>0&&this.m.subTo(e,e),e}function j(t){var e=s();return t.copyTo(e),this.reduce(e),e}function V(t){for(;t.t<=this.mt2;)t[t.t++]=0;for(var e=0;e<this.m.t;++e){var n=32767&t[e],i=n*this.mpl+((n*this.mph+(t[e]>>15)*this.mpl&this.um)<<15)&t.DM;for(n=e+this.m.t,t[n]+=this.m.am(0,i,t,e,0,this.m.t);t[n]>=t.DV;)t[n]-=t.DV,t[++n]++}t.clamp(),t.drShiftTo(this.m.t,t),t.compareTo(this.m)>=0&&t.subTo(this.m,t)}function H(t,e){t.squareTo(e),this.reduce(e)}function Y(t,e,n){t.multiplyTo(e,n),this.reduce(n)}function q(){return 0==(this.t>0?1&this[0]:this.s)}function G(t,e){if(t>4294967295||1>t)return o.ONE;var n=s(),i=s(),r=e.convert(this),a=E(t)-1;for(r.copyTo(n);--a>=0;)if(e.sqrTo(n,i),(t&1<<a)>0)e.mulTo(i,r,n);else{var u=n;n=i,i=u}return e.revert(n)}function W(t,e){var n;return n=256>t||e.isEven()?new R(e):new B(e),this.exp(t,n)}function Q(t,e){return new o(t,e)}function J(t,e){if(e<t.length+11)throw new Error("Message too long for RSA");for(var n=new Array,i=t.length-1;i>=0&&e>0;){var r=t.charCodeAt(i--);128>r?n[--e]=r:r>127&&2048>r?(n[--e]=63&r|128,n[--e]=r>>6|192):(n[--e]=63&r|128,n[--e]=r>>6&63|128,n[--e]=r>>12|224)}n[--e]=0;for(var s=0,a=0,u=0;e>2;)0==u&&(a=le.random.randomWords(1,0)[0]),s=a>>u&255,u=(u+8)%32,0!=s&&(n[--e]=s);return n[--e]=2,n[--e]=0,new o(n)}function Z(){this.n=null,this.e=0,this.d=null,this.p=null,this.q=null,this.dmp1=null,this.dmq1=null,this.coeff=null}function K(t,e){if(!(null!=t&&null!=e&&t.length>0&&e.length>0))throw new Error("Invalid RSA public key");this.n=Q(t,16),this.e=parseInt(e,16)}function X(t){return t.modPowInt(this.e,this.n)}function $(t){var e=J(t,this.n.bitLength()+7>>3);if(null==e)return null;var n=this.doPublic(e);if(null==n)return null;var i=n.toString(16);return 0==(1&i.length)?i:"0"+i}t.prototype.get=function(t){if(void 0==t&&(t=this.pos++),t>=this.enc.length)throw"Requesting byte offset "+t+" on a stream of length "+this.enc.length;return this.enc[t]},t.prototype.hexDigits="0123456789ABCDEF",t.prototype.hexByte=function(t){return this.hexDigits.charAt(t>>4&15)+this.hexDigits.charAt(15&t)},t.prototype.hexDump=function(t,e){for(var n="",i=t;e>i;++i)switch(n+=this.hexByte(this.get(i)),15&i){case 7:n+="  ";break;case 15:n+="\n";break;default:n+=" "}return n},t.prototype.parseStringISO=function(t,e){for(var n="",i=t;e>i;++i)n+=String.fromCharCode(this.get(i));return n},t.prototype.parseStringUTF=function(t,e){for(var n="",i=0,r=t;e>r;){var i=this.get(r++);n+=String.fromCharCode(128>i?i:i>191&&224>i?(31&i)<<6|63&this.get(r++):(15&i)<<12|(63&this.get(r++))<<6|63&this.get(r++))}return n},t.prototype.reTime=/^((?:1[89]|2\d)?\d\d)(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])([01]\d|2[0-3])(?:([0-5]\d)(?:([0-5]\d)(?:[.,](\d{1,3}))?)?)?(Z|[-+](?:[0]\d|1[0-2])([0-5]\d)?)?$/,t.prototype.parseTime=function(t,e){var n=this.parseStringISO(t,e),i=this.reTime.exec(n);return i?(n=i[1]+"-"+i[2]+"-"+i[3]+" "+i[4],i[5]&&(n+=":"+i[5],i[6]&&(n+=":"+i[6],i[7]&&(n+="."+i[7]))),i[8]&&(n+=" UTC","Z"!=i[8]&&(n+=i[8],i[9]&&(n+=":"+i[9]))),n):"Unrecognized time: "+n},t.prototype.parseInteger=function(t,e){var n=e-t;if(n>4){n<<=3;var i=this.get(t);if(0==i)n-=8;else for(;128>i;)i<<=1,--n;return"("+n+" bit)"}for(var r=0,o=t;e>o;++o)r=r<<8|this.get(o);return r},t.prototype.parseBitString=function(t,e){var n=this.get(t),i=(e-t-1<<3)-n,r="("+i+" bit)";if(20>=i){var o=n;r+=" ";for(var s=e-1;s>t;--s){for(var a=this.get(s),u=o;8>u;++u)r+=a>>u&1?"1":"0";o=0}}return r},t.prototype.parseOctetString=function(t,e){var n=e-t,i="("+n+" byte) ";n>20&&(e=t+20);for(var r=t;e>r;++r)i+=this.hexByte(this.get(r));return n>20&&(i+=String.fromCharCode(8230)),i},t.prototype.parseOID=function(t,e){for(var n,i=0,r=0,o=t;e>o;++o){var s=this.get(o);i=i<<7|127&s,r+=7,128&s||(void 0==n?n=parseInt(i/40)+"."+i%40:n+="."+(r>=31?"bigint":i),i=r=0),n+=String.fromCharCode()}return n},e.prototype.typeName=function(){if(void 0==this.tag)return"unknown";var t=this.tag>>6,e=(this.tag>>5&1,31&this.tag);switch(t){case 0:switch(e){case 0:return"EOC";case 1:return"BOOLEAN";case 2:return"INTEGER";case 3:return"BIT_STRING";case 4:return"OCTET_STRING";case 5:return"NULL";case 6:return"OBJECT_IDENTIFIER";case 7:return"ObjectDescriptor";case 8:return"EXTERNAL";case 9:return"REAL";case 10:return"ENUMERATED";case 11:return"EMBEDDED_PDV";case 12:return"UTF8String";case 16:return"SEQUENCE";case 17:return"SET";case 18:return"NumericString";case 19:return"PrintableString";case 20:return"TeletexString";case 21:return"VideotexString";case 22:return"IA5String";case 23:return"UTCTime";case 24:return"GeneralizedTime";case 25:return"GraphicString";case 26:return"VisibleString";case 27:return"GeneralString";case 28:return"UniversalString";case 30:return"BMPString";default:return"Universal_"+e.toString(16)}case 1:return"Application_"+e.toString(16);case 2:return"["+e+"]";case 3:return"Private_"+e.toString(16)}},e.prototype.content=function(){if(void 0==this.tag)return null;var t=this.tag>>6;if(0!=t)return null==this.sub?null:"("+this.sub.length+")";var e=31&this.tag,n=this.posContent(),i=Math.abs(this.length);switch(e){case 1:return 0==this.stream.get(n)?"false":"true";case 2:return this.stream.parseInteger(n,n+i);case 3:return this.sub?"("+this.sub.length+" elem)":this.stream.parseBitString(n,n+i);case 4:return this.sub?"("+this.sub.length+" elem)":this.stream.parseOctetString(n,n+i);case 6:return this.stream.parseOID(n,n+i);case 16:case 17:return"("+this.sub.length+" elem)";case 12:return this.stream.parseStringUTF(n,n+i);case 18:case 19:case 20:case 21:case 22:case 26:return this.stream.parseStringISO(n,n+i);case 23:case 24:return this.stream.parseTime(n,n+i)}return null},e.prototype.toString=function(){return this.typeName()+"@"+this.stream.pos+"[header:"+this.header+",length:"+this.length+",sub:"+(null==this.sub?"null":this.sub.length)+"]"},e.prototype.print=function(t){if(void 0==t&&(t=""),document.writeln(t+this),null!=this.sub){t+="  ";for(var e=0,n=this.sub.length;n>e;++e)this.sub[e].print(t)}},e.prototype.toPrettyString=function(t){void 0==t&&(t="");var e=t+this.typeName()+" @"+this.stream.pos;if(this.length>=0&&(e+="+"),e+=this.length,32&this.tag?e+=" (constructed)":3!=this.tag&&4!=this.tag||null==this.sub||(e+=" (encapsulates)"),e+="\n",null!=this.sub){t+="  ";for(var n=0,i=this.sub.length;i>n;++n)e+=this.sub[n].toPrettyString(t)}return e},e.prototype.posStart=function(){return this.stream.pos},e.prototype.posContent=function(){return this.stream.pos+this.header},e.prototype.posEnd=function(){return this.stream.pos+this.header+Math.abs(this.length)},e.decodeLength=function(t){var e=t.get(),n=127&e;if(n==e)return n;if(n>3)throw"Length over 24 bits not supported at position "+(t.pos-1);if(0==n)return-1;e=0;for(var i=0;n>i;++i)e=e<<8|t.get();return e},e.hasContent=function(n,i,r){if(32&n)return!0;if(3>n||n>4)return!1;var o=new t(r);3==n&&o.get();var s=o.get();if(s>>6&1)return!1;try{var a=e.decodeLength(o);return o.pos-r.pos+a==i}catch(u){return!1}},e.decode=function(n){n instanceof t||(n=new t(n,0));var i=new t(n),r=n.get(),o=e.decodeLength(n),s=n.pos-i.pos,a=null;if(e.hasContent(r,o,n)){var u=n.pos;if(3==r&&n.get(),a=[],o>=0){for(var c=u+o;n.pos<c;)a[a.length]=e.decode(n);if(n.pos!=c)throw"Content size is not correct for container starting at offset "+u}else try{for(;;){var l=e.decode(n);if(0==l.tag)break;a[a.length]=l}o=u-n.pos}catch(p){throw"Exception while decoding undefined length content: "+p}}else n.pos+=o;return new e(i,s,o,r,a)};var te,ee="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",ne="=",ie=0xdeadbeefcafe,re=15715070==(16777215&ie);re&&"Microsoft Internet Explorer"==navigator.appName?(o.prototype.am=u,te=30):re&&"Netscape"!=navigator.appName?(o.prototype.am=a,te=26):(o.prototype.am=c,te=28),o.prototype.DB=te,o.prototype.DM=(1<<te)-1,o.prototype.DV=1<<te;var oe=52;o.prototype.FV=Math.pow(2,oe),o.prototype.F1=oe-te,o.prototype.F2=2*te-oe;var se,ae,ue="0123456789abcdefghijklmnopqrstuvwxyz",ce=new Array;for(se="0".charCodeAt(0),ae=0;9>=ae;++ae)ce[se++]=ae;for(se="a".charCodeAt(0),ae=10;36>ae;++ae)ce[se++]=ae;for(se="A".charCodeAt(0),ae=10;36>ae;++ae)ce[se++]=ae;R.prototype.convert=k,R.prototype.revert=D,R.prototype.reduce=M,R.prototype.mulTo=U,R.prototype.sqrTo=F,B.prototype.convert=z,B.prototype.revert=j,B.prototype.reduce=V,B.prototype.mulTo=Y,B.prototype.sqrTo=H,o.prototype.copyTo=h,o.prototype.fromInt=d,o.prototype.fromString=m,o.prototype.clamp=y,o.prototype.dlShiftTo=A,o.prototype.drShiftTo=C,o.prototype.lShiftTo=S,o.prototype.rShiftTo=T,o.prototype.subTo=x,o.prototype.multiplyTo=P,o.prototype.squareTo=N,o.prototype.divRemTo=O,o.prototype.invDigit=L,o.prototype.isEven=q,o.prototype.exp=G,o.prototype.toString=g,o.prototype.negate=b,o.prototype.abs=v,o.prototype.compareTo=_,o.prototype.bitLength=w,o.prototype.mod=I,o.prototype.modPowInt=W,o.ZERO=f(0),o.ONE=f(1),Z.prototype.doPublic=X,Z.prototype.setPublic=K,Z.prototype.encrypt=$;var le={cipher:{},hash:{},keyexchange:{},mode:{},misc:{},codec:{},exception:{corrupt:function(t){this.toString=function(){return"CORRUPT: "+this.message},this.message=t},invalid:function(t){this.toString=function(){return"INVALID: "+this.message},this.message=t},bug:function(t){this.toString=function(){return"BUG: "+this.message},this.message=t},notReady:function(t){this.toString=function(){return"NOT READY: "+this.message},this.message=t}}};"undefined"!=typeof module&&module.exports&&(module.exports=le),le.cipher.aes=function(t){this._tables[0][0][0]||this._precompute();var e,n,i,r,o,s=this._tables[0][4],a=this._tables[1],u=t.length,c=1;if(4!==u&&6!==u&&8!==u)throw new le.exception.invalid("invalid aes key size");for(this._key=[r=t.slice(0),o=[]],e=u;4*u+28>e;e++)i=r[e-1],(e%u===0||8===u&&e%u===4)&&(i=s[i>>>24]<<24^s[i>>16&255]<<16^s[i>>8&255]<<8^s[255&i],e%u===0&&(i=i<<8^i>>>24^c<<24,c=c<<1^283*(c>>7))),r[e]=r[e-u]^i;for(n=0;e;n++,e--)i=r[3&n?e:e-4],o[n]=4>=e||4>n?i:a[0][s[i>>>24]]^a[1][s[i>>16&255]]^a[2][s[i>>8&255]]^a[3][s[255&i]]},le.cipher.aes.prototype={encrypt:function(t){return this._crypt(t,0)},decrypt:function(t){return this._crypt(t,1)},_tables:[[[],[],[],[],[]],[[],[],[],[],[]]],_precompute:function(){var t,e,n,i,r,o,s,a,u,c=this._tables[0],l=this._tables[1],p=c[4],h=l[4],d=[],f=[];for(t=0;256>t;t++)f[(d[t]=t<<1^283*(t>>7))^t]=t;for(e=n=0;!p[e];e^=i||1,n=f[n]||1)for(s=n^n<<1^n<<2^n<<3^n<<4,s=s>>8^255&s^99,p[e]=s,h[s]=e,o=d[r=d[i=d[e]]],u=16843009*o^65537*r^257*i^16843008*e,a=257*d[s]^16843008*s,t=0;4>t;t++)c[t][e]=a=a<<24^a>>>8,l[t][s]=u=u<<24^u>>>8;for(t=0;5>t;t++)c[t]=c[t].slice(0),l[t]=l[t].slice(0)},_crypt:function(t,e){if(4!==t.length)throw new le.exception.invalid("invalid aes block size");var n,i,r,o,s=this._key[e],a=t[0]^s[0],u=t[e?3:1]^s[1],c=t[2]^s[2],l=t[e?1:3]^s[3],p=s.length/4-2,h=4,d=[0,0,0,0],f=this._tables[e],m=f[0],y=f[1],g=f[2],b=f[3],v=f[4];for(o=0;p>o;o++)n=m[a>>>24]^y[u>>16&255]^g[c>>8&255]^b[255&l]^s[h],i=m[u>>>24]^y[c>>16&255]^g[l>>8&255]^b[255&a]^s[h+1],r=m[c>>>24]^y[l>>16&255]^g[a>>8&255]^b[255&u]^s[h+2],l=m[l>>>24]^y[a>>16&255]^g[u>>8&255]^b[255&c]^s[h+3],h+=4,a=n,u=i,c=r;for(o=0;4>o;o++)d[e?3&-o:o]=v[a>>>24]<<24^v[u>>16&255]<<16^v[c>>8&255]<<8^v[255&l]^s[h++],n=a,a=u,u=c,c=l,l=n;return d}},le.bitArray={bitSlice:function(t,e,n){return t=le.bitArray._shiftRight(t.slice(e/32),32-(31&e)).slice(1),void 0===n?t:le.bitArray.clamp(t,n-e)},extract:function(t,e,n){var i,r=Math.floor(-e-n&31);return i=-32&(e+n-1^e)?t[e/32|0]<<32-r^t[e/32+1|0]>>>r:t[e/32|0]>>>r,i&(1<<n)-1},concat:function(t,e){if(0===t.length||0===e.length)return t.concat(e);var n=t[t.length-1],i=le.bitArray.getPartial(n);return 32===i?t.concat(e):le.bitArray._shiftRight(e,i,0|n,t.slice(0,t.length-1))},bitLength:function(t){var e,n=t.length;return 0===n?0:(e=t[n-1],32*(n-1)+le.bitArray.getPartial(e))},clamp:function(t,e){if(32*t.length<e)return t;t=t.slice(0,Math.ceil(e/32));var n=t.length;return e=31&e,n>0&&e&&(t[n-1]=le.bitArray.partial(e,t[n-1]&2147483648>>e-1,1)),t},partial:function(t,e,n){return 32===t?e:(n?0|e:e<<32-t)+1099511627776*t},getPartial:function(t){return Math.round(t/1099511627776)||32},equal:function(t,e){if(le.bitArray.bitLength(t)!==le.bitArray.bitLength(e))return!1;var n,i=0;for(n=0;n<t.length;n++)i|=t[n]^e[n];return 0===i},_shiftRight:function(t,e,n,i){var r,o,s=0;for(void 0===i&&(i=[]);e>=32;e-=32)i.push(n),n=0;if(0===e)return i.concat(t);for(r=0;r<t.length;r++)i.push(n|t[r]>>>e),n=t[r]<<32-e;return s=t.length?t[t.length-1]:0,o=le.bitArray.getPartial(s),i.push(le.bitArray.partial(e+o&31,e+o>32?n:i.pop(),1)),i},_xor4:function(t,e){return[t[0]^e[0],t[1]^e[1],t[2]^e[2],t[3]^e[3]]}},le.codec.hex={fromBits:function(t){var e,n="";for(e=0;e<t.length;e++)n+=((0|t[e])+0xf00000000000).toString(16).substr(4);return n.substr(0,le.bitArray.bitLength(t)/4)},toBits:function(t){var e,n,i=[];for(t=t.replace(/\s|0x/g,""),n=t.length,t+="00000000",e=0;e<t.length;e+=8)i.push(0^parseInt(t.substr(e,8),16));return le.bitArray.clamp(i,4*n)}},le.codec.utf8String={fromBits:function(t){var e,n,i="",r=le.bitArray.bitLength(t);for(e=0;r/8>e;e++)0===(3&e)&&(n=t[e/4]),i+=String.fromCharCode(n>>>24),n<<=8;return decodeURIComponent(escape(i))},toBits:function(t){t=unescape(encodeURIComponent(t));var e,n=[],i=0;for(e=0;e<t.length;e++)i=i<<8|t.charCodeAt(e),3===(3&e)&&(n.push(i),i=0);return 3&e&&n.push(le.bitArray.partial(8*(3&e),i)),n}},le.codec.base64={_chars:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",fromBits:function(t,e,n){var i,r="",o=0,s=le.codec.base64._chars,a=0,u=le.bitArray.bitLength(t);for(n&&(s=s.substr(0,62)+"-_"),i=0;6*r.length<u;)r+=s.charAt((a^t[i]>>>o)>>>26),6>o?(a=t[i]<<6-o,o+=26,i++):(a<<=6,o-=6);for(;3&r.length&&!e;)r+="=";return r},toBits:function(t,e){t=t.replace(/\s|=/g,"");var n,i,r=[],o=0,s=le.codec.base64._chars,a=0;for(e&&(s=s.substr(0,62)+"-_"),n=0;n<t.length;n++){if(i=s.indexOf(t.charAt(n)),0>i)throw new le.exception.invalid("this isn't base64!");o>26?(o-=26,r.push(a^i>>>o),a=i<<32-o):(o+=6,a^=i<<32-o)}return 56&o&&r.push(le.bitArray.partial(56&o,a,1)),r}},le.codec.base64url={fromBits:function(t){return le.codec.base64.fromBits(t,1,1)},toBits:function(t){return le.codec.base64.toBits(t,1)}},void 0===le.beware&&(le.beware={}),le.beware["CBC mode is dangerous because it doesn't protect message integrity."]=function(){le.mode.cbc={name:"cbc",encrypt:function(t,e,n,i){if(i&&i.length)throw new le.exception.invalid("cbc can't authenticate data");if(128!==le.bitArray.bitLength(n))throw new le.exception.invalid("cbc iv must be 128 bits");var r,o=le.bitArray,s=o._xor4,a=o.bitLength(e),u=0,c=[];if(7&a)throw new le.exception.invalid("pkcs#5 padding only works for multiples of a byte");for(r=0;a>=u+128;r+=4,u+=128)n=t.encrypt(s(n,e.slice(r,r+4))),c.splice(r,0,n[0],n[1],n[2],n[3]);return a=16843009*(16-(a>>3&15)),n=t.encrypt(s(n,o.concat(e,[a,a,a,a]).slice(r,r+4))),c.splice(r,0,n[0],n[1],n[2],n[3]),c},decrypt:function(t,e,n,i){if(i&&i.length)throw new le.exception.invalid("cbc can't authenticate data");if(128!==le.bitArray.bitLength(n))throw new le.exception.invalid("cbc iv must be 128 bits");if(127&le.bitArray.bitLength(e)||!e.length)throw new le.exception.corrupt("cbc ciphertext must be a positive multiple of the block size");var r,o,s,a=le.bitArray,u=a._xor4,c=[];for(i=i||[],r=0;r<e.length;r+=4)o=e.slice(r,r+4),s=u(n,t.decrypt(o)),c.splice(r,0,s[0],s[1],s[2],s[3]),n=o;if(o=255&c[r-1],0==o||o>16)throw new le.exception.corrupt("pkcs#5 padding corrupt");if(s=16843009*o,!a.equal(a.bitSlice([s,s,s,s],0,8*o),a.bitSlice(c,32*c.length-8*o,32*c.length)))throw new le.exception.corrupt("pkcs#5 padding corrupt");return a.bitSlice(c,0,32*c.length-8*o)}}},le.misc.hmac=function(t,e){this._hash=e=e||le.hash.sha256;var n,i=[[],[]],r=e.prototype.blockSize/32;for(this._baseHash=[new e,new e],t.length>r&&(t=e.hash(t)),n=0;r>n;n++)i[0][n]=909522486^t[n],i[1][n]=1549556828^t[n];this._baseHash[0].update(i[0]),this._baseHash[1].update(i[1])},le.misc.hmac.prototype.encrypt=le.misc.hmac.prototype.mac=function(t,e){var n=new this._hash(this._baseHash[0]).update(t,e).finalize();return new this._hash(this._baseHash[1]).update(n).finalize()},le.hash.sha256=function(t){this._key[0]||this._precompute(),t?(this._h=t._h.slice(0),this._buffer=t._buffer.slice(0),this._length=t._length):this.reset()},le.hash.sha256.hash=function(t){return(new le.hash.sha256).update(t).finalize()},le.hash.sha256.prototype={blockSize:512,reset:function(){return this._h=this._init.slice(0),this._buffer=[],this._length=0,this},update:function(t){"string"==typeof t&&(t=le.codec.utf8String.toBits(t));var e,n=this._buffer=le.bitArray.concat(this._buffer,t),i=this._length,r=this._length=i+le.bitArray.bitLength(t);for(e=512+i&-512;r>=e;e+=512)this._block(n.splice(0,16));return this},finalize:function(){var t,e=this._buffer,n=this._h;for(e=le.bitArray.concat(e,[le.bitArray.partial(1,1)]),t=e.length+2;15&t;t++)e.push(0);for(e.push(Math.floor(this._length/4294967296)),e.push(0|this._length);e.length;)this._block(e.splice(0,16));return this.reset(),n},_init:[],_key:[],_precompute:function(){function t(t){return 4294967296*(t-Math.floor(t))|0}var e,n=0,i=2;t:for(;64>n;i++){for(e=2;i>=e*e;e++)if(i%e===0)continue t;8>n&&(this._init[n]=t(Math.pow(i,.5))),this._key[n]=t(Math.pow(i,1/3)),n++}},_block:function(t){var e,n,i,r,o=t.slice(0),s=this._h,a=this._key,u=s[0],c=s[1],l=s[2],p=s[3],h=s[4],d=s[5],f=s[6],m=s[7];for(e=0;64>e;e++)16>e?n=o[e]:(i=o[e+1&15],r=o[e+14&15],n=o[15&e]=(i>>>7^i>>>18^i>>>3^i<<25^i<<14)+(r>>>17^r>>>19^r>>>10^r<<15^r<<13)+o[15&e]+o[e+9&15]|0),n=n+m+(h>>>6^h>>>11^h>>>25^h<<26^h<<21^h<<7)+(f^h&(d^f))+a[e],m=f,f=d,d=h,h=p+n|0,p=l,l=c,c=u,u=n+(c&l^p&(c^l))+(c>>>2^c>>>13^c>>>22^c<<30^c<<19^c<<10)|0;s[0]=s[0]+u|0,s[1]=s[1]+c|0,s[2]=s[2]+l|0,s[3]=s[3]+p|0,s[4]=s[4]+h|0,s[5]=s[5]+d|0,s[6]=s[6]+f|0,s[7]=s[7]+m|0}},le.random={randomWords:function(t,e){var n,i,r=[],o=this.isReady(e);if(o===this._NOT_READY)throw new le.exception.notReady("generator isn't seeded");for(o&this._REQUIRES_RESEED&&this._reseedFromPools(!(o&this._READY)),n=0;t>n;n+=4)(n+1)%this._MAX_WORDS_PER_BURST===0&&this._gate(),i=this._gen4words(),r.push(i[0],i[1],i[2],i[3]);return this._gate(),r.slice(0,t)},setDefaultParanoia:function(t){this._defaultParanoia=t},addEntropy:function(t,e,n){n=n||"user";var i,r,o,s=(new Date).valueOf(),a=this._robins[n],u=this.isReady(),c=0;switch(i=this._collectorIds[n],void 0===i&&(i=this._collectorIds[n]=this._collectorIdNext++),void 0===a&&(a=this._robins[n]=0),this._robins[n]=(this._robins[n]+1)%this._pools.length,typeof t){case"number":void 0===e&&(e=1),this._pools[a].update([i,this._eventId++,1,e,s,1,0|t]);break;case"object":var l=Object.prototype.toString.call(t);if("[object Uint32Array]"===l){for(o=[],r=0;r<t.length;r++)o.push(t[r]);t=o}else for("[object Array]"!==l&&(c=1),r=0;r<t.length&&!c;r++)"number"!=typeof t[r]&&(c=1);if(!c){if(void 0===e)for(e=0,r=0;r<t.length;r++)for(o=t[r];o>0;)e++,o>>>=1;this._pools[a].update([i,this._eventId++,2,e,s,t.length].concat(t))}break;case"string":void 0===e&&(e=t.length),this._pools[a].update([i,this._eventId++,3,e,s,t.length]),this._pools[a].update(t);break;default:c=1}if(c)throw new le.exception.bug("random: addEntropy only supports number, array of numbers or string");this._poolEntropy[a]+=e,this._poolStrength+=e,u===this._NOT_READY&&(this.isReady()!==this._NOT_READY&&this._fireEvent("seeded",Math.max(this._strength,this._poolStrength)),this._fireEvent("progress",this.getProgress()))},isReady:function(t){var e=this._PARANOIA_LEVELS[void 0!==t?t:this._defaultParanoia];return this._strength&&this._strength>=e?this._poolEntropy[0]>this._BITS_PER_RESEED&&(new Date).valueOf()>this._nextReseed?this._REQUIRES_RESEED|this._READY:this._READY:this._poolStrength>=e?this._REQUIRES_RESEED|this._NOT_READY:this._NOT_READY},getProgress:function(t){var e=this._PARANOIA_LEVELS[t?t:this._defaultParanoia];return this._strength>=e?1:this._poolStrength>e?1:this._poolStrength/e},startCollectors:function(){if(!this._collectorsStarted){if(window.addEventListener)window.addEventListener("load",this._loadTimeCollector,!1),window.addEventListener("mousemove",this._mouseCollector,!1);else{if(!document.attachEvent)throw new le.exception.bug("can't attach event");document.attachEvent("onload",this._loadTimeCollector),document.attachEvent("onmousemove",this._mouseCollector)}this._collectorsStarted=!0}},stopCollectors:function(){this._collectorsStarted&&(window.removeEventListener?(window.removeEventListener("load",this._loadTimeCollector,!1),window.removeEventListener("mousemove",this._mouseCollector,!1)):window.detachEvent&&(window.detachEvent("onload",this._loadTimeCollector),window.detachEvent("onmousemove",this._mouseCollector)),this._collectorsStarted=!1)},addEventListener:function(t,e){this._callbacks[t][this._callbackI++]=e},removeEventListener:function(t,e){var n,i,r=this._callbacks[t],o=[];for(i in r)r.hasOwnProperty(i)&&r[i]===e&&o.push(i);for(n=0;n<o.length;n++)i=o[n],delete r[i]},_pools:[new le.hash.sha256],_poolEntropy:[0],_reseedCount:0,_robins:{},_eventId:0,_collectorIds:{},_collectorIdNext:0,_strength:0,_poolStrength:0,_nextReseed:0,_key:[0,0,0,0,0,0,0,0],_counter:[0,0,0,0],_cipher:void 0,_defaultParanoia:6,_collectorsStarted:!1,_callbacks:{progress:{},seeded:{}},_callbackI:0,_NOT_READY:0,_READY:1,_REQUIRES_RESEED:2,_MAX_WORDS_PER_BURST:65536,_PARANOIA_LEVELS:[0,48,64,96,128,192,256,384,512,768,1024],_MILLISECONDS_PER_RESEED:3e4,_BITS_PER_RESEED:80,_gen4words:function(){for(var t=0;4>t&&(this._counter[t]=this._counter[t]+1|0,!this._counter[t]);t++);return this._cipher.encrypt(this._counter)},_gate:function(){this._key=this._gen4words().concat(this._gen4words()),this._cipher=new le.cipher.aes(this._key)},_reseed:function(t){this._key=le.hash.sha256.hash(this._key.concat(t)),this._cipher=new le.cipher.aes(this._key);for(var e=0;4>e&&(this._counter[e]=this._counter[e]+1|0,!this._counter[e]);e++);},_reseedFromPools:function(t){var e,n=[],i=0;for(this._nextReseed=n[0]=(new Date).valueOf()+this._MILLISECONDS_PER_RESEED,e=0;16>e;e++)n.push(4294967296*Math.random()|0);for(e=0;e<this._pools.length&&(n=n.concat(this._pools[e].finalize()),i+=this._poolEntropy[e],this._poolEntropy[e]=0,t||!(this._reseedCount&1<<e));e++);this._reseedCount>=1<<this._pools.length&&(this._pools.push(new le.hash.sha256),this._poolEntropy.push(0)),this._poolStrength-=i,i>this._strength&&(this._strength=i),this._reseedCount++,this._reseed(n)},_mouseCollector:function(t){var e=t.x||t.clientX||t.offsetX||0,n=t.y||t.clientY||t.offsetY||0;le.random.addEntropy([e,n],2,"mouse")},_loadTimeCollector:function(){le.random.addEntropy((new Date).valueOf(),2,"loadtime")},_fireEvent:function(t,e){var n,i=le.random._callbacks[t],r=[];for(n in i)i.hasOwnProperty(n)&&r.push(i[n]);for(n=0;n<r.length;n++)r[n](e)}},function(){try{var t=new Uint32Array(32);crypto.getRandomValues(t),le.random.addEntropy(t,1024,"crypto.getRandomValues")}catch(e){}}(),function(){for(var t in le.beware)le.beware.hasOwnProperty(t)&&le.beware[t]()}();var pe={sjcl:le,version:"1.3.10"};pe.generateAesKey=function(){return{key:le.random.randomWords(8,0),encrypt:function(t){return this.encryptWithIv(t,le.random.randomWords(4,0))},encryptWithIv:function(t,e){var n=new le.cipher.aes(this.key),i=le.codec.utf8String.toBits(t),r=le.mode.cbc.encrypt(n,i,e),o=le.bitArray.concat(e,r);return le.codec.base64.fromBits(o)}}},pe.create=function(t){return new pe.EncryptionClient(t)},pe.EncryptionClient=function(t){var i=this,o=[];i.publicKey=t,i.version=pe.version;var s=function(t,e){var n,i,r;n=document.createElement(t);for(i in e)e.hasOwnProperty(i)&&(r=e[i],n.setAttribute(i,r));return n},a=function(t){return window.jQuery&&t instanceof jQuery?t[0]:t.nodeType&&1===t.nodeType?t:document.getElementById(t)},u=function(t){var e,n,i,r,o=[];if("INTEGER"===t.typeName()&&(e=t.posContent(),n=t.posEnd(),i=t.stream.hexDump(e,n).replace(/[ \n]/g,""),o.push(i)),null!==t.sub)for(r=0;r<t.sub.length;r++)o=o.concat(u(t.sub[r]));return o},c=function(t){var e,n,i=[],r=t.children;for(n=0;n<r.length;n++)e=r[n],1===e.nodeType&&e.attributes["data-encrypted-name"]?i.push(e):e.children&&e.children.length>0&&(i=i.concat(c(e)));return i},l=function(){var n,i,o,s,a,c;try{a=r(t),n=e.decode(a)}catch(l){throw"Invalid encryption key. Please use the key labeled 'Client-Side Encryption Key'"}if(o=u(n),2!==o.length)throw"Invalid encryption key. Please use the key labeled 'Client-Side Encryption Key'";return s=o[0],i=o[1],c=new Z,c.setPublic(s,i),c},p=function(){return{key:le.random.randomWords(8,0),sign:function(t){var e=new le.misc.hmac(this.key,le.hash.sha256),n=e.encrypt(t);return le.codec.base64.fromBits(n)}}};i.encrypt=function(t){var e=l(),r=pe.generateAesKey(),o=p(),s=r.encrypt(t),a=o.sign(le.codec.base64.toBits(s)),u=le.bitArray.concat(r.key,o.key),c=le.codec.base64.fromBits(u),h=e.encrypt(c),d="$bt4|javascript_"+i.version.replace(/\./g,"_")+"$",f=null;return h&&(f=n(h)),d+f+"$"+s+"$"+a},i.encryptForm=function(t){var e,n,r,u,l,p;for(t=a(t),p=c(t);o.length>0;){try{t.removeChild(o[0])}catch(h){}o.splice(0,1)}for(l=0;l<p.length;l++)e=p[l],r=e.getAttribute("data-encrypted-name"),n=i.encrypt(e.value),e.removeAttribute("name"),u=s("input",{value:n,type:"hidden",name:r}),o.push(u),t.appendChild(u)},i.onSubmitEncryptForm=function(t,e){var n;t=a(t),n=function(n){return i.encryptForm(t),e?e(n):n},window.jQuery?window.jQuery(t).submit(n):t.addEventListener?t.addEventListener("submit",n,!1):t.attachEvent&&t.attachEvent("onsubmit",n)},i.formEncrypter={encryptForm:i.encryptForm,extractForm:a,onSubmitEncryptForm:i.onSubmitEncryptForm},le.random.startCollectors()},window.Braintree=pe
@@ -33268,24 +34029,24 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 206 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
-	  number: __webpack_require__(209),
-	  expirationDate: __webpack_require__(236),
-	  expirationMonth: __webpack_require__(238),
-	  expirationYear: __webpack_require__(207),
-	  cvv: __webpack_require__(239),
-	  postalCode: __webpack_require__(240)
+	  number: __webpack_require__(216),
+	  expirationDate: __webpack_require__(243),
+	  expirationMonth: __webpack_require__(245),
+	  expirationYear: __webpack_require__(214),
+	  cvv: __webpack_require__(246),
+	  postalCode: __webpack_require__(247)
 	};
 
 
 /***/ },
-/* 207 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isString = __webpack_require__(208);
+	var isString = __webpack_require__(215);
 	var maxYear = 19;
 	
 	function verification(isValid, isPotentiallyValid) {
@@ -33340,7 +34101,7 @@
 
 
 /***/ },
-/* 208 */
+/* 215 */
 /***/ function(module, exports) {
 
 	/**
@@ -33399,14 +34160,14 @@
 
 
 /***/ },
-/* 209 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isString = __webpack_require__(208);
-	var extend = __webpack_require__(210);
-	var luhn10 = __webpack_require__(221);
-	var getCardTypes = __webpack_require__(222);
-	var isNumber = __webpack_require__(235);
+	var isString = __webpack_require__(215);
+	var extend = __webpack_require__(217);
+	var luhn10 = __webpack_require__(228);
+	var getCardTypes = __webpack_require__(229);
+	var isNumber = __webpack_require__(242);
 	
 	function verification(card, isPotentiallyValid, isValid) {
 	  return extend({}, {card: card, isPotentiallyValid: isPotentiallyValid, isValid: isValid});
@@ -33460,7 +34221,7 @@
 
 
 /***/ },
-/* 210 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -33471,9 +34232,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseAssign = __webpack_require__(211),
-	    createAssigner = __webpack_require__(217),
-	    keys = __webpack_require__(213);
+	var baseAssign = __webpack_require__(218),
+	    createAssigner = __webpack_require__(224),
+	    keys = __webpack_require__(220);
 	
 	/**
 	 * A specialized version of `_.assign` for customizing assigned values without
@@ -33546,7 +34307,7 @@
 
 
 /***/ },
-/* 211 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -33557,8 +34318,8 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseCopy = __webpack_require__(212),
-	    keys = __webpack_require__(213);
+	var baseCopy = __webpack_require__(219),
+	    keys = __webpack_require__(220);
 	
 	/**
 	 * The base implementation of `_.assign` without support for argument juggling,
@@ -33579,7 +34340,7 @@
 
 
 /***/ },
-/* 212 */
+/* 219 */
 /***/ function(module, exports) {
 
 	/**
@@ -33617,7 +34378,7 @@
 
 
 /***/ },
-/* 213 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -33628,9 +34389,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(214),
-	    isArguments = __webpack_require__(215),
-	    isArray = __webpack_require__(216);
+	var getNative = __webpack_require__(221),
+	    isArguments = __webpack_require__(222),
+	    isArray = __webpack_require__(223);
 	
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -33859,7 +34620,7 @@
 
 
 /***/ },
-/* 214 */
+/* 221 */
 /***/ function(module, exports) {
 
 	/**
@@ -33996,7 +34757,7 @@
 
 
 /***/ },
-/* 215 */
+/* 222 */
 /***/ function(module, exports) {
 
 	/**
@@ -34110,7 +34871,7 @@
 
 
 /***/ },
-/* 216 */
+/* 223 */
 /***/ function(module, exports) {
 
 	/**
@@ -34290,7 +35051,7 @@
 
 
 /***/ },
-/* 217 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -34301,9 +35062,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var bindCallback = __webpack_require__(218),
-	    isIterateeCall = __webpack_require__(219),
-	    restParam = __webpack_require__(220);
+	var bindCallback = __webpack_require__(225),
+	    isIterateeCall = __webpack_require__(226),
+	    restParam = __webpack_require__(227);
 	
 	/**
 	 * Creates a function that assigns properties of source object(s) to a given
@@ -34348,7 +35109,7 @@
 
 
 /***/ },
-/* 218 */
+/* 225 */
 /***/ function(module, exports) {
 
 	/**
@@ -34419,7 +35180,7 @@
 
 
 /***/ },
-/* 219 */
+/* 226 */
 /***/ function(module, exports) {
 
 	/**
@@ -34557,7 +35318,7 @@
 
 
 /***/ },
-/* 220 */
+/* 227 */
 /***/ function(module, exports) {
 
 	/**
@@ -34630,7 +35391,7 @@
 
 
 /***/ },
-/* 221 */
+/* 228 */
 /***/ function(module, exports) {
 
 	/*eslint-disable*/
@@ -34642,11 +35403,11 @@
 
 
 /***/ },
-/* 222 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isString = __webpack_require__(208);
-	var clone = __webpack_require__(223);
+	var isString = __webpack_require__(215);
+	var clone = __webpack_require__(230);
 	
 	var types = [
 	  {
@@ -34761,7 +35522,7 @@
 
 
 /***/ },
-/* 223 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -34772,8 +35533,8 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseClone = __webpack_require__(224),
-	    bindCallback = __webpack_require__(234);
+	var baseClone = __webpack_require__(231),
+	    bindCallback = __webpack_require__(241);
 	
 	/**
 	 * Creates a deep clone of `value`. If `customizer` is provided it is invoked
@@ -34830,7 +35591,7 @@
 
 
 /***/ },
-/* 224 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -34841,13 +35602,13 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var arrayCopy = __webpack_require__(225),
-	    arrayEach = __webpack_require__(226),
-	    baseAssign = __webpack_require__(227),
-	    baseFor = __webpack_require__(233),
-	    getNative = __webpack_require__(230),
-	    isArray = __webpack_require__(232),
-	    keys = __webpack_require__(229);
+	var arrayCopy = __webpack_require__(232),
+	    arrayEach = __webpack_require__(233),
+	    baseAssign = __webpack_require__(234),
+	    baseFor = __webpack_require__(240),
+	    getNative = __webpack_require__(237),
+	    isArray = __webpack_require__(239),
+	    keys = __webpack_require__(236);
 	
 	/** `Object#toString` result references. */
 	var argsTag = '[object Arguments]',
@@ -35163,7 +35924,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 225 */
+/* 232 */
 /***/ function(module, exports) {
 
 	/**
@@ -35198,7 +35959,7 @@
 
 
 /***/ },
-/* 226 */
+/* 233 */
 /***/ function(module, exports) {
 
 	/**
@@ -35235,7 +35996,7 @@
 
 
 /***/ },
-/* 227 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -35246,8 +36007,8 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseCopy = __webpack_require__(228),
-	    keys = __webpack_require__(229);
+	var baseCopy = __webpack_require__(235),
+	    keys = __webpack_require__(236);
 	
 	/**
 	 * The base implementation of `_.assign` without support for argument juggling,
@@ -35268,7 +36029,7 @@
 
 
 /***/ },
-/* 228 */
+/* 235 */
 /***/ function(module, exports) {
 
 	/**
@@ -35306,7 +36067,7 @@
 
 
 /***/ },
-/* 229 */
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -35317,9 +36078,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(230),
-	    isArguments = __webpack_require__(231),
-	    isArray = __webpack_require__(232);
+	var getNative = __webpack_require__(237),
+	    isArguments = __webpack_require__(238),
+	    isArray = __webpack_require__(239);
 	
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -35548,7 +36309,7 @@
 
 
 /***/ },
-/* 230 */
+/* 237 */
 /***/ function(module, exports) {
 
 	/**
@@ -35685,7 +36446,7 @@
 
 
 /***/ },
-/* 231 */
+/* 238 */
 /***/ function(module, exports) {
 
 	/**
@@ -35799,7 +36560,7 @@
 
 
 /***/ },
-/* 232 */
+/* 239 */
 /***/ function(module, exports) {
 
 	/**
@@ -35979,7 +36740,7 @@
 
 
 /***/ },
-/* 233 */
+/* 240 */
 /***/ function(module, exports) {
 
 	/**
@@ -36071,7 +36832,7 @@
 
 
 /***/ },
-/* 234 */
+/* 241 */
 /***/ function(module, exports) {
 
 	/**
@@ -36142,7 +36903,7 @@
 
 
 /***/ },
-/* 235 */
+/* 242 */
 /***/ function(module, exports) {
 
 	/**
@@ -36207,13 +36968,13 @@
 
 
 /***/ },
-/* 236 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var parseDate = __webpack_require__(237);
-	var expirationMonth = __webpack_require__(238);
-	var expirationYear = __webpack_require__(207);
-	var isString = __webpack_require__(208);
+	var parseDate = __webpack_require__(244);
+	var expirationMonth = __webpack_require__(245);
+	var expirationYear = __webpack_require__(214);
+	var isString = __webpack_require__(215);
 	
 	function verification(isValid, isPotentiallyValid, month, year) {
 	  return {
@@ -36251,7 +37012,7 @@
 
 
 /***/ },
-/* 237 */
+/* 244 */
 /***/ function(module, exports) {
 
 	function parseDate(value) {
@@ -36279,10 +37040,10 @@
 
 
 /***/ },
-/* 238 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isString = __webpack_require__(208);
+	var isString = __webpack_require__(215);
 	
 	function verification(isValid, isPotentiallyValid) {
 	  return {isValid: isValid, isPotentiallyValid: isPotentiallyValid};
@@ -36316,10 +37077,10 @@
 
 
 /***/ },
-/* 239 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isString = __webpack_require__(208);
+	var isString = __webpack_require__(215);
 	var DEFAULT_LENGTH = 3;
 	
 	function verification(isValid, isPotentiallyValid) {
@@ -36342,10 +37103,10 @@
 
 
 /***/ },
-/* 240 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isString = __webpack_require__(208);
+	var isString = __webpack_require__(215);
 	
 	function verification(isValid, isPotentiallyValid) {
 	  return {isValid: isValid, isPotentiallyValid: isPotentiallyValid};
@@ -36365,19 +37126,19 @@
 
 
 /***/ },
-/* 241 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var classNames = __webpack_require__(243);
+	var classNames = __webpack_require__(250);
 	var React = __webpack_require__(3);
 	
-	var CardIcon = __webpack_require__(244);
-	var InputError = __webpack_require__(242);
-	var MaskedInput = __webpack_require__(245);
+	var CardIcon = __webpack_require__(251);
+	var InputError = __webpack_require__(249);
+	var MaskedInput = __webpack_require__(252);
 	
-	var utils = __webpack_require__(203);
+	var utils = __webpack_require__(210);
 	var gettext = utils.gettext;
 	
 	
@@ -36487,12 +37248,12 @@
 
 
 /***/ },
-/* 242 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var classNames = __webpack_require__(243);
+	var classNames = __webpack_require__(250);
 	var React = __webpack_require__(3);
 	
 	
@@ -36519,7 +37280,7 @@
 
 
 /***/ },
-/* 243 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -36574,12 +37335,12 @@
 
 
 /***/ },
-/* 244 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var classNames = __webpack_require__(243);
+	var classNames = __webpack_require__(250);
 	var React = __webpack_require__(3);
 	
 	
@@ -36620,7 +37381,7 @@
 
 
 /***/ },
-/* 245 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36628,7 +37389,7 @@
 	var React = __webpack_require__(3)
 	var $__0=   __webpack_require__(133),getSelection=$__0.getSelection,setSelection=$__0.setSelection
 	
-	var InputMask = __webpack_require__(246)
+	var InputMask = __webpack_require__(253)
 	
 	var KEYCODE_Z = 90
 	var KEYCODE_Y = 89
@@ -36782,7 +37543,7 @@
 	module.exports = MaskedInput
 
 /***/ },
-/* 246 */
+/* 253 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -37270,12 +38031,12 @@
 	module.exports = InputMask
 
 /***/ },
-/* 247 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var classNames = __webpack_require__(243);
+	var classNames = __webpack_require__(250);
 	var React = __webpack_require__(3);
 	
 	
@@ -37313,7 +38074,7 @@
 
 
 /***/ },
-/* 248 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37337,7 +38098,7 @@
 
 
 /***/ },
-/* 249 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37345,11 +38106,11 @@
 	var React = __webpack_require__(3);
 	var Navigation = __webpack_require__(159).Navigation;
 	
-	var CardChoice = __webpack_require__(250);
-	var ProductDetail = __webpack_require__(199);
-	var Spinner = __webpack_require__(248);
-	var UserStore = __webpack_require__(252);
-	var gettext = __webpack_require__(203).gettext;
+	var CardChoice = __webpack_require__(257);
+	var ProductDetail = __webpack_require__(206);
+	var Spinner = __webpack_require__(255);
+	var UserStore = __webpack_require__(259);
+	var gettext = __webpack_require__(210).gettext;
 	
 	
 	module.exports = React.createClass({
@@ -37365,7 +38126,7 @@
 	  },
 	
 	  componentDidMount: function() {
-	    var user = UserStore.getLoggedInUser();
+	    var user = UserStore.getSignedInUser();
 	    console.log('got logged in user:', user);
 	
 	    if (user.payment_methods.length) {
@@ -37400,7 +38161,7 @@
 
 
 /***/ },
-/* 250 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37409,10 +38170,10 @@
 	var React = __webpack_require__(3);
 	var Navigation = __webpack_require__(159).Navigation;
 	
-	var CardItem = __webpack_require__(251);
-	var SubmitButton = __webpack_require__(247);
+	var CardItem = __webpack_require__(258);
+	var SubmitButton = __webpack_require__(254);
 	
-	var gettext = __webpack_require__(203).gettext;
+	var gettext = __webpack_require__(210).gettext;
 	
 	
 	module.exports = React.createClass({
@@ -37492,13 +38253,13 @@
 
 
 /***/ },
-/* 251 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(3);
-	var CardIcon = __webpack_require__(244);
+	var CardIcon = __webpack_require__(251);
 	
 	
 	module.exports = React.createClass({
@@ -37535,15 +38296,15 @@
 
 
 /***/ },
-/* 252 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var assign = __webpack_require__(253);
-	var EventEmitter = __webpack_require__(254).EventEmitter;
+	var assign = __webpack_require__(199);
+	var EventEmitter = __webpack_require__(200).EventEmitter;
 	
-	var dispatcher = __webpack_require__(255);
+	var dispatcher = __webpack_require__(201);
 	
 	
 	function UserStore(localDispatcher) {
@@ -37556,14 +38317,14 @@
 	  //
 	  this.currentUser = null;
 	  localDispatcher.register((function(payload) {
-	    if (payload.actionType === 'set-user') {
-	      console.log('UserStore: storing current user:', payload.user);
+	    if (payload.actionType === 'user-signed-in') {
+	      console.log('UserStore: storing signed in user:', payload.user);
 	      //
 	      // Example:
-	      // {email: 'f@f.com', is_logged_in: true, payment_methods: []}
+	      // {email: 'f@f.com', payment_methods: []}
 	      //
 	      this.currentUser = payload.user;
-	      this.emit('set-user');
+	      this.emit('user-signed-in');
 	    }
 	  }).bind(this));
 	}
@@ -37571,27 +38332,19 @@
 	
 	UserStore.prototype = assign({}, EventEmitter.prototype, {
 	
-	  getCurrentUser: function() {
+	  getSignedInUser: function() {
 	    if (!this.currentUser) {
-	      throw new Error('no user has been set');
+	      throw new Error('user is not signed in');
 	    }
 	    return this.currentUser;
 	  },
 	
-	  getLoggedInUser: function() {
-	    var user = this.getCurrentUser();
-	    if (!user.is_logged_in) {
-	      throw new Error('the current user is not logged in');
-	    }
-	    return user;
+	  addSignInListener: function(handler) {
+	    this.on('user-signed-in', handler);
 	  },
 	
-	  addSetUserListener: function(handler) {
-	    this.on('set-user', handler);
-	  },
-	
-	  removeSetUserListener: function(handler) {
-	    this.removeListener('set-user', handler);
+	  removeSignInListener: function(handler) {
+	    this.removeListener('user-signed-in', handler);
 	  },
 	
 	});
@@ -37601,713 +38354,18 @@
 
 
 /***/ },
-/* 253 */
-/***/ function(module, exports) {
-
-	'use strict';
-	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-	
-	function ToObject(val) {
-		if (val == null) {
-			throw new TypeError('Object.assign cannot be called with null or undefined');
-		}
-	
-		return Object(val);
-	}
-	
-	function ownEnumerableKeys(obj) {
-		var keys = Object.getOwnPropertyNames(obj);
-	
-		if (Object.getOwnPropertySymbols) {
-			keys = keys.concat(Object.getOwnPropertySymbols(obj));
-		}
-	
-		return keys.filter(function (key) {
-			return propIsEnumerable.call(obj, key);
-		});
-	}
-	
-	module.exports = Object.assign || function (target, source) {
-		var from;
-		var keys;
-		var to = ToObject(target);
-	
-		for (var s = 1; s < arguments.length; s++) {
-			from = arguments[s];
-			keys = ownEnumerableKeys(Object(from));
-	
-			for (var i = 0; i < keys.length; i++) {
-				to[keys[i]] = from[keys[i]];
-			}
-		}
-	
-		return to;
-	};
-
-
-/***/ },
-/* 254 */
-/***/ function(module, exports) {
-
-	// Copyright Joyent, Inc. and other Node contributors.
-	//
-	// Permission is hereby granted, free of charge, to any person obtaining a
-	// copy of this software and associated documentation files (the
-	// "Software"), to deal in the Software without restriction, including
-	// without limitation the rights to use, copy, modify, merge, publish,
-	// distribute, sublicense, and/or sell copies of the Software, and to permit
-	// persons to whom the Software is furnished to do so, subject to the
-	// following conditions:
-	//
-	// The above copyright notice and this permission notice shall be included
-	// in all copies or substantial portions of the Software.
-	//
-	// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-	// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-	// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-	// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-	// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-	// USE OR OTHER DEALINGS IN THE SOFTWARE.
-	
-	function EventEmitter() {
-	  this._events = this._events || {};
-	  this._maxListeners = this._maxListeners || undefined;
-	}
-	module.exports = EventEmitter;
-	
-	// Backwards-compat with node 0.10.x
-	EventEmitter.EventEmitter = EventEmitter;
-	
-	EventEmitter.prototype._events = undefined;
-	EventEmitter.prototype._maxListeners = undefined;
-	
-	// By default EventEmitters will print a warning if more than 10 listeners are
-	// added to it. This is a useful default which helps finding memory leaks.
-	EventEmitter.defaultMaxListeners = 10;
-	
-	// Obviously not all Emitters should be limited to 10. This function allows
-	// that to be increased. Set to zero for unlimited.
-	EventEmitter.prototype.setMaxListeners = function(n) {
-	  if (!isNumber(n) || n < 0 || isNaN(n))
-	    throw TypeError('n must be a positive number');
-	  this._maxListeners = n;
-	  return this;
-	};
-	
-	EventEmitter.prototype.emit = function(type) {
-	  var er, handler, len, args, i, listeners;
-	
-	  if (!this._events)
-	    this._events = {};
-	
-	  // If there is no 'error' event listener then throw.
-	  if (type === 'error') {
-	    if (!this._events.error ||
-	        (isObject(this._events.error) && !this._events.error.length)) {
-	      er = arguments[1];
-	      if (er instanceof Error) {
-	        throw er; // Unhandled 'error' event
-	      }
-	      throw TypeError('Uncaught, unspecified "error" event.');
-	    }
-	  }
-	
-	  handler = this._events[type];
-	
-	  if (isUndefined(handler))
-	    return false;
-	
-	  if (isFunction(handler)) {
-	    switch (arguments.length) {
-	      // fast cases
-	      case 1:
-	        handler.call(this);
-	        break;
-	      case 2:
-	        handler.call(this, arguments[1]);
-	        break;
-	      case 3:
-	        handler.call(this, arguments[1], arguments[2]);
-	        break;
-	      // slower
-	      default:
-	        len = arguments.length;
-	        args = new Array(len - 1);
-	        for (i = 1; i < len; i++)
-	          args[i - 1] = arguments[i];
-	        handler.apply(this, args);
-	    }
-	  } else if (isObject(handler)) {
-	    len = arguments.length;
-	    args = new Array(len - 1);
-	    for (i = 1; i < len; i++)
-	      args[i - 1] = arguments[i];
-	
-	    listeners = handler.slice();
-	    len = listeners.length;
-	    for (i = 0; i < len; i++)
-	      listeners[i].apply(this, args);
-	  }
-	
-	  return true;
-	};
-	
-	EventEmitter.prototype.addListener = function(type, listener) {
-	  var m;
-	
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-	
-	  if (!this._events)
-	    this._events = {};
-	
-	  // To avoid recursion in the case that type === "newListener"! Before
-	  // adding it to the listeners, first emit "newListener".
-	  if (this._events.newListener)
-	    this.emit('newListener', type,
-	              isFunction(listener.listener) ?
-	              listener.listener : listener);
-	
-	  if (!this._events[type])
-	    // Optimize the case of one listener. Don't need the extra array object.
-	    this._events[type] = listener;
-	  else if (isObject(this._events[type]))
-	    // If we've already got an array, just append.
-	    this._events[type].push(listener);
-	  else
-	    // Adding the second element, need to change to array.
-	    this._events[type] = [this._events[type], listener];
-	
-	  // Check for listener leak
-	  if (isObject(this._events[type]) && !this._events[type].warned) {
-	    var m;
-	    if (!isUndefined(this._maxListeners)) {
-	      m = this._maxListeners;
-	    } else {
-	      m = EventEmitter.defaultMaxListeners;
-	    }
-	
-	    if (m && m > 0 && this._events[type].length > m) {
-	      this._events[type].warned = true;
-	      console.error('(node) warning: possible EventEmitter memory ' +
-	                    'leak detected. %d listeners added. ' +
-	                    'Use emitter.setMaxListeners() to increase limit.',
-	                    this._events[type].length);
-	      if (typeof console.trace === 'function') {
-	        // not supported in IE 10
-	        console.trace();
-	      }
-	    }
-	  }
-	
-	  return this;
-	};
-	
-	EventEmitter.prototype.on = EventEmitter.prototype.addListener;
-	
-	EventEmitter.prototype.once = function(type, listener) {
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-	
-	  var fired = false;
-	
-	  function g() {
-	    this.removeListener(type, g);
-	
-	    if (!fired) {
-	      fired = true;
-	      listener.apply(this, arguments);
-	    }
-	  }
-	
-	  g.listener = listener;
-	  this.on(type, g);
-	
-	  return this;
-	};
-	
-	// emits a 'removeListener' event iff the listener was removed
-	EventEmitter.prototype.removeListener = function(type, listener) {
-	  var list, position, length, i;
-	
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-	
-	  if (!this._events || !this._events[type])
-	    return this;
-	
-	  list = this._events[type];
-	  length = list.length;
-	  position = -1;
-	
-	  if (list === listener ||
-	      (isFunction(list.listener) && list.listener === listener)) {
-	    delete this._events[type];
-	    if (this._events.removeListener)
-	      this.emit('removeListener', type, listener);
-	
-	  } else if (isObject(list)) {
-	    for (i = length; i-- > 0;) {
-	      if (list[i] === listener ||
-	          (list[i].listener && list[i].listener === listener)) {
-	        position = i;
-	        break;
-	      }
-	    }
-	
-	    if (position < 0)
-	      return this;
-	
-	    if (list.length === 1) {
-	      list.length = 0;
-	      delete this._events[type];
-	    } else {
-	      list.splice(position, 1);
-	    }
-	
-	    if (this._events.removeListener)
-	      this.emit('removeListener', type, listener);
-	  }
-	
-	  return this;
-	};
-	
-	EventEmitter.prototype.removeAllListeners = function(type) {
-	  var key, listeners;
-	
-	  if (!this._events)
-	    return this;
-	
-	  // not listening for removeListener, no need to emit
-	  if (!this._events.removeListener) {
-	    if (arguments.length === 0)
-	      this._events = {};
-	    else if (this._events[type])
-	      delete this._events[type];
-	    return this;
-	  }
-	
-	  // emit removeListener for all listeners on all events
-	  if (arguments.length === 0) {
-	    for (key in this._events) {
-	      if (key === 'removeListener') continue;
-	      this.removeAllListeners(key);
-	    }
-	    this.removeAllListeners('removeListener');
-	    this._events = {};
-	    return this;
-	  }
-	
-	  listeners = this._events[type];
-	
-	  if (isFunction(listeners)) {
-	    this.removeListener(type, listeners);
-	  } else {
-	    // LIFO order
-	    while (listeners.length)
-	      this.removeListener(type, listeners[listeners.length - 1]);
-	  }
-	  delete this._events[type];
-	
-	  return this;
-	};
-	
-	EventEmitter.prototype.listeners = function(type) {
-	  var ret;
-	  if (!this._events || !this._events[type])
-	    ret = [];
-	  else if (isFunction(this._events[type]))
-	    ret = [this._events[type]];
-	  else
-	    ret = this._events[type].slice();
-	  return ret;
-	};
-	
-	EventEmitter.listenerCount = function(emitter, type) {
-	  var ret;
-	  if (!emitter._events || !emitter._events[type])
-	    ret = 0;
-	  else if (isFunction(emitter._events[type]))
-	    ret = 1;
-	  else
-	    ret = emitter._events[type].length;
-	  return ret;
-	};
-	
-	function isFunction(arg) {
-	  return typeof arg === 'function';
-	}
-	
-	function isNumber(arg) {
-	  return typeof arg === 'number';
-	}
-	
-	function isObject(arg) {
-	  return typeof arg === 'object' && arg !== null;
-	}
-	
-	function isUndefined(arg) {
-	  return arg === void 0;
-	}
-
-
-/***/ },
-/* 255 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var Dispatcher = __webpack_require__(256).Dispatcher;
-	
-	// Create a shared dispatcher for the application.
-	module.exports = new Dispatcher();
-
-
-/***/ },
-/* 256 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 */
-	
-	module.exports.Dispatcher = __webpack_require__(257)
-
-
-/***/ },
-/* 257 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*
-	 * Copyright (c) 2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule Dispatcher
-	 * @typechecks
-	 */
-	
-	"use strict";
-	
-	var invariant = __webpack_require__(258);
-	
-	var _lastID = 1;
-	var _prefix = 'ID_';
-	
-	/**
-	 * Dispatcher is used to broadcast payloads to registered callbacks. This is
-	 * different from generic pub-sub systems in two ways:
-	 *
-	 *   1) Callbacks are not subscribed to particular events. Every payload is
-	 *      dispatched to every registered callback.
-	 *   2) Callbacks can be deferred in whole or part until other callbacks have
-	 *      been executed.
-	 *
-	 * For example, consider this hypothetical flight destination form, which
-	 * selects a default city when a country is selected:
-	 *
-	 *   var flightDispatcher = new Dispatcher();
-	 *
-	 *   // Keeps track of which country is selected
-	 *   var CountryStore = {country: null};
-	 *
-	 *   // Keeps track of which city is selected
-	 *   var CityStore = {city: null};
-	 *
-	 *   // Keeps track of the base flight price of the selected city
-	 *   var FlightPriceStore = {price: null}
-	 *
-	 * When a user changes the selected city, we dispatch the payload:
-	 *
-	 *   flightDispatcher.dispatch({
-	 *     actionType: 'city-update',
-	 *     selectedCity: 'paris'
-	 *   });
-	 *
-	 * This payload is digested by `CityStore`:
-	 *
-	 *   flightDispatcher.register(function(payload) {
-	 *     if (payload.actionType === 'city-update') {
-	 *       CityStore.city = payload.selectedCity;
-	 *     }
-	 *   });
-	 *
-	 * When the user selects a country, we dispatch the payload:
-	 *
-	 *   flightDispatcher.dispatch({
-	 *     actionType: 'country-update',
-	 *     selectedCountry: 'australia'
-	 *   });
-	 *
-	 * This payload is digested by both stores:
-	 *
-	 *    CountryStore.dispatchToken = flightDispatcher.register(function(payload) {
-	 *     if (payload.actionType === 'country-update') {
-	 *       CountryStore.country = payload.selectedCountry;
-	 *     }
-	 *   });
-	 *
-	 * When the callback to update `CountryStore` is registered, we save a reference
-	 * to the returned token. Using this token with `waitFor()`, we can guarantee
-	 * that `CountryStore` is updated before the callback that updates `CityStore`
-	 * needs to query its data.
-	 *
-	 *   CityStore.dispatchToken = flightDispatcher.register(function(payload) {
-	 *     if (payload.actionType === 'country-update') {
-	 *       // `CountryStore.country` may not be updated.
-	 *       flightDispatcher.waitFor([CountryStore.dispatchToken]);
-	 *       // `CountryStore.country` is now guaranteed to be updated.
-	 *
-	 *       // Select the default city for the new country
-	 *       CityStore.city = getDefaultCityForCountry(CountryStore.country);
-	 *     }
-	 *   });
-	 *
-	 * The usage of `waitFor()` can be chained, for example:
-	 *
-	 *   FlightPriceStore.dispatchToken =
-	 *     flightDispatcher.register(function(payload) {
-	 *       switch (payload.actionType) {
-	 *         case 'country-update':
-	 *           flightDispatcher.waitFor([CityStore.dispatchToken]);
-	 *           FlightPriceStore.price =
-	 *             getFlightPriceStore(CountryStore.country, CityStore.city);
-	 *           break;
-	 *
-	 *         case 'city-update':
-	 *           FlightPriceStore.price =
-	 *             FlightPriceStore(CountryStore.country, CityStore.city);
-	 *           break;
-	 *     }
-	 *   });
-	 *
-	 * The `country-update` payload will be guaranteed to invoke the stores'
-	 * registered callbacks in order: `CountryStore`, `CityStore`, then
-	 * `FlightPriceStore`.
-	 */
-	
-	  function Dispatcher() {
-	    this.$Dispatcher_callbacks = {};
-	    this.$Dispatcher_isPending = {};
-	    this.$Dispatcher_isHandled = {};
-	    this.$Dispatcher_isDispatching = false;
-	    this.$Dispatcher_pendingPayload = null;
-	  }
-	
-	  /**
-	   * Registers a callback to be invoked with every dispatched payload. Returns
-	   * a token that can be used with `waitFor()`.
-	   *
-	   * @param {function} callback
-	   * @return {string}
-	   */
-	  Dispatcher.prototype.register=function(callback) {
-	    var id = _prefix + _lastID++;
-	    this.$Dispatcher_callbacks[id] = callback;
-	    return id;
-	  };
-	
-	  /**
-	   * Removes a callback based on its token.
-	   *
-	   * @param {string} id
-	   */
-	  Dispatcher.prototype.unregister=function(id) {
-	    invariant(
-	      this.$Dispatcher_callbacks[id],
-	      'Dispatcher.unregister(...): `%s` does not map to a registered callback.',
-	      id
-	    );
-	    delete this.$Dispatcher_callbacks[id];
-	  };
-	
-	  /**
-	   * Waits for the callbacks specified to be invoked before continuing execution
-	   * of the current callback. This method should only be used by a callback in
-	   * response to a dispatched payload.
-	   *
-	   * @param {array<string>} ids
-	   */
-	  Dispatcher.prototype.waitFor=function(ids) {
-	    invariant(
-	      this.$Dispatcher_isDispatching,
-	      'Dispatcher.waitFor(...): Must be invoked while dispatching.'
-	    );
-	    for (var ii = 0; ii < ids.length; ii++) {
-	      var id = ids[ii];
-	      if (this.$Dispatcher_isPending[id]) {
-	        invariant(
-	          this.$Dispatcher_isHandled[id],
-	          'Dispatcher.waitFor(...): Circular dependency detected while ' +
-	          'waiting for `%s`.',
-	          id
-	        );
-	        continue;
-	      }
-	      invariant(
-	        this.$Dispatcher_callbacks[id],
-	        'Dispatcher.waitFor(...): `%s` does not map to a registered callback.',
-	        id
-	      );
-	      this.$Dispatcher_invokeCallback(id);
-	    }
-	  };
-	
-	  /**
-	   * Dispatches a payload to all registered callbacks.
-	   *
-	   * @param {object} payload
-	   */
-	  Dispatcher.prototype.dispatch=function(payload) {
-	    invariant(
-	      !this.$Dispatcher_isDispatching,
-	      'Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch.'
-	    );
-	    this.$Dispatcher_startDispatching(payload);
-	    try {
-	      for (var id in this.$Dispatcher_callbacks) {
-	        if (this.$Dispatcher_isPending[id]) {
-	          continue;
-	        }
-	        this.$Dispatcher_invokeCallback(id);
-	      }
-	    } finally {
-	      this.$Dispatcher_stopDispatching();
-	    }
-	  };
-	
-	  /**
-	   * Is this Dispatcher currently dispatching.
-	   *
-	   * @return {boolean}
-	   */
-	  Dispatcher.prototype.isDispatching=function() {
-	    return this.$Dispatcher_isDispatching;
-	  };
-	
-	  /**
-	   * Call the callback stored with the given id. Also do some internal
-	   * bookkeeping.
-	   *
-	   * @param {string} id
-	   * @internal
-	   */
-	  Dispatcher.prototype.$Dispatcher_invokeCallback=function(id) {
-	    this.$Dispatcher_isPending[id] = true;
-	    this.$Dispatcher_callbacks[id](this.$Dispatcher_pendingPayload);
-	    this.$Dispatcher_isHandled[id] = true;
-	  };
-	
-	  /**
-	   * Set up bookkeeping needed when dispatching.
-	   *
-	   * @param {object} payload
-	   * @internal
-	   */
-	  Dispatcher.prototype.$Dispatcher_startDispatching=function(payload) {
-	    for (var id in this.$Dispatcher_callbacks) {
-	      this.$Dispatcher_isPending[id] = false;
-	      this.$Dispatcher_isHandled[id] = false;
-	    }
-	    this.$Dispatcher_pendingPayload = payload;
-	    this.$Dispatcher_isDispatching = true;
-	  };
-	
-	  /**
-	   * Clear bookkeeping used for dispatching.
-	   *
-	   * @internal
-	   */
-	  Dispatcher.prototype.$Dispatcher_stopDispatching=function() {
-	    this.$Dispatcher_pendingPayload = null;
-	    this.$Dispatcher_isDispatching = false;
-	  };
-	
-	
-	module.exports = Dispatcher;
-
-
-/***/ },
-/* 258 */
-/***/ function(module, exports) {
-
-	/**
-	 * Copyright (c) 2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule invariant
-	 */
-	
-	"use strict";
-	
-	/**
-	 * Use invariant() to assert state which your program assumes to be true.
-	 *
-	 * Provide sprintf-style format (only %s is supported) and arguments
-	 * to provide information about what broke and what you were
-	 * expecting.
-	 *
-	 * The invariant message will be stripped in production, but the invariant
-	 * will remain to ensure logic does not differ in production.
-	 */
-	
-	var invariant = function(condition, format, a, b, c, d, e, f) {
-	  if (false) {
-	    if (format === undefined) {
-	      throw new Error('invariant requires an error message argument');
-	    }
-	  }
-	
-	  if (!condition) {
-	    var error;
-	    if (format === undefined) {
-	      error = new Error(
-	        'Minified exception occurred; use the non-minified dev environment ' +
-	        'for the full error message and additional helpful warnings.'
-	      );
-	    } else {
-	      var args = [a, b, c, d, e, f];
-	      var argIndex = 0;
-	      error = new Error(
-	        'Invariant Violation: ' +
-	        format.replace(/%s/g, function() { return args[argIndex++]; })
-	      );
-	    }
-	
-	    error.framesToPop = 1; // we don't care about invariant's own frame
-	    throw error;
-	  }
-	};
-	
-	module.exports = invariant;
-
-
-/***/ },
-/* 259 */
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(3);
 	
-	var UserStore = __webpack_require__(252);
-	var ProductDetail = __webpack_require__(199);
-	var SubmitButton = __webpack_require__(247);
+	var UserStore = __webpack_require__(259);
+	var ProductDetail = __webpack_require__(206);
+	var SubmitButton = __webpack_require__(254);
 	
-	var gettext = __webpack_require__(203).gettext;
+	var gettext = __webpack_require__(210).gettext;
 	
 	
 	module.exports = React.createClass({
@@ -38320,7 +38378,7 @@
 	
 	  getInitialState: function() {
 	    return {
-	      user: UserStore.getCurrentUser(),
+	      user: UserStore.getSignedInUser(),
 	    }
 	  },
 	
@@ -38358,7 +38416,34 @@
 
 
 /***/ },
-/* 260 */
+/* 261 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(3);
+	
+	var utils = __webpack_require__(210);
+	
+	var gettext = utils.gettext;
+	
+	
+	module.exports = React.createClass({
+	  displayName: 'Error',
+	
+	  render: function() {
+	    return (
+	      React.createElement("div", {class: "app-error"}, 
+	        gettext('Internal error. Please try again later.')
+	      )
+	    );
+	  },
+	
+	});
+
+
+/***/ },
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38367,10 +38452,10 @@
 	var React = __webpack_require__(3);
 	var Navigation = __webpack_require__(159).Navigation;
 	
-	var UserActions = __webpack_require__(261);
-	var UserStore = __webpack_require__(252);
-	var Spinner = __webpack_require__(248);
-	var gettext = __webpack_require__(203).gettext;
+	var UserActions = __webpack_require__(263);
+	var UserStore = __webpack_require__(259);
+	var Spinner = __webpack_require__(255);
+	var gettext = __webpack_require__(210).gettext;
 	
 	
 	module.exports = React.createClass({
@@ -38384,27 +38469,21 @@
 	
 	  componentDidMount: function() {
 	    var $__0=    this.context,router=$__0.router;
-	    UserStore.addSetUserListener(this.onSetUser);
+	    UserStore.addSignInListener(this.onUserSignIn);
 	    UserActions.signIn(router.getCurrentQuery().access_token);
 	  },
 	
 	  componentWillUnmount: function() {
-	    UserStore.removeSetUserListener(this.onSetUser);
+	    UserStore.removeSignInListener(this.onUserSignIn);
 	  },
 	
-	  onSetUser: function() {
+	  onUserSignIn: function() {
 	    if (!this.isMounted()) {
 	      console.log('ignoring events while unmounted');
 	      return;
 	    }
-	    var user = UserStore.getCurrentUser();
-	    if (user.is_logged_in) {
-	      console.log('current user is logged in; continuing to card-listing');
-	      this.transitionTo('card-listing');
-	    } else if (!user.is_logged_in) {
-	      // TODO: some error state.
-	      console.error('user did not log in successfully');
-	    }
+	    console.log('current user is signed in; continuing to card-listing');
+	    this.transitionTo('card-listing');
 	  },
 	
 	  render: function() {
@@ -38415,15 +38494,16 @@
 
 
 /***/ },
-/* 261 */
+/* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var $ = __webpack_require__(1);
-	var assign = __webpack_require__(253);
+	var assign = __webpack_require__(199);
 	
-	var dispatcher = __webpack_require__(255);
+	var AppActions = __webpack_require__(264);
+	var dispatcher = __webpack_require__(201);
 	
 	//
 	// A helper object to perform user-related actions.
@@ -38444,11 +38524,10 @@
 	      context: this,
 	    }).then(function(data) {
 	
-	      console.log('login succeeded');
-	      this.setCurrentUser({
+	      console.log('login succeeded, setting user');
+	      this.setSignedInUser({
 	        email: data.buyer_email,
 	        payment_methods: data.payment_methods,
-	        is_logged_in: true,
 	      });
 	
 	      console.log('setting CSRF token for subsequent requests:',
@@ -38461,19 +38540,38 @@
 	
 	    }).fail(function() {
 	
-	      console.log('login failed');
-	      this.setCurrentUser({
-	        email: null,
-	        is_logged_in: false,
-	      });
+	      AppActions.setError('user login failed');
+	
 	    });
 	  },
 	
-	  setCurrentUser: function(user) {
-	    console.log('UserActions: setting current user', user);
+	  setSignedInUser: function(user) {
+	    console.log('UserActions: setting signed in user', user);
 	    dispatcher.dispatch({
-	      actionType: 'set-user',
+	      actionType: 'user-signed-in',
 	      user: user,
+	    });
+	  },
+	
+	});
+
+
+/***/ },
+/* 264 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var assign = __webpack_require__(199);
+	
+	var dispatcher = __webpack_require__(201);
+	
+	module.exports = assign({}, {
+	
+	  setError: function(debugMessage) {
+	    dispatcher.dispatch({
+	      actionType: 'set-app-error',
+	      error: {debugMessage: debugMessage},
 	    });
 	  },
 	

@@ -21,27 +21,21 @@ module.exports = React.createClass({
 
   componentDidMount: function() {
     var { router } = this.context;
-    UserStore.addSetUserListener(this.onSetUser);
+    UserStore.addSignInListener(this.onUserSignIn);
     UserActions.signIn(router.getCurrentQuery().access_token);
   },
 
   componentWillUnmount: function() {
-    UserStore.removeSetUserListener(this.onSetUser);
+    UserStore.removeSignInListener(this.onUserSignIn);
   },
 
-  onSetUser: function() {
+  onUserSignIn: function() {
     if (!this.isMounted()) {
       console.log('ignoring events while unmounted');
       return;
     }
-    var user = UserStore.getCurrentUser();
-    if (user.is_logged_in) {
-      console.log('current user is logged in; continuing to card-listing');
-      this.transitionTo('card-listing');
-    } else if (!user.is_logged_in) {
-      // TODO: some error state.
-      console.error('user did not log in successfully');
-    }
+    console.log('current user is signed in; continuing to card-listing');
+    this.transitionTo('card-listing');
   },
 
   render: function() {
