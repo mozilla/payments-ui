@@ -8,20 +8,28 @@ var helpers = require('./helpers');
 describe('UserActions', function() {
 
   var dispatcher;
+  var appActions;
   var userActions;
 
   beforeEach(function() {
-    dispatcher = {
-      dispatch: function() {},
+
+    appActions = {
+      setError: sinon.spy(),
     };
-    sinon.spy(dispatcher, 'dispatch');
+
+    dispatcher = {
+      dispatch: sinon.spy(),
+    };
 
     userActions = rewire('user-actions');
     userActions.__set__({
       dispatcher: dispatcher,
+      AppActions: appActions,
       // Replace with a non-functioning stub by default until overidden.
       '$': {},
     });
+
+    sinon.spy(userActions, 'setSignedInUser');
 
   });
 
@@ -46,47 +54,42 @@ describe('UserActions', function() {
     return opt.data;
   }
 
-  it('should dispatch current user', function() {
+  it('should dispatch signed in user', function() {
     var user = {email: 'foo@bar.com'};
-    userActions.setCurrentUser(user);
+    userActions.setSignedInUser(user);
     assert.deepEqual(dispatcher.dispatch.args[0][0], {
-      actionType: 'set-user',
+      actionType: 'user-signed-in',
       user: user,
     });
   });
 
-  it('should set user from sign-in', function() {
+  it('should set email from sign-in', function() {
     var data = setApiSignInResult();
-    var setUser = sinon.spy(userActions, 'setCurrentUser');
 
     userActions.signIn('access-token');
 
-    var userData = setUser.firstCall.args[0];
+    var userData = userActions.setSignedInUser.firstCall.args[0];
     assert.equal(userData.email, data.buyer_email);
-    assert.equal(userData.is_logged_in, true);
   });
 
-  it('should set saved payment methods', function() {
+  it('should set saved payment methods from sign-in', function() {
     var data = fakeSignInResult();
     var payMethods = [{'provider_id': '3vr3ym'}];
     data.payment_methods = payMethods;
     setApiSignInResult({data: data});
 
-    var setUser = sinon.spy(userActions, 'setCurrentUser');
-
     userActions.signIn('access-token');
 
-    var userData = setUser.firstCall.args[0];
+    var userData = userActions.setSignedInUser.firstCall.args[0];
     assert.equal(userData.payment_methods, payMethods);
   });
 
   it('should set empty payment methods', function() {
     setApiSignInResult();
-    var setUser = sinon.spy(userActions, 'setCurrentUser');
 
     userActions.signIn('access-token');
 
-    var userData = setUser.firstCall.args[0];
+    var userData = userActions.setSignedInUser.firstCall.args[0];
     assert.deepEqual(userData.payment_methods, []);
   });
 
@@ -109,15 +112,13 @@ describe('UserActions', function() {
                      {'X-CSRFToken': data.csrf_token});
   });
 
-  it('should set signed out user on failure', function() {
+  it('should set app error on failure', function() {
     setApiSignInResult({jqueryOpt: {result: 'fail'}});
-    var setUser = sinon.spy(userActions, 'setCurrentUser');
 
     userActions.signIn('access-token');
 
-    var userData = setUser.firstCall.args[0];
-    assert.equal(userData.email, null);
-    assert.equal(userData.is_logged_in, false);
+    assert.ok(appActions.setError.called);
+    assert.ok(!userActions.setSignedInUser.called);
   });
 
 });

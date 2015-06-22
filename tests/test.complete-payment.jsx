@@ -13,7 +13,7 @@ describe('CompletePayment', function() {
 
   beforeEach(function() {
     this.email = 'buyer@somewhere.org';
-    sinon.stub(UserStore, 'getCurrentUser', (function() {
+    sinon.stub(UserStore, 'getSignedInUser', (function() {
       return {email: this.email};
     }).bind(this));
 
@@ -27,7 +27,7 @@ describe('CompletePayment', function() {
 
   afterEach(function() {
     window.parent.postMessage.restore();
-    UserStore.getCurrentUser.restore();
+    UserStore.getSignedInUser.restore();
   });
 
   it('should show where the receipt was emailed', function() {

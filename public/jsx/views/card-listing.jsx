@@ -23,7 +23,7 @@ module.exports = React.createClass({
   },
 
   componentDidMount: function() {
-    var user = UserStore.getLoggedInUser();
+    var user = UserStore.getSignedInUser();
     console.log('got logged in user:', user);
 
     if (user.payment_methods.length) {

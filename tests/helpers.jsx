@@ -44,7 +44,7 @@ module.exports = {
     return TestUtils.findRenderedDOMComponentWithTag(component, tag);
   },
 
-  getRoutedComponent: function(TargetComponent, componentProps) {
+  getRoutedComponent: function(TargetComponent, componentProps, routerStubs) {
     //
     // Initialize a component with a stub router so it can be tested.
     //
@@ -53,6 +53,9 @@ module.exports = {
     //
     // componentProps
     //  Optional object of properties to render the component with.
+    //
+    // routerStubs
+    //  Option object of addtional stub methods for the stub router.
     //
     componentProps = componentProps || {};
 
@@ -76,7 +79,8 @@ module.exports = {
       isActive () {},
       getRouteAtDepth() {},
       setRouteComponentAtDepth() {},
-    });
+
+    }, routerStubs || {});
 
     var transitionSpy = sinon.spy(RouterStub, 'transitionTo');
 
@@ -156,10 +160,9 @@ module.exports = {
         signIn: sinon.spy(),
       },
       UserStore: {
-        getCurrentUser: sinon.spy(),
-        getLoggedInUser: sinon.spy(),
-        addSetUserListener: sinon.spy(),
-        removeSetUserListener: sinon.spy(),
+        getSignedInUser: sinon.spy(),
+        addSignInListener: sinon.spy(),
+        removeSignInListener: sinon.spy(),
       },
     };
   },
