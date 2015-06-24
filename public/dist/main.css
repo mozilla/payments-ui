@@ -488,8 +488,10 @@ h1, h2, h3, h4, h5, h6 {
 .complete {
   text-align: center; }
   .complete .accepted {
-    padding: 20px 0;
-    font-size: 1.75em; }
+    font-family: "Fira Sans", Helvetica, Arial, sans-serif;
+    font-size: 1.75em;
+    font-weight: 200;
+    padding: 20px 0; }
   .complete .receipt {
     padding-bottom: 1em; }
     .complete .receipt span {
@@ -544,10 +546,6 @@ main {
       width: 100%; }
     .card-listing .card-item .card-icon {
       left: 15px; }
-
-.complete .accepted {
-  font-family: "Fira Sans", Helvetica, Arial, sans-serif;
-  font-weight: 200; }
 
 .button {
   display: inline-block;

@@ -17,8 +17,10 @@ h1,h2,h3,h4,h5,h6 {
   text-align: center;
 
   .accepted {
-    padding: 20px 0;
+    @include header-font();
     font-size: 1.75em;
+    font-weight: 200;
+    padding: 20px 0;
   }
 
   .receipt {
@@ -94,11 +96,4 @@ main {
     }
 
   }
-}
-
-.complete {
-    .accepted {
-        @include header-font();
-        font-weight: 200;
-    }
 }

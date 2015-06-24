@@ -34049,12 +34049,16 @@
 	var isString = __webpack_require__(215);
 	var maxYear = 19;
 	
-	function verification(isValid, isPotentiallyValid) {
-	  return {isValid: isValid, isPotentiallyValid: isPotentiallyValid};
+	function verification(isValid, isPotentiallyValid, isCurrentYear) {
+	  return {
+	    isValid: isValid,
+	    isPotentiallyValid: isPotentiallyValid,
+	    isCurrentYear: isCurrentYear || false
+	  };
 	}
 	
 	function expirationYear(value) {
-	  var currentFirstTwo, currentYear, firstTwo, len, twoDigitYear, valid;
+	  var currentFirstTwo, currentYear, firstTwo, len, twoDigitYear, valid, isCurrentYear;
 	
 	  if (!isString(value)) {
 	    return verification(false, false);
@@ -34089,12 +34093,14 @@
 	  twoDigitYear = Number(String(currentYear).substr(2, 2));
 	
 	  if (len === 2) {
+	    isCurrentYear = twoDigitYear === value;
 	    valid = value >= twoDigitYear && value <= twoDigitYear + maxYear;
 	  } else if (len === 4) {
+	    isCurrentYear = currentYear === value;
 	    valid = value >= currentYear && value <= currentYear + maxYear;
 	  }
 	
-	  return verification(valid, valid);
+	  return verification(valid, valid, isCurrentYear);
 	}
 	
 	module.exports = expirationYear;
@@ -36986,7 +36992,7 @@
 	}
 	
 	function expirationDate(value) {
-	  var date, monthValid, yearValid;
+	  var date, monthValid, yearValid, isValidForThisYear;
 	
 	  if (!isString(value)) {
 	    return verification(false, false, null, null);
@@ -36997,8 +37003,15 @@
 	  monthValid = expirationMonth(date.month);
 	  yearValid = expirationYear(date.year);
 	
-	  if (monthValid.isValid && yearValid.isValid) {
-	    return verification(true, true, date.month, date.year);
+	  if (yearValid.isValid) {
+	    if (yearValid.isCurrentYear) {
+	      isValidForThisYear = monthValid.isValidForThisYear;
+	      return verification(isValidForThisYear, isValidForThisYear, date.month, date.year);
+	    }
+	
+	    if (monthValid.isValid) {
+	      return verification(true, true, date.month, date.year);
+	    }
 	  }
 	
 	  if (monthValid.isPotentiallyValid && yearValid.isPotentiallyValid) {
@@ -37045,12 +37058,17 @@
 
 	var isString = __webpack_require__(215);
 	
-	function verification(isValid, isPotentiallyValid) {
-	  return {isValid: isValid, isPotentiallyValid: isPotentiallyValid};
+	function verification(isValid, isPotentiallyValid, isValidForThisYear) {
+	  return {
+	    isValid: isValid,
+	    isPotentiallyValid: isPotentiallyValid,
+	    isValidForThisYear: isValidForThisYear || false
+	  };
 	}
 	
 	function expirationMonth(value) {
 	  var month, result;
+	  var currentMonth = new Date().getMonth() + 1;
 	
 	  if (!isString(value)) {
 	    return verification(false, false);
@@ -37070,7 +37088,7 @@
 	
 	  result = month > 0 && month < 13;
 	
-	  return verification(result, result);
+	  return verification(result, result, result && month >= currentMonth);
 	}
 	
 	module.exports = expirationMonth;
