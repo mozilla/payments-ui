@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react');
+var Link = require('react-router').Link;
 var Navigation = require('react-router').Navigation;
 
 var CardChoice = require('components/card-choice');
@@ -48,6 +49,9 @@ module.exports = React.createClass({
             cards={this.state.cards}
             productId={this.props.productId}
           />
+        <Link
+            className="card-add bottom-link"
+            to="card-form">{gettext('Add new credit card')}</Link>
         </div>
       );
     } else {

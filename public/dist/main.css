@@ -485,6 +485,10 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: "Fira Sans", Helvetica, Arial, sans-serif; }
 
+a {
+  text-decoration: none;
+  color: #0095dd; }
+
 .complete {
   text-align: center; }
   .complete .accepted {
@@ -517,6 +521,9 @@ main {
   top: -50px;
   margin-bottom: -50px; }
 
+.bottom-link {
+  padding: 1em; }
+
 .card-listing {
   margin: 0;
   padding: 0; }
@@ -546,6 +553,9 @@ main {
       width: 100%; }
     .card-listing .card-item .card-icon {
       left: 15px; }
+  .card-listing .card-add {
+    display: block;
+    text-align: right; }
 
 .button {
   display: inline-block;

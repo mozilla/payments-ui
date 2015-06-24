@@ -13,6 +13,12 @@ h1,h2,h3,h4,h5,h6 {
   @include header-font();
 }
 
+
+a {
+  text-decoration: none;
+  color: $the-real-blue;
+}
+
 .complete {
   text-align: center;
 
@@ -56,6 +62,10 @@ main {
     margin-bottom: -50px;
 }
 
+.bottom-link {
+    padding: 1em;
+}
+
 .card-listing {
   margin: 0;
   padding: 0;
@@ -94,6 +104,10 @@ main {
     .card-icon {
       left: 15px;
     }
+  }
 
+  .card-add {
+      display: block;
+      text-align: right;
   }
 }

@@ -38122,6 +38122,7 @@
 	'use strict';
 	
 	var React = __webpack_require__(3);
+	var Link = __webpack_require__(159).Link;
 	var Navigation = __webpack_require__(159).Navigation;
 	
 	var CardChoice = __webpack_require__(257);
@@ -38168,7 +38169,10 @@
 	          React.createElement(CardChoice, {
 	            cards: this.state.cards, 
 	            productId: this.props.productId}
-	          )
+	          ), 
+	        React.createElement(Link, {
+	            className: "card-add bottom-link", 
+	            to: "card-form"}, gettext('Add new credit card'))
 	        )
 	      );
 	    } else {
