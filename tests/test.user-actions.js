@@ -2,35 +2,24 @@
 
 var rewire = require('rewire');
 
+var actionTypes = require('action-types');
+var appActions = require('app-actions');
+
 var helpers = require('./helpers');
 
 
-describe('UserActions', function() {
+describe('userActions', function() {
 
-  var dispatcher;
-  var appActions;
+  var dispatch;
   var userActions;
 
   beforeEach(function() {
-
-    appActions = {
-      setError: sinon.spy(),
-    };
-
-    dispatcher = {
-      dispatch: sinon.spy(),
-    };
-
+    dispatch = sinon.spy();
     userActions = rewire('user-actions');
     userActions.__set__({
-      dispatcher: dispatcher,
-      AppActions: appActions,
       // Replace with a non-functioning stub by default until overidden.
       '$': {},
     });
-
-    sinon.spy(userActions, 'setSignedInUser');
-
   });
 
   function fakeSignInResult() {
@@ -54,22 +43,22 @@ describe('UserActions', function() {
     return opt.data;
   }
 
-  it('should dispatch signed in user', function() {
-    var user = {email: 'foo@bar.com'};
-    userActions.setSignedInUser(user);
-    assert.deepEqual(dispatcher.dispatch.args[0][0], {
-      actionType: 'user-signed-in',
-      user: user,
-    });
+  it('should dispatch sign-in action', function() {
+    setApiSignInResult();
+
+    userActions.signIn('access-token')(dispatch);
+
+    var action = dispatch.firstCall.args[0];
+    assert.equal(action.type, actionTypes.USER_SIGNED_IN);
   });
 
   it('should set email from sign-in', function() {
     var data = setApiSignInResult();
 
-    userActions.signIn('access-token');
+    userActions.signIn('access-token')(dispatch);
 
-    var userData = userActions.setSignedInUser.firstCall.args[0];
-    assert.equal(userData.email, data.buyer_email);
+    var action = dispatch.firstCall.args[0];
+    assert.equal(action.user.email, data.buyer_email);
   });
 
   it('should set saved payment methods from sign-in', function() {
@@ -78,25 +67,25 @@ describe('UserActions', function() {
     data.payment_methods = payMethods;
     setApiSignInResult({data: data});
 
-    userActions.signIn('access-token');
+    userActions.signIn('access-token')(dispatch);
 
-    var userData = userActions.setSignedInUser.firstCall.args[0];
-    assert.equal(userData.payment_methods, payMethods);
+    var action = dispatch.firstCall.args[0];
+    assert.equal(action.user.payment_methods, payMethods);
   });
 
   it('should set empty payment methods', function() {
     setApiSignInResult();
 
-    userActions.signIn('access-token');
+    userActions.signIn('access-token')(dispatch);
 
-    var userData = userActions.setSignedInUser.firstCall.args[0];
-    assert.deepEqual(userData.payment_methods, []);
+    var action = dispatch.firstCall.args[0];
+    assert.deepEqual(action.user.payment_methods, []);
   });
 
   it('should sign-in with access token', function() {
     var jquery = helpers.fakeJquery({returnedData: fakeSignInResult()});
     userActions.__set__('$', jquery.stub);
-    userActions.signIn('access-token');
+    userActions.signIn('access-token')(dispatch);
 
     assert.equal(jquery.ajaxSpy.firstCall.args[0].data.access_token,
                  'access-token');
@@ -106,7 +95,7 @@ describe('UserActions', function() {
     var data = fakeSignInResult();
     var jquery = helpers.fakeJquery({returnedData: data});
     userActions.__set__('$', jquery.stub);
-    userActions.signIn('access-token');
+    userActions.signIn('access-token')(dispatch);
 
     assert.deepEqual(jquery.ajaxSetupSpy.firstCall.args[0].headers,
                      {'X-CSRFToken': data.csrf_token});
@@ -115,10 +104,10 @@ describe('UserActions', function() {
   it('should set app error on failure', function() {
     setApiSignInResult({jqueryOpt: {result: 'fail'}});
 
-    userActions.signIn('access-token');
+    userActions.signIn('access-token')(dispatch);
 
-    assert.ok(appActions.setError.called);
-    assert.ok(!userActions.setSignedInUser.called);
+    var action = dispatch.firstCall.args[0];
+    assert.deepEqual(action, appActions.error('user login failed'));
   });
 
 });

@@ -2,9 +2,11 @@
 
 var React;
 var TestUtils;
+var Provider = require('redux/react').Provider;
 
+var actionTypes = require('action-types');
+var reduxConfig = require('redux-config');
 var CompletePayment = require('views/complete-payment');
-var UserStore = require('user-store');
 
 var helpers = require('./helpers');
 
@@ -13,21 +15,30 @@ describe('CompletePayment', function() {
 
   beforeEach(function() {
     this.email = 'buyer@somewhere.org';
-    sinon.stub(UserStore, 'getSignedInUser', (function() {
-      return {email: this.email};
-    }).bind(this));
 
     React = require('react');
     TestUtils = require('react/lib/ReactTestUtils');
+
+    var redux = reduxConfig.create();
+
     this.CompletePayment = TestUtils.renderIntoDocument(
-      <CompletePayment productId='mozilla-concrete-brick' />
+      <Provider redux={redux}>
+        {function() {
+          return <CompletePayment productId='mozilla-concrete-brick' />;
+        }}
+      </Provider>
     );
+
+    redux.dispatch({
+      type: actionTypes.USER_SIGNED_IN,
+      user: {email: this.email},
+    });
+
     sinon.stub(window.parent, 'postMessage');
   });
 
   afterEach(function() {
     window.parent.postMessage.restore();
-    UserStore.getSignedInUser.restore();
   });
 
   it('should show where the receipt was emailed', function() {

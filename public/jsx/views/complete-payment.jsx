@@ -1,8 +1,8 @@
 'use strict';
 
 var React = require('react');
+var Connector = require('redux/react').Connector;
 
-var UserStore = require('user-store');
 var ProductDetail = require('components/product-detail');
 var SubmitButton = require('components/submit-button');
 
@@ -15,12 +15,6 @@ module.exports = React.createClass({
 
   propTypes: {
     productId: React.PropTypes.string.isRequired,
-  },
-
-  getInitialState: function() {
-    return {
-      user: UserStore.getSignedInUser(),
-    }
   },
 
   handleClick: function(e) {
@@ -40,17 +34,32 @@ module.exports = React.createClass({
     }
   },
 
+  selectData: function(state) {
+    console.log('complete-payment: selectData() firing with', state);
+    return {
+      user: state.user,
+    }
+  },
+
   render: function() {
+    var component = this;
     return (
-      <div className="complete">
-        <ProductDetail productId={this.props.productId} />
-        <p className="accepted">{gettext('Payment Accepted')}</p>
-        <p className="receipt">
-          {gettext('Your receipt has been sent to')}
-          <span className="email">{this.state.user.email}</span>
-        </p>
-        <SubmitButton text={gettext('OK')} onClick={this.handleClick} />
-      </div>
+      <Connector select={this.selectData}>
+        {function(result) {
+          return (
+            <div className="complete">
+              <ProductDetail productId={component.props.productId} />
+              <p className="accepted">{gettext('Payment Accepted')}</p>
+              <p className="receipt">
+                {gettext('Your receipt has been sent to')}
+                <span className="email">{result.user.email}</span>
+              </p>
+              <SubmitButton text={gettext('OK')}
+                            onClick={component.handleClick} />
+            </div>
+          );
+        }}
+      </Connector>
     );
   },
 });

@@ -44,27 +44,16 @@ module.exports = {
     return TestUtils.findRenderedDOMComponentWithTag(component, tag);
   },
 
-  getRoutedComponent: function(TargetComponent, componentProps, routerStubs) {
-    //
-    // Initialize a component with a stub router so it can be tested.
-    //
-    // TargetComponent
-    //  This is the React component class that you want to test.
-    //
-    // componentProps
-    //  Optional object of properties to render the component with.
-    //
-    // routerStubs
-    //  Option object of addtional stub methods for the stub router.
-    //
-    componentProps = componentProps || {};
+  getRouterStub: function(routerStubs) {
 
     function RouterStub() {}
 
     assign(RouterStub, {
       makePath () {},
       makeHref () {},
-      transitionTo () {},
+      transitionTo (path) {
+        console.log('RouterStub: transitionTo:', path);
+      },
       replaceWith () {},
       goBack () {},
       getCurrentPath () {},
@@ -82,26 +71,48 @@ module.exports = {
 
     }, routerStubs || {});
 
-    var transitionSpy = sinon.spy(RouterStub, 'transitionTo');
+    return RouterStub;
+  },
 
-    var FakeRouter = React.createClass({
-      render () {
-        return React.withContext({router: RouterStub}, function() {
-          return <TargetComponent {...componentProps} />;
-        });
+  getFluxContainer: function(redux, routerStubs) {
+    //
+    // Get a container component to set context stubs so you can use it
+    // to wrap a component for testing.
+    // You'd only need this to test a component that uses the router
+    // and/or uses the redux Connector component.
+    //
+    // componentProps
+    //  Optional object of properties to render the component with.
+    //
+    // routerStubs
+    //  Option object of addtional stub methods for the stub router.
+    //
+    var RouterStub = this.getRouterStub(routerStubs);
+
+    var FluxContainer = React.createClass({
+
+      propTypes: {
+        children: React.PropTypes.func.isRequired,
       },
+
+      childContextTypes: {
+        router: React.PropTypes.func.isRequired,
+        redux: React.PropTypes.object.isRequired,
+      },
+
+      getChildContext: function() {
+        return {router: RouterStub, redux: redux};
+      },
+
+      render () {
+        return this.props.children();
+      },
+
     });
 
-    var container = TestUtils.renderIntoDocument(<FakeRouter />);
-    var component = TestUtils.findRenderedComponentWithType(
-      container, TargetComponent
-    );
+    FluxContainer.router = RouterStub;
 
-    return {
-      component: component,
-      router: RouterStub,
-      transitionSpy: transitionSpy,
-    };
+    return FluxContainer;
   },
 
   fakeJquery: function(opt) {
@@ -151,19 +162,6 @@ module.exports = {
       ajaxSpy: sinon.spy(jqueryStub, 'ajax'),
       ajaxSetupSpy: sinon.spy(jqueryStub, 'ajaxSetup'),
       stub: jqueryStub,
-    };
-  },
-
-  getUserStubs: function() {
-    return {
-      UserActions: {
-        signIn: sinon.spy(),
-      },
-      UserStore: {
-        getSignedInUser: sinon.spy(),
-        addSignInListener: sinon.spy(),
-        removeSignInListener: sinon.spy(),
-      },
     };
   },
 

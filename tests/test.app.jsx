@@ -1,62 +1,55 @@
 'use strict';
 
-var TestUtils = require('react/lib/ReactTestUtils');
-var rewire = require('rewire');
+var React;
+var TestUtils;
 
+var app = require('app');
+var appActions = require('app-actions');
+var reduxConfig = require('redux-config');
 var ErrorMessage = require('components/error');
 
 var helpers = require('./helpers');
 
-describe('Login', function() {
+describe('App', function() {
 
-  var AppStore;
+  var redux;
 
   beforeEach(function() {
-
-    AppStore = {
-      getError: sinon.spy(),
-      addErrorListener: sinon.spy(),
-      removeErrorListener: sinon.spy(),
-    };
-
+    React = require('react');
+    TestUtils = require('react/lib/ReactTestUtils');
+    redux = reduxConfig.create();
   });
 
   function mountView() {
-    var App = rewire('app');
-    App.__set__({
-      AppStore: AppStore,
-    });
-
-    return helpers.getRoutedComponent(App.component, {}, {
+    var FluxContainer = helpers.getFluxContainer(redux, {
       getCurrentQuery: function() {
         return {
           product: 'mozilla-concrete-brick',
         };
       },
     });
+
+    var App = app.component;
+    var container = TestUtils.renderIntoDocument(
+      <FluxContainer>
+        {function() {
+          return (<App />);
+        }}
+      </FluxContainer>
+    );
+    var component = TestUtils.findRenderedComponentWithType(
+      container, App
+    );
+
+    return {
+      component: component,
+      transitionSpy: FluxContainer.transitionSpy,
+    };
   }
 
-  it('should listen to app errors', function() {
-    var view = mountView();
-    assert.equal(AppStore.addErrorListener.firstCall.args[0],
-                 view.component.onError);
-  });
-
-  it('should clean up error listeners', function() {
-    var view = mountView();
-    view.component.componentWillUnmount();
-    assert.equal(AppStore.removeErrorListener.firstCall.args[0],
-                 view.component.onError);
-  });
-
   it('should render an error', function() {
-    AppStore.getError = function() {
-      return {
-        debugMessage: 'this is some error',
-      };
-    };
     var view = mountView();
-    view.component.onError();
+    redux.dispatch(appActions.error('this is some error'));
     var error = TestUtils.findRenderedComponentWithType(
       view.component, ErrorMessage
     );

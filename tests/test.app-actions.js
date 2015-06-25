@@ -1,31 +1,16 @@
 'use strict';
 
-var rewire = require('rewire');
+var actionTypes = require('action-types');
+var appActions = require('app-actions');
 
 
-describe('AppActions', function() {
-
-  var dispatcher;
-  var appActions;
-
-  beforeEach(function() {
-
-    dispatcher = {
-      dispatch: sinon.spy(),
-    };
-
-    appActions = rewire('app-actions');
-    appActions.__set__({
-      dispatcher: dispatcher,
-    });
-
-  });
+describe('appActions', function() {
 
   it('should dispatch error message', function() {
     var error = {debugMessage: 'something happened'};
-    appActions.setError(error.debugMessage);
-    assert.deepEqual(dispatcher.dispatch.args[0][0], {
-      actionType: 'set-app-error',
+    var action = appActions.error(error.debugMessage);
+    assert.deepEqual(action, {
+      type: actionTypes.APP_ERROR,
       error: error,
     });
   });
