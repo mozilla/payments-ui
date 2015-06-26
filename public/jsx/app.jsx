@@ -4,8 +4,10 @@ var React = require('react');
 var Router = require('react-router');
 var Route = Router.Route;
 var RouteHandler = Router.RouteHandler;
+var Provider = require('redux/react').Provider;
+var Connector = require('redux/react').Connector;
 
-var AppStore = require('app-store');
+var reduxConfig = require('redux-config');
 var CardDetails = require('views/card-details');
 var CardListing = require('views/card-listing');
 var CompletePayment = require('views/complete-payment');
@@ -13,6 +15,7 @@ var ErrorMessage = require('components/error');
 var Login = require('views/login');
 
 var products = require('products');
+
 
 var App = React.createClass({
 
@@ -27,35 +30,35 @@ var App = React.createClass({
     var productId = router.getCurrentQuery().product;
 
     return {
-      error: AppStore.getError(),
       productId: productId,
     };
   },
 
-  componentDidMount: function() {
-    AppStore.addErrorListener(this.onError);
-  },
-
-  componentWillUnmount: function() {
-    AppStore.removeErrorListener(this.onError);
-  },
-
-  onError: function() {
-    this.setState({error: AppStore.getError()});
+  selectData: function(state) {
+    return {
+      app: state.app,
+    };
   },
 
   render () {
+    var state = this.state;
     var img = {
-        backgroundImage: 'url(' + products[this.state.productId].img + ')',
+      backgroundImage: 'url(' + products[this.state.productId].img + ')',
     };
     return (
       <main>
         <div id="logo" style={img}></div>
-        {
-          this.state.error ?
-            <ErrorMessage /> :
-            <RouteHandler productId={this.state.productId} />
-        }
+        <Connector select={this.selectData}>
+          {function(result) {
+            if (result.app.error) {
+              console.log('rendering app error');
+              return <ErrorMessage error={result.app.error} />;
+            } else {
+              console.log('rendering app route handler');
+              return <RouteHandler productId={state.productId} />;
+            }
+          }}
+        </Connector>
       </main>
     );
   },
@@ -77,8 +80,13 @@ module.exports = {
   component: App,
   init: function() {
     Router.run(routes, Router.HashLocation, function(Root) {
-      // Doesn't actually render anything.
-      React.render(<Root/>, document.body);
+      React.render((
+        <Provider redux={reduxConfig.default}>
+          {function() {
+            return <Root/>;
+          }}
+        </Provider>
+      ), document.body);
     });
   },
 };
