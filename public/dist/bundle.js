@@ -38768,7 +38768,7 @@
 	  render: function() {
 	    var component = this;
 	    return (
-	      React.createElement(Connector, {select: this.selectData}, 
+	      React.createElement(Connector, {select: component.selectData}, 
 	        function(result) {
 	          console.log('login: rendering after state change', result);
 	          component.watchUser(result.user);
