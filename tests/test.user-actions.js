@@ -10,11 +10,11 @@ var helpers = require('./helpers');
 
 describe('userActions', function() {
 
-  var dispatch;
+  var dispatchSpy;
   var userActions;
 
   beforeEach(function() {
-    dispatch = sinon.spy();
+    dispatchSpy = sinon.spy();
     userActions = rewire('user-actions');
     userActions.__set__({
       // Replace with a non-functioning stub by default until overidden.
@@ -46,18 +46,18 @@ describe('userActions', function() {
   it('should dispatch sign-in action', function() {
     setApiSignInResult();
 
-    userActions.signIn('access-token')(dispatch);
+    userActions.signIn('access-token')(dispatchSpy);
 
-    var action = dispatch.firstCall.args[0];
+    var action = dispatchSpy.firstCall.args[0];
     assert.equal(action.type, actionTypes.USER_SIGNED_IN);
   });
 
   it('should set email from sign-in', function() {
     var data = setApiSignInResult();
 
-    userActions.signIn('access-token')(dispatch);
+    userActions.signIn('access-token')(dispatchSpy);
 
-    var action = dispatch.firstCall.args[0];
+    var action = dispatchSpy.firstCall.args[0];
     assert.equal(action.user.email, data.buyer_email);
   });
 
@@ -67,25 +67,25 @@ describe('userActions', function() {
     data.payment_methods = payMethods;
     setApiSignInResult({data: data});
 
-    userActions.signIn('access-token')(dispatch);
+    userActions.signIn('access-token')(dispatchSpy);
 
-    var action = dispatch.firstCall.args[0];
+    var action = dispatchSpy.firstCall.args[0];
     assert.equal(action.user.payment_methods, payMethods);
   });
 
   it('should set empty payment methods', function() {
     setApiSignInResult();
 
-    userActions.signIn('access-token')(dispatch);
+    userActions.signIn('access-token')(dispatchSpy);
 
-    var action = dispatch.firstCall.args[0];
+    var action = dispatchSpy.firstCall.args[0];
     assert.deepEqual(action.user.payment_methods, []);
   });
 
   it('should sign-in with access token', function() {
     var jquery = helpers.fakeJquery({returnedData: fakeSignInResult()});
     userActions.__set__('$', jquery.stub);
-    userActions.signIn('access-token')(dispatch);
+    userActions.signIn('access-token')(dispatchSpy);
 
     assert.equal(jquery.ajaxSpy.firstCall.args[0].data.access_token,
                  'access-token');
@@ -95,7 +95,7 @@ describe('userActions', function() {
     var data = fakeSignInResult();
     var jquery = helpers.fakeJquery({returnedData: data});
     userActions.__set__('$', jquery.stub);
-    userActions.signIn('access-token')(dispatch);
+    userActions.signIn('access-token')(dispatchSpy);
 
     assert.deepEqual(jquery.ajaxSetupSpy.firstCall.args[0].headers,
                      {'X-CSRFToken': data.csrf_token});
@@ -104,9 +104,9 @@ describe('userActions', function() {
   it('should set app error on failure', function() {
     setApiSignInResult({jqueryOpt: {result: 'fail'}});
 
-    userActions.signIn('access-token')(dispatch);
+    userActions.signIn('access-token')(dispatchSpy);
 
-    var action = dispatch.firstCall.args[0];
+    var action = dispatchSpy.firstCall.args[0];
     assert.deepEqual(action, appActions.error('user login failed'));
   });
 

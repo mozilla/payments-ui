@@ -45,7 +45,7 @@ module.exports = React.createClass({
   render: function() {
     var component = this;
     return (
-      <Connector select={this.selectData}>
+      <Connector select={component.selectData}>
         {function(result) {
           console.log('login: rendering after state change', result);
           component.watchUser(result.user);
