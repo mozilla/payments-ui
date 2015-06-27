@@ -2,15 +2,15 @@
 
 var assign = require('object-assign');
 
-var dispatcher = require('dispatcher');
+var actionTypes = require('action-types');
 
 module.exports = assign({}, {
 
-  setError: function(debugMessage) {
-    dispatcher.dispatch({
-      actionType: 'set-app-error',
+  error: function(debugMessage) {
+    return {
+      type: actionTypes.APP_ERROR,
       error: {debugMessage: debugMessage},
-    });
+    };
   },
 
 });

@@ -1,6 +1,12 @@
 'use strict';
 
-var rewire = require('rewire');
+var React;
+var TestUtils;
+
+var actionTypes = require('action-types');
+var reduxConfig = require('redux-config');
+var CardChoice = require('components/card-choice');
+var CardListing = require('views/card-listing');
 
 var helpers = require('./helpers');
 
@@ -9,29 +15,43 @@ var savedVisa = {provider_id: '3vr3ym', type_name: 'Visa'};
 
 describe('CardListingView', function() {
 
-  var UserStore;
+  var redux;
 
   beforeEach(function() {
+    React = require('react');
     TestUtils = require('react/lib/ReactTestUtils');
-    var stubs = helpers.getUserStubs();
-    UserStore = stubs.UserStore;
+    redux = reduxConfig.create();
   });
 
   function mountView() {
-    var CardListing = rewire('views/card-listing');
-    CardListing.__set__({
-      UserStore: UserStore,
-    });
+    var FluxContainer = helpers.getFluxContainer(redux);
+    var transitionSpy = sinon.spy(FluxContainer.router, 'transitionTo');
 
-    return helpers.getRoutedComponent(CardListing, {
-      productId: 'mozilla-concrete-brick',
-    });
+    var container = TestUtils.renderIntoDocument(
+      <FluxContainer>
+        {function() {
+          return (
+            <CardListing productId='mozilla-concrete-brick' />
+          );
+        }}
+      </FluxContainer>
+    );
+    var component = TestUtils.findRenderedComponentWithType(
+      container, CardListing
+    );
+
+    return {
+      component: component,
+      transitionSpy: transitionSpy,
+    };
   }
 
   function setUser(user) {
-    UserStore.getSignedInUser = function() {
-      return user;
-    };
+    user.email = user.email || 'f@f.com';
+    redux.dispatch({
+      type: actionTypes.USER_SIGNED_IN,
+      user: user,
+    });
   }
 
   it('should redirect to card entry form when no saved cards', function() {
@@ -47,7 +67,10 @@ describe('CardListingView', function() {
       payment_methods: [savedVisa],
     });
     var view = mountView();
-    assert.deepEqual(view.component.state.cards, [savedVisa]);
+    var card = TestUtils.findRenderedComponentWithType(
+      view.component, CardChoice
+    );
+    assert.deepEqual(card.props.cards, [savedVisa]);
   });
 
   it('should show card form when clicking add link', function() {

@@ -3,11 +3,12 @@
 var $ = require('jquery');
 var React = require('react');
 var Navigation = require('react-router').Navigation;
+var Connector = require('redux/react').Connector;
 
-var UserActions = require('user-actions');
-var UserStore = require('user-store');
+var userActions = require('user-actions');
 var Spinner = require('components/spinner');
 var gettext = require('utils').gettext;
+var reduxConfig = require('redux-config');
 
 
 module.exports = React.createClass({
@@ -21,17 +22,20 @@ module.exports = React.createClass({
 
   componentDidMount: function() {
     var { router } = this.context;
-    UserStore.addSignInListener(this.onUserSignIn);
-    UserActions.signIn(router.getCurrentQuery().access_token);
+    var defer = userActions.signIn(router.getCurrentQuery().access_token);
+    defer(reduxConfig.default.dispatch);
   },
 
-  componentWillUnmount: function() {
-    UserStore.removeSignInListener(this.onUserSignIn);
+  selectData: function(state) {
+    console.log('login: selectData() firing with', state);
+    return {
+      user: state.user,
+    }
   },
 
-  onUserSignIn: function() {
-    if (!this.isMounted()) {
-      console.log('ignoring events while unmounted');
+  watchUser: function(user) {
+    if (!user) {
+      console.log('user is not signed in');
       return;
     }
     console.log('current user is signed in; continuing to card-listing');
@@ -39,7 +43,16 @@ module.exports = React.createClass({
   },
 
   render: function() {
-    return <Spinner text={gettext('Logging in')}/>;
+    var component = this;
+    return (
+      <Connector select={component.selectData}>
+        {function(result) {
+          console.log('login: rendering after state change', result);
+          component.watchUser(result.user);
+          return <Spinner text={gettext('Logging in')}/>;
+        }}
+      </Connector>
+    );
   },
 
 });

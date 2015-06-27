@@ -10,7 +10,6 @@
     "connect-fonts-clearsans": "0.0.1",
     "connect-fonts-firasans": "0.0.4",
     "events": "^1.0.2",
-    "flux": "^2.0.3",
     "jquery": "^2.1.4",
     "mozilla-payments-config": "0.0.8",
     "normalize.css": "^3.0.3",
@@ -18,7 +17,8 @@
     "query-string": "^2.1.0",
     "react": "^0.13.3",
     "react-maskedinput": "^2.0.0",
-    "react-router": "^0.13.3"
+    "react-router": "^0.13.3",
+    "redux": "^0.12.0"
   },
   "devDependencies": {
     "babel-eslint": "^3.1.5",
