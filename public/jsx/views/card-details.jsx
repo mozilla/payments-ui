@@ -14,6 +14,10 @@ module.exports = React.createClass({
 
   displayName: 'CardDetailsView',
 
+  propTypes: {
+    productId: React.PropTypes.string.isRequired,
+  },
+
   getInitialState: function() {
     return {
       braintree_token: false,
@@ -22,6 +26,7 @@ module.exports = React.createClass({
 
   componentDidMount: function() {
     console.log('Requesting braintree token');
+    // TODO: move this to a purchase action.
     $.ajax({
       method: 'post',
       url: '/api/braintree/token/generate/',

@@ -15,6 +15,7 @@ module.exports = React.createClass({
 
   propTypes: {
     productId: React.PropTypes.string.isRequired,
+    userEmail: React.PropTypes.string.isRequired,
   },
 
   handleClick: function(e) {
@@ -34,32 +35,19 @@ module.exports = React.createClass({
     }
   },
 
-  selectData: function(state) {
-    console.log('complete-payment: selectData() firing with', state);
-    return {
-      user: state.user,
-    }
-  },
-
   render: function() {
     var component = this;
     return (
-      <Connector select={this.selectData}>
-        {function(result) {
-          return (
-            <div className="complete">
-              <ProductDetail productId={component.props.productId} />
-              <p className="accepted">{gettext('Payment Accepted')}</p>
-              <p className="receipt">
-                {gettext('Your receipt has been sent to')}
-                <span className="email">{result.user.email}</span>
-              </p>
-              <SubmitButton text={gettext('OK')}
-                            onClick={component.handleClick} />
-            </div>
-          );
-        }}
-      </Connector>
+      <div className="complete">
+        <ProductDetail productId={component.props.productId} />
+        <p className="accepted">{gettext('Payment Accepted')}</p>
+        <p className="receipt">
+          {gettext('Your receipt has been sent to')}
+          <span className="email">{this.props.userEmail}</span>
+        </p>
+        <SubmitButton text={gettext('OK')}
+                      onClick={component.handleClick} />
+      </div>
     );
   },
 });

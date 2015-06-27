@@ -1,42 +1,55 @@
 'use strict';
 
 var React = require('react');
-var Router = require('react-router');
-var Route = Router.Route;
-var RouteHandler = Router.RouteHandler;
 var Provider = require('redux/react').Provider;
 var Connector = require('redux/react').Connector;
+var bindActionCreators = require('redux').bindActionCreators;
 
 var reduxConfig = require('redux-config');
-var CardDetails = require('views/card-details');
-var CardListing = require('views/card-listing');
-var CompletePayment = require('views/complete-payment');
 var ErrorMessage = require('components/error');
 var Login = require('views/login');
+var Purchase = require('views/purchase');
+var userActions = require('user-actions');
 
 var products = require('products');
+
+
+function parseQuery(url) {
+  // TODO: replace with querystring library or something.
+  var urlParts = url.split('?');
+  var query;
+  var data = {};
+
+  if (urlParts.length > 1) {
+    query = urlParts[1].split('&');
+
+    query.forEach(function(nameVal) {
+      var parts = nameVal.split('=');
+      data[parts[0]] = decodeURIComponent(parts[1] || '');
+    });
+  }
+
+  return data;
+}
 
 
 var App = React.createClass({
 
   displayName: 'App',
 
-  contextTypes: {
-    router: React.PropTypes.func,
-  },
-
   getInitialState: function() {
-    var {router} = this.context;
-    var productId = router.getCurrentQuery().product;
-
+    var qs = parseQuery(window.location.href);
+    // TODO: we should validate/clean this input to raise early errors.
     return {
-      productId: productId,
+      accessToken: qs.access_token,
+      productId: qs.product,
     };
   },
 
   selectData: function(state) {
     return {
       app: state.app,
+      user: state.user,
     };
   },
 
@@ -53,9 +66,19 @@ var App = React.createClass({
             if (result.app.error) {
               console.log('rendering app error');
               return <ErrorMessage error={result.app.error} />;
+            } else if (!result.user.signedIn) {
+              console.log('rendering login');
+              return (
+                <Login
+                  accessToken={state.accessToken}
+                  {...bindActionCreators(userActions, result.dispatch) }
+                />
+              );
             } else {
-              console.log('rendering app route handler');
-              return <RouteHandler productId={state.productId} />;
+              console.log('rendering purchase flow');
+              return (
+                <Purchase user={result.user} productId={state.productId} />
+              );
             }
           }}
         </Connector>
@@ -64,29 +87,16 @@ var App = React.createClass({
   },
 });
 
-// declare our routes and their hierarchy
-var routes = (
-  <Route handler={App}>
-    <Route name="login" path="/" handler={Login}/>
-    <Route name="card-form" path="/payment/card/" handler={CardDetails}/>
-    <Route
-      name="complete" path="/payment/complete/" handler={CompletePayment}/>
-    <Route
-      name="card-listing" path="/payment/card-list/" handler={CardListing}/>
-  </Route>
-);
 
 module.exports = {
   component: App,
   init: function() {
-    Router.run(routes, Router.HashLocation, function(Root) {
-      React.render((
-        <Provider redux={reduxConfig.default}>
-          {function() {
-            return <Root/>;
-          }}
-        </Provider>
-      ), document.body);
-    });
+    React.render((
+      <Provider redux={reduxConfig.default}>
+        {function() {
+          return <App/>;
+        }}
+      </Provider>
+    ), document.body);
   },
 };

@@ -2,10 +2,11 @@
 
 var actionTypes = require('action-types');
 var appActions = require('app-actions');
+var purchaseActions = require('purchase-actions');
 var dataStore = require('data-store');
 
 
-describe('appStore', function() {
+describe('app', function() {
 
   function appWithError() {
     return {
@@ -45,10 +46,11 @@ describe('appStore', function() {
 });
 
 
-describe('userStore', function() {
+describe('user', function() {
 
   function userData() {
     return {
+      signedIn: true,
       email: 'f@f.com',
       payment_methods: [{provider_id: '1234'}],
     };
@@ -64,7 +66,9 @@ describe('userStore', function() {
 
   it('should initialize an empty user', function() {
     var user = dataStore.user(undefined, {});
-    assert.deepEqual(user, {});
+    assert.deepEqual(user, {
+      signedIn: false,
+    });
   });
 
   it('should return a user on sign-in', function() {
@@ -86,6 +90,42 @@ describe('userStore', function() {
     state.user = dataStore.user(state.user, {});
 
     assert.deepEqual(state.user, dispatchedUser);
+  });
+
+});
+
+
+describe('purchase', function() {
+
+  it('should initialize a purchase', function() {
+    var purchase = dataStore.purchase(undefined, {});
+    assert.deepEqual(purchase, {
+      completed: false,
+      payment_methods: [],
+    });
+  });
+
+  it('should handle completed purchases', function() {
+    var purchase = dataStore.purchase(undefined, purchaseActions.complete());
+    assert.deepEqual(purchase, {
+      completed: true,
+    });
+  });
+
+  it('should infer saved payment methods when user signs in', function() {
+    var paymentMethods = [{type: 'Visa'}];
+
+    var purchase = dataStore.purchase(undefined, {
+      type: actionTypes.USER_SIGNED_IN,
+      user: {
+        payment_methods: paymentMethods,
+      },
+    });
+
+    assert.deepEqual(purchase, {
+      completed: false,
+      payment_methods: paymentMethods,
+    });
   });
 
 });
