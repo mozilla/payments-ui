@@ -10,27 +10,8 @@ var ErrorMessage = require('components/error');
 var Login = require('views/login');
 var Purchase = require('views/purchase');
 var userActions = require('actions/user');
-
 var products = require('products');
-
-
-function parseQuery(url) {
-  // TODO: replace with querystring library or something.
-  var urlParts = url.split('?');
-  var query;
-  var data = {};
-
-  if (urlParts.length > 1) {
-    query = urlParts[1].split('&');
-
-    query.forEach(function(nameVal) {
-      var parts = nameVal.split('=');
-      data[parts[0]] = decodeURIComponent(parts[1] || '');
-    });
-  }
-
-  return data;
-}
+var utils = require('utils');
 
 
 var App = React.createClass({
@@ -38,7 +19,7 @@ var App = React.createClass({
   displayName: 'App',
 
   getInitialState: function() {
-    var qs = parseQuery(window.location.href);
+    var qs = utils.parseQuery(window.location.href);
     // TODO: we should validate/clean this input to raise early errors.
     return {
       accessToken: qs.access_token,
