@@ -2,7 +2,6 @@
 
 var $ = require('jquery');
 var CardValidator = require('card-validator');
-var Navigation = require('react-router').Navigation;
 var React = require('react');
 var braintree = require('braintree-web');
 
@@ -11,6 +10,8 @@ var gettext = utils.gettext;
 
 var CardInput = require('components/card-input');
 var SubmitButton = require('components/submit-button');
+var purchaseActions = require('actions/purchase');
+var reduxConfig = require('redux-config');
 
 
 module.exports = React.createClass({
@@ -25,8 +26,6 @@ module.exports = React.createClass({
     'id': React.PropTypes.string.isRequired,
     'productId': React.PropTypes.string.isRequired,
   },
-
-  mixins: [Navigation],
 
   getInitialState: function() {
     return {
@@ -78,10 +77,6 @@ module.exports = React.createClass({
     },
   },
 
-  contextTypes: {
-    router: React.PropTypes.func,
-  },
-
   handleChange: function(e) {
     var fieldId = e.target.id;
     var val = e.target.value;
@@ -107,7 +102,6 @@ module.exports = React.createClass({
   },
 
   handleSubmit: function(e) {
-    var { router } = this.context;
     e.preventDefault();
     this.setState({isSubmitting: true});
     var that = this;
@@ -134,7 +128,11 @@ module.exports = React.createClass({
           context: that,
         }).done(function() {
           console.log('Successfully subscribed + completed payment');
-          router.transitionTo('complete');
+
+          reduxConfig.default.dispatch(
+            purchaseActions.complete()
+          );
+
         }).fail(function($xhr) {
           this.processApiErrors($xhr.responseJSON);
         });

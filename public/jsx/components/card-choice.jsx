@@ -2,12 +2,13 @@
 
 var $ = require('jquery');
 var React = require('react');
-var Navigation = require('react-router').Navigation;
 
 var CardItem = require('components/card-item');
 var SubmitButton = require('components/submit-button');
 
 var gettext = require('utils').gettext;
+var purchaseActions = require('actions/purchase');
+var reduxConfig = require('redux-config');
 
 
 module.exports = React.createClass({
@@ -17,8 +18,6 @@ module.exports = React.createClass({
     cards: React.PropTypes.array.isRequired,
   },
 
-  mixins: [Navigation],
-
   getInitialState: function() {
     return {
       isSubmitting: false,
@@ -27,12 +26,7 @@ module.exports = React.createClass({
     };
   },
 
-  contextTypes: {
-    router: React.PropTypes.func,
-  },
-
   handleSubmit: function(e) {
-    var { router } = this.context;
     e.preventDefault();
 
     this.setState({isSubmitting: true});
@@ -48,7 +42,11 @@ module.exports = React.createClass({
       context: this,
     }).done(function() {
       console.log('Successfully subscribed with existing card');
-      router.transitionTo('complete');
+
+      reduxConfig.default.dispatch(
+        purchaseActions.complete()
+      );
+
     }).fail(function() {
       // TODO: handler errors.
     });

@@ -2,7 +2,7 @@
 
 var assign = require('object-assign');
 
-var actionTypes = require('action-types');
+var actionTypes = require('./types');
 
 module.exports = assign({}, {
 

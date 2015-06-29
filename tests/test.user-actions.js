@@ -2,8 +2,8 @@
 
 var rewire = require('rewire');
 
-var actionTypes = require('action-types');
-var appActions = require('app-actions');
+var actionTypes = require('actions/types');
+var appActions = require('actions/app');
 
 var helpers = require('./helpers');
 
@@ -15,7 +15,7 @@ describe('userActions', function() {
 
   beforeEach(function() {
     dispatchSpy = sinon.spy();
-    userActions = rewire('user-actions');
+    userActions = rewire('actions/user');
     userActions.__set__({
       // Replace with a non-functioning stub by default until overidden.
       '$': {},

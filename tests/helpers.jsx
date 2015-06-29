@@ -1,8 +1,6 @@
 'use strict';
 
-var assign = require('object-assign');
 var React = require('react');
-
 var TestUtils = require('react/lib/ReactTestUtils');
 
 module.exports = {
@@ -44,50 +42,13 @@ module.exports = {
     return TestUtils.findRenderedDOMComponentWithTag(component, tag);
   },
 
-  getRouterStub: function(routerStubs) {
-
-    function RouterStub() {}
-
-    assign(RouterStub, {
-      makePath () {},
-      makeHref () {},
-      transitionTo (path) {
-        console.log('RouterStub: transitionTo:', path);
-      },
-      replaceWith () {},
-      goBack () {},
-      getCurrentPath () {},
-      getCurrentRoutes () {},
-      getCurrentPathname () {},
-      getCurrentParams () {
-        return {};
-      },
-      getCurrentQuery () {
-        return {};
-      },
-      isActive () {},
-      getRouteAtDepth() {},
-      setRouteComponentAtDepth() {},
-
-    }, routerStubs || {});
-
-    return RouterStub;
-  },
-
-  getFluxContainer: function(redux, routerStubs) {
+  getFluxContainer: function(redux) {
     //
     // Get a container component to set context stubs so you can use it
     // to wrap a component for testing.
-    // You'd only need this to test a component that uses the router
-    // and/or uses the redux Connector component.
+    // You'd only need this to test a component that uses the
+    // redux Connector component.
     //
-    // componentProps
-    //  Optional object of properties to render the component with.
-    //
-    // routerStubs
-    //  Option object of addtional stub methods for the stub router.
-    //
-    var RouterStub = this.getRouterStub(routerStubs);
 
     var FluxContainer = React.createClass({
 
@@ -96,12 +57,11 @@ module.exports = {
       },
 
       childContextTypes: {
-        router: React.PropTypes.func.isRequired,
         redux: React.PropTypes.object.isRequired,
       },
 
       getChildContext: function() {
-        return {router: RouterStub, redux: redux};
+        return {redux: redux};
       },
 
       render () {
@@ -109,8 +69,6 @@ module.exports = {
       },
 
     });
-
-    FluxContainer.router = RouterStub;
 
     return FluxContainer;
   },
@@ -163,6 +121,15 @@ module.exports = {
       ajaxSetupSpy: sinon.spy(jqueryStub, 'ajaxSetup'),
       stub: jqueryStub,
     };
+  },
+
+  stubComponent: function() {
+    return React.createClass({
+      displayName: 'StubComponent',
+      render: function() {
+        return <div></div>;
+      },
+    });
   },
 
 };
