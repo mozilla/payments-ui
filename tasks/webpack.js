@@ -7,7 +7,6 @@ var webpackConfig = require('../webpack.config.js');
 module.exports = {
   options: webpackConfig,
   dev: {
-    devtool: 'source-map',
     stats: {
       // Configure the console output
       colors: true,
@@ -18,7 +17,6 @@ module.exports = {
     watch: true, // use webpacks watcher
   },
   prod: {
-    devtool: 'source-map',
     failOnError: true, // don't report error to grunt if webpack find errors
     output: {
       path: path.join(__dirname, '../public/dist/'),

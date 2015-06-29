@@ -3,6 +3,7 @@
 var path = require('path');
 
 module.exports = {
+  devtool: 'source-map',
   entry: './public/js/main.js',
   output: {
     path: path.join(__dirname, 'public/dist/'),
@@ -25,4 +26,5 @@ module.exports = {
       'node_modules/mozilla-payments-config/json/products/',
     ],
   },
+
 };
