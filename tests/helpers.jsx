@@ -49,9 +49,6 @@ module.exports = {
     // You'd only need this to test a component that uses the
     // redux Connector component.
     //
-    // componentProps
-    //  Optional object of properties to render the component with.
-    //
 
     var FluxContainer = React.createClass({
 

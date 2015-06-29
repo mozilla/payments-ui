@@ -103,6 +103,7 @@ describe('Purchase', function() {
 
     redux.dispatch(purchaseActions.payWithNewCard());
 
+    // Instead make sure a new card entry form was rendered.
     var child = TestUtils.findRenderedComponentWithType(
       View, FakeCardDetails
     );
