@@ -3,8 +3,9 @@
 var $ = require('jquery');
 var assign = require('object-assign');
 
-var actionTypes = require('action-types');
-var appActions = require('app-actions');
+var appActions = require('./app');
+var actionTypes = require('./types');
+
 
 module.exports = assign({}, {
 
@@ -19,20 +20,20 @@ module.exports = assign({}, {
         context: this,
       }).then(function(data) {
 
+        console.log('setting CSRF token for subsequent requests:',
+                    data.csrf_token);
+        $.ajaxSetup({
+          headers: {
+            'X-CSRFToken': data.csrf_token,
+          },
+        });
+
         console.log('login succeeded, setting user');
         dispatch({
           type: actionTypes.USER_SIGNED_IN,
           user: {
             email: data.buyer_email,
             payment_methods: data.payment_methods,
-          },
-        });
-
-        console.log('setting CSRF token for subsequent requests:',
-                    data.csrf_token);
-        $.ajaxSetup({
-          headers: {
-            'X-CSRFToken': data.csrf_token,
           },
         });
 
