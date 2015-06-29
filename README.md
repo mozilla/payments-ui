@@ -4,14 +4,14 @@
 
 # Payments UI
 
-This project comprises all styles, behaviour and interfaces for mozilla/payments
+This project comprises all styles, behaviour and interfaces for mozilla/payments.
 
 
 ## Developers
 
 ### Watching for file changes in development.
 
-We're using webpack to build a JS bundle
+We're using webpack to build a JS bundle.
 
 #### Under docker
 
@@ -69,7 +69,7 @@ are identical and can't get mangled by a broken deps installation.
 
 ## Styleguide
 
-**Note: the styleguide is in need of an update since the switch to react**
+**Note: the styleguide is in need of an update since the switch to react.**
 
 The styleguide is based on the styles and templates that live in the tree.
 
