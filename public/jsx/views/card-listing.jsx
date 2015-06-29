@@ -27,7 +27,7 @@ module.exports = React.createClass({
           cards={this.props.paymentMethods}
           productId={this.props.productId}
         />
-        <a className="card-add bottom-link"
+        <a className="card-add bottom-link" href="#"
            onClick={this.props.payWithNewCard}>
           {gettext('Add new credit card')}
         </a>
