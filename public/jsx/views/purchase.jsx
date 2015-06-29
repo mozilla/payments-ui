@@ -8,7 +8,7 @@ var reduxConfig = require('redux-config');
 var CardDetails = require('views/card-details');
 var CardListing = require('views/card-listing');
 var CompletePayment = require('views/complete-payment');
-var purchaseActions = require('purchase-actions.js');
+var purchaseActions = require('actions/purchase');
 
 
 module.exports = React.createClass({

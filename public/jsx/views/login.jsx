@@ -4,7 +4,7 @@ var $ = require('jquery');
 var React = require('react');
 var Connector = require('redux/react').Connector;
 
-var userActions = require('user-actions');
+var userActions = require('actions/user');
 var Spinner = require('components/spinner');
 var gettext = require('utils').gettext;
 

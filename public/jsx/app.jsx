@@ -9,7 +9,7 @@ var reduxConfig = require('redux-config');
 var ErrorMessage = require('components/error');
 var Login = require('views/login');
 var Purchase = require('views/purchase');
-var userActions = require('user-actions');
+var userActions = require('actions/user');
 
 var products = require('products');
 

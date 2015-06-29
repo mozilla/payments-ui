@@ -3,8 +3,8 @@
 var $ = require('jquery');
 var assign = require('object-assign');
 
-var actionTypes = require('action-types');
-var appActions = require('app-actions');
+var appActions = require('./app');
+var actionTypes = require('./types');
 
 
 module.exports = assign({}, {

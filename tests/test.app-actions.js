@@ -1,7 +1,7 @@
 'use strict';
 
-var actionTypes = require('action-types');
-var appActions = require('app-actions');
+var actionTypes = require('actions/types');
+var appActions = require('actions/app');
 
 
 describe('appActions', function() {

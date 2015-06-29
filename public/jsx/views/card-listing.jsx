@@ -6,7 +6,7 @@ var Connector = require('redux/react').Connector;
 var CardChoice = require('components/card-choice');
 var ProductDetail = require('components/product-detail');
 var gettext = require('utils').gettext;
-var purchaseActions = require('purchase-actions');
+var purchaseActions = require('actions/purchase');
 
 
 module.exports = React.createClass({

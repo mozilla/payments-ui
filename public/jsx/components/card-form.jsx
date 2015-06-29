@@ -10,7 +10,7 @@ var gettext = utils.gettext;
 
 var CardInput = require('components/card-input');
 var SubmitButton = require('components/submit-button');
-var purchaseActions = require('purchase-actions');
+var purchaseActions = require('actions/purchase');
 var reduxConfig = require('redux-config');
 
 

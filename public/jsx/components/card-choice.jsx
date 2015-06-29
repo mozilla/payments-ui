@@ -7,7 +7,7 @@ var CardItem = require('components/card-item');
 var SubmitButton = require('components/submit-button');
 
 var gettext = require('utils').gettext;
-var purchaseActions = require('purchase-actions');
+var purchaseActions = require('actions/purchase');
 var reduxConfig = require('redux-config');
 
 

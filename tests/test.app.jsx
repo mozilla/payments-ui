@@ -4,8 +4,8 @@ var React = require('react');
 var TestUtils;
 var rewire = require('rewire');
 
-var actionTypes = require('action-types');
-var appActions = require('app-actions');
+var actionTypes = require('actions/types');
+var appActions = require('actions/app');
 var reduxConfig = require('redux-config');
 var ErrorMessage = require('components/error');
 
