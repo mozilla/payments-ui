@@ -14,6 +14,15 @@ var purchaseActions = require('actions/purchase');
 var reduxConfig = require('redux-config');
 
 
+var defaultFieldAttrs = {
+  'autoComplete': 'off',
+  // inputMode is not yet supported in React.
+  // See https://github.com/facebook/react/pull/3798
+  'inputMode': 'numeric',
+  'type': 'tel',
+};
+
+
 module.exports = React.createClass({
 
   displayName: 'CardForm',
@@ -40,20 +49,19 @@ module.exports = React.createClass({
 
   fieldProps: {
     card: {
+      'attrs': defaultFieldAttrs,
       'classNames': ['card'],
       'errors': {
         invalid: gettext('Incorrect card number'),
         declined: gettext('Card was declined'),
       },
       'id': 'card',
-      'data-braintree-name': 'number',
       'placeholder': gettext('Card number'),
-      'type': 'tel',
       'validator': CardValidator.number,
     },
     expiration: {
+      'attrs': defaultFieldAttrs,
       'classNames': ['expiration'],
-      'data-braintree-name': 'expiration_date',
       'errors': {
         invalid: gettext('Invalid expiry date'),
       },
@@ -61,18 +69,17 @@ module.exports = React.createClass({
       // Expiration pattern doesn't change based on card type.
       'pattern': '11/11',
       'placeholder': 'MM/YY',
-      'type': 'tel',
       'validator': CardValidator.expirationDate,
     },
     cvv: {
+      'attrs': defaultFieldAttrs,
+      'autocomplete': 'off',
       'classNames': ['cvv'],
-      'data-braintree-name': 'cvv',
       'errors': {
         invalid: gettext('Invalid CVV'),
       },
       'errorModifier': 'right',
       'id': 'cvv',
-      'type': 'tel',
       'validator': CardValidator.cvv,
     },
   },

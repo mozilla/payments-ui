@@ -38,8 +38,16 @@ module.exports = {
     return TestUtils.findRenderedDOMComponentWithClass(component, className);
   },
 
+  findAllByClass: function(component, className){
+    return TestUtils.scryRenderedDOMComponentsWithClass(component, className);
+  },
+
   findByTag: function(component, tag){
     return TestUtils.findRenderedDOMComponentWithTag(component, tag);
+  },
+
+  findAllByTag: function(component, tag){
+    return TestUtils.scryRenderedDOMComponentsWithTag(component, tag);
   },
 
   getFluxContainer: function(redux) {

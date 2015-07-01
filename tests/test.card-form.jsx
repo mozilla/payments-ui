@@ -97,4 +97,25 @@ describe('Card Details', function() {
     assert.ok(TestUtils.isCompositeComponent(cardError));
   });
 
+  it('should not have a name attr on any input', function() {
+    var inputs = helpers.findAllByTag(this.CardForm, 'input');
+    for (var i = 0; i < inputs.length; i += 1) {
+      var input = inputs[i].getDOMNode();
+      if (input.getAttribute('name') !== null) {
+        throw new Error('A name attr should not be set on any cc form fields');
+      }
+    }
+  });
+
+  it('should have type=tel and autocomplete=off on all fields', function() {
+    var inputs = helpers.findAllByTag(this.CardForm, 'input');
+    for (var i = 0; i < inputs.length; i += 1) {
+      var input = inputs[i].getDOMNode();
+      assert.equal(input.getAttribute('autocomplete'),
+                   'off', 'autocomplete attr should be "off"');
+      assert.equal(input.getAttribute('type'),
+                   'tel', 'type attr should be "tel"');
+    }
+  });
+
 });

@@ -16,6 +16,7 @@ module.exports = React.createClass({
   displayName: 'CardInput',
 
   propTypes: {
+    attrs: React.PropTypes.object,
     cardType: React.PropTypes.string,
     classNames: React.PropTypes.array,
     errorMessage: React.PropTypes.string,
@@ -28,7 +29,6 @@ module.exports = React.createClass({
     pattern: React.PropTypes.string,
     placeholder: React.PropTypes.string,
     showError: React.PropTypes.bool,
-    type: React.PropTypes.string.isRequired,
   },
 
   cardPatterns: {
@@ -95,6 +95,8 @@ module.exports = React.createClass({
 
     var showCardIcon = this.props.id === 'card';
 
+
+
     return (
       <label className={labelClass} htmlFor={this.props.id} >
         <span className="vh">{label}</span>
@@ -103,9 +105,9 @@ module.exports = React.createClass({
                       errorModifier={this.props.errorModifier} /> : null }
         { showCardIcon ? <CardIcon cardType={this.props.cardType} /> : null }
         <MaskedInput
+          {...this.props.attrs}
           id={this.props.id}
           className={this.props.id + '-input'}
-          type={this.props.type}
           onChange={this.props.onChangeHandler}
           pattern={pattern}
           placeholder={placeholder}
