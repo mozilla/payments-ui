@@ -1,0 +1,18 @@
+{
+    "adjoining-classes": false,
+    "box-model": false,
+    "box-sizing": false,
+    "bulletproof-font-face": false,
+    "compatible-vendor-prefixes": false,
+    "duplicate-properties": 2,
+    "font-faces": false,
+    "font-sizes": false,
+    "ids": false,
+    "important": false,
+    "outline-none": false,
+    "regex-selectors": false,
+    "unique-headings": false,
+    "universal-selector": false,
+    "unqualified-attributes": false,
+    "zero-units": 2
+}
