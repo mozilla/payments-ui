@@ -31,7 +31,7 @@
     "grunt-eslint": "16.0.0",
     "grunt-gh-pages": "0.10.0",
     "grunt-i18n-abide": "git://github.com/mozilla/grunt-i18n-abide.git#c8127304fd",
-    "grunt-karma": "0.11.1",
+    "grunt-karma": "0.11.2",
     "grunt-react": "0.12.2",
     "grunt-sass": "1.0.0",
     "grunt-svg-sprite": "1.1.2",
