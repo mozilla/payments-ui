@@ -3,7 +3,7 @@
   transition: 0.1s opacity $short-transition;
   display: block;
   color: #fff;
-  background: #F91200;
+  background: $error-background-color;
   padding: 0.5em 0.75em 0.7em;
   z-index: 10;
   position: absolute;
@@ -17,7 +17,7 @@
     // Dashed fixes anti-aliasing in ff.
     border-left: 1em dashed transparent;
     border-right: 1em dashed transparent;
-    border-top: 1em solid #F91200;
+    border-top: 1em solid $error-background-color;
     border-bottom: 0;
     top: 100%;
     left: 0.5em;
