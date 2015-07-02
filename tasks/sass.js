@@ -18,4 +18,12 @@ module.exports = {
       'public/dist/main.min.css': 'public/scss/main.scss',
     },
   },
+  email: {
+    options: {
+      outputStyle: 'expanded'
+    },
+    files: {
+      'public/dist/email.css': 'public/scss/email.scss',
+    },
+  },
 };
