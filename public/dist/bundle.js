@@ -31331,6 +31331,15 @@
 	var reduxConfig = __webpack_require__(182);
 	
 	
+	var defaultFieldAttrs = {
+	  'autoComplete': 'off',
+	  // inputMode is not yet supported in React.
+	  // See https://github.com/facebook/react/pull/3798
+	  'inputMode': 'numeric',
+	  'type': 'tel',
+	};
+	
+	
 	module.exports = React.createClass({
 	
 	  displayName: 'CardForm',
@@ -31357,20 +31366,19 @@
 	
 	  fieldProps: {
 	    card: {
+	      'attrs': defaultFieldAttrs,
 	      'classNames': ['card'],
 	      'errors': {
 	        invalid: gettext('Incorrect card number'),
 	        declined: gettext('Card was declined'),
 	      },
 	      'id': 'card',
-	      'data-braintree-name': 'number',
 	      'placeholder': gettext('Card number'),
-	      'type': 'tel',
 	      'validator': CardValidator.number,
 	    },
 	    expiration: {
+	      'attrs': defaultFieldAttrs,
 	      'classNames': ['expiration'],
-	      'data-braintree-name': 'expiration_date',
 	      'errors': {
 	        invalid: gettext('Invalid expiry date'),
 	      },
@@ -31378,18 +31386,17 @@
 	      // Expiration pattern doesn't change based on card type.
 	      'pattern': '11/11',
 	      'placeholder': 'MM/YY',
-	      'type': 'tel',
 	      'validator': CardValidator.expirationDate,
 	    },
 	    cvv: {
+	      'attrs': defaultFieldAttrs,
+	      'autocomplete': 'off',
 	      'classNames': ['cvv'],
-	      'data-braintree-name': 'cvv',
 	      'errors': {
 	        invalid: gettext('Invalid CVV'),
 	      },
 	      'errorModifier': 'right',
 	      'id': 'cvv',
-	      'type': 'tel',
 	      'validator': CardValidator.cvv,
 	    },
 	  },
@@ -34680,6 +34687,7 @@
 	  displayName: 'CardInput',
 	
 	  propTypes: {
+	    attrs: React.PropTypes.object,
 	    cardType: React.PropTypes.string,
 	    classNames: React.PropTypes.array,
 	    errorMessage: React.PropTypes.string,
@@ -34692,7 +34700,6 @@
 	    pattern: React.PropTypes.string,
 	    placeholder: React.PropTypes.string,
 	    showError: React.PropTypes.bool,
-	    type: React.PropTypes.string.isRequired,
 	  },
 	
 	  cardPatterns: {
@@ -34759,6 +34766,8 @@
 	
 	    var showCardIcon = this.props.id === 'card';
 	
+	
+	
 	    return (
 	      React.createElement("label", {className: labelClass, htmlFor: this.props.id}, 
 	        React.createElement("span", {className: "vh"}, label), 
@@ -34766,13 +34775,13 @@
 	          React.createElement(InputError, {errorMessage: this.props.errorMessage, 
 	                      errorModifier: this.props.errorModifier}) : null, 
 	         showCardIcon ? React.createElement(CardIcon, {cardType: this.props.cardType}) : null, 
-	        React.createElement(MaskedInput, {
-	          id: this.props.id, 
+	        React.createElement(MaskedInput, React.__spread({}, 
+	          this.props.attrs, 
+	          {id: this.props.id, 
 	          className: this.props.id + '-input', 
-	          type: this.props.type, 
 	          onChange: this.props.onChangeHandler, 
 	          pattern: pattern, 
-	          placeholder: placeholder}
+	          placeholder: placeholder})
 	        )
 	      )
 	    );
