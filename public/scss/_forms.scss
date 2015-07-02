@@ -52,7 +52,7 @@ input {
 
   @include respond-to('small') {
     border-radius: $small-border-radius;
-    font-size: $base-font + $media-adjustment;
+    font-size: $base-font;
     height: 40px;
   }
 
