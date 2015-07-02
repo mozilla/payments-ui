@@ -10,7 +10,6 @@ var ErrorMessage = require('components/error');
 var Login = require('views/login');
 var Purchase = require('views/purchase');
 var userActions = require('actions/user');
-var products = require('products');
 var utils = require('utils');
 
 
@@ -36,12 +35,8 @@ var App = React.createClass({
 
   render () {
     var state = this.state;
-    var img = {
-      backgroundImage: 'url(' + products[this.state.productId].img + ')',
-    };
     return (
       <main>
-        <div id="logo" style={img}></div>
         <Connector select={this.selectData}>
           {function(result) {
             if (result.app.error) {

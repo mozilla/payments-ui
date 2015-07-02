@@ -574,23 +574,9 @@ a {
 }
 
 main {
-  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.5);
-  border: 1px solid #C3CFD8;
-  background: white;
   padding: 20px;
   width: 100%;
   margin-top: 30px;
-}
-
-#logo {
-  opacity: 1;
-  height: 55px;
-  background-position: center top;
-  background-repeat: no-repeat;
-  background-size: auto 55px;
-  position: relative;
-  top: -50px;
-  margin-bottom: -50px;
 }
 
 .bottom-link {
