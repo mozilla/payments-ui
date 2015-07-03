@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="" dir="">
+<html lang="en-US">
 
 <head>
   <meta charset="utf-8">
@@ -8,7 +8,12 @@
   <title>Payments UI Styleguide | Buttons</title>
   <link rel="stylesheet" href="cog/lib/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="cog/css/styleguide.css">
-  <link rel="stylesheet" href="cog/lib/css/solarized_light.css"> </head>
+  <link rel="stylesheet" href="cog/lib/css/solarized_light.css">
+  <script src="cog/lib/js-beautify/beautify.js"></script>
+  <script src="cog/lib/js-beautify/beautify-css.js"></script>
+  <script src="cog/lib/js-beautify/beautify-html.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js"></script>
+</head>
 
 <body class="styleguide">
   <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -22,7 +27,8 @@
         <ul class="nav nav-sidebar">
           <li><a href="index.html">Index</a></li>
           <li class="active"><a href="./buttons.html">Buttons</a></li>
-          <li><a href="./forms.html">Forms</a></li>
+          <li><a href="./card-form.html">Card Form</a></li>
+          <li><a href="./spinner.html">Spinner</a></li>
           <li><a href="./typography.html">Typography</a></li>
         </ul>
       </div>
@@ -33,16 +39,15 @@
           <div class="panel-heading clearfix">
             <h3 class="panel-title pull-left">Example <span class="size"></span></h3>
             <div class="resize-buttons btn-group pull-right">
-              <button type="button" class="btn btn-default btn-xs" id="phone" data-vp-width="350" data-vp-height="598"> Phone </button>
-              <button type="button" class="btn btn-default btn-xs" id="tablet" data-vp-width="600" data-vp-height="887"> Tablet </button>
-              <button type="button" class="btn btn-default btn-xs full-screen hide-tui-only"> <span class="glyphicon glyphicon-fullscreen"></span> Full Screen </button>
+              <button type="button" class="btn btn-default btn-xs" data-vp="350:598"> Phone </button>
+              <button type="button" class="btn btn-default btn-xs" data-vp="600:887"> Tablet </button>
             </div>
           </div>
           <div class="panel-body">
             <div class="iframe-wrapper resizable">
-              <iframe src="iframe/buttons.html"></iframe>
+              <iframe id="buttons1" src="iframe/buttons1.html"></iframe>
             </div>
-          </div> <pre class="panel-footer"><code class="language-markup"><span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>Buttons<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
+          </div> <pre class="panel-footer"><code class="language-markup" data-iframe-id="buttons1"><span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>Buttons<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"submit"</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"submit"</span>&gt;</span>Button<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">disabled</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"submit"</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"submit"</span>&gt;</span>Button (disabled)<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>Link Buttons<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"button"</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>Button Link<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"button disabled"</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>Button Link (disabled)<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span></code></pre>          </div>

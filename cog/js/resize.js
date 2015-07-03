@@ -17,16 +17,6 @@
   var $fullscreen = $panel.find('.full-screen');
   var resizePadding = 10;
 
-  var buttonMap = {};
-
-  $resizeButtonsCont.find(buttonSel).each(function() {
-    var $elm = $(this);
-    var vpHeight = $elm.data('vpHeight');
-    var vpWidth = $elm.data('vpWidth');
-    var key = vpWidth + ':' + vpHeight;
-    buttonMap[key] = $elm.attr('id');
-  });
-
   function getDimensionKey() {
     var w = $resizable.width();
     var h = $resizable.height();
@@ -35,31 +25,26 @@
 
   function handleActive() {
     var key = getDimensionKey();
-    var buttonId = buttonMap[key];
     $resizeButtons.removeClass('active');
-    if (typeof buttonId !== 'undefined') {
-      $('#' + buttonId).addClass('active');
-    }
+    $('button[data-vp="' + key + '"]').addClass('active');
   }
 
   function updateDimensions() {
-    var w = $resizable.width();
-    var h = $resizable.height();
-    $size.text('@ ' + w + ' x ' + h);
+    var w = this.width();
+    var h = this.height();
+    this.closest('.panel').find('.size').text('@ ' + w + ' x ' + h);
     window.localStorage.setItem(storageKey,
       parseInt(w + resizePadding, 10) + ':' + parseInt(h + resizePadding, 10));
     handleActive();
   }
 
-  var watch = new window.MutationObserver(function(){
-    updateDimensions();
-  });
-
-  function  handleClick($elm) {
-    var vpHeight = $elm.data('vpHeight') + resizePadding;
-    var vpWidth = $elm.data('vpWidth') + resizePadding;
+  function handleClick($elm) {
+    var vpData = $elm.data('vp').split(':');
+    var vpWidth = parseInt(vpData[0], 10) + resizePadding;
+    var vpHeight = parseInt(vpData[1], 10) + resizePadding;
+    // var $resizable = $elm.closest('.panel').find('.resizable');
     $resizable.css({width: vpWidth, height: vpHeight});
-    updateDimensions();
+    updateDimensions.apply($resizable);
   }
 
   function launchFullscreen(element) {
@@ -86,7 +71,10 @@
   if ($resizable.length) {
     // Currently this won't work on webkit. :(
     // See https://code.google.com/p/chromium/issues/detail?id=293948
-    watch.observe($resizable[0],{attributes:true}) ;
+    $resizable.each(function() {
+      var watch = new window.MutationObserver(updateDimensions.bind($(this)));
+      watch.observe($(this)[0], {attributes:true}) ;
+    });
   }
 
   var storedSize = window.localStorage.getItem(storageKey);
@@ -95,8 +83,11 @@
     var storedWidth = parseInt(parts[0], 10);
     var storedHeight = parseInt(parts[1], 10);
     if (!isNaN(storedWidth) && !isNaN(storedHeight)) {
-      $resizable.css({width: storedWidth, height: storedHeight});
-      updateDimensions();
+      $resizable.each(function() {
+        var $elm = $(this);
+        $elm.css({width: storedWidth, height: storedHeight});
+        updateDimensions.apply($elm);
+      });
     } else {
       console.log('Stored values invalid. Ignoring');
       window.localStorage.removeItem(storageKey);

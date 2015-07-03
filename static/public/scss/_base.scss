@@ -6,10 +6,93 @@ body {
   @include font();
   color: $text-color;
   font-size: $base-font;
-  padding: 10px;
+  padding: 5px;
 }
 
 h1,h2,h3,h4,h5,h6 {
   @include header-font();
-  font-weight: bold;
+}
+
+a {
+  text-decoration: none;
+  color: $the-real-blue;
+}
+
+.complete {
+  text-align: center;
+
+  .accepted {
+    @include header-font();
+    font-size: $large-font;
+    font-weight: 200;
+    padding: 20px 0;
+  }
+
+  .receipt {
+    padding-bottom: 1em;
+
+    span {
+      display: block;
+    }
+  }
+
+  button {
+    max-width: calc(100% - 40px);
+  }
+}
+
+main {
+    padding: 20px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.bottom-link {
+    padding: 1em;
+}
+
+.card-listing {
+  margin: 0;
+  padding: 0;
+
+  .card-item {
+    list-style-type: none;
+    margin: 10px 0;
+    position: relative;
+
+    input[type=radio] {
+      opacity: 0;
+      position: absolute;
+
+      &:checked + label,
+      &:hover + label,
+      &:focus + label {
+        cursor: pointer;
+        border: 1px solid $radio-selected-border;
+        border-radius: 5px;
+        background: $radio-selected-background;
+        transition: all $medium-transition;
+      }
+    }
+
+    & label {
+      border: 1px solid transparent;
+      display: block;
+      font-size: $medium-font;
+      font-weight: 700;
+      padding: 1em 15px 1em 60px;
+      position: relative;
+      text-align: right;
+      width: 100%;
+    }
+
+    .card-icon {
+      left: 15px;
+    }
+  }
+
+  .card-add {
+      display: block;
+      text-align: right;
+  }
 }

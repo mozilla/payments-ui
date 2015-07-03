@@ -94,6 +94,14 @@ pre.panel-footer {
     margin: 0;
 }
 
+pre {
+  overflow-x: auto;
+}
+
+pre code {
+  white-space: pre;
+}
+
 .size {
     color: #ccc;
     font-size: 14px;
