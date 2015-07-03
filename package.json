@@ -19,7 +19,9 @@
     "redux": "0.12.0"
   },
   "devDependencies": {
+    "babel-core": "5.6.15",
     "babel-eslint": "3.1.20",
+    "babel-loader": "5.3.0",
     "chai": "3.0.0",
     "cog": "git://github.com/muffinresearch/cog.git#87e7c4f3",
     "eslint-plugin-react": "2.6.3",
@@ -38,7 +40,6 @@
     "grunt-svg-sprite": "1.2.5",
     "grunt-webpack": "1.0.11",
     "json-loader": "0.5.2",
-    "jsx-loader": "0.13.2",
     "karma": "0.12.37",
     "karma-chai": "0.1.0",
     "karma-firefox-launcher": "0.1.6",
