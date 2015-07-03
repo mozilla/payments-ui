@@ -14,11 +14,12 @@ module.exports = function(grunt) {
 
   grunt.initConfig(configs);
 
-
   grunt.registerTask('copy-deps', ['clean:deps', 'copy']);
-  grunt.registerTask('build-docs', ['sass', 'cog']);
+  grunt.registerTask('build-styleguide', ['sass', 'webpack:styleguide', 'cog']);
   grunt.registerTask('publish-styleguide',
-                     ['build-docs', 'gh-pages:styleguide']);
+                     ['build-styleguide', 'gh-pages:styleguide']);
+   grunt.registerTask('styleguide',
+                     ['build-styleguide', 'devserver']);
 
   grunt.registerTask('publish-docker', function() {
     // Require the build
@@ -36,8 +37,8 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('serve',
-                     ['sass', 'webpack-dev-server:start', 'watch:sass']);
-  grunt.registerTask('start', ['sass', 'webpack:dev', 'watch:sass']);
+                     ['sass:dev', 'webpack-dev-server:start', 'watch:sass']);
+  grunt.registerTask('start', ['sass:dev', 'webpack:dev', 'watch:sass']);
   grunt.registerTask('build', ['clean:dist', 'sass', 'webpack']);
   grunt.registerTask('test', ['karma:run', 'eslint', 'csslint:lax']);
 };

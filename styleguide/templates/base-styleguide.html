@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <link rel="stylesheet" href="{{ appMedia }}/css/main.css">
-    <title>Payments</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="stylesheet" href="{{ appMedia }}/public/dist/main.css" />
+    <title>{{ title }}</title>
   </head>
-  <body data-static-url="{{ appMedia }}">
+  <body>
     <main>
-      {% block page %}{% endblock %}
+      <div id="view">
+        {% block page %}{% endblock %}
+      </div>
     </main>
-    <script src="{{ appMedia }}/lib/js/require.js" data-main="{{ appMedia }}/js/main.js"></script>
+    {% block script %}
+    {% endblock %}
   </body>
 </html>

@@ -2,10 +2,10 @@ module.exports = {
   styleguide: {
     src: 'styleguide',
     options: {
-      sourcecodeSelector: 'main',
+      sourcecodeSelector: '#view',
       templateGlobals: {
         projectName: 'Payments UI Styleguide',
-        appMedia: '../static/public',
+        appMedia: '../static',
       },
       templateConfig: {
         templatePaths: ['templates'],
@@ -13,6 +13,9 @@ module.exports = {
       copy: [{
         src: '../public/',
         target: 'static/public',
+      }, {
+        src: 'jsx-bundles/',
+        target: 'static/jsx',
       }],
     },
   },

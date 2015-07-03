@@ -1,8 +1,8 @@
 module.exports = {
   options: {
-    base: 'public',
+    base: 'styleguide/build',
     type: 'http',
-    port: 4000
+    port: 4001
   },
   server: {}
 };
