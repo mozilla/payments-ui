@@ -9,6 +9,7 @@ module.exports = React.createClass({
   displayName: 'CardItem',
 
   propTypes: {
+    checked: React.PropTypes.bool.isRequired,
     id: React.PropTypes.number.isRequired,
     onChangeHandler: React.PropTypes.func.isRequired,
     resource_uri: React.PropTypes.string.isRequired,

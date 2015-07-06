@@ -1,7 +1,6 @@
 'use strict';
 
 var React = require('react');
-var Connector = require('redux/react').Connector;
 
 var ProductDetail = require('components/product-detail');
 var SubmitButton = require('components/submit-button');
