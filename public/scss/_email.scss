@@ -1,0 +1,39 @@
+#email {
+    background-color: #F2F2F2;
+    padding-top: 1em;
+
+    #wrapper {
+        background-color: white;
+        border: 1px solid #DDDDDD;
+        margin: 1em;
+        padding: 0em 1em 2em 1em;
+
+        h1 {
+            font-weight: normal;
+            text-align: center;
+        }
+
+        th {
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        td {
+            text-align: right;
+            padding-left: 1em;
+        }
+
+        .card-icon {
+            background: url(/img/cardicons-sprite.svg) no-repeat;
+        }
+    }
+}
+
+#logo {
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: auto 55px;
+    height: 55px;
+    top: -25px;
+    position: relative;
+}
