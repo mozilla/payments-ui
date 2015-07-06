@@ -2,5 +2,6 @@ node_modules
 bower_components
 .grunt
 styleguide/build
+styleguide/jsx-bundles
 npm-debug.log
 public/dist/*

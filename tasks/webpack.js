@@ -26,5 +26,19 @@ module.exports = {
       new webpack.optimize.UglifyJsPlugin({minimize: true})
     ],
     watch: true, // use webpacks watcher
+  },
+  styleguide: {
+    entry: {
+      'card-form': './styleguide/jsx/card-form',
+      'spinner': './styleguide/jsx/spinner',
+    },
+    output: {
+      path: path.join(__dirname, '../styleguide/jsx-bundles/'),
+      filename: '[name].bundle.js',
+      chunkFilename: '[id].chunk.js',
+    },
+    plugins: [
+      new webpack.optimize.CommonsChunkPlugin('commons.js'),
+    ],
   }
 };
