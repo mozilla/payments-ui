@@ -21,7 +21,6 @@ module.exports = {
     extensions: ['', '.js', '.jsx', '.json'],
     modulesDirectories: [
       'public/js/',
-      'public/jsx/',
       'node_modules',
       'node_modules/mozilla-payments-config/json/products/',
     ],
