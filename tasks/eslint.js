@@ -1,12 +1,11 @@
 module.exports = {
   js: {
     src: [
-      'public/js/*.js',
-      'public/js/*.jsx',
+      'public/js/**/*.js*',
       '!public/js/bundle.js',
       'tests/*.*',
       'Gruntfile.js',
-      'config/*.js',
+      'tasks/*.js',
     ],
   },
 };

@@ -28,12 +28,12 @@ module.exports = React.createClass({
   displayName: 'CardForm',
 
   propTypes: {
+    card: React.PropTypes.object,
+    cvv: React.PropTypes.object,
     'data-token': React.PropTypes.string.isRequired,
-    'card': React.PropTypes.object,
-    'cvv': React.PropTypes.object,
-    'expiration': React.PropTypes.object,
-    'id': React.PropTypes.string.isRequired,
-    'productId': React.PropTypes.string.isRequired,
+    expiration: React.PropTypes.object,
+    id: React.PropTypes.string.isRequired,
+    productId: React.PropTypes.string.isRequired,
   },
 
   getInitialState: function() {

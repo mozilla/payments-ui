@@ -4,7 +4,6 @@ var React = require('react');
 var bindActionCreators = require('redux').bindActionCreators;
 var Connector = require('redux/react').Connector;
 
-var reduxConfig = require('redux-config');
 var CardDetails = require('views/card-details');
 var CardListing = require('views/card-listing');
 var CompletePayment = require('views/complete-payment');
@@ -16,8 +15,8 @@ module.exports = React.createClass({
   displayName: 'Purchase',
 
   propTypes: {
-    user: React.PropTypes.object.isRequired,
     productId: React.PropTypes.string.isRequired,
+    user: React.PropTypes.object.isRequired,
   },
 
   selectData: function(state) {

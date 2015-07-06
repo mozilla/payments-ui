@@ -15,14 +15,22 @@ module.exports = React.createClass({
   displayName: 'CardChoice',
 
   propTypes: {
-    cards: React.PropTypes.array.isRequired,
+    cards: React.PropTypes.arrayOf(
+      React.PropTypes.shape({
+        id: React.PropTypes.number,
+        resource_uri: React.PropTypes.string,
+        truncated_id: React.PropTypes.string,
+        type_name: React.PropTypes.string,
+      }
+    )).isRequired,
+    productId: React.PropTypes.string.isRequired,
   },
 
   getInitialState: function() {
     return {
       isSubmitting: false,
-      card: this.props.cards.length === 1 ? this.props.cards[0].resource_uri : null,
-
+      card: (this.props.cards.length === 1 ?
+             this.props.cards[0].resource_uri : null),
     };
   },
 
