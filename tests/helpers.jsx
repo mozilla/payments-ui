@@ -60,6 +60,8 @@ module.exports = {
 
     var FluxContainer = React.createClass({
 
+      displayName: 'FluxContainer',
+
       propTypes: {
         children: React.PropTypes.func.isRequired,
       },
