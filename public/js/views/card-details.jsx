@@ -7,8 +7,6 @@ var CardForm = require('components/card-form');
 var ProductDetail = require('components/product-detail');
 var Spinner = require('components/spinner');
 
-var gettext = require('utils').gettext;
-
 
 module.exports = React.createClass({
 
@@ -57,7 +55,7 @@ module.exports = React.createClass({
         </div>
       );
     } else {
-      return <Spinner text={gettext('Setting up')}/>;
+      return <Spinner />;
     }
   },
 });
