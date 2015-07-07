@@ -7,10 +7,12 @@ var settings = require('settings');
 
 class Tracking {
 
-  constructor() {
-    this.id = settings.tracking.id;
-    this.enabled = settings.tracking.enabled;
+  constructor(opts) {
+    opts = opts || {};
+    this.id = opts.trackingId;
+    this.enabled = opts.enabled;
     this.logPrefix = '[GA:' + (this.enabled ? 'ON' : 'OFF') + ']';
+    this.initialized = false;
     return this;
   }
 
@@ -84,4 +86,7 @@ class Tracking {
   }
 }
 
-module.exports = new Tracking();
+module.exports = new Tracking({
+  enabled: settings.tracking.enabled,
+  trackingId: settings.tracking.id,
+});

@@ -1,32 +1,26 @@
 'use strict';
 
-var tracking = require('tracking');
+var rewire = require('rewire');
+var tracking = rewire('tracking');
+
+// Get at the top level var in the tracking module
+// using rewire.
+var Tracking = tracking.__get__('Tracking');
 
 
-describe('tracking uninitialized', function() {
-
-  beforeEach(function() {
-    this.oldTrackingEnabled = tracking.enabled;
-    this.oldTrackingInitialized = tracking.initialized;
-    tracking.enabled = true;
-    tracking.initialized = false;
-  });
-
-  afterEach(function() {
-    tracking.enabled = this.oldTrackingEnabled;
-    tracking.initialized = this.oldTrackingInitialized;
-  });
+describe('Tracking uninitialized', function() {
 
   it('should throw when calling setPage', function() {
     assert.throws(function() {
-      tracking.setPage('whatevar');
+      var t = new Tracking({enabled: true});
+      t.setPage('whatevar');
     }, /Must call init\(\) first/);
   });
 
   it('should throw when calling sendEvent', function() {
-    tracking.initialized = false;
     assert.throws(function() {
-      tracking.sendEvent({
+      var t = new Tracking({enabled: true});
+      t.sendEvent({
         'category': 'cat',
         'action': 'some-action',
       });
@@ -36,53 +30,48 @@ describe('tracking uninitialized', function() {
 });
 
 
-describe('tracking functions', function() {
+describe('Tracking functions', function() {
 
   beforeEach(function() {
-    this.oldTrackingInitialized = tracking.initialized;
-    this.oldTrackingEnabled = tracking.enabled;
-    tracking.enabled = true;
-    tracking.initialized = false;
-    sinon.stub(tracking, '_ga');
-  });
-
-  afterEach(function() {
-    tracking.enabled = this.oldTrackingEnabled;
-    tracking.initialized = this.oldTrackingInitialized;
-    tracking._ga.restore();
+    this.t = new Tracking({
+      id: 'whatever',
+      enabled: true,
+    });
+    this.t.initialized = true;
+    window.ga = sinon.stub();
   });
 
   it('should throw if page not set', function() {
     assert.throws(function() {
-      tracking.setPage();
-    }, Error, /page is required/);
+      this.t.setPage();
+    }.bind(this), Error, /page is required/);
   });
 
-  it('should call _ga', function() {
-    tracking.setPage('whatever');
-    assert.ok(tracking._ga.called);
+  it('should call ga', function() {
+    this.t.setPage('whatever');
+    assert.ok(window.ga.called);
   });
 
   it('should throw if category not set', function() {
     assert.throws(function() {
-      tracking.sendEvent({});
-    }, Error, /opts\.category is required/);
+      this.t.sendEvent({});
+    }.bind(this), Error, /opts\.category is required/);
   });
 
   it('should throw if action not set', function() {
     assert.throws(function() {
-      tracking.sendEvent({
+      this.t.sendEvent({
         category: 'whatever',
       });
-    }, Error, /opts\.action is required/);
+    }.bind(this), Error, /opts\.action is required/);
   });
 
   it('should call _ga', function() {
-    tracking.sendEvent({
+    this.t.sendEvent({
       category: 'whatever',
       action: 'some-action',
     });
-    assert.ok(tracking._ga.called);
+    assert.ok(window.ga.called);
   });
 
 });
