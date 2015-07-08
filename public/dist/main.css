@@ -697,7 +697,7 @@ button::-moz-focus-inner {
 }
 
 .card-icon {
-  background: url(../img/cardicons-sprite.svg) no-repeat;
+  background: url("../img/cardicons-sprite.svg") no-repeat;
 }
 
 .cctype-amex {

@@ -1,3 +1,8 @@
+@import '_settings.scss';
+
+$image-path: '#{$base-path}img/';
+$font-path: '#{$base-path}fonts/';
+
 // Font Family Vars
 $default-font: "Clear Sans", Helvetica, Arial, sans-serif;
 $header-font: "Fira Sans", Helvetica, Arial, sans-serif;
