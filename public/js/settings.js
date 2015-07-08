@@ -45,4 +45,8 @@ module.exports = {
     'zh-CN',
     'zh-TW',
   ],
+  tracking: {
+    enabled: false,
+    id: 'UA-35433268-60',
+  },
 };

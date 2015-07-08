@@ -13,7 +13,13 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.jsx$/, loader: 'jsx-loader?harmony' },
+      {
+        exclude: /(node_modules|bower_components)/,
+        test: /\.jsx?$/,
+        // Stage 1 to enable ES7 rest properties.
+        // eg: let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 };
+        loader: 'babel?stage=1',
+      },
     ],
   },
   resolve: {

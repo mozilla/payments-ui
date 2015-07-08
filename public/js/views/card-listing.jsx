@@ -4,7 +4,9 @@ var React = require('react');
 
 var CardChoice = require('components/card-choice');
 var ProductDetail = require('components/product-detail');
+
 var gettext = require('utils').gettext;
+var tracking = require('tracking');
 
 
 module.exports = React.createClass({
@@ -15,6 +17,10 @@ module.exports = React.createClass({
     payWithNewCard: React.PropTypes.func.isRequired,
     paymentMethods: React.PropTypes.array.isRequired,
     productId: React.PropTypes.string.isRequired,
+  },
+
+  componentDidMount: function() {
+    tracking.setPage('/payment/card-list');
   },
 
   render: function() {
