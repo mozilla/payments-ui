@@ -1,0 +1,35 @@
+#email {
+    background-color: #F2F2F2;
+    padding-top: 1em;
+
+    #wrapper {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        margin: 1em;
+        padding: 0 1em 2em 1em;
+
+        th {
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        td {
+            text-align: right;
+            padding-left: 1em;
+        }
+    }
+
+    .card-icon {
+        display: inline-block;
+        float: left;
+    }
+}
+
+#logo {
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: auto 55px;
+    height: 55px;
+    top: -25px;
+    position: relative;
+}
