@@ -7,6 +7,8 @@ var CardForm = require('components/card-form');
 var ProductDetail = require('components/product-detail');
 var Spinner = require('components/spinner');
 
+var tracking = require('tracking');
+
 
 module.exports = React.createClass({
 
@@ -25,6 +27,9 @@ module.exports = React.createClass({
   componentDidMount: function() {
     console.log('Requesting braintree token');
     // TODO: move this to a purchase action.
+
+    tracking.setPage('/card-details');
+
     $.ajax({
       method: 'post',
       url: '/api/braintree/token/generate/',

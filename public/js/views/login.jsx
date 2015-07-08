@@ -3,7 +3,9 @@
 var React = require('react');
 
 var Spinner = require('components/spinner');
+
 var gettext = require('utils').gettext;
+var tracking = require('tracking');
 
 
 module.exports = React.createClass({
@@ -16,6 +18,7 @@ module.exports = React.createClass({
   },
 
   componentDidMount: function() {
+    tracking.setPage('/login');
     this.props.signIn(this.props.accessToken);
   },
 

@@ -48,14 +48,15 @@
 	
 	var $ = __webpack_require__(1);
 	var App = __webpack_require__(2);
+	var tracking = __webpack_require__(189);
 	
 	// Common ajax settings.
 	$.ajaxSetup({
-	  dataType: 'json',
+	  dataType: 'json'
 	});
 	
+	tracking.init();
 	App.init();
-
 
 /***/ },
 /* 1 */
@@ -9279,6 +9280,8 @@
 
 	'use strict';
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	var React = __webpack_require__(4);
 	var Provider = __webpack_require__(161).Provider;
 	var Connector = __webpack_require__(161).Connector;
@@ -9287,75 +9290,69 @@
 	var reduxConfig = __webpack_require__(184);
 	var ErrorMessage = __webpack_require__(3);
 	var Login = __webpack_require__(187);
-	var Purchase = __webpack_require__(189);
-	var userActions = __webpack_require__(244);
+	var Purchase = __webpack_require__(191);
+	var userActions = __webpack_require__(246);
 	var utils = __webpack_require__(160);
-	
 	
 	var App = React.createClass({
 	
 	  displayName: 'App',
 	
-	  getInitialState: function() {
+	  getInitialState: function getInitialState() {
 	    var qs = utils.parseQuery(window.location.href);
 	    // TODO: we should validate/clean this input to raise early errors.
 	    return {
 	      accessToken: qs.access_token,
-	      productId: qs.product,
+	      productId: qs.product
 	    };
 	  },
 	
-	  selectData: function(state) {
+	  selectData: function selectData(state) {
 	    return {
 	      app: state.app,
-	      user: state.user,
+	      user: state.user
 	    };
 	  },
 	
-	  render:function () {
+	  render: function render() {
 	    var state = this.state;
-	    return (
-	      React.createElement("main", null, 
-	        React.createElement(Connector, {select: this.selectData}, 
-	          function(result) {
-	            if (result.app.error) {
-	              console.log('rendering app error');
-	              return React.createElement(ErrorMessage, {error: result.app.error});
-	            } else if (!result.user.signedIn) {
-	              console.log('rendering login');
-	              return (
-	                React.createElement(Login, React.__spread({
-	                  accessToken: state.accessToken}, 
-	                  bindActionCreators(userActions, result.dispatch) )
-	                )
-	              );
-	            } else {
-	              console.log('rendering purchase flow');
-	              return (
-	                React.createElement(Purchase, {user: result.user, productId: state.productId})
-	              );
-	            }
+	    return React.createElement(
+	      'main',
+	      null,
+	      React.createElement(
+	        Connector,
+	        { select: this.selectData },
+	        function (result) {
+	          if (result.app.error) {
+	            console.log('rendering app error');
+	            return React.createElement(ErrorMessage, { error: result.app.error });
+	          } else if (!result.user.signedIn) {
+	            console.log('rendering login');
+	            return React.createElement(Login, _extends({
+	              accessToken: state.accessToken
+	            }, bindActionCreators(userActions, result.dispatch)));
+	          } else {
+	            console.log('rendering purchase flow');
+	            return React.createElement(Purchase, { user: result.user, productId: state.productId });
 	          }
-	        )
+	        }
 	      )
 	    );
-	  },
+	  }
 	});
-	
 	
 	module.exports = {
 	  component: App,
-	  init: function() {
-	    React.render((
-	      React.createElement(Provider, {redux: reduxConfig.default}, 
-	        function() {
-	          return React.createElement(App, null);
-	        }
-	      )
+	  init: function init() {
+	    React.render(React.createElement(
+	      Provider,
+	      { redux: reduxConfig['default'] },
+	      function () {
+	        return React.createElement(App, null);
+	      }
 	    ), document.body);
-	  },
+	  }
 	};
-
 
 /***/ },
 /* 3 */
@@ -9369,25 +9366,23 @@
 	
 	var gettext = utils.gettext;
 	
-	
 	module.exports = React.createClass({
 	  displayName: 'Error',
 	
 	  propTypes: {
-	    error: React.PropTypes.object.isRequired,
+	    error: React.PropTypes.object.isRequired
 	  },
 	
-	  render: function() {
+	  render: function render() {
 	    console.log('rendering app error:', this.props.error);
-	    return (
-	      React.createElement("div", {className: "app-error"}, 
-	        gettext('Internal error. Please try again later.')
-	      )
+	    return React.createElement(
+	      'div',
+	      { className: 'app-error' },
+	      gettext('Internal error. Please try again later.')
 	    );
-	  },
+	  }
 	
 	});
-
 
 /***/ },
 /* 4 */
@@ -29778,10 +29773,10 @@
 	* @returns {object}
 	*/
 	
-	exports.defaults = function(object, defaults)  {
+	exports.defaults = function (object, defaults) {
 	  object = object || {};
 	  defaults = defaults || {};
-	  Object.keys(defaults).forEach(function(key) {
+	  Object.keys(defaults).forEach(function (key) {
 	    if (typeof object[key] === 'undefined') {
 	      object[key] = defaults[key];
 	    }
@@ -29789,19 +29784,16 @@
 	  return object;
 	};
 	
-	
-	exports.getMountNode = function(node)  {
+	exports.getMountNode = function (node) {
 	  return node || document.getElementById('view');
 	};
 	
-	
-	exports.gettext = function(string)  {
+	exports.gettext = function (string) {
 	  // Initial no-op gettext stand-in.
 	  return string;
 	};
 	
-	
-	exports.parseQuery = function(url)  {
+	exports.parseQuery = function (url) {
 	  //
 	  // Given a complete URL, parse the query string and return an
 	  // object of parameters->values. This doesn't bother with repeated
@@ -29814,7 +29806,7 @@
 	  var data = {};
 	
 	  if (urlParts.length > 1) {
-	    urlParts[1].split('&').forEach(function(nameVal)  {
+	    urlParts[1].split('&').forEach(function (nameVal) {
 	      var parts = nameVal.split('=');
 	      data[parts[0]] = decodeURIComponent(parts[1] || '');
 	    });
@@ -29822,7 +29814,6 @@
 	
 	  return data;
 	};
-
 
 /***/ },
 /* 161 */
@@ -30802,8 +30793,7 @@
 	}
 	
 	exports.create = createRedux;
-	exports.default = createRedux();
-
+	exports['default'] = createRedux();
 
 /***/ },
 /* 185 */
@@ -30813,14 +30803,13 @@
 	
 	var actionTypes = __webpack_require__(186);
 	
-	
-	exports.app = function(state, action) {
+	exports.app = function (state, action) {
 	  if (action.type === actionTypes.APP_ERROR) {
 	    console.log('app store: got action', action);
 	    return {
 	      error: {
-	        debugMessage: action.error.debugMessage,
-	      },
+	        debugMessage: action.error.debugMessage
+	      }
 	    };
 	  }
 	
@@ -30829,28 +30818,26 @@
 	  return state || {};
 	};
 	
-	
-	exports.user = function(state, action) {
+	exports.user = function (state, action) {
 	  if (action.type === actionTypes.USER_SIGNED_IN) {
 	    console.log('user store: got action', action);
 	    return {
 	      signedIn: true,
 	      email: action.user.email,
-	      payment_methods: action.user.payment_methods,
+	      payment_methods: action.user.payment_methods
 	    };
 	  }
 	  return state || {
-	    signedIn: false,
+	    signedIn: false
 	  };
 	};
 	
-	
-	exports.purchase = function(state, action) {
+	exports.purchase = function (state, action) {
 	
 	  if (action.type === actionTypes.COMPLETE_PURCHASE) {
 	    console.log('purchase store: got action', action);
 	    return {
-	      completed: true,
+	      completed: true
 	    };
 	  }
 	
@@ -30858,7 +30845,7 @@
 	    console.log('purchase store: got action', action);
 	    return {
 	      completed: false,
-	      payment_methods: [],
+	      payment_methods: []
 	    };
 	  }
 	
@@ -30866,16 +30853,15 @@
 	    console.log('purchase store: got action', action);
 	    return {
 	      completed: false,
-	      payment_methods: action.user.payment_methods,
+	      payment_methods: action.user.payment_methods
 	    };
 	  }
 	
 	  return state || {
 	    completed: false,
-	    payment_methods: [],
+	    payment_methods: []
 	  };
 	};
-
 
 /***/ },
 /* 186 */
@@ -30887,9 +30873,8 @@
 	  APP_ERROR: 'APP_ERROR',
 	  USER_SIGNED_IN: 'USER_SIGNED_IN',
 	  COMPLETE_PURCHASE: 'COMPLETE_PURCHASE',
-	  PAY_WITH_NEW_CARD: 'PAY_WITH_NEW_CARD',
+	  PAY_WITH_NEW_CARD: 'PAY_WITH_NEW_CARD'
 	};
-
 
 /***/ },
 /* 187 */
@@ -30900,8 +30885,9 @@
 	var React = __webpack_require__(4);
 	
 	var Spinner = __webpack_require__(188);
-	var gettext = __webpack_require__(160).gettext;
 	
+	var gettext = __webpack_require__(160).gettext;
+	var tracking = __webpack_require__(189);
 	
 	module.exports = React.createClass({
 	
@@ -30909,19 +30895,19 @@
 	
 	  propTypes: {
 	    accessToken: React.PropTypes.string.isRequired,
-	    signIn: React.PropTypes.func.isRequired,
+	    signIn: React.PropTypes.func.isRequired
 	  },
 	
-	  componentDidMount: function() {
+	  componentDidMount: function componentDidMount() {
+	    tracking.setPage('/login');
 	    this.props.signIn(this.props.accessToken);
 	  },
 	
-	  render: function() {
-	    return React.createElement(Spinner, {text: gettext('Signing in')});
-	  },
+	  render: function render() {
+	    return React.createElement(Spinner, { text: gettext('Signing in') });
+	  }
 	
 	});
-
 
 /***/ },
 /* 188 */
@@ -30937,25 +30923,28 @@
 	  displayName: 'Spinner',
 	
 	  propTypes: {
-	    text: React.PropTypes.string.isRequired,
+	    text: React.PropTypes.string.isRequired
 	  },
 	
-	  getDefaultProps: function() {
+	  getDefaultProps: function getDefaultProps() {
 	    return {
-	      text: gettext('Loading'),
+	      text: gettext('Loading')
 	    };
 	  },
 	
-	  render: function() {
-	    return (
-	      React.createElement("div", {className: "spinner-cont"}, 
-	        React.createElement("div", {className: "spinner"}), 
-	        React.createElement("span", {className: "text"}, this.props.text)
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { className: 'spinner-cont' },
+	      React.createElement('div', { className: 'spinner' }),
+	      React.createElement(
+	        'span',
+	        { className: 'text' },
+	        this.props.text
 	      )
 	    );
-	  },
+	  }
 	});
-
 
 /***/ },
 /* 189 */
@@ -30963,127 +30952,124 @@
 
 	'use strict';
 	
-	var React = __webpack_require__(4);
-	var bindActionCreators = __webpack_require__(174).bindActionCreators;
-	var Connector = __webpack_require__(161).Connector;
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
-	var CardDetails = __webpack_require__(190);
-	var CardListing = __webpack_require__(240);
-	var CompletePayment = __webpack_require__(243);
-	var purchaseActions = __webpack_require__(235);
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
+	/* global ga */
 	
-	module.exports = React.createClass({
+	var settings = __webpack_require__(190);
 	
-	  displayName: 'Purchase',
+	var Tracking = (function () {
+	  function Tracking(opts) {
+	    _classCallCheck(this, Tracking);
 	
-	  propTypes: {
-	    productId: React.PropTypes.string.isRequired,
-	    user: React.PropTypes.object.isRequired,
-	  },
+	    opts = opts || {};
+	    this.id = opts.trackingId;
+	    this.enabled = opts.enabled;
+	    this.logPrefix = '[GA:' + (this.enabled ? 'ON' : 'OFF') + ']';
+	    this.initialized = false;
+	    return this;
+	  }
 	
-	  selectData: function(state) {
-	    return {
-	      purchase: state.purchase,
-	    };
-	  },
+	  _createClass(Tracking, [{
+	    key: '_ga',
+	    value: function _ga() {
+	      if (!this.initialized) {
+	        throw new Error('Must call init() first');
+	      } else {
+	        ga.apply(window, Array.prototype.slice.call(arguments));
+	      }
+	    }
+	  }, {
+	    key: 'init',
+	    value: function init() {
+	      if (this.enabled === true) {
+	        console.log('Tracking init (Analytics is ON)');
+	        /*eslint-disable */
+	        (function (i, s, o, g, r, a, m) {
+	          i['GoogleAnalyticsObject'] = r;i[r] = i[r] || function () {
+	            (i[r].q = i[r].q || []).push(arguments);
+	          }, i[r].l = 1 * new Date();a = s.createElement(o), m = s.getElementsByTagName(o)[0];a.async = 1;a.src = g;m.parentNode.insertBefore(a, m);
+	        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+	        ga('create', this.id, 'auto');
+	        ga('send', 'pageview');
+	        /*eslint-enable */
+	      } else {
+	        console.log('Tracking init. (Analytics is OFF)');
+	      }
+	      this.initialized = true;
+	    }
+	  }, {
+	    key: 'sendEvent',
 	
-	  render:function () {
-	    var props = this.props;
-	    return (
-	      React.createElement(Connector, {select: this.selectData}, 
-	        function(result) {
-	          if (result.purchase.completed) {
-	            return (
-	              React.createElement(CompletePayment, {productId: props.productId, 
-	                               userEmail: props.user.email})
-	            );
-	          } else if (result.purchase.payment_methods.length > 0) {
-	            console.log('rendering card listing');
-	            return (
-	              React.createElement(CardListing, React.__spread({
-	                productId: props.productId, 
-	                paymentMethods: result.purchase.payment_methods}, 
-	                bindActionCreators(purchaseActions, result.dispatch))
-	              )
-	            );
-	          } else {
-	            console.log('rendering card entry');
-	            return React.createElement(CardDetails, {productId: props.productId});
-	          }
-	        }
-	      )
-	    );
-	  },
+	    /*
+	     * Param           Type    Required  Description
+	     * opts.category   String  Yes       Typically the object that
+	     *                                   was interacted with (e.g. button)
+	     * opts.action     String  Yes       The type of interaction (e.g. click)
+	     * opts.label      String  No        Useful for categorizing events i
+	     *                                   (e.g. nav buttons)
+	     * opts.value      Number  No        Values must be non-negative.
+	     *                                   Useful to pass counts (e.g. 4 times)
+	     */
+	    value: function sendEvent(opts) {
+	      if (!opts.category) {
+	        throw new Error('sendEvent: opts.category is required');
+	      }
+	      if (!opts.action) {
+	        throw new Error('sentEvent: opts.action is required');
+	      }
+	      if (this.enabled) {
+	        this._ga('send', {
+	          'hitType': 'event',
+	          'eventCategory': opts.category,
+	          'eventAction': opts.action,
+	          'eventLabel': opts.label,
+	          'eventValue': opts.value
+	        });
+	      }
+	      console.log(this.logPrefix, 'sendEvent', JSON.stringify(opts));
+	    }
+	  }, {
+	    key: 'setPage',
+	
+	    /*
+	     * Should be called when a new view is show.
+	     * Used in a SPA when the url is changed.
+	     */
+	    value: function setPage(page) {
+	      if (!page) {
+	        throw new Error('setPage: page is required');
+	      }
+	      if (this.enabled) {
+	        this._ga('set', 'page', page);
+	      }
+	      console.log(this.logPrefix, 'setPage', page);
+	    }
+	  }]);
+	
+	  return Tracking;
+	})();
+	
+	module.exports = new Tracking({
+	  enabled: settings.tracking.enabled,
+	  trackingId: settings.tracking.id
 	});
-
 
 /***/ },
 /* 190 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	'use strict';
 	
-	var $ = __webpack_require__(1);
-	var React = __webpack_require__(4);
-	
-	var CardForm = __webpack_require__(191);
-	var ProductDetail = __webpack_require__(236);
-	var Spinner = __webpack_require__(188);
-	
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'CardDetailsView',
-	
-	  propTypes: {
-	    productId: React.PropTypes.string.isRequired,
-	  },
-	
-	  getInitialState: function() {
-	    return {
-	      braintree_token: false,
-	    };
-	  },
-	
-	  componentDidMount: function() {
-	    console.log('Requesting braintree token');
-	    // TODO: move this to a purchase action.
-	    $.ajax({
-	      method: 'post',
-	      url: '/api/braintree/token/generate/',
-	      context: this,
-	    }).then(function(data) {
-	      if (this.isMounted()) {
-	        this.setState({'braintree_token': data.token}); // eslint-disable-line
-	      }
-	    }).fail(function() {
-	      // TODO: some error state.
-	      console.log('failed to get braintree token');
-	    });
-	  },
-	
-	  render: function() {
-	
-	    if (this.state.braintree_token) {
-	      return (
-	        React.createElement("div", {className: "card-details"}, 
-	          React.createElement(ProductDetail, {productId: this.props.productId}), 
-	          React.createElement(CardForm, {
-	            action: "/braintree/", 
-	            "data-token": this.state.braintree_token, 
-	            id: "braintree-form", 
-	            method: "post", 
-	            productId: this.props.productId}
-	          )
-	        )
-	      );
-	    } else {
-	      return React.createElement(Spinner, null);
-	    }
-	  },
-	});
-
+	module.exports = {
+	  'supportedLanguages': ['ca', 'cs', 'cy', 'da', 'de', 'dsb', 'en', 'es', 'es-AR', 'es-CL', 'et', 'eu', 'ff', 'fr', 'fy', 'he', 'hsb', 'hu', 'id', 'it', 'ja', 'ko', 'lt', 'nb-NO', 'nl', 'pa', 'pl', 'pt', 'pt-BR', 'rm', 'ru', 'sk', 'sl', 'sq', 'sr', 'sr-LATN', 'sv', 'sv-SE', 'tr', 'uk', 'zh-CN', 'zh-TW'],
+	  tracking: {
+	    enabled: false,
+	    id: 'UA-35433268-60'
+	  }
+	};
 
 /***/ },
 /* 191 */
@@ -31091,28 +31077,273 @@
 
 	'use strict';
 	
-	var $ = __webpack_require__(1);
-	var CardValidator = __webpack_require__(192);
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	var React = __webpack_require__(4);
-	var braintree = __webpack_require__(227);
+	var bindActionCreators = __webpack_require__(174).bindActionCreators;
+	var Connector = __webpack_require__(161).Connector;
+	
+	var CardDetails = __webpack_require__(192);
+	var CardListing = __webpack_require__(242);
+	var CompletePayment = __webpack_require__(245);
+	var purchaseActions = __webpack_require__(241);
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'Purchase',
+	
+	  propTypes: {
+	    productId: React.PropTypes.string.isRequired,
+	    user: React.PropTypes.object.isRequired
+	  },
+	
+	  selectData: function selectData(state) {
+	    return {
+	      purchase: state.purchase
+	    };
+	  },
+	
+	  render: function render() {
+	    var props = this.props;
+	    return React.createElement(
+	      Connector,
+	      { select: this.selectData },
+	      function (result) {
+	        if (result.purchase.completed) {
+	          return React.createElement(CompletePayment, { productId: props.productId,
+	            userEmail: props.user.email });
+	        } else if (result.purchase.payment_methods.length > 0) {
+	          console.log('rendering card listing');
+	          return React.createElement(CardListing, _extends({
+	            productId: props.productId,
+	            paymentMethods: result.purchase.payment_methods
+	          }, bindActionCreators(purchaseActions, result.dispatch)));
+	        } else {
+	          console.log('rendering card entry');
+	          return React.createElement(CardDetails, { productId: props.productId });
+	        }
+	      }
+	    );
+	  }
+	});
+
+/***/ },
+/* 192 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var $ = __webpack_require__(1);
+	var React = __webpack_require__(4);
+	
+	var CardForm = __webpack_require__(197);
+	var ProductDetail = __webpack_require__(193);
+	var Spinner = __webpack_require__(188);
+	
+	var tracking = __webpack_require__(189);
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'CardDetailsView',
+	
+	  propTypes: {
+	    productId: React.PropTypes.string.isRequired
+	  },
+	
+	  getInitialState: function getInitialState() {
+	    return {
+	      braintree_token: false
+	    };
+	  },
+	
+	  componentDidMount: function componentDidMount() {
+	    console.log('Requesting braintree token');
+	    // TODO: move this to a purchase action.
+	
+	    tracking.setPage('/card-details');
+	
+	    $.ajax({
+	      method: 'post',
+	      url: '/api/braintree/token/generate/',
+	      context: this
+	    }).then(function (data) {
+	      if (this.isMounted()) {
+	        this.setState({ 'braintree_token': data.token }); // eslint-disable-line
+	      }
+	    }).fail(function () {
+	      // TODO: some error state.
+	      console.log('failed to get braintree token');
+	    });
+	  },
+	
+	  render: function render() {
+	
+	    if (this.state.braintree_token) {
+	      return React.createElement(
+	        'div',
+	        { className: 'card-details' },
+	        React.createElement(ProductDetail, { productId: this.props.productId }),
+	        React.createElement(CardForm, {
+	          action: '/braintree/',
+	          'data-token': this.state.braintree_token,
+	          id: 'braintree-form',
+	          method: 'post',
+	          productId: this.props.productId
+	        })
+	      );
+	    } else {
+	      return React.createElement(Spinner, null);
+	    }
+	  }
+	});
+
+/***/ },
+/* 193 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(4);
+	var products = __webpack_require__(194);
+	var gettext = __webpack_require__(160).gettext;
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'ProductDetail',
+	
+	  propTypes: {
+	    productId: React.PropTypes.string.isRequired
+	  },
+	
+	  render: function render() {
+	
+	    var productId = this.props.productId;
+	    var productData = products[productId];
+	
+	    if (!productData) {
+	      throw new Error('Invalid product: ' + productId);
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'product' },
+	      React.createElement(
+	        'h1',
+	        { className: 'title' },
+	        productData.seller.name.en
+	      ),
+	      React.createElement(
+	        'div',
+	        null,
+	        productData.description.en
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'price' },
+	        productData.price.en
+	      ),
+	      React.createElement(
+	        'div',
+	        null,
+	        gettext('per month')
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 194 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	module.exports = {
+	  'mozilla-concrete-brick': __webpack_require__(195),
+	  'mozilla-concrete-mortar': __webpack_require__(196)
+	};
+
+/***/ },
+/* 195 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"description": {
+			"en": "Brick"
+		},
+		"img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/default.png",
+		"price": {
+			"en": "$10.00"
+		},
+		"seller": {
+			"url": "http://pay.dev.mozaws.net/",
+			"terms": "http://pay.dev.mozaws.net/terms/",
+			"id": "mozilla-concrete",
+			"name": {
+				"en": "Mozilla Concrete"
+			}
+		},
+		"currency": "USD",
+		"amount": "10.00",
+		"active": true,
+		"id": "mozilla-concrete-brick"
+	}
+
+/***/ },
+/* 196 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"description": {
+			"en": "Mortar"
+		},
+		"img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/mortar.png",
+		"price": {
+			"en": "$5.00"
+		},
+		"seller": {
+			"url": "http://pay.dev.mozaws.net/",
+			"terms": "http://pay.dev.mozaws.net/terms/",
+			"id": "mozilla-concrete",
+			"name": {
+				"en": "Mozilla Concrete"
+			}
+		},
+		"currency": "USD",
+		"amount": "5.00",
+		"active": true,
+		"id": "mozilla-concrete-mortar"
+	}
+
+/***/ },
+/* 197 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	var $ = __webpack_require__(1);
+	var CardValidator = __webpack_require__(198);
+	var React = __webpack_require__(4);
+	var braintree = __webpack_require__(233);
 	
 	var utils = __webpack_require__(160);
 	var gettext = utils.gettext;
 	
-	var CardInput = __webpack_require__(228);
-	var SubmitButton = __webpack_require__(234);
-	var purchaseActions = __webpack_require__(235);
+	var CardInput = __webpack_require__(234);
+	var SubmitButton = __webpack_require__(240);
+	var purchaseActions = __webpack_require__(241);
 	var reduxConfig = __webpack_require__(184);
-	
 	
 	var defaultFieldAttrs = {
 	  'autoComplete': 'off',
 	  // inputMode is not yet supported in React.
 	  // See https://github.com/facebook/react/pull/3798
 	  'inputMode': 'numeric',
-	  'type': 'tel',
+	  'type': 'tel'
 	};
-	
 	
 	module.exports = React.createClass({
 	
@@ -31124,17 +31355,17 @@
 	    'data-token': React.PropTypes.string.isRequired,
 	    expiration: React.PropTypes.object,
 	    id: React.PropTypes.string.isRequired,
-	    productId: React.PropTypes.string.isRequired,
+	    productId: React.PropTypes.string.isRequired
 	  },
 	
-	  getInitialState: function() {
+	  getInitialState: function getInitialState() {
 	    return {
 	      isSubmitting: false,
 	      cardType: null,
 	      errors: {},
 	      card: '',
 	      expiration: '',
-	      cvv: '',
+	      cvv: ''
 	    };
 	  },
 	
@@ -31144,38 +31375,38 @@
 	      'classNames': ['card'],
 	      'errors': {
 	        invalid: gettext('Incorrect card number'),
-	        declined: gettext('Card was declined'),
+	        declined: gettext('Card was declined')
 	      },
 	      'id': 'card',
 	      'placeholder': gettext('Card number'),
-	      'validator': CardValidator.number,
+	      'validator': CardValidator.number
 	    },
 	    expiration: {
 	      'attrs': defaultFieldAttrs,
 	      'classNames': ['expiration'],
 	      'errors': {
-	        invalid: gettext('Invalid expiry date'),
+	        invalid: gettext('Invalid expiry date')
 	      },
 	      'id': 'expiration',
 	      // Expiration pattern doesn't change based on card type.
 	      'pattern': '11/11',
 	      'placeholder': 'MM/YY',
-	      'validator': CardValidator.expirationDate,
+	      'validator': CardValidator.expirationDate
 	    },
 	    cvv: {
 	      'attrs': defaultFieldAttrs,
 	      'autocomplete': 'off',
 	      'classNames': ['cvv'],
 	      'errors': {
-	        invalid: gettext('Invalid CVV'),
+	        invalid: gettext('Invalid CVV')
 	      },
 	      'errorModifier': 'right',
 	      'id': 'cvv',
-	      'validator': CardValidator.cvv,
-	    },
+	      'validator': CardValidator.cvv
+	    }
 	  },
 	
-	  handleChange: function(e) {var $__0;
+	  handleChange: function handleChange(e) {
 	    var fieldId = e.target.id;
 	    var val = e.target.value;
 	
@@ -31186,9 +31417,7 @@
 	    fieldProps.showError = !valData.isValid && !valData.isPotentiallyValid;
 	    fieldProps.errorMessage = fieldProps.errors.invalid;
 	
-	    var newState = ($__0={},$__0[
-	      e.target.id]= e.target.value
-	    ,$__0);
+	    var newState = _defineProperty({}, e.target.id, e.target.value);
 	
 	    // Only the card field has card data upon validation.
 	    if (fieldId === 'card') {
@@ -31199,18 +31428,18 @@
 	    this.setState(newState);
 	  },
 	
-	  handleSubmit: function(e) {
+	  handleSubmit: function handleSubmit(e) {
 	    e.preventDefault();
-	    this.setState({isSubmitting: true});
+	    this.setState({ isSubmitting: true });
 	    var that = this;
 	    var client = new braintree.api.Client({
-	      clientToken: this.props['data-token'],
+	      clientToken: this.props['data-token']
 	    });
 	    client.tokenizeCard({
 	      number: this.state.card,
 	      expirationDate: this.state.expiration,
-	      cvv: this.state.cvv,
-	    }, function(err, nonce) {
+	      cvv: this.state.cvv
+	    }, function (err, nonce) {
 	      if (err) {
 	        // TODO: error handling
 	        console.log(err);
@@ -31218,20 +31447,17 @@
 	        $.ajax({
 	          data: {
 	            pay_method_nonce: nonce,
-	            plan_id: that.props.productId,
+	            plan_id: that.props.productId
 	          },
 	          url: '/api/braintree/subscriptions/',
 	          method: 'post',
 	          dataType: 'json',
-	          context: that,
-	        }).done(function() {
+	          context: that
+	        }).done(function () {
 	          console.log('Successfully subscribed + completed payment');
 	
-	          reduxConfig.default.dispatch(
-	            purchaseActions.complete()
-	          );
-	
-	        }).fail(function($xhr) {
+	          reduxConfig['default'].dispatch(purchaseActions.complete());
+	        }).fail(function ($xhr) {
 	          this.processApiErrors($xhr.responseJSON);
 	        });
 	      }
@@ -31241,26 +31467,26 @@
 	  errorKeyToFieldMap: {
 	    '__all__': {
 	      field: 'card',
-	      error: 'declined',
+	      error: 'declined'
 	    },
 	    'fraud': {
 	      field: 'card',
-	      error: 'declined',
+	      error: 'declined'
 	    },
 	    'cvv': {
 	      field: 'cvv',
-	      error: 'invalid',
-	    },
+	      error: 'invalid'
+	    }
 	  },
 	
-	  processApiErrors: function(errors) {
+	  processApiErrors: function processApiErrors(errors) {
 	    var that = this;
 	    if (errors.error_response && errors.error_response.braintree) {
 	      var apiErrors = errors.error_response.braintree;
 	      // Iterate over the error object and create a new data
 	      // structure keyed by field or otherwise push onto
 	      // a list of generic errors.
-	      Object.keys(apiErrors).forEach(function(key) {
+	      Object.keys(apiErrors).forEach(function (key) {
 	        console.log('API ErrorMessage: ' + JSON.stringify(apiErrors[key]));
 	        var errorData = that.errorKeyToFieldMap[key] || {};
 	        var field = errorData.field;
@@ -31273,65 +31499,64 @@
 	      });
 	    }
 	    this.setState({
-	      isSubmitting: false,
+	      isSubmitting: false
 	    });
 	  },
 	
-	  stripPlaceholder: function(val) {
+	  stripPlaceholder: function stripPlaceholder(val) {
 	    return val ? val.replace(/_/g, '') : '';
 	  },
 	
-	  render: function() {
+	  render: function render() {
 	
 	    var formIsValid = true;
 	    var that = this;
 	
 	    // Update form validity based on fieldProps.
-	    Object.keys(this.fieldProps).forEach(function(field) {
+	    Object.keys(this.fieldProps).forEach(function (field) {
 	      if (!that.fieldProps[field].isValid) {
 	        formIsValid = false;
 	      }
 	    });
 	
-	    return (
-	      React.createElement("form", React.__spread({},  this.props, {onSubmit: this.handleSubmit}), 
-	        React.createElement(CardInput, React.__spread({},  this.fieldProps.card, 
-	          {cardType: this.state.cardType, 
-	          onChangeHandler: this.handleChange})), 
-	        React.createElement(CardInput, React.__spread({},  this.fieldProps.expiration, 
-	          {cardType: this.state.cardType, 
-	          onChangeHandler: this.handleChange})), 
-	        React.createElement(CardInput, React.__spread({},  this.fieldProps.cvv, 
-	          {cardType: this.state.cardType, 
-	          onChangeHandler: this.handleChange})), 
-	        React.createElement(SubmitButton, {isDisabled: !formIsValid, 
-	          showSpinner: this.state.isSubmitting, 
-	          text: gettext('Subscribe')})
-	      )
+	    return React.createElement(
+	      'form',
+	      _extends({}, this.props, { onSubmit: this.handleSubmit }),
+	      React.createElement(CardInput, _extends({}, this.fieldProps.card, {
+	        cardType: this.state.cardType,
+	        onChangeHandler: this.handleChange })),
+	      React.createElement(CardInput, _extends({}, this.fieldProps.expiration, {
+	        cardType: this.state.cardType,
+	        onChangeHandler: this.handleChange })),
+	      React.createElement(CardInput, _extends({}, this.fieldProps.cvv, {
+	        cardType: this.state.cardType,
+	        onChangeHandler: this.handleChange })),
+	      React.createElement(SubmitButton, { isDisabled: !formIsValid,
+	        showSpinner: this.state.isSubmitting,
+	        text: gettext('Subscribe') })
 	    );
-	  },
+	  }
 	});
 
-
 /***/ },
-/* 192 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
-	  number: __webpack_require__(195),
-	  expirationDate: __webpack_require__(222),
-	  expirationMonth: __webpack_require__(224),
-	  expirationYear: __webpack_require__(193),
-	  cvv: __webpack_require__(225),
-	  postalCode: __webpack_require__(226)
+	  number: __webpack_require__(201),
+	  expirationDate: __webpack_require__(228),
+	  expirationMonth: __webpack_require__(230),
+	  expirationYear: __webpack_require__(199),
+	  cvv: __webpack_require__(231),
+	  postalCode: __webpack_require__(232)
 	};
 
 
 /***/ },
-/* 193 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isString = __webpack_require__(194);
+	var isString = __webpack_require__(200);
 	var maxYear = 19;
 	
 	function verification(isValid, isPotentiallyValid, isCurrentYear) {
@@ -31392,7 +31617,7 @@
 
 
 /***/ },
-/* 194 */
+/* 200 */
 /***/ function(module, exports) {
 
 	/**
@@ -31451,14 +31676,14 @@
 
 
 /***/ },
-/* 195 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isString = __webpack_require__(194);
-	var extend = __webpack_require__(196);
-	var luhn10 = __webpack_require__(207);
-	var getCardTypes = __webpack_require__(208);
-	var isNumber = __webpack_require__(221);
+	var isString = __webpack_require__(200);
+	var extend = __webpack_require__(202);
+	var luhn10 = __webpack_require__(213);
+	var getCardTypes = __webpack_require__(214);
+	var isNumber = __webpack_require__(227);
 	
 	function verification(card, isPotentiallyValid, isValid) {
 	  return extend({}, {card: card, isPotentiallyValid: isPotentiallyValid, isValid: isValid});
@@ -31512,7 +31737,7 @@
 
 
 /***/ },
-/* 196 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -31523,9 +31748,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseAssign = __webpack_require__(197),
-	    createAssigner = __webpack_require__(203),
-	    keys = __webpack_require__(199);
+	var baseAssign = __webpack_require__(203),
+	    createAssigner = __webpack_require__(209),
+	    keys = __webpack_require__(205);
 	
 	/**
 	 * A specialized version of `_.assign` for customizing assigned values without
@@ -31598,7 +31823,7 @@
 
 
 /***/ },
-/* 197 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -31609,8 +31834,8 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseCopy = __webpack_require__(198),
-	    keys = __webpack_require__(199);
+	var baseCopy = __webpack_require__(204),
+	    keys = __webpack_require__(205);
 	
 	/**
 	 * The base implementation of `_.assign` without support for argument juggling,
@@ -31631,7 +31856,7 @@
 
 
 /***/ },
-/* 198 */
+/* 204 */
 /***/ function(module, exports) {
 
 	/**
@@ -31669,7 +31894,7 @@
 
 
 /***/ },
-/* 199 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -31680,9 +31905,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(200),
-	    isArguments = __webpack_require__(201),
-	    isArray = __webpack_require__(202);
+	var getNative = __webpack_require__(206),
+	    isArguments = __webpack_require__(207),
+	    isArray = __webpack_require__(208);
 	
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -31911,7 +32136,7 @@
 
 
 /***/ },
-/* 200 */
+/* 206 */
 /***/ function(module, exports) {
 
 	/**
@@ -32048,7 +32273,7 @@
 
 
 /***/ },
-/* 201 */
+/* 207 */
 /***/ function(module, exports) {
 
 	/**
@@ -32162,7 +32387,7 @@
 
 
 /***/ },
-/* 202 */
+/* 208 */
 /***/ function(module, exports) {
 
 	/**
@@ -32342,7 +32567,7 @@
 
 
 /***/ },
-/* 203 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32353,9 +32578,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var bindCallback = __webpack_require__(204),
-	    isIterateeCall = __webpack_require__(205),
-	    restParam = __webpack_require__(206);
+	var bindCallback = __webpack_require__(210),
+	    isIterateeCall = __webpack_require__(211),
+	    restParam = __webpack_require__(212);
 	
 	/**
 	 * Creates a function that assigns properties of source object(s) to a given
@@ -32400,7 +32625,7 @@
 
 
 /***/ },
-/* 204 */
+/* 210 */
 /***/ function(module, exports) {
 
 	/**
@@ -32471,7 +32696,7 @@
 
 
 /***/ },
-/* 205 */
+/* 211 */
 /***/ function(module, exports) {
 
 	/**
@@ -32609,7 +32834,7 @@
 
 
 /***/ },
-/* 206 */
+/* 212 */
 /***/ function(module, exports) {
 
 	/**
@@ -32682,7 +32907,7 @@
 
 
 /***/ },
-/* 207 */
+/* 213 */
 /***/ function(module, exports) {
 
 	/*eslint-disable*/
@@ -32694,11 +32919,11 @@
 
 
 /***/ },
-/* 208 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isString = __webpack_require__(194);
-	var clone = __webpack_require__(209);
+	var isString = __webpack_require__(200);
+	var clone = __webpack_require__(215);
 	
 	var types = [
 	  {
@@ -32813,7 +33038,7 @@
 
 
 /***/ },
-/* 209 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32824,8 +33049,8 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseClone = __webpack_require__(210),
-	    bindCallback = __webpack_require__(220);
+	var baseClone = __webpack_require__(216),
+	    bindCallback = __webpack_require__(226);
 	
 	/**
 	 * Creates a deep clone of `value`. If `customizer` is provided it is invoked
@@ -32882,7 +33107,7 @@
 
 
 /***/ },
-/* 210 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -32893,13 +33118,13 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var arrayCopy = __webpack_require__(211),
-	    arrayEach = __webpack_require__(212),
-	    baseAssign = __webpack_require__(213),
-	    baseFor = __webpack_require__(219),
-	    getNative = __webpack_require__(216),
-	    isArray = __webpack_require__(218),
-	    keys = __webpack_require__(215);
+	var arrayCopy = __webpack_require__(217),
+	    arrayEach = __webpack_require__(218),
+	    baseAssign = __webpack_require__(219),
+	    baseFor = __webpack_require__(225),
+	    getNative = __webpack_require__(222),
+	    isArray = __webpack_require__(224),
+	    keys = __webpack_require__(221);
 	
 	/** `Object#toString` result references. */
 	var argsTag = '[object Arguments]',
@@ -33215,7 +33440,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 211 */
+/* 217 */
 /***/ function(module, exports) {
 
 	/**
@@ -33250,7 +33475,7 @@
 
 
 /***/ },
-/* 212 */
+/* 218 */
 /***/ function(module, exports) {
 
 	/**
@@ -33287,7 +33512,7 @@
 
 
 /***/ },
-/* 213 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -33298,8 +33523,8 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseCopy = __webpack_require__(214),
-	    keys = __webpack_require__(215);
+	var baseCopy = __webpack_require__(220),
+	    keys = __webpack_require__(221);
 	
 	/**
 	 * The base implementation of `_.assign` without support for argument juggling,
@@ -33320,7 +33545,7 @@
 
 
 /***/ },
-/* 214 */
+/* 220 */
 /***/ function(module, exports) {
 
 	/**
@@ -33358,7 +33583,7 @@
 
 
 /***/ },
-/* 215 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -33369,9 +33594,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(216),
-	    isArguments = __webpack_require__(217),
-	    isArray = __webpack_require__(218);
+	var getNative = __webpack_require__(222),
+	    isArguments = __webpack_require__(223),
+	    isArray = __webpack_require__(224);
 	
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -33600,7 +33825,7 @@
 
 
 /***/ },
-/* 216 */
+/* 222 */
 /***/ function(module, exports) {
 
 	/**
@@ -33737,7 +33962,7 @@
 
 
 /***/ },
-/* 217 */
+/* 223 */
 /***/ function(module, exports) {
 
 	/**
@@ -33851,7 +34076,7 @@
 
 
 /***/ },
-/* 218 */
+/* 224 */
 /***/ function(module, exports) {
 
 	/**
@@ -34031,7 +34256,7 @@
 
 
 /***/ },
-/* 219 */
+/* 225 */
 /***/ function(module, exports) {
 
 	/**
@@ -34123,7 +34348,7 @@
 
 
 /***/ },
-/* 220 */
+/* 226 */
 /***/ function(module, exports) {
 
 	/**
@@ -34194,7 +34419,7 @@
 
 
 /***/ },
-/* 221 */
+/* 227 */
 /***/ function(module, exports) {
 
 	/**
@@ -34259,13 +34484,13 @@
 
 
 /***/ },
-/* 222 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var parseDate = __webpack_require__(223);
-	var expirationMonth = __webpack_require__(224);
-	var expirationYear = __webpack_require__(193);
-	var isString = __webpack_require__(194);
+	var parseDate = __webpack_require__(229);
+	var expirationMonth = __webpack_require__(230);
+	var expirationYear = __webpack_require__(199);
+	var isString = __webpack_require__(200);
 	
 	function verification(isValid, isPotentiallyValid, month, year) {
 	  return {
@@ -34310,7 +34535,7 @@
 
 
 /***/ },
-/* 223 */
+/* 229 */
 /***/ function(module, exports) {
 
 	function parseDate(value) {
@@ -34338,10 +34563,10 @@
 
 
 /***/ },
-/* 224 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isString = __webpack_require__(194);
+	var isString = __webpack_require__(200);
 	
 	function verification(isValid, isPotentiallyValid, isValidForThisYear) {
 	  return {
@@ -34380,10 +34605,10 @@
 
 
 /***/ },
-/* 225 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isString = __webpack_require__(194);
+	var isString = __webpack_require__(200);
 	var DEFAULT_LENGTH = 3;
 	
 	function verification(isValid, isPotentiallyValid) {
@@ -34406,10 +34631,10 @@
 
 
 /***/ },
-/* 226 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isString = __webpack_require__(194);
+	var isString = __webpack_require__(200);
 	
 	function verification(isValid, isPotentiallyValid) {
 	  return {isValid: isValid, isPotentiallyValid: isPotentiallyValid};
@@ -34429,7 +34654,7 @@
 
 
 /***/ },
-/* 227 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var require;var require;/* WEBPACK VAR INJECTION */(function(global) {!function(){function t(e,n){e instanceof t?(this.enc=e.enc,this.pos=e.pos):(this.enc=e,this.pos=n)}function e(t,e,n,i,r){this.stream=t,this.header=e,this.length=n,this.tag=i,this.sub=r}function n(t){var e,n,i="";for(e=0;e+3<=t.length;e+=3)n=parseInt(t.substring(e,e+3),16),i+=ee.charAt(n>>6)+ee.charAt(63&n);for(e+1==t.length?(n=parseInt(t.substring(e,e+1),16),i+=ee.charAt(n<<2)):e+2==t.length&&(n=parseInt(t.substring(e,e+2),16),i+=ee.charAt(n>>2)+ee.charAt((3&n)<<4));(3&i.length)>0;)i+=ne;return i}function i(t){var e,n,i,r="",o=0;for(e=0;e<t.length&&t.charAt(e)!=ne;++e)i=ee.indexOf(t.charAt(e)),0>i||(0==o?(r+=l(i>>2),n=3&i,o=1):1==o?(r+=l(n<<2|i>>4),n=15&i,o=2):2==o?(r+=l(n),r+=l(i>>2),n=3&i,o=3):(r+=l(n<<2|i>>4),r+=l(15&i),o=0));return 1==o&&(r+=l(n<<2)),r}function r(t){var e,n=i(t),r=new Array;for(e=0;2*e<n.length;++e)r[e]=parseInt(n.substring(2*e,2*e+2),16);return r}function o(t,e,n){null!=t&&("number"==typeof t?this.fromNumber(t,e,n):null==e&&"string"!=typeof t?this.fromString(t,256):this.fromString(t,e))}function s(){return new o(null)}function a(t,e,n,i,r,o){for(;--o>=0;){var s=e*this[t++]+n[i]+r;r=Math.floor(s/67108864),n[i++]=67108863&s}return r}function u(t,e,n,i,r,o){for(var s=32767&e,a=e>>15;--o>=0;){var u=32767&this[t],c=this[t++]>>15,l=a*u+c*s;u=s*u+((32767&l)<<15)+n[i]+(1073741823&r),r=(u>>>30)+(l>>>15)+a*c+(r>>>30),n[i++]=1073741823&u}return r}function c(t,e,n,i,r,o){for(var s=16383&e,a=e>>14;--o>=0;){var u=16383&this[t],c=this[t++]>>14,l=a*u+c*s;u=s*u+((16383&l)<<14)+n[i]+r,r=(u>>28)+(l>>14)+a*c,n[i++]=268435455&u}return r}function l(t){return ue.charAt(t)}function p(t,e){var n=ce[t.charCodeAt(e)];return null==n?-1:n}function h(t){for(var e=this.t-1;e>=0;--e)t[e]=this[e];t.t=this.t,t.s=this.s}function d(t){this.t=1,this.s=0>t?-1:0,t>0?this[0]=t:-1>t?this[0]=t+this.DV:this.t=0}function f(t){var e=s();return e.fromInt(t),e}function m(t,e){var n;if(16==e)n=4;else if(8==e)n=3;else if(256==e)n=8;else if(2==e)n=1;else if(32==e)n=5;else{if(4!=e)return void this.fromRadix(t,e);n=2}this.t=0,this.s=0;for(var i=t.length,r=!1,s=0;--i>=0;){var a=8==n?255&t[i]:p(t,i);0>a?"-"==t.charAt(i)&&(r=!0):(r=!1,0==s?this[this.t++]=a:s+n>this.DB?(this[this.t-1]|=(a&(1<<this.DB-s)-1)<<s,this[this.t++]=a>>this.DB-s):this[this.t-1]|=a<<s,s+=n,s>=this.DB&&(s-=this.DB))}8==n&&0!=(128&t[0])&&(this.s=-1,s>0&&(this[this.t-1]|=(1<<this.DB-s)-1<<s)),this.clamp(),r&&o.ZERO.subTo(this,this)}function y(){for(var t=this.s&this.DM;this.t>0&&this[this.t-1]==t;)--this.t}function g(t){if(this.s<0)return"-"+this.negate().toString(t);var e;if(16==t)e=4;else if(8==t)e=3;else if(2==t)e=1;else if(32==t)e=5;else{if(4!=t)return this.toRadix(t);e=2}var n,i=(1<<e)-1,r=!1,o="",s=this.t,a=this.DB-s*this.DB%e;if(s-->0)for(a<this.DB&&(n=this[s]>>a)>0&&(r=!0,o=l(n));s>=0;)e>a?(n=(this[s]&(1<<a)-1)<<e-a,n|=this[--s]>>(a+=this.DB-e)):(n=this[s]>>(a-=e)&i,0>=a&&(a+=this.DB,--s)),n>0&&(r=!0),r&&(o+=l(n));return r?o:"0"}function b(){var t=s();return o.ZERO.subTo(this,t),t}function v(){return this.s<0?this.negate():this}function _(t){var e=this.s-t.s;if(0!=e)return e;var n=this.t;if(e=n-t.t,0!=e)return this.s<0?-e:e;for(;--n>=0;)if(0!=(e=this[n]-t[n]))return e;return 0}function E(t){var e,n=1;return 0!=(e=t>>>16)&&(t=e,n+=16),0!=(e=t>>8)&&(t=e,n+=8),0!=(e=t>>4)&&(t=e,n+=4),0!=(e=t>>2)&&(t=e,n+=2),0!=(e=t>>1)&&(t=e,n+=1),n}function w(){return this.t<=0?0:this.DB*(this.t-1)+E(this[this.t-1]^this.s&this.DM)}function A(t,e){var n;for(n=this.t-1;n>=0;--n)e[n+t]=this[n];for(n=t-1;n>=0;--n)e[n]=0;e.t=this.t+t,e.s=this.s}function C(t,e){for(var n=t;n<this.t;++n)e[n-t]=this[n];e.t=Math.max(this.t-t,0),e.s=this.s}function S(t,e){var n,i=t%this.DB,r=this.DB-i,o=(1<<r)-1,s=Math.floor(t/this.DB),a=this.s<<i&this.DM;for(n=this.t-1;n>=0;--n)e[n+s+1]=this[n]>>r|a,a=(this[n]&o)<<i;for(n=s-1;n>=0;--n)e[n]=0;e[s]=a,e.t=this.t+s+1,e.s=this.s,e.clamp()}function T(t,e){e.s=this.s;var n=Math.floor(t/this.DB);if(n>=this.t)return void(e.t=0);var i=t%this.DB,r=this.DB-i,o=(1<<i)-1;e[0]=this[n]>>i;for(var s=n+1;s<this.t;++s)e[s-n-1]|=(this[s]&o)<<r,e[s-n]=this[s]>>i;i>0&&(e[this.t-n-1]|=(this.s&o)<<r),e.t=this.t-n,e.clamp()}function x(t,e){for(var n=0,i=0,r=Math.min(t.t,this.t);r>n;)i+=this[n]-t[n],e[n++]=i&this.DM,i>>=this.DB;if(t.t<this.t){for(i-=t.s;n<this.t;)i+=this[n],e[n++]=i&this.DM,i>>=this.DB;i+=this.s}else{for(i+=this.s;n<t.t;)i-=t[n],e[n++]=i&this.DM,i>>=this.DB;i-=t.s}e.s=0>i?-1:0,-1>i?e[n++]=this.DV+i:i>0&&(e[n++]=i),e.t=n,e.clamp()}function P(t,e){var n=this.abs(),i=t.abs(),r=n.t;for(e.t=r+i.t;--r>=0;)e[r]=0;for(r=0;r<i.t;++r)e[r+n.t]=n.am(0,i[r],e,r,0,n.t);e.s=0,e.clamp(),this.s!=t.s&&o.ZERO.subTo(e,e)}function N(t){for(var e=this.abs(),n=t.t=2*e.t;--n>=0;)t[n]=0;for(n=0;n<e.t-1;++n){var i=e.am(n,e[n],t,2*n,0,1);(t[n+e.t]+=e.am(n+1,2*e[n],t,2*n+1,i,e.t-n-1))>=e.DV&&(t[n+e.t]-=e.DV,t[n+e.t+1]=1)}t.t>0&&(t[t.t-1]+=e.am(n,e[n],t,2*n,0,1)),t.s=0,t.clamp()}function I(t,e,n){var i=t.abs();if(!(i.t<=0)){var r=this.abs();if(r.t<i.t)return null!=e&&e.fromInt(0),void(null!=n&&this.copyTo(n));null==n&&(n=s());var a=s(),u=this.s,c=t.s,l=this.DB-E(i[i.t-1]);l>0?(i.lShiftTo(l,a),r.lShiftTo(l,n)):(i.copyTo(a),r.copyTo(n));var p=a.t,h=a[p-1];if(0!=h){var d=h*(1<<this.F1)+(p>1?a[p-2]>>this.F2:0),f=this.FV/d,m=(1<<this.F1)/d,y=1<<this.F2,g=n.t,b=g-p,v=null==e?s():e;for(a.dlShiftTo(b,v),n.compareTo(v)>=0&&(n[n.t++]=1,n.subTo(v,n)),o.ONE.dlShiftTo(p,v),v.subTo(a,a);a.t<p;)a[a.t++]=0;for(;--b>=0;){var _=n[--g]==h?this.DM:Math.floor(n[g]*f+(n[g-1]+y)*m);if((n[g]+=a.am(0,_,n,b,0,p))<_)for(a.dlShiftTo(b,v),n.subTo(v,n);n[g]<--_;)n.subTo(v,n)}null!=e&&(n.drShiftTo(p,e),u!=c&&o.ZERO.subTo(e,e)),n.t=p,n.clamp(),l>0&&n.rShiftTo(l,n),0>u&&o.ZERO.subTo(n,n)}}}function O(t){var e=s();return this.abs().divRemTo(t,null,e),this.s<0&&e.compareTo(o.ZERO)>0&&t.subTo(e,e),e}function R(t){this.m=t}function k(t){return t.s<0||t.compareTo(this.m)>=0?t.mod(this.m):t}function D(t){return t}function M(t){t.divRemTo(this.m,null,t)}function U(t,e,n){t.multiplyTo(e,n),this.reduce(n)}function L(t,e){t.squareTo(e),this.reduce(e)}function F(){if(this.t<1)return 0;var t=this[0];if(0==(1&t))return 0;var e=3&t;return e=e*(2-(15&t)*e)&15,e=e*(2-(255&t)*e)&255,e=e*(2-((65535&t)*e&65535))&65535,e=e*(2-t*e%this.DV)%this.DV,e>0?this.DV-e:-e}function B(t){this.m=t,this.mp=t.invDigit(),this.mpl=32767&this.mp,this.mph=this.mp>>15,this.um=(1<<t.DB-15)-1,this.mt2=2*t.t}function z(t){var e=s();return t.abs().dlShiftTo(this.m.t,e),e.divRemTo(this.m,null,e),t.s<0&&e.compareTo(o.ZERO)>0&&this.m.subTo(e,e),e}function V(t){var e=s();return t.copyTo(e),this.reduce(e),e}function j(t){for(;t.t<=this.mt2;)t[t.t++]=0;for(var e=0;e<this.m.t;++e){var n=32767&t[e],i=n*this.mpl+((n*this.mph+(t[e]>>15)*this.mpl&this.um)<<15)&t.DM;for(n=e+this.m.t,t[n]+=this.m.am(0,i,t,e,0,this.m.t);t[n]>=t.DV;)t[n]-=t.DV,t[++n]++}t.clamp(),t.drShiftTo(this.m.t,t),t.compareTo(this.m)>=0&&t.subTo(this.m,t)}function H(t,e){t.squareTo(e),this.reduce(e)}function Y(t,e,n){t.multiplyTo(e,n),this.reduce(n)}function q(){return 0==(this.t>0?1&this[0]:this.s)}function G(t,e){if(t>4294967295||1>t)return o.ONE;var n=s(),i=s(),r=e.convert(this),a=E(t)-1;for(r.copyTo(n);--a>=0;)if(e.sqrTo(n,i),(t&1<<a)>0)e.mulTo(i,r,n);else{var u=n;n=i,i=u}return e.revert(n)}function W(t,e){var n;return n=256>t||e.isEven()?new R(e):new B(e),this.exp(t,n)}function Q(t,e){return new o(t,e)}function K(t,e){if(e<t.length+11)throw new Error("Message too long for RSA");for(var n=new Array,i=t.length-1;i>=0&&e>0;){var r=t.charCodeAt(i--);128>r?n[--e]=r:r>127&&2048>r?(n[--e]=63&r|128,n[--e]=r>>6|192):(n[--e]=63&r|128,n[--e]=r>>6&63|128,n[--e]=r>>12|224)}n[--e]=0;for(var s=0,a=0,u=0;e>2;)0==u&&(a=le.random.randomWords(1,0)[0]),s=a>>u&255,u=(u+8)%32,0!=s&&(n[--e]=s);return n[--e]=2,n[--e]=0,new o(n)}function Z(){this.n=null,this.e=0,this.d=null,this.p=null,this.q=null,this.dmp1=null,this.dmq1=null,this.coeff=null}function X(t,e){if(!(null!=t&&null!=e&&t.length>0&&e.length>0))throw new Error("Invalid RSA public key");this.n=Q(t,16),this.e=parseInt(e,16)}function J(t){return t.modPowInt(this.e,this.n)}function $(t){var e=K(t,this.n.bitLength()+7>>3);if(null==e)return null;var n=this.doPublic(e);if(null==n)return null;var i=n.toString(16);return 0==(1&i.length)?i:"0"+i}t.prototype.get=function(t){if(void 0==t&&(t=this.pos++),t>=this.enc.length)throw"Requesting byte offset "+t+" on a stream of length "+this.enc.length;return this.enc[t]},t.prototype.hexDigits="0123456789ABCDEF",t.prototype.hexByte=function(t){return this.hexDigits.charAt(t>>4&15)+this.hexDigits.charAt(15&t)},t.prototype.hexDump=function(t,e){for(var n="",i=t;e>i;++i)switch(n+=this.hexByte(this.get(i)),15&i){case 7:n+="  ";break;case 15:n+="\n";break;default:n+=" "}return n},t.prototype.parseStringISO=function(t,e){for(var n="",i=t;e>i;++i)n+=String.fromCharCode(this.get(i));return n},t.prototype.parseStringUTF=function(t,e){for(var n="",i=0,r=t;e>r;){var i=this.get(r++);n+=String.fromCharCode(128>i?i:i>191&&224>i?(31&i)<<6|63&this.get(r++):(15&i)<<12|(63&this.get(r++))<<6|63&this.get(r++))}return n},t.prototype.reTime=/^((?:1[89]|2\d)?\d\d)(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])([01]\d|2[0-3])(?:([0-5]\d)(?:([0-5]\d)(?:[.,](\d{1,3}))?)?)?(Z|[-+](?:[0]\d|1[0-2])([0-5]\d)?)?$/,t.prototype.parseTime=function(t,e){var n=this.parseStringISO(t,e),i=this.reTime.exec(n);return i?(n=i[1]+"-"+i[2]+"-"+i[3]+" "+i[4],i[5]&&(n+=":"+i[5],i[6]&&(n+=":"+i[6],i[7]&&(n+="."+i[7]))),i[8]&&(n+=" UTC","Z"!=i[8]&&(n+=i[8],i[9]&&(n+=":"+i[9]))),n):"Unrecognized time: "+n},t.prototype.parseInteger=function(t,e){var n=e-t;if(n>4){n<<=3;var i=this.get(t);if(0==i)n-=8;else for(;128>i;)i<<=1,--n;return"("+n+" bit)"}for(var r=0,o=t;e>o;++o)r=r<<8|this.get(o);return r},t.prototype.parseBitString=function(t,e){var n=this.get(t),i=(e-t-1<<3)-n,r="("+i+" bit)";if(20>=i){var o=n;r+=" ";for(var s=e-1;s>t;--s){for(var a=this.get(s),u=o;8>u;++u)r+=a>>u&1?"1":"0";o=0}}return r},t.prototype.parseOctetString=function(t,e){var n=e-t,i="("+n+" byte) ";n>20&&(e=t+20);for(var r=t;e>r;++r)i+=this.hexByte(this.get(r));return n>20&&(i+=String.fromCharCode(8230)),i},t.prototype.parseOID=function(t,e){for(var n,i=0,r=0,o=t;e>o;++o){var s=this.get(o);i=i<<7|127&s,r+=7,128&s||(void 0==n?n=parseInt(i/40)+"."+i%40:n+="."+(r>=31?"bigint":i),i=r=0),n+=String.fromCharCode()}return n},e.prototype.typeName=function(){if(void 0==this.tag)return"unknown";var t=this.tag>>6,e=(this.tag>>5&1,31&this.tag);switch(t){case 0:switch(e){case 0:return"EOC";case 1:return"BOOLEAN";case 2:return"INTEGER";case 3:return"BIT_STRING";case 4:return"OCTET_STRING";case 5:return"NULL";case 6:return"OBJECT_IDENTIFIER";case 7:return"ObjectDescriptor";case 8:return"EXTERNAL";case 9:return"REAL";case 10:return"ENUMERATED";case 11:return"EMBEDDED_PDV";case 12:return"UTF8String";case 16:return"SEQUENCE";case 17:return"SET";case 18:return"NumericString";case 19:return"PrintableString";case 20:return"TeletexString";case 21:return"VideotexString";case 22:return"IA5String";case 23:return"UTCTime";case 24:return"GeneralizedTime";case 25:return"GraphicString";case 26:return"VisibleString";case 27:return"GeneralString";case 28:return"UniversalString";case 30:return"BMPString";default:return"Universal_"+e.toString(16)}case 1:return"Application_"+e.toString(16);case 2:return"["+e+"]";case 3:return"Private_"+e.toString(16)}},e.prototype.content=function(){if(void 0==this.tag)return null;var t=this.tag>>6;if(0!=t)return null==this.sub?null:"("+this.sub.length+")";var e=31&this.tag,n=this.posContent(),i=Math.abs(this.length);switch(e){case 1:return 0==this.stream.get(n)?"false":"true";case 2:return this.stream.parseInteger(n,n+i);case 3:return this.sub?"("+this.sub.length+" elem)":this.stream.parseBitString(n,n+i);case 4:return this.sub?"("+this.sub.length+" elem)":this.stream.parseOctetString(n,n+i);case 6:return this.stream.parseOID(n,n+i);case 16:case 17:return"("+this.sub.length+" elem)";case 12:return this.stream.parseStringUTF(n,n+i);case 18:case 19:case 20:case 21:case 22:case 26:return this.stream.parseStringISO(n,n+i);case 23:case 24:return this.stream.parseTime(n,n+i)}return null},e.prototype.toString=function(){return this.typeName()+"@"+this.stream.pos+"[header:"+this.header+",length:"+this.length+",sub:"+(null==this.sub?"null":this.sub.length)+"]"},e.prototype.print=function(t){if(void 0==t&&(t=""),document.writeln(t+this),null!=this.sub){t+="  ";for(var e=0,n=this.sub.length;n>e;++e)this.sub[e].print(t)}},e.prototype.toPrettyString=function(t){void 0==t&&(t="");var e=t+this.typeName()+" @"+this.stream.pos;if(this.length>=0&&(e+="+"),e+=this.length,32&this.tag?e+=" (constructed)":3!=this.tag&&4!=this.tag||null==this.sub||(e+=" (encapsulates)"),e+="\n",null!=this.sub){t+="  ";for(var n=0,i=this.sub.length;i>n;++n)e+=this.sub[n].toPrettyString(t)}return e},e.prototype.posStart=function(){return this.stream.pos},e.prototype.posContent=function(){return this.stream.pos+this.header},e.prototype.posEnd=function(){return this.stream.pos+this.header+Math.abs(this.length)},e.decodeLength=function(t){var e=t.get(),n=127&e;if(n==e)return n;if(n>3)throw"Length over 24 bits not supported at position "+(t.pos-1);if(0==n)return-1;e=0;for(var i=0;n>i;++i)e=e<<8|t.get();return e},e.hasContent=function(n,i,r){if(32&n)return!0;if(3>n||n>4)return!1;var o=new t(r);3==n&&o.get();var s=o.get();if(s>>6&1)return!1;try{var a=e.decodeLength(o);return o.pos-r.pos+a==i}catch(u){return!1}},e.decode=function(n){n instanceof t||(n=new t(n,0));var i=new t(n),r=n.get(),o=e.decodeLength(n),s=n.pos-i.pos,a=null;if(e.hasContent(r,o,n)){var u=n.pos;if(3==r&&n.get(),a=[],o>=0){for(var c=u+o;n.pos<c;)a[a.length]=e.decode(n);if(n.pos!=c)throw"Content size is not correct for container starting at offset "+u}else try{for(;;){var l=e.decode(n);if(0==l.tag)break;a[a.length]=l}o=u-n.pos}catch(p){throw"Exception while decoding undefined length content: "+p}}else n.pos+=o;return new e(i,s,o,r,a)};var te,ee="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",ne="=",ie=0xdeadbeefcafe,re=15715070==(16777215&ie);re&&"Microsoft Internet Explorer"==navigator.appName?(o.prototype.am=u,te=30):re&&"Netscape"!=navigator.appName?(o.prototype.am=a,te=26):(o.prototype.am=c,te=28),o.prototype.DB=te,o.prototype.DM=(1<<te)-1,o.prototype.DV=1<<te;var oe=52;o.prototype.FV=Math.pow(2,oe),o.prototype.F1=oe-te,o.prototype.F2=2*te-oe;var se,ae,ue="0123456789abcdefghijklmnopqrstuvwxyz",ce=new Array;for(se="0".charCodeAt(0),ae=0;9>=ae;++ae)ce[se++]=ae;for(se="a".charCodeAt(0),ae=10;36>ae;++ae)ce[se++]=ae;for(se="A".charCodeAt(0),ae=10;36>ae;++ae)ce[se++]=ae;R.prototype.convert=k,R.prototype.revert=D,R.prototype.reduce=M,R.prototype.mulTo=U,R.prototype.sqrTo=L,B.prototype.convert=z,B.prototype.revert=V,B.prototype.reduce=j,B.prototype.mulTo=Y,B.prototype.sqrTo=H,o.prototype.copyTo=h,o.prototype.fromInt=d,o.prototype.fromString=m,o.prototype.clamp=y,o.prototype.dlShiftTo=A,o.prototype.drShiftTo=C,o.prototype.lShiftTo=S,o.prototype.rShiftTo=T,o.prototype.subTo=x,o.prototype.multiplyTo=P,o.prototype.squareTo=N,o.prototype.divRemTo=I,o.prototype.invDigit=F,o.prototype.isEven=q,o.prototype.exp=G,o.prototype.toString=g,o.prototype.negate=b,o.prototype.abs=v,o.prototype.compareTo=_,o.prototype.bitLength=w,o.prototype.mod=O,o.prototype.modPowInt=W,o.ZERO=f(0),o.ONE=f(1),Z.prototype.doPublic=J,Z.prototype.setPublic=X,Z.prototype.encrypt=$;var le={cipher:{},hash:{},keyexchange:{},mode:{},misc:{},codec:{},exception:{corrupt:function(t){this.toString=function(){return"CORRUPT: "+this.message},this.message=t},invalid:function(t){this.toString=function(){return"INVALID: "+this.message},this.message=t},bug:function(t){this.toString=function(){return"BUG: "+this.message},this.message=t},notReady:function(t){this.toString=function(){return"NOT READY: "+this.message},this.message=t}}};"undefined"!=typeof module&&module.exports&&(module.exports=le),le.cipher.aes=function(t){this._tables[0][0][0]||this._precompute();var e,n,i,r,o,s=this._tables[0][4],a=this._tables[1],u=t.length,c=1;if(4!==u&&6!==u&&8!==u)throw new le.exception.invalid("invalid aes key size");for(this._key=[r=t.slice(0),o=[]],e=u;4*u+28>e;e++)i=r[e-1],(e%u===0||8===u&&e%u===4)&&(i=s[i>>>24]<<24^s[i>>16&255]<<16^s[i>>8&255]<<8^s[255&i],e%u===0&&(i=i<<8^i>>>24^c<<24,c=c<<1^283*(c>>7))),r[e]=r[e-u]^i;for(n=0;e;n++,e--)i=r[3&n?e:e-4],o[n]=4>=e||4>n?i:a[0][s[i>>>24]]^a[1][s[i>>16&255]]^a[2][s[i>>8&255]]^a[3][s[255&i]]},le.cipher.aes.prototype={encrypt:function(t){return this._crypt(t,0)},decrypt:function(t){return this._crypt(t,1)},_tables:[[[],[],[],[],[]],[[],[],[],[],[]]],_precompute:function(){var t,e,n,i,r,o,s,a,u,c=this._tables[0],l=this._tables[1],p=c[4],h=l[4],d=[],f=[];for(t=0;256>t;t++)f[(d[t]=t<<1^283*(t>>7))^t]=t;for(e=n=0;!p[e];e^=i||1,n=f[n]||1)for(s=n^n<<1^n<<2^n<<3^n<<4,s=s>>8^255&s^99,p[e]=s,h[s]=e,o=d[r=d[i=d[e]]],u=16843009*o^65537*r^257*i^16843008*e,a=257*d[s]^16843008*s,t=0;4>t;t++)c[t][e]=a=a<<24^a>>>8,l[t][s]=u=u<<24^u>>>8;for(t=0;5>t;t++)c[t]=c[t].slice(0),l[t]=l[t].slice(0)},_crypt:function(t,e){if(4!==t.length)throw new le.exception.invalid("invalid aes block size");var n,i,r,o,s=this._key[e],a=t[0]^s[0],u=t[e?3:1]^s[1],c=t[2]^s[2],l=t[e?1:3]^s[3],p=s.length/4-2,h=4,d=[0,0,0,0],f=this._tables[e],m=f[0],y=f[1],g=f[2],b=f[3],v=f[4];for(o=0;p>o;o++)n=m[a>>>24]^y[u>>16&255]^g[c>>8&255]^b[255&l]^s[h],i=m[u>>>24]^y[c>>16&255]^g[l>>8&255]^b[255&a]^s[h+1],r=m[c>>>24]^y[l>>16&255]^g[a>>8&255]^b[255&u]^s[h+2],l=m[l>>>24]^y[a>>16&255]^g[u>>8&255]^b[255&c]^s[h+3],h+=4,a=n,u=i,c=r;for(o=0;4>o;o++)d[e?3&-o:o]=v[a>>>24]<<24^v[u>>16&255]<<16^v[c>>8&255]<<8^v[255&l]^s[h++],n=a,a=u,u=c,c=l,l=n;return d}},le.bitArray={bitSlice:function(t,e,n){return t=le.bitArray._shiftRight(t.slice(e/32),32-(31&e)).slice(1),void 0===n?t:le.bitArray.clamp(t,n-e)},extract:function(t,e,n){var i,r=Math.floor(-e-n&31);return i=-32&(e+n-1^e)?t[e/32|0]<<32-r^t[e/32+1|0]>>>r:t[e/32|0]>>>r,i&(1<<n)-1},concat:function(t,e){if(0===t.length||0===e.length)return t.concat(e);var n=t[t.length-1],i=le.bitArray.getPartial(n);return 32===i?t.concat(e):le.bitArray._shiftRight(e,i,0|n,t.slice(0,t.length-1))},bitLength:function(t){var e,n=t.length;return 0===n?0:(e=t[n-1],32*(n-1)+le.bitArray.getPartial(e))},clamp:function(t,e){if(32*t.length<e)return t;t=t.slice(0,Math.ceil(e/32));var n=t.length;return e=31&e,n>0&&e&&(t[n-1]=le.bitArray.partial(e,t[n-1]&2147483648>>e-1,1)),t},partial:function(t,e,n){return 32===t?e:(n?0|e:e<<32-t)+1099511627776*t},getPartial:function(t){return Math.round(t/1099511627776)||32},equal:function(t,e){if(le.bitArray.bitLength(t)!==le.bitArray.bitLength(e))return!1;var n,i=0;for(n=0;n<t.length;n++)i|=t[n]^e[n];return 0===i},_shiftRight:function(t,e,n,i){var r,o,s=0;for(void 0===i&&(i=[]);e>=32;e-=32)i.push(n),n=0;if(0===e)return i.concat(t);for(r=0;r<t.length;r++)i.push(n|t[r]>>>e),n=t[r]<<32-e;return s=t.length?t[t.length-1]:0,o=le.bitArray.getPartial(s),i.push(le.bitArray.partial(e+o&31,e+o>32?n:i.pop(),1)),i},_xor4:function(t,e){return[t[0]^e[0],t[1]^e[1],t[2]^e[2],t[3]^e[3]]}},le.codec.hex={fromBits:function(t){var e,n="";for(e=0;e<t.length;e++)n+=((0|t[e])+0xf00000000000).toString(16).substr(4);return n.substr(0,le.bitArray.bitLength(t)/4)},toBits:function(t){var e,n,i=[];for(t=t.replace(/\s|0x/g,""),n=t.length,t+="00000000",e=0;e<t.length;e+=8)i.push(0^parseInt(t.substr(e,8),16));return le.bitArray.clamp(i,4*n)}},le.codec.utf8String={fromBits:function(t){var e,n,i="",r=le.bitArray.bitLength(t);for(e=0;r/8>e;e++)0===(3&e)&&(n=t[e/4]),i+=String.fromCharCode(n>>>24),n<<=8;return decodeURIComponent(escape(i))},toBits:function(t){t=unescape(encodeURIComponent(t));var e,n=[],i=0;for(e=0;e<t.length;e++)i=i<<8|t.charCodeAt(e),3===(3&e)&&(n.push(i),i=0);return 3&e&&n.push(le.bitArray.partial(8*(3&e),i)),n}},le.codec.base64={_chars:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",fromBits:function(t,e,n){var i,r="",o=0,s=le.codec.base64._chars,a=0,u=le.bitArray.bitLength(t);for(n&&(s=s.substr(0,62)+"-_"),i=0;6*r.length<u;)r+=s.charAt((a^t[i]>>>o)>>>26),6>o?(a=t[i]<<6-o,o+=26,i++):(a<<=6,o-=6);for(;3&r.length&&!e;)r+="=";return r},toBits:function(t,e){t=t.replace(/\s|=/g,"");var n,i,r=[],o=0,s=le.codec.base64._chars,a=0;for(e&&(s=s.substr(0,62)+"-_"),n=0;n<t.length;n++){if(i=s.indexOf(t.charAt(n)),0>i)throw new le.exception.invalid("this isn't base64!");o>26?(o-=26,r.push(a^i>>>o),a=i<<32-o):(o+=6,a^=i<<32-o)}return 56&o&&r.push(le.bitArray.partial(56&o,a,1)),r}},le.codec.base64url={fromBits:function(t){return le.codec.base64.fromBits(t,1,1)},toBits:function(t){return le.codec.base64.toBits(t,1)}},void 0===le.beware&&(le.beware={}),le.beware["CBC mode is dangerous because it doesn't protect message integrity."]=function(){le.mode.cbc={name:"cbc",encrypt:function(t,e,n,i){if(i&&i.length)throw new le.exception.invalid("cbc can't authenticate data");if(128!==le.bitArray.bitLength(n))throw new le.exception.invalid("cbc iv must be 128 bits");var r,o=le.bitArray,s=o._xor4,a=o.bitLength(e),u=0,c=[];if(7&a)throw new le.exception.invalid("pkcs#5 padding only works for multiples of a byte");for(r=0;a>=u+128;r+=4,u+=128)n=t.encrypt(s(n,e.slice(r,r+4))),c.splice(r,0,n[0],n[1],n[2],n[3]);return a=16843009*(16-(a>>3&15)),n=t.encrypt(s(n,o.concat(e,[a,a,a,a]).slice(r,r+4))),c.splice(r,0,n[0],n[1],n[2],n[3]),c},decrypt:function(t,e,n,i){if(i&&i.length)throw new le.exception.invalid("cbc can't authenticate data");if(128!==le.bitArray.bitLength(n))throw new le.exception.invalid("cbc iv must be 128 bits");if(127&le.bitArray.bitLength(e)||!e.length)throw new le.exception.corrupt("cbc ciphertext must be a positive multiple of the block size");var r,o,s,a=le.bitArray,u=a._xor4,c=[];for(i=i||[],r=0;r<e.length;r+=4)o=e.slice(r,r+4),s=u(n,t.decrypt(o)),c.splice(r,0,s[0],s[1],s[2],s[3]),n=o;if(o=255&c[r-1],0==o||o>16)throw new le.exception.corrupt("pkcs#5 padding corrupt");if(s=16843009*o,!a.equal(a.bitSlice([s,s,s,s],0,8*o),a.bitSlice(c,32*c.length-8*o,32*c.length)))throw new le.exception.corrupt("pkcs#5 padding corrupt");return a.bitSlice(c,0,32*c.length-8*o)}}},le.misc.hmac=function(t,e){this._hash=e=e||le.hash.sha256;var n,i=[[],[]],r=e.prototype.blockSize/32;for(this._baseHash=[new e,new e],t.length>r&&(t=e.hash(t)),n=0;r>n;n++)i[0][n]=909522486^t[n],i[1][n]=1549556828^t[n];this._baseHash[0].update(i[0]),this._baseHash[1].update(i[1])},le.misc.hmac.prototype.encrypt=le.misc.hmac.prototype.mac=function(t,e){var n=new this._hash(this._baseHash[0]).update(t,e).finalize();return new this._hash(this._baseHash[1]).update(n).finalize()},le.hash.sha256=function(t){this._key[0]||this._precompute(),t?(this._h=t._h.slice(0),this._buffer=t._buffer.slice(0),this._length=t._length):this.reset()},le.hash.sha256.hash=function(t){return(new le.hash.sha256).update(t).finalize()},le.hash.sha256.prototype={blockSize:512,reset:function(){return this._h=this._init.slice(0),this._buffer=[],this._length=0,this},update:function(t){"string"==typeof t&&(t=le.codec.utf8String.toBits(t));var e,n=this._buffer=le.bitArray.concat(this._buffer,t),i=this._length,r=this._length=i+le.bitArray.bitLength(t);for(e=512+i&-512;r>=e;e+=512)this._block(n.splice(0,16));return this},finalize:function(){var t,e=this._buffer,n=this._h;for(e=le.bitArray.concat(e,[le.bitArray.partial(1,1)]),t=e.length+2;15&t;t++)e.push(0);for(e.push(Math.floor(this._length/4294967296)),e.push(0|this._length);e.length;)this._block(e.splice(0,16));return this.reset(),n},_init:[],_key:[],_precompute:function(){function t(t){return 4294967296*(t-Math.floor(t))|0}var e,n=0,i=2;t:for(;64>n;i++){for(e=2;i>=e*e;e++)if(i%e===0)continue t;8>n&&(this._init[n]=t(Math.pow(i,.5))),this._key[n]=t(Math.pow(i,1/3)),n++}},_block:function(t){var e,n,i,r,o=t.slice(0),s=this._h,a=this._key,u=s[0],c=s[1],l=s[2],p=s[3],h=s[4],d=s[5],f=s[6],m=s[7];for(e=0;64>e;e++)16>e?n=o[e]:(i=o[e+1&15],r=o[e+14&15],n=o[15&e]=(i>>>7^i>>>18^i>>>3^i<<25^i<<14)+(r>>>17^r>>>19^r>>>10^r<<15^r<<13)+o[15&e]+o[e+9&15]|0),n=n+m+(h>>>6^h>>>11^h>>>25^h<<26^h<<21^h<<7)+(f^h&(d^f))+a[e],m=f,f=d,d=h,h=p+n|0,p=l,l=c,c=u,u=n+(c&l^p&(c^l))+(c>>>2^c>>>13^c>>>22^c<<30^c<<19^c<<10)|0;s[0]=s[0]+u|0,s[1]=s[1]+c|0,s[2]=s[2]+l|0,s[3]=s[3]+p|0,s[4]=s[4]+h|0,s[5]=s[5]+d|0,s[6]=s[6]+f|0,s[7]=s[7]+m|0}},le.random={randomWords:function(t,e){var n,i,r=[],o=this.isReady(e);if(o===this._NOT_READY)throw new le.exception.notReady("generator isn't seeded");for(o&this._REQUIRES_RESEED&&this._reseedFromPools(!(o&this._READY)),n=0;t>n;n+=4)(n+1)%this._MAX_WORDS_PER_BURST===0&&this._gate(),i=this._gen4words(),r.push(i[0],i[1],i[2],i[3]);return this._gate(),r.slice(0,t)},setDefaultParanoia:function(t){this._defaultParanoia=t},addEntropy:function(t,e,n){n=n||"user";var i,r,o,s=(new Date).valueOf(),a=this._robins[n],u=this.isReady(),c=0;switch(i=this._collectorIds[n],void 0===i&&(i=this._collectorIds[n]=this._collectorIdNext++),void 0===a&&(a=this._robins[n]=0),this._robins[n]=(this._robins[n]+1)%this._pools.length,typeof t){case"number":void 0===e&&(e=1),this._pools[a].update([i,this._eventId++,1,e,s,1,0|t]);break;case"object":var l=Object.prototype.toString.call(t);if("[object Uint32Array]"===l){for(o=[],r=0;r<t.length;r++)o.push(t[r]);t=o}else for("[object Array]"!==l&&(c=1),r=0;r<t.length&&!c;r++)"number"!=typeof t[r]&&(c=1);if(!c){if(void 0===e)for(e=0,r=0;r<t.length;r++)for(o=t[r];o>0;)e++,o>>>=1;this._pools[a].update([i,this._eventId++,2,e,s,t.length].concat(t))}break;case"string":void 0===e&&(e=t.length),this._pools[a].update([i,this._eventId++,3,e,s,t.length]),this._pools[a].update(t);break;default:c=1}if(c)throw new le.exception.bug("random: addEntropy only supports number, array of numbers or string");this._poolEntropy[a]+=e,this._poolStrength+=e,u===this._NOT_READY&&(this.isReady()!==this._NOT_READY&&this._fireEvent("seeded",Math.max(this._strength,this._poolStrength)),this._fireEvent("progress",this.getProgress()))},isReady:function(t){var e=this._PARANOIA_LEVELS[void 0!==t?t:this._defaultParanoia];return this._strength&&this._strength>=e?this._poolEntropy[0]>this._BITS_PER_RESEED&&(new Date).valueOf()>this._nextReseed?this._REQUIRES_RESEED|this._READY:this._READY:this._poolStrength>=e?this._REQUIRES_RESEED|this._NOT_READY:this._NOT_READY},getProgress:function(t){var e=this._PARANOIA_LEVELS[t?t:this._defaultParanoia];return this._strength>=e?1:this._poolStrength>e?1:this._poolStrength/e},startCollectors:function(){if(!this._collectorsStarted){if(window.addEventListener)window.addEventListener("load",this._loadTimeCollector,!1),window.addEventListener("mousemove",this._mouseCollector,!1);else{if(!document.attachEvent)throw new le.exception.bug("can't attach event");document.attachEvent("onload",this._loadTimeCollector),document.attachEvent("onmousemove",this._mouseCollector)}this._collectorsStarted=!0}},stopCollectors:function(){this._collectorsStarted&&(window.removeEventListener?(window.removeEventListener("load",this._loadTimeCollector,!1),window.removeEventListener("mousemove",this._mouseCollector,!1)):window.detachEvent&&(window.detachEvent("onload",this._loadTimeCollector),window.detachEvent("onmousemove",this._mouseCollector)),this._collectorsStarted=!1)},addEventListener:function(t,e){this._callbacks[t][this._callbackI++]=e},removeEventListener:function(t,e){var n,i,r=this._callbacks[t],o=[];for(i in r)r.hasOwnProperty(i)&&r[i]===e&&o.push(i);for(n=0;n<o.length;n++)i=o[n],delete r[i]},_pools:[new le.hash.sha256],_poolEntropy:[0],_reseedCount:0,_robins:{},_eventId:0,_collectorIds:{},_collectorIdNext:0,_strength:0,_poolStrength:0,_nextReseed:0,_key:[0,0,0,0,0,0,0,0],_counter:[0,0,0,0],_cipher:void 0,_defaultParanoia:6,_collectorsStarted:!1,_callbacks:{progress:{},seeded:{}},_callbackI:0,_NOT_READY:0,_READY:1,_REQUIRES_RESEED:2,_MAX_WORDS_PER_BURST:65536,_PARANOIA_LEVELS:[0,48,64,96,128,192,256,384,512,768,1024],_MILLISECONDS_PER_RESEED:3e4,_BITS_PER_RESEED:80,_gen4words:function(){for(var t=0;4>t&&(this._counter[t]=this._counter[t]+1|0,!this._counter[t]);t++);return this._cipher.encrypt(this._counter)},_gate:function(){this._key=this._gen4words().concat(this._gen4words()),this._cipher=new le.cipher.aes(this._key)},_reseed:function(t){this._key=le.hash.sha256.hash(this._key.concat(t)),this._cipher=new le.cipher.aes(this._key);for(var e=0;4>e&&(this._counter[e]=this._counter[e]+1|0,!this._counter[e]);e++);},_reseedFromPools:function(t){var e,n=[],i=0;for(this._nextReseed=n[0]=(new Date).valueOf()+this._MILLISECONDS_PER_RESEED,e=0;16>e;e++)n.push(4294967296*Math.random()|0);for(e=0;e<this._pools.length&&(n=n.concat(this._pools[e].finalize()),i+=this._poolEntropy[e],this._poolEntropy[e]=0,t||!(this._reseedCount&1<<e));e++);this._reseedCount>=1<<this._pools.length&&(this._pools.push(new le.hash.sha256),this._poolEntropy.push(0)),this._poolStrength-=i,i>this._strength&&(this._strength=i),this._reseedCount++,this._reseed(n)},_mouseCollector:function(t){var e=t.x||t.clientX||t.offsetX||0,n=t.y||t.clientY||t.offsetY||0;le.random.addEntropy([e,n],2,"mouse")},_loadTimeCollector:function(){le.random.addEntropy((new Date).valueOf(),2,"loadtime")},_fireEvent:function(t,e){var n,i=le.random._callbacks[t],r=[];for(n in i)i.hasOwnProperty(n)&&r.push(i[n]);for(n=0;n<r.length;n++)r[n](e)}},function(){try{var t=new Uint32Array(32);crypto.getRandomValues(t),le.random.addEntropy(t,1024,"crypto.getRandomValues")}catch(e){}}(),function(){for(var t in le.beware)le.beware.hasOwnProperty(t)&&le.beware[t]()}();var pe={sjcl:le,version:"1.3.10"};pe.generateAesKey=function(){return{key:le.random.randomWords(8,0),encrypt:function(t){return this.encryptWithIv(t,le.random.randomWords(4,0))},encryptWithIv:function(t,e){var n=new le.cipher.aes(this.key),i=le.codec.utf8String.toBits(t),r=le.mode.cbc.encrypt(n,i,e),o=le.bitArray.concat(e,r);return le.codec.base64.fromBits(o)}}},pe.create=function(t){return new pe.EncryptionClient(t)},pe.EncryptionClient=function(t){var i=this,o=[];i.publicKey=t,i.version=pe.version;var s=function(t,e){var n,i,r;n=document.createElement(t);for(i in e)e.hasOwnProperty(i)&&(r=e[i],n.setAttribute(i,r));return n},a=function(t){return window.jQuery&&t instanceof jQuery?t[0]:t.nodeType&&1===t.nodeType?t:document.getElementById(t)},u=function(t){var e,n,i,r,o=[];if("INTEGER"===t.typeName()&&(e=t.posContent(),n=t.posEnd(),i=t.stream.hexDump(e,n).replace(/[ \n]/g,""),o.push(i)),null!==t.sub)for(r=0;r<t.sub.length;r++)o=o.concat(u(t.sub[r]));return o},c=function(t){var e,n,i=[],r=t.children;for(n=0;n<r.length;n++)e=r[n],1===e.nodeType&&e.attributes["data-encrypted-name"]?i.push(e):e.children&&e.children.length>0&&(i=i.concat(c(e)));return i},l=function(){var n,i,o,s,a,c;try{a=r(t),n=e.decode(a)}catch(l){throw"Invalid encryption key. Please use the key labeled 'Client-Side Encryption Key'"}if(o=u(n),2!==o.length)throw"Invalid encryption key. Please use the key labeled 'Client-Side Encryption Key'";return s=o[0],i=o[1],c=new Z,c.setPublic(s,i),c},p=function(){return{key:le.random.randomWords(8,0),sign:function(t){var e=new le.misc.hmac(this.key,le.hash.sha256),n=e.encrypt(t);return le.codec.base64.fromBits(n)}}};i.encrypt=function(t){var e=l(),r=pe.generateAesKey(),o=p(),s=r.encrypt(t),a=o.sign(le.codec.base64.toBits(s)),u=le.bitArray.concat(r.key,o.key),c=le.codec.base64.fromBits(u),h=e.encrypt(c),d="$bt4|javascript_"+i.version.replace(/\./g,"_")+"$",f=null;return h&&(f=n(h)),d+f+"$"+s+"$"+a},i.encryptForm=function(t){var e,n,r,u,l,p;for(t=a(t),p=c(t);o.length>0;){try{t.removeChild(o[0])}catch(h){}o.splice(0,1)}for(l=0;l<p.length;l++)e=p[l],r=e.getAttribute("data-encrypted-name"),n=i.encrypt(e.value),e.removeAttribute("name"),u=s("input",{value:n,type:"hidden",name:r}),o.push(u),t.appendChild(u)},i.onSubmitEncryptForm=function(t,e){var n;t=a(t),n=function(n){return i.encryptForm(t),e?e(n):n},window.jQuery?window.jQuery(t).submit(n):t.addEventListener?t.addEventListener("submit",n,!1):t.attachEvent&&t.attachEvent("onsubmit",n)},i.formEncrypter={encryptForm:i.encryptForm,extractForm:a,onSubmitEncryptForm:i.onSubmitEncryptForm},le.random.startCollectors()},window.Braintree=pe
@@ -34440,21 +34665,22 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 228 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var classNames = __webpack_require__(230);
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var classNames = __webpack_require__(236);
 	var React = __webpack_require__(4);
 	
-	var CardIcon = __webpack_require__(231);
-	var InputError = __webpack_require__(229);
-	var MaskedInput = __webpack_require__(232);
+	var CardIcon = __webpack_require__(237);
+	var InputError = __webpack_require__(235);
+	var MaskedInput = __webpack_require__(238);
 	
 	var utils = __webpack_require__(160);
 	var gettext = utils.gettext;
-	
 	
 	module.exports = React.createClass({
 	
@@ -34473,60 +34699,56 @@
 	    onChangeHandler: React.PropTypes.func.isRequired,
 	    pattern: React.PropTypes.string,
 	    placeholder: React.PropTypes.string,
-	    showError: React.PropTypes.bool,
+	    showError: React.PropTypes.bool
 	  },
 	
 	  cardPatterns: {
 	    'default': {
 	      card: {
-	        pattern: '1111 1111 1111 1111',
+	        pattern: '1111 1111 1111 1111'
 	      },
 	      cvv: {
 	        pattern: '111',
-	        placeholder: gettext('CVV'),
-	      },
+	        placeholder: gettext('CVV')
+	      }
 	    },
 	    'american-express': {
 	      card: {
-	        pattern: '1111 111111 11111',
+	        pattern: '1111 111111 11111'
 	      },
 	      cvv: {
 	        pattern: '1111',
-	        placeholder: gettext('CID'),
-	      },
+	        placeholder: gettext('CID')
+	      }
 	    },
 	    'diners-club': {
 	      card: {
-	        pattern: '1111 111111 1111',
+	        pattern: '1111 111111 1111'
 	      },
 	      cvv: {
 	        pattern: '111',
-	        placeholder: gettext('CVV'),
-	      },
-	    },
-	  },
-	
-	  updatePattern: function(fieldId, cardType) {
-	    // Update the pattern for card + cvv field if card was detected.
-	    if (cardType && this.cardPatterns[cardType]) {
-	      return utils.defaults(
-	        this.cardPatterns[cardType][fieldId] || {},
-	        this.cardPatterns.default[fieldId]
-	      );
-	    } else {
-	      return this.cardPatterns.default[fieldId] || {};
+	        placeholder: gettext('CVV')
+	      }
 	    }
 	  },
 	
-	  render: function() {
+	  updatePattern: function updatePattern(fieldId, cardType) {
+	    // Update the pattern for card + cvv field if card was detected.
+	    if (cardType && this.cardPatterns[cardType]) {
+	      return utils.defaults(this.cardPatterns[cardType][fieldId] || {}, this.cardPatterns['default'][fieldId]);
+	    } else {
+	      return this.cardPatterns['default'][fieldId] || {};
+	    }
+	  },
+	
+	  render: function render() {
 	
 	    var labelClassNames = this.props.classNames || [];
 	    // Use a copy of the list to avoid appending ad infinitum.
 	    labelClassNames = labelClassNames.slice(0);
 	    // Only show invalid classname when invalid and there's a value.
 	    labelClassNames.push({
-	      'invalid': (this.props.hasVal || this.props.showError) &&
-	                  this.props.isValid === false,
+	      'invalid': (this.props.hasVal || this.props.showError) && this.props.isValid === false
 	    });
 	    var labelClass = classNames(labelClassNames);
 	
@@ -34535,68 +34757,71 @@
 	    var patternData = this.updatePattern(this.props.id, this.props.cardType);
 	    var pattern = patternData.pattern || this.props.pattern;
 	    var placeholder = patternData.placeholder || this.props.placeholder;
-	    var label = patternData.label || patternData.placeholder ||
-	                this.props.label || this.props.pattern;
+	    var label = patternData.label || patternData.placeholder || this.props.label || this.props.pattern;
 	
 	    var showCardIcon = this.props.id === 'card';
 	
-	
-	
-	    return (
-	      React.createElement("label", {className: labelClass, htmlFor: this.props.id}, 
-	        React.createElement("span", {className: "vh"}, label), 
-	         this.props.showError ?
-	          React.createElement(InputError, {errorMessage: this.props.errorMessage, 
-	                      errorModifier: this.props.errorModifier}) : null, 
-	         showCardIcon ? React.createElement(CardIcon, {cardType: this.props.cardType}) : null, 
-	        React.createElement(MaskedInput, React.__spread({}, 
-	          this.props.attrs, 
-	          {id: this.props.id, 
-	          className: this.props.id + '-input', 
-	          onChange: this.props.onChangeHandler, 
-	          pattern: pattern, 
-	          placeholder: placeholder})
-	        )
-	      )
+	    return React.createElement(
+	      'label',
+	      { className: labelClass, htmlFor: this.props.id },
+	      React.createElement(
+	        'span',
+	        { className: 'vh' },
+	        label
+	      ),
+	      this.props.showError ? React.createElement(InputError, { errorMessage: this.props.errorMessage,
+	        errorModifier: this.props.errorModifier }) : null,
+	      showCardIcon ? React.createElement(CardIcon, { cardType: this.props.cardType }) : null,
+	      React.createElement(MaskedInput, _extends({}, this.props.attrs, {
+	        id: this.props.id,
+	        className: this.props.id + '-input',
+	        onChange: this.props.onChangeHandler,
+	        pattern: pattern,
+	        placeholder: placeholder
+	      }))
 	    );
-	  },
+	  }
 	});
 
-
 /***/ },
-/* 229 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var classNames = __webpack_require__(230);
-	var React = __webpack_require__(4);
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	var classNames = __webpack_require__(236);
+	var React = __webpack_require__(4);
 	
 	module.exports = React.createClass({
 	  displayName: 'InputError',
 	
 	  propTypes: {
 	    errorMessage: React.PropTypes.string.isRequired,
-	    errorModifier: React.PropTypes.oneOf(['center', 'right', 'left']),
+	    errorModifier: React.PropTypes.oneOf(['center', 'right', 'left'])
 	  },
 	
-	  render: function() {
-	    var $__0=     this.props,errorMessage=$__0.errorMessage,toolTipAttrs=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{errorMessage:1});
-	    var errorClass = classNames([
-	      'tooltip',
-	      this.props.errorModifier || 'left',
-	    ]);
-	    return (
-	      React.createElement("span", React.__spread({},  toolTipAttrs, 
-	            {className: errorClass}), errorMessage)
+	  render: function render() {
+	    var _props = this.props;
+	    var errorMessage = _props.errorMessage;
+	
+	    var toolTipAttrs = _objectWithoutProperties(_props, ['errorMessage']);
+	
+	    var errorClass = classNames(['tooltip', this.props.errorModifier || 'left']);
+	    return React.createElement(
+	      'span',
+	      _extends({}, toolTipAttrs, {
+	        className: errorClass }),
+	      errorMessage
 	    );
-	  },
+	  }
 	});
 
-
 /***/ },
-/* 230 */
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -34651,29 +34876,19 @@
 
 
 /***/ },
-/* 231 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var classNames = __webpack_require__(230);
+	var classNames = __webpack_require__(236);
 	var React = __webpack_require__(4);
-	
 	
 	module.exports = React.createClass({
 	  displayName: 'CardIcon',
 	
 	  propTypes: {
-	    cardType: React.PropTypes.oneOf([
-	      'american-express',
-	      'diners-club',
-	      'discover',
-	      'jcb',
-	      'maestro',
-	      'mastercard',
-	      'master-card',
-	      'visa',
-	    ]),
+	    cardType: React.PropTypes.oneOf(['american-express', 'diners-club', 'discover', 'jcb', 'maestro', 'mastercard', 'master-card', 'visa'])
 	  },
 	
 	  // Just a convenience mapping for cards from card-validator
@@ -34681,23 +34896,19 @@
 	  cardTypeMap: {
 	    'american-express': 'amex',
 	    'diners-club': 'diners',
-	    'master-card': 'mastercard',
+	    'master-card': 'mastercard'
 	  },
 	
-	  render: function() {
+	  render: function render() {
 	    // This is only displayed if a cardType is passed-in.
 	    var cardType = this.props.cardType;
-	    var cardClassName = classNames([
-	      'card-icon',
-	      'cctype-' + (this.cardTypeMap[cardType] || cardType),
-	    ]);
-	    return cardType ? React.createElement("span", {className: cardClassName}) : null;
-	  },
+	    var cardClassName = classNames(['card-icon', 'cctype-' + (this.cardTypeMap[cardType] || cardType)]);
+	    return cardType ? React.createElement('span', { className: cardClassName }) : null;
+	  }
 	});
 
-
 /***/ },
-/* 232 */
+/* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34705,7 +34916,7 @@
 	var React = __webpack_require__(4)
 	var $__0=   __webpack_require__(134),getSelection=$__0.getSelection,setSelection=$__0.setSelection
 	
-	var InputMask = __webpack_require__(233)
+	var InputMask = __webpack_require__(239)
 	
 	var KEYCODE_Z = 90
 	var KEYCODE_Y = 89
@@ -34859,7 +35070,7 @@
 	module.exports = MaskedInput
 
 /***/ },
-/* 233 */
+/* 239 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35347,14 +35558,17 @@
 	module.exports = InputMask
 
 /***/ },
-/* 234 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var classNames = __webpack_require__(230);
-	var React = __webpack_require__(4);
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	var classNames = __webpack_require__(236);
+	var React = __webpack_require__(4);
 	
 	module.exports = React.createClass({
 	  displayName: 'SubmitButton',
@@ -35362,15 +35576,19 @@
 	  propTypes: {
 	    isDisabled: React.PropTypes.bool,
 	    showSpinner: React.PropTypes.bool,
-	    text: React.PropTypes.string.isRequired,
+	    text: React.PropTypes.string.isRequired
 	  },
 	
-	  render: function() {
+	  render: function render() {
+	    var _props = this.props;
+	    var isDisabled = _props.isDisabled;
+	    var text = _props.text;
+	    var showSpinner = _props.showSpinner;
 	
-	    var $__0=       this.props,isDisabled=$__0.isDisabled,text=$__0.text,showSpinner=$__0.showSpinner,buttonAttrs=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{isDisabled:1,text:1,showSpinner:1});
+	    var buttonAttrs = _objectWithoutProperties(_props, ['isDisabled', 'text', 'showSpinner']);
 	
 	    var buttonClassNames = classNames({
-	      'spinner': showSpinner,
+	      'spinner': showSpinner
 	    });
 	
 	    // If we're showing the spinner we want the
@@ -35379,187 +35597,16 @@
 	      isDisabled = true;
 	    }
 	
-	    return (
-	      React.createElement("button", React.__spread({},  buttonAttrs, 
-	        {className: buttonClassNames, 
-	        disabled: isDisabled, 
-	        type: "submit"}), text)
+	    return React.createElement(
+	      'button',
+	      _extends({}, buttonAttrs, {
+	        className: buttonClassNames,
+	        disabled: isDisabled,
+	        type: 'submit' }),
+	      text
 	    );
-	  },
+	  }
 	});
-
-
-/***/ },
-/* 235 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var actionTypes = __webpack_require__(186);
-	
-	
-	// TODO: expand these actions to encapsulate the Ajax
-	// logic more directly. This will allow the Ajax requests to
-	// be tested more easily. CardForm and CardChoice will need
-	// to be refactored.
-	
-	exports.complete = function() {
-	  return {
-	    type: actionTypes.COMPLETE_PURCHASE,
-	  };
-	};
-	
-	
-	exports.payWithNewCard = function() {
-	  return {
-	    type: actionTypes.PAY_WITH_NEW_CARD,
-	  };
-	};
-
-
-/***/ },
-/* 236 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(4);
-	var products = __webpack_require__(237);
-	var gettext = __webpack_require__(160).gettext;
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'ProductDetail',
-	
-	  propTypes: {
-	    productId: React.PropTypes.string.isRequired,
-	  },
-	
-	  render: function() {
-	
-	    var productId = this.props.productId;
-	    var productData = products[productId];
-	
-	    if (!productData) {
-	      throw new Error('Invalid product: ' + productId);
-	    }
-	
-	    return (
-	      React.createElement("div", {className: "product"}, 
-	        React.createElement("h1", {className: "title"}, productData.seller.name.en), 
-	        React.createElement("div", null, productData.description.en), 
-	        React.createElement("div", {className: "price"}, productData.price.en), 
-	        React.createElement("div", null, gettext('per month'))
-	      )
-	    );
-	  },
-	});
-
-
-/***/ },
-/* 237 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	module.exports = {
-	  'mozilla-concrete-brick': __webpack_require__(238),
-	  'mozilla-concrete-mortar': __webpack_require__(239),
-	};
-
-
-/***/ },
-/* 238 */
-/***/ function(module, exports) {
-
-	module.exports = {
-		"description": {
-			"en": "Brick"
-		},
-		"img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/default.png",
-		"price": {
-			"en": "$10.00"
-		},
-		"seller": {
-			"url": "http://pay.dev.mozaws.net/",
-			"terms": "http://pay.dev.mozaws.net/terms/",
-			"id": "mozilla-concrete",
-			"name": {
-				"en": "Mozilla Concrete"
-			}
-		},
-		"currency": "USD",
-		"amount": "10.00",
-		"active": true,
-		"id": "mozilla-concrete-brick"
-	}
-
-/***/ },
-/* 239 */
-/***/ function(module, exports) {
-
-	module.exports = {
-		"description": {
-			"en": "Mortar"
-		},
-		"img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/mortar.png",
-		"price": {
-			"en": "$5.00"
-		},
-		"seller": {
-			"url": "http://pay.dev.mozaws.net/",
-			"terms": "http://pay.dev.mozaws.net/terms/",
-			"id": "mozilla-concrete",
-			"name": {
-				"en": "Mozilla Concrete"
-			}
-		},
-		"currency": "USD",
-		"amount": "5.00",
-		"active": true,
-		"id": "mozilla-concrete-mortar"
-	}
-
-/***/ },
-/* 240 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(4);
-	
-	var CardChoice = __webpack_require__(241);
-	var ProductDetail = __webpack_require__(236);
-	var gettext = __webpack_require__(160).gettext;
-	
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'CardListing',
-	
-	  propTypes: {
-	    payWithNewCard: React.PropTypes.func.isRequired,
-	    paymentMethods: React.PropTypes.array.isRequired,
-	    productId: React.PropTypes.string.isRequired,
-	  },
-	
-	  render: function() {
-	    return (
-	      React.createElement("div", {className: "card-listing"}, 
-	        React.createElement(ProductDetail, {productId: this.props.productId}), 
-	        React.createElement(CardChoice, {
-	          cards: this.props.paymentMethods, 
-	          productId: this.props.productId}
-	        ), 
-	        React.createElement("a", {className: "card-add bottom-link", href: "#", 
-	           onClick: this.props.payWithNewCard}, 
-	          gettext('Add new credit card')
-	        )
-	      )
-	    );
-	  },
-	});
-
 
 /***/ },
 /* 241 */
@@ -35567,97 +35614,24 @@
 
 	'use strict';
 	
-	var $ = __webpack_require__(1);
-	var React = __webpack_require__(4);
+	var actionTypes = __webpack_require__(186);
 	
-	var CardItem = __webpack_require__(242);
-	var SubmitButton = __webpack_require__(234);
+	// TODO: expand these actions to encapsulate the Ajax
+	// logic more directly. This will allow the Ajax requests to
+	// be tested more easily. CardForm and CardChoice will need
+	// to be refactored.
 	
-	var gettext = __webpack_require__(160).gettext;
-	var purchaseActions = __webpack_require__(235);
-	var reduxConfig = __webpack_require__(184);
+	exports.complete = function () {
+	  return {
+	    type: actionTypes.COMPLETE_PURCHASE
+	  };
+	};
 	
-	
-	module.exports = React.createClass({
-	  displayName: 'CardChoice',
-	
-	  propTypes: {
-	    cards: React.PropTypes.arrayOf(
-	      React.PropTypes.shape({
-	        id: React.PropTypes.number,
-	        resource_uri: React.PropTypes.string,
-	        truncated_id: React.PropTypes.string,
-	        type_name: React.PropTypes.string,
-	      }
-	    )).isRequired,
-	    productId: React.PropTypes.string.isRequired,
-	  },
-	
-	  getInitialState: function() {
-	    return {
-	      isSubmitting: false,
-	      card: (this.props.cards.length === 1 ?
-	             this.props.cards[0].resource_uri : null),
-	    };
-	  },
-	
-	  handleSubmit: function(e) {
-	    e.preventDefault();
-	
-	    this.setState({isSubmitting: true});
-	
-	    $.ajax({
-	      data: {
-	        pay_method_uri: this.state.card,
-	        plan_id: this.props.productId,
-	      },
-	      url: '/api/braintree/subscriptions/',
-	      method: 'post',
-	      dataType: 'json',
-	      context: this,
-	    }).done(function() {
-	      console.log('Successfully subscribed with existing card');
-	
-	      reduxConfig.default.dispatch(
-	        purchaseActions.complete()
-	      );
-	
-	    }).fail(function() {
-	      // TODO: handler errors.
-	    });
-	  },
-	
-	  handleCardChange: function(e) {
-	    this.setState({card: e.target.value});
-	  },
-	
-	  render: function() {
-	    var cardData = this.props.cards;
-	    var cardList = [];
-	
-	    for (var i = 0; i < cardData.length; i += 1) {
-	      var card = cardData[i];
-	      cardList.push(React.createElement(CardItem, React.__spread({},  card, {key: 'ci-' + i, 
-	                     onChangeHandler: this.handleCardChange, 
-	                     checked: this.state.card === card.resource_uri})));
-	    }
-	
-	    var formIsValid = this.state.card !== null;
-	
-	    return (
-	      React.createElement("form", {id: "card-listing", onSubmit: this.handleSubmit}, 
-	        React.createElement("ul", {className: "card-listing"}, 
-	          cardList
-	        ), 
-	        React.createElement(SubmitButton, {isDisabled: !formIsValid, 
-	          showSpinner: this.state.isSubmitting, 
-	          text: gettext('Subscribe')}
-	        )
-	      )
-	    );
-	  },
-	});
-
+	exports.payWithNewCard = function () {
+	  return {
+	    type: actionTypes.PAY_WITH_NEW_CARD
+	  };
+	};
 
 /***/ },
 /* 242 */
@@ -35666,8 +35640,148 @@
 	'use strict';
 	
 	var React = __webpack_require__(4);
-	var CardIcon = __webpack_require__(231);
 	
+	var CardChoice = __webpack_require__(243);
+	var ProductDetail = __webpack_require__(193);
+	
+	var gettext = __webpack_require__(160).gettext;
+	var tracking = __webpack_require__(189);
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'CardListing',
+	
+	  propTypes: {
+	    payWithNewCard: React.PropTypes.func.isRequired,
+	    paymentMethods: React.PropTypes.array.isRequired,
+	    productId: React.PropTypes.string.isRequired
+	  },
+	
+	  componentDidMount: function componentDidMount() {
+	    tracking.setPage('/payment/card-list');
+	  },
+	
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { className: 'card-listing' },
+	      React.createElement(ProductDetail, { productId: this.props.productId }),
+	      React.createElement(CardChoice, {
+	        cards: this.props.paymentMethods,
+	        productId: this.props.productId
+	      }),
+	      React.createElement(
+	        'a',
+	        { className: 'card-add bottom-link', href: '#',
+	          onClick: this.props.payWithNewCard },
+	        gettext('Add new credit card')
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 243 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var $ = __webpack_require__(1);
+	var React = __webpack_require__(4);
+	
+	var CardItem = __webpack_require__(244);
+	var SubmitButton = __webpack_require__(240);
+	
+	var gettext = __webpack_require__(160).gettext;
+	var purchaseActions = __webpack_require__(241);
+	var reduxConfig = __webpack_require__(184);
+	
+	module.exports = React.createClass({
+	  displayName: 'CardChoice',
+	
+	  propTypes: {
+	    cards: React.PropTypes.arrayOf(React.PropTypes.shape({
+	      id: React.PropTypes.number,
+	      resource_uri: React.PropTypes.string,
+	      truncated_id: React.PropTypes.string,
+	      type_name: React.PropTypes.string
+	    })).isRequired,
+	    productId: React.PropTypes.string.isRequired
+	  },
+	
+	  getInitialState: function getInitialState() {
+	    return {
+	      isSubmitting: false,
+	      card: this.props.cards.length === 1 ? this.props.cards[0].resource_uri : null
+	    };
+	  },
+	
+	  handleSubmit: function handleSubmit(e) {
+	    e.preventDefault();
+	
+	    this.setState({ isSubmitting: true });
+	
+	    $.ajax({
+	      data: {
+	        pay_method_uri: this.state.card,
+	        plan_id: this.props.productId
+	      },
+	      url: '/api/braintree/subscriptions/',
+	      method: 'post',
+	      dataType: 'json',
+	      context: this
+	    }).done(function () {
+	      console.log('Successfully subscribed with existing card');
+	
+	      reduxConfig['default'].dispatch(purchaseActions.complete());
+	    }).fail(function () {});
+	  },
+	
+	  handleCardChange: function handleCardChange(e) {
+	    this.setState({ card: e.target.value });
+	  },
+	
+	  render: function render() {
+	    var cardData = this.props.cards;
+	    var cardList = [];
+	
+	    for (var i = 0; i < cardData.length; i += 1) {
+	      var card = cardData[i];
+	      cardList.push(React.createElement(CardItem, _extends({}, card, { key: 'ci-' + i,
+	        onChangeHandler: this.handleCardChange,
+	        checked: this.state.card === card.resource_uri })));
+	    }
+	
+	    var formIsValid = this.state.card !== null;
+	
+	    return React.createElement(
+	      'form',
+	      { id: 'card-listing', onSubmit: this.handleSubmit },
+	      React.createElement(
+	        'ul',
+	        { className: 'card-listing' },
+	        cardList
+	      ),
+	      React.createElement(SubmitButton, { isDisabled: !formIsValid,
+	        showSpinner: this.state.isSubmitting,
+	        text: gettext('Subscribe')
+	      })
+	    );
+	  }
+	});
+	
+	// TODO: handler errors.
+
+/***/ },
+/* 244 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(4);
+	var CardIcon = __webpack_require__(237);
 	
 	module.exports = React.createClass({
 	
@@ -35679,43 +35793,46 @@
 	    onChangeHandler: React.PropTypes.func.isRequired,
 	    resource_uri: React.PropTypes.string.isRequired,
 	    truncated_id: React.PropTypes.string.isRequired,
-	    type_name: React.PropTypes.string.isRequired,
+	    type_name: React.PropTypes.string.isRequired
 	  },
 	
-	  render: function() {
+	  render: function render() {
 	    var cardType = this.props.type_name.toLowerCase();
 	    var cardText = '●●●● ●●●● ●●●● ' + this.props.truncated_id;
 	    var inputId = 'card-' + this.props.id;
 	
-	    return (
-	      React.createElement("li", {className: 'card-item ci-' + this.props.id}, 
-	        React.createElement(CardIcon, {cardType: cardType}), 
-	        React.createElement("input", {id: inputId, type: "radio", 
-	               onChange: this.props.onChangeHandler, 
-	               value: this.props.resource_uri, name: "card", 
-	               checked: this.props.checked}), 
-	        React.createElement("label", {htmlFor: inputId, 
-	               className: "text"}, cardText)
+	    return React.createElement(
+	      'li',
+	      { className: 'card-item ci-' + this.props.id },
+	      React.createElement(CardIcon, { cardType: cardType }),
+	      React.createElement('input', { id: inputId, type: 'radio',
+	        onChange: this.props.onChangeHandler,
+	        value: this.props.resource_uri, name: 'card',
+	        checked: this.props.checked }),
+	      React.createElement(
+	        'label',
+	        { htmlFor: inputId,
+	          className: 'text' },
+	        cardText
 	      )
 	    );
-	  },
+	  }
 	
 	});
 
-
 /***/ },
-/* 243 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(4);
 	
-	var ProductDetail = __webpack_require__(236);
-	var SubmitButton = __webpack_require__(234);
+	var ProductDetail = __webpack_require__(193);
+	var SubmitButton = __webpack_require__(240);
 	
 	var gettext = __webpack_require__(160).gettext;
-	
+	var tracking = __webpack_require__(189);
 	
 	module.exports = React.createClass({
 	
@@ -35723,10 +35840,14 @@
 	
 	  propTypes: {
 	    productId: React.PropTypes.string.isRequired,
-	    userEmail: React.PropTypes.string.isRequired,
+	    userEmail: React.PropTypes.string.isRequired
 	  },
 	
-	  handleClick: function(e) {
+	  componentDidMount: function componentDidMount() {
+	    tracking.setPage('/complete-payment');
+	  },
+	
+	  handleClick: function handleClick(e) {
 	    e.preventDefault();
 	    if (window.parent !== window) {
 	      // Note: the targetOrigin is wide open.
@@ -35736,63 +35857,70 @@
 	      // Stringifying the object is necessary for
 	      // IE9 support.
 	      window.parent.postMessage(JSON.stringify({
-	        event: 'purchase-completed',
+	        event: 'purchase-completed'
 	      }), '*');
 	    } else {
 	      console.log('Not iframed. No-op');
 	    }
 	  },
 	
-	  render: function() {
+	  render: function render() {
 	    var component = this;
-	    return (
-	      React.createElement("div", {className: "complete"}, 
-	        React.createElement(ProductDetail, {productId: component.props.productId}), 
-	        React.createElement("p", {className: "accepted"}, gettext('Payment Accepted')), 
-	        React.createElement("p", {className: "receipt"}, 
-	          gettext('Your receipt has been sent to'), 
-	          React.createElement("span", {className: "email"}, this.props.userEmail)
-	        ), 
-	        React.createElement(SubmitButton, {text: gettext('OK'), 
-	                      onClick: component.handleClick})
-	      )
+	    return React.createElement(
+	      'div',
+	      { className: 'complete' },
+	      React.createElement(ProductDetail, { productId: component.props.productId }),
+	      React.createElement(
+	        'p',
+	        { className: 'accepted' },
+	        gettext('Payment Accepted')
+	      ),
+	      React.createElement(
+	        'p',
+	        { className: 'receipt' },
+	        gettext('Your receipt has been sent to'),
+	        React.createElement(
+	          'span',
+	          { className: 'email' },
+	          this.props.userEmail
+	        )
+	      ),
+	      React.createElement(SubmitButton, { text: gettext('OK'),
+	        onClick: component.handleClick })
 	    );
-	  },
+	  }
 	});
 
-
 /***/ },
-/* 244 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var $ = __webpack_require__(1);
-	var assign = __webpack_require__(245);
+	var assign = __webpack_require__(247);
 	
-	var appActions = __webpack_require__(246);
+	var appActions = __webpack_require__(248);
 	var actionTypes = __webpack_require__(186);
-	
 	
 	module.exports = assign({}, {
 	
-	  signIn: function(accessToken) {
-	    return function(dispatch) {
+	  signIn: function signIn(accessToken) {
+	    return function (dispatch) {
 	      $.ajax({
 	        data: {
-	          access_token: accessToken,
+	          access_token: accessToken
 	        },
 	        method: 'post',
 	        url: '/api/auth/sign-in/',
-	        context: this,
-	      }).then(function(data) {
+	        context: this
+	      }).then(function (data) {
 	
-	        console.log('setting CSRF token for subsequent requests:',
-	                    data.csrf_token);
+	        console.log('setting CSRF token for subsequent requests:', data.csrf_token);
 	        $.ajaxSetup({
 	          headers: {
-	            'X-CSRFToken': data.csrf_token,
-	          },
+	            'X-CSRFToken': data.csrf_token
+	          }
 	        });
 	
 	        console.log('login succeeded, setting user');
@@ -35800,24 +35928,21 @@
 	          type: actionTypes.USER_SIGNED_IN,
 	          user: {
 	            email: data.buyer_email,
-	            payment_methods: data.payment_methods,
-	          },
+	            payment_methods: data.payment_methods
+	          }
 	        });
-	
-	      }).fail(function() {
+	      }).fail(function () {
 	
 	        console.log('login failed');
 	        dispatch(appActions.error('user login failed'));
-	
 	      });
 	    };
-	  },
+	  }
 	
 	});
 
-
 /***/ },
-/* 245 */
+/* 247 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35862,26 +35987,25 @@
 
 
 /***/ },
-/* 246 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var assign = __webpack_require__(245);
+	var assign = __webpack_require__(247);
 	
 	var actionTypes = __webpack_require__(186);
 	
 	module.exports = assign({}, {
 	
-	  error: function(debugMessage) {
+	  error: function error(debugMessage) {
 	    return {
 	      type: actionTypes.APP_ERROR,
-	      error: {debugMessage: debugMessage},
+	      error: { debugMessage: debugMessage }
 	    };
-	  },
+	  }
 	
 	});
-
 
 /***/ }
 /******/ ]);

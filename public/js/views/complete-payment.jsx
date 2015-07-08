@@ -6,6 +6,7 @@ var ProductDetail = require('components/product-detail');
 var SubmitButton = require('components/submit-button');
 
 var gettext = require('utils').gettext;
+var tracking = require('tracking');
 
 
 module.exports = React.createClass({
@@ -15,6 +16,10 @@ module.exports = React.createClass({
   propTypes: {
     productId: React.PropTypes.string.isRequired,
     userEmail: React.PropTypes.string.isRequired,
+  },
+
+  componentDidMount: function() {
+    tracking.setPage('/complete-payment');
   },
 
   handleClick: function(e) {
