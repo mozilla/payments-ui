@@ -2,7 +2,7 @@ var grunt = require('grunt');
 
 module.exports = {
   options: {
-    logLevel: grunt.option('log-level') || 'ERROR',
+    logLevel: grunt.option('log-level') || 'INFO',
   },
   dev: {
     configFile: 'karma.conf.js',
@@ -10,6 +10,8 @@ module.exports = {
   },
   run: {
     configFile: 'karma.conf.js',
-    singleRun: true
+  },
+  sauce: {
+    configFile: 'karma.conf.sauce.js',
   },
 };

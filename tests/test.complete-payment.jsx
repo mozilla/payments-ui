@@ -11,21 +11,24 @@ var helpers = require('./helpers');
 describe('CompletePayment', function() {
 
   beforeEach(function() {
+    this.sandbox = sinon.sandbox.create();
     this.email = 'buyer@somewhere.org';
-
+    this.win = {
+      parent: {
+        postMessage: this.sandbox.stub(),
+      },
+    };
     React = require('react');
     TestUtils = require('react/lib/ReactTestUtils');
-
     this.CompletePayment = TestUtils.renderIntoDocument(
       <CompletePayment productId='mozilla-concrete-brick'
-                       userEmail={this.email} />
+                       userEmail={this.email}
+                       win={this.win} />
     );
-
-    sinon.stub(window.parent, 'postMessage');
   });
 
   afterEach(function() {
-    window.parent.postMessage.restore();
+    this.sandbox.restore();
   });
 
   it('should show where the receipt was emailed', function() {
@@ -42,7 +45,7 @@ describe('CompletePayment', function() {
 
     TestUtils.Simulate.click(this.button, event);
     assert.equal(event.preventDefault.callCount, 1);
-    assert.ok(window.parent.postMessage.calledWith(
+    assert.ok(this.win.parent.postMessage.calledWith(
       JSON.stringify({event: 'purchase-completed'}), '*'));
   });
 

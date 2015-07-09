@@ -45,6 +45,7 @@
     "karma-firefox-launcher": "0.1.6",
     "karma-mocha": "0.2.0",
     "karma-mocha-reporter": "1.0.2",
+    "karma-sauce-launcher": "0.2.14",
     "karma-sinon": "1.0.4",
     "karma-sourcemap-loader": "0.3.5",
     "karma-webpack": "1.5.1",
@@ -52,6 +53,7 @@
     "load-grunt-tasks": "3.1.0",
     "lodash.defaults": "3.1.2",
     "mocha": "2.2.5",
+    "mozilla-payments-saucelabs-browsers": "0.0.1",
     "node-libs-browser": "0.5.0",
     "payment-icons": "0.0.6",
     "rewire": "2.3.4",
@@ -61,7 +63,7 @@
     "webpack-dev-server": "1.10.1"
   },
   "scripts": {
-    "test": "node -e \"require('grunt').cli()\" null sass webpack test",
+    "test": "node -e \"require('grunt').cli()\" null sass webpack test-ci",
     "publish-docker": "node -e \"require('grunt').cli()\" null build publish-docker"
   },
   "repository": {
