@@ -41,4 +41,5 @@ module.exports = function(grunt) {
   grunt.registerTask('start', ['sass:dev', 'webpack:dev', 'watch:sass']);
   grunt.registerTask('build', ['clean:dist', 'sass', 'webpack']);
   grunt.registerTask('test', ['karma:run', 'eslint', 'csslint:lax']);
+  grunt.registerTask('test-ci', ['karma:sauce', 'eslint', 'csslint:lax']);
 };

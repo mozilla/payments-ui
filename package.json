@@ -63,7 +63,7 @@
     "webpack-dev-server": "1.10.1"
   },
   "scripts": {
-    "test": "node -e \"require('grunt').cli()\" null sass webpack test",
+    "test": "node -e \"require('grunt').cli()\" null sass webpack test-ci",
     "publish-docker": "node -e \"require('grunt').cli()\" null build publish-docker"
   },
   "repository": {
