@@ -35839,7 +35839,14 @@
 	
 	  propTypes: {
 	    productId: React.PropTypes.string.isRequired,
-	    userEmail: React.PropTypes.string.isRequired
+	    userEmail: React.PropTypes.string.isRequired,
+	    win: React.PropTypes.object
+	  },
+	
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      win: window
+	    };
 	  },
 	
 	  componentDidMount: function componentDidMount() {
@@ -35848,14 +35855,15 @@
 	
 	  handleClick: function handleClick(e) {
 	    e.preventDefault();
-	    if (window.parent !== window) {
+	    var win = this.props.win;
+	    if (win.parent !== window) {
 	      // Note: the targetOrigin is wide open.
 	      // Nothing sensitive should be sent whilst
 	      // that's the case.
 	      console.log('Telling parent to close modal.');
 	      // Stringifying the object is necessary for
 	      // IE9 support.
-	      window.parent.postMessage(JSON.stringify({
+	      win.parent.postMessage(JSON.stringify({
 	        event: 'purchase-completed'
 	      }), '*');
 	    } else {
