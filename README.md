@@ -2,6 +2,8 @@
 [![Dependency Status](https://david-dm.org/mozilla/payments-ui.svg)](https://david-dm.org/mozilla/payments-ui)
 [![devDependency Status](https://david-dm.org/mozilla/payments-ui/dev-status.svg)](https://david-dm.org/mozilla/payments-ui#info=devDependencies)
 
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/moz-payments.svg)](https://saucelabs.com/u/moz-payments)
+
 # Payments UI
 
 This project comprises all styles, behaviour and interfaces for mozilla/payments.
