@@ -20,7 +20,7 @@ module.exports = React.createClass({
   },
 
   componentDidMount: function() {
-    tracking.setPage('/payment/card-list');
+    tracking.setPage('/card-listing');
   },
 
   render: function() {
