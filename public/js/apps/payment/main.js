@@ -1,8 +1,8 @@
 'use strict';
 
 var $ = require('jquery');
-var App = require('app');
 var tracking = require('tracking');
+var App = require('./app');
 
 // Common ajax settings.
 $.ajaxSetup({

@@ -1,6 +1,6 @@
 'use strict';
 
-var classNames = require('classnames');
+var cx = require('classnames');
 var React = require('react');
 
 
@@ -14,7 +14,7 @@ module.exports = React.createClass({
 
   render: function() {
     var { errorMessage, ...toolTipAttrs } = this.props;
-    var errorClass = classNames([
+    var errorClass = cx([
       'tooltip',
       this.props.errorModifier || 'left',
     ]);

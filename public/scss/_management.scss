@@ -1,0 +1,54 @@
+@import '_settings';
+
+.management {
+
+  background: $management-grey;
+  margin: 0;
+  padding: 0;
+
+  main {
+    margin: 0;
+    padding: 0;
+  }
+
+  .content {
+    margin: 0 auto;
+    max-width: 700px;
+    padding: 20px;
+    width: 100%;
+  }
+
+  .top-nav {
+    background: #fff;
+    border-bottom: 1px solid $stormy-grey;
+    overflow: hidden;
+    padding: 10px 20px;
+    width: 100%;
+
+    h1 {
+      background: url('#{$image-path}firefox.png') no-repeat 0 50%;
+      background-size: 40px;
+      float: left;
+      font-size: $extra-large-font;
+      font-weight: 400;
+      margin: 10px 0 0;
+      padding: 0 0 0 50px;
+    }
+
+    button {
+      float: right;
+      width: auto;
+    }
+  }
+
+  .user {
+    background: url('#{$image-path}profile.svg') no-repeat 0 50%;
+    background-size: 60px;
+    margin-top: 70px;
+    padding: 5px 0 5px 80px;
+
+    p {
+      font-size: $large-font;
+    }
+  }
+}

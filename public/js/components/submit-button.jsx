@@ -1,6 +1,6 @@
 'use strict';
 
-var classNames = require('classnames');
+var cx = require('classnames');
 var React = require('react');
 
 
@@ -17,7 +17,7 @@ module.exports = React.createClass({
 
     var { isDisabled, text, showSpinner, ...buttonAttrs } = this.props;
 
-    var buttonClassNames = classNames({
+    var buttonClassNames = cx({
       'spinner': showSpinner,
     });
 

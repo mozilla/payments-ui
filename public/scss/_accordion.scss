@@ -1,0 +1,46 @@
+.accordion {
+  padding: 0 20px;
+  background: #fff;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.5);
+
+  header {
+    h2 {
+      font-size: $large-font;
+      font-weight: 400;
+      float: left;
+    }
+
+    button,
+    .button,
+    a.button {
+      width: auto;
+      float: right;
+    }
+
+    p {
+      clear: both;
+    }
+  }
+}
+
+.ac-section:first-child {
+  border-top: none;
+}
+
+.ac-section {
+  border-top: 1px solid #ccc;
+  padding: 20px 0;
+  overflow: auto;
+  background: #fff;
+}
+
+.ac-content {
+  clear: both;
+  display: none;
+}
+
+.accordion .active .ac-content {
+  display: block;
+}
+
+

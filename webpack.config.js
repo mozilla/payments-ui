@@ -1,13 +1,18 @@
 'use strict';
 
 var path = require('path');
+var webpack = require('webpack');
 
 module.exports = {
   devtool: 'source-map',
-  entry: './public/js/main.js',
+  entry: {
+    'payment': './public/js/apps/payment/main.js',
+    'management': './public/js/apps/management/main.js',
+  },
+  failOnError: true,
   output: {
     path: path.join(__dirname, 'public/dist/'),
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
     publicPath: 'js/',
     sourceMapFilename: '[file].map',
   },
@@ -22,6 +27,9 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new webpack.optimize.CommonsChunkPlugin('commons.js'),
+  ],
   resolve: {
     // you can now require('file') instead of require('file.json')
     extensions: ['', '.js', '.jsx', '.json'],
@@ -31,5 +39,11 @@ module.exports = {
       'node_modules/mozilla-payments-config/json/products/',
     ],
   },
-
+  stats: {
+    // Configure the console output
+    colors: true,
+    modules: true,
+    reasons: true,
+  },
+  watch: true,
 };
