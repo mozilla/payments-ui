@@ -31184,7 +31184,6 @@
 	        { className: 'card-details' },
 	        React.createElement(ProductDetail, { productId: this.props.productId }),
 	        React.createElement(CardForm, {
-	          action: '/braintree/',
 	          'data-token': this.state.braintree_token,
 	          id: 'braintree-form',
 	          method: 'post',
