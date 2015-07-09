@@ -51,7 +51,6 @@ module.exports = React.createClass({
         <div className="card-details">
           <ProductDetail productId={this.props.productId} />
           <CardForm
-            action="/braintree/"
             data-token={this.state.braintree_token}
             id="braintree-form"
             method="post"
