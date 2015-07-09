@@ -35657,7 +35657,7 @@
 	  },
 	
 	  componentDidMount: function componentDidMount() {
-	    tracking.setPage('/payment/card-list');
+	    tracking.setPage('/card-listing');
 	  },
 	
 	  render: function render() {
