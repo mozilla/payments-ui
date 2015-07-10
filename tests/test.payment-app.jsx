@@ -27,7 +27,7 @@ describe('App', function() {
   function mountView() {
     var FluxContainer = helpers.getFluxContainer(redux);
 
-    var app = rewire('app');
+    var app = rewire('apps/payment/app');
     app.__set__({
       'Login': FakeLogin,
       'Purchase': FakePurchase,

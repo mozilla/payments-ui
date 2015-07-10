@@ -15,7 +15,7 @@ var utils = require('utils');
 
 var App = React.createClass({
 
-  displayName: 'App',
+  displayName: 'PaymentApp',
 
   getInitialState: function() {
     var qs = utils.parseQuery(window.location.href);

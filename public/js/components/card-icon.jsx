@@ -1,6 +1,6 @@
 'use strict';
 
-var classNames = require('classnames');
+var cx = require('classnames');
 var React = require('react');
 
 
@@ -31,7 +31,7 @@ module.exports = React.createClass({
   render: function() {
     // This is only displayed if a cardType is passed-in.
     var cardType = this.props.cardType;
-    var cardClassName = classNames([
+    var cardClassName = cx([
       'card-icon',
       'cctype-' + (this.cardTypeMap[cardType] || cardType),
     ]);
