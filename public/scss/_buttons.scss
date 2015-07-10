@@ -3,31 +3,23 @@
   text-decoration: none;
 }
 
+.button,
 a.button,
 button {
   @include font();
   background: $button-background-color;
   border: 0;
+  border-radius: $small-border-radius;
   color: $message-text-color;
   cursor: pointer;
+  font-size: $medium-font;
   margin: 10px 0;
+  padding: 0.5em 1em;
   transition-duration: $short-transition;
   transition-property: background-color;
   text-align: center;
   width: 100%;
   line-height: 1.5em;
-
-  @include respond-to('big') {
-    border-radius: $big-border-radius;
-    font-size: $large-font;
-    padding: 15px 0;
-  }
-
-  @include respond-to('small') {
-    border-radius: $small-border-radius;
-    font-size: $medium-font;
-    padding: 8px 0;
-  }
 
   &:active,
   &:hover,

@@ -16,13 +16,6 @@ module.exports = React.createClass({
   propTypes: {
     productId: React.PropTypes.string.isRequired,
     userEmail: React.PropTypes.string.isRequired,
-    win: React.PropTypes.object,
-  },
-
-  getDefaultProps: function() {
-    return {
-      win: window,
-    };
   },
 
   componentDidMount: function() {
@@ -31,15 +24,14 @@ module.exports = React.createClass({
 
   handleClick: function(e) {
     e.preventDefault();
-    var win = this.props.win;
-    if (win.parent !== window) {
+    if (window.parent !== window) {
       // Note: the targetOrigin is wide open.
       // Nothing sensitive should be sent whilst
       // that's the case.
       console.log('Telling parent to close modal.');
       // Stringifying the object is necessary for
       // IE9 support.
-      win.parent.postMessage(JSON.stringify({
+      window.parent.postMessage(JSON.stringify({
         event: 'purchase-completed',
       }), '*');
     } else {
