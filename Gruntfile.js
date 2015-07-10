@@ -36,10 +36,22 @@ module.exports = function(grunt) {
     }
   });
 
+  // Conditionally run saucelabs tests if we have the
+  // secure vars or a normal test run if not.
+  grunt.registerTask('test-ci', function() {
+    if (process.env.TRAVIS_SECURE_ENV_VARS === 'true') {
+      grunt.log.writeln('Running full SauceLabs test suite');
+      grunt.task.run('test-sauce');
+    } else {
+      grunt.log.writeln('Running limited test suite');
+      grunt.task.run('test');
+    }
+  });
+
   grunt.registerTask('serve',
                      ['sass:dev', 'webpack-dev-server:start', 'watch:sass']);
   grunt.registerTask('start', ['sass:dev', 'webpack:dev', 'watch:sass']);
   grunt.registerTask('build', ['clean:dist', 'sass', 'webpack']);
   grunt.registerTask('test', ['karma:run', 'eslint', 'csslint:lax']);
-  grunt.registerTask('test-ci', ['karma:sauce', 'eslint', 'csslint:lax']);
+  grunt.registerTask('test-sauce', ['karma:sauce', 'eslint', 'csslint:lax']);
 };

@@ -4,10 +4,11 @@
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/moz-payments.svg)](https://saucelabs.com/u/moz-payments)
 
+*Note* Sauce Labs tests are only run on PRs from the main repo or commits to master.
+
 # Payments UI
 
 This project comprises all styles, behaviour and interfaces for mozilla/payments.
-
 
 ## Developers
 
@@ -46,7 +47,33 @@ autocmd FileType javascript let b:syntastic_checkers = findfile('.eslintrc', '.;
 
 ### Tests
 
-To run the tests run: `grunt test`
+To run the tests locally run: `grunt test`. This will run the unit tests
+against Firefox.
+
+#### Cross-browser testing
+
+The tests are run only on Firefox when a PR is submitted. When that code is landed
+Travis will run the tests on Sauce Labs.
+
+##### Running Sauce Labs on a PR [Team Only]
+
+If you're a member of the payments team and you want to get Sauce Labs coverage
+for a PR - push the branch to the main `mozilla/payments-ui` repo and make a PR
+from that.
+
+##### Running the tests on SauceLabs locally
+
+First [Sign-up for a Sauce Labs 'Open Sauce' account](https://saucelabs.com/opensauce/)
+to get your keys.
+
+Then you'll need to export the SauceLabs username and access key as env vars:
+
+```shell
+export SAUCE_USERNAME=<YOUR_OPEN_SAUCE_USERNAME>
+export SAUCE_ACCESS_KEY=<YOUR_ACCESS_KEY>
+```
+
+Then you should find you can run: `grunt karma:sauce` and run all the tests on SauceLabs.
 
 ### Dependency installation and updates
 
