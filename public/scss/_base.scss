@@ -96,3 +96,10 @@ main {
       text-align: right;
   }
 }
+
+.app-error {
+    @include header-font();
+    color: $error-text-color;
+    margin-top: 50%;
+    text-align: center;
+}
