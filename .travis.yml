@@ -1,7 +1,7 @@
 language: node_js
 sudo: false
 node_js:
-- "0.10"
+- '0.10'
 before_script:
 - npm rebuild
 - export DISPLAY=:99.0
@@ -19,3 +19,5 @@ env:
   - secure: a1fGjKDKp+35F1XbuRYFSePOVgDeUAOHpfVJzrV8PnAl6ONKOr49HQocIAtF4ALevcbYS05IS47RES9Cp+7jkon10Ry2KrFR1or0euWBEukuTwL8n3rc9AhnOBDOp5RO2CWvweocFzLGa5MM4aCCw0wnmhmAUOGDWrwG5DMTwpY=
   - secure: L64ENqh7CpB8ziEa4DRzwTUVdsXix5nBBWzXAiZlGQQKrydEEiHpVE7/tYIN/k61IbAISguJuEGahPElOReWF4LxfYSmlSPZeh3QdLO+Pc9HilnSemP7YBXEKXLck32z1bbmV/NGxBM8nA0qpYOcSDg+ljWEmCgpp1eQaXqxwCk=
   - secure: SGYIOsqecNHtrWTrHQnibhkZ8NbizuDIbfiNBcZ0raSz7hvGpLrZeXPwuBSdJRUkJ9D6/Q2SZEdCq2niklddXBArAiTg3FiywHL/0Eo/CVHxgX0UQOHemJJx+xAAHkvNFSsXvrGkcjuA3hqKe7iNCBjp044PLgrnY7KNfpEXFsA=
+  - secure: O7Uc/wE/Nyu0CLTH7EaxYcwYhQC8XoNVe7QcYXk5xcBUhTcuDtxD1uY0fVC7deNEYKDlL1Bu88dqOXN/n2cyExST+gr1L8FKlHXLhkuF35U4HuP+ybagjRtc7oAFOKXR0PFthczJ9wJJ7B+gkAo2JDkjp0goAN5f6Mz47tfDLfc=
+  - secure: MDZohwJmwnGhXvCDs9ozZqVoT6E+xBQ/XJmh1KiRr4KHztcrOzPRa+yxQkxXDkGLVnVWI6/mgFd8XB49J7f7tVEl3mdOjQPa7RdjF3jIJlmedE3UVlfRpperkM/vHHrbqX0uXwPm2B+HIKH2DPu3eQ+bQQOuFvfYeZ/AYcpkI/4=
