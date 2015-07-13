@@ -2,7 +2,7 @@
 [![Dependency Status](https://david-dm.org/mozilla/payments-ui.svg)](https://david-dm.org/mozilla/payments-ui)
 [![devDependency Status](https://david-dm.org/mozilla/payments-ui/dev-status.svg)](https://david-dm.org/mozilla/payments-ui#info=devDependencies)
 
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/moz-payments.svg)](https://saucelabs.com/u/moz-payments)
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/moz-payments-ui.svg)](https://saucelabs.com/u/moz-payments-ui)
 
 *Note* Sauce Labs tests are only run on PRs from the main repo or commits to master.
 
