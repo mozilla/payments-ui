@@ -8,9 +8,32 @@
 
 # Payments UI
 
-This project comprises all styles, behaviour and interfaces for mozilla/payments.
+This project comprises all styles, behaviour and interfaces for
+[mozilla/payments](https://github.com/mozilla/payments).
 
 ## Developers
+
+### Dependency installation and updates
+
+Install [grunt-cli](http://gruntjs.com/)
+globally with `npm install -g grunt-cli`
+Then run `npm install` to install the local deps needed for development.
+
+#### npm deps only
+
+We're aiming to only use npm packaged deps rather than bower. This is to be able to
+track dep versions in one place.
+
+#### Libraries + external deps
+
+Normally built artifacts aren't committed. However, to manage dep changes more
+tightly, production libs (JS, CSS + fonts) are committed to the tree.
+
+JS libs are committed from `node_modules` as webpack knows how to find deps in
+`node_modules`.
+
+Whilst this creates noise it does help ensure deps in the browser
+are identical and can't get mangled by a broken deps installation.
 
 ### Watching for file changes in development.
 
@@ -18,12 +41,16 @@ We're using webpack to build a JS bundle.
 
 #### Under docker
 
-If you're using payments-env to have the complete payments-ui you'll want to use
-`grunt start` to watch for file changes.
+If you're using [payments-env](https://github.com/mozilla/payments-env/)
+to run the complete payments system then you'll want to use
+`grunt start` on your host to watch for file changes.
+In other words, start docker to run all the things but keep a shell open
+on your host just to compile static assets for the docker VM to serve.
 
 #### Standalone
 
-If you're running things standalone then `grunt serve` runs the webpack dev-server.
+If you're running the UI standalone on your host then `grunt serve`
+runs the webpack dev-server.
 
 ### JavaScript Linting.
 
@@ -75,34 +102,13 @@ export SAUCE_ACCESS_KEY=<YOUR_ACCESS_KEY>
 
 Then you should find you can run: `grunt karma:sauce` and run all the tests on SauceLabs.
 
-### Dependency installation and updates
-
-Install grunt-cli globally with `npm install -g grunt-cli`
-Then run `npm install` to install the local deps.
-
-#### npm deps only
-
-We're aiming to only use npm packaged deps rather than bower. This is to be able to
-track dep versions in one place.
-
-#### Libraries + external deps
-
-Normally built artifacts aren't committed. However, to manage dep changes more
-tightly libs (JS, CSS + fonts) are committed to the tree.
-
-JS libs are committed from node\_modules as webpack knows how to find deps in
-node\_modules.
-
-Whilst this creates noise it does help ensure deps in the browser
-are identical and can't get mangled by a broken deps installation.
-
 ## Styleguide
 
 The styleguide is based on the styles and templates that live in the tree.
 
 It can be build statically with the `grunt build-styleguide` command.
 
-The styleguide is published here: http://mozilla.github.io/payments-ui/
+The styleguide is published [here](http://mozilla.github.io/payments-ui/).
 
 ### Updating the styleguide
 
@@ -110,7 +116,7 @@ Run `grunt publish-styleguide`
 
 ### Running the styleguide locally
 
-Run `grunt styleguide` (defaults to running on localhost:4001).
+Run `grunt styleguide` (defaults to running on [localhost:4001](http://localhost:4001)).
 
 ## Localization (l10n)
 
