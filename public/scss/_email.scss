@@ -1,13 +1,65 @@
+.card {
+    padding-right: 5px;
+    vertical-align: middle;
+}
+
+#logo {
+    // http://placeholder is replaced by post processing in the
+    // Email templating.
+    background: url('http://placeholder') no-repeat 50% 0;
+    background-size: auto 55px;
+    height: 55px;
+    top: -27px;
+    position: relative;
+}
+
+.divider {
+    margin: 20px 0;
+    float: right;
+    width: 50%;
+    border-top: 1px solid #000;
+}
+
+.user-email {
+    color: $the-real-blue;
+    text-align: center;
+    margin-top: -10px;
+}
+
+.terms {
+    margin: 30px 0;
+    display: block;
+    text-align: center;
+}
+
 #email {
     background-color: #F2F2F2;
-    padding-top: 1em;
+    padding-top: 50px;
+    font-size: $medium-font;
 
     #wrapper {
+        box-sizing: border-box;
         background-color: #fff;
         border: 1px solid #ddd;
-        margin: 1em;
-        padding: 0 1em 2em 1em;
+        border-radius: 3px;
+        margin: 0 auto;
+        padding: 0 40px 20px;
+        max-width: 400px;
 
+        h1 {
+            margin-top: 0;
+            text-align: center;
+            font-weight: 400;
+        }
+
+        table {
+            width: 100%;
+        }
+        td, th {
+            padding: 0.53em 0;
+        }
+
+        td,
         th {
             text-align: left;
             white-space: nowrap;
@@ -15,21 +67,44 @@
 
         td {
             text-align: right;
-            padding-left: 1em;
+        }
+
+        .desc {
+            td, th {
+                vertical-align: top;
+            }
+            span {
+                display: block;
+            }
+        }
+
+        .cc {
+            td, th {
+                padding-bottom: 2em;
+            }
+        }
+
+        .total {
+            font-size: $large-font;
+            font-weight: 400;
+            th {
+                text-align: right;
+            }
+        }
+
+        .next-payment th {
+            text-align: right;
+        }
+
+        .cc td {
+            position: relative;
+            .card-icon {
+                width: 40px;
+                height: 30px;
+            }
         }
     }
 
-    .card-icon {
-        display: inline-block;
-        float: left;
-    }
 }
 
-#logo {
-    background-position: center top;
-    background-repeat: no-repeat;
-    background-size: auto 55px;
-    height: 55px;
-    top: -25px;
-    position: relative;
-}
+

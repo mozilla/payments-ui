@@ -9,7 +9,8 @@ module.exports = {
         dimension: {
           maxWidth: 40,
           maxHeight: 40
-        }
+        },
+        dest: 'svg'
       },
       mode: {
         css: {
