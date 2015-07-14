@@ -13,11 +13,20 @@ This project comprises all styles, behaviour and interfaces for
 
 ## Developers
 
+### Email Styles
+
+To get the right paths for the email CSS and rebuild files as they change run:
+
+```
+DEV=1 grunt start-email
+```
+
 ### Dependency installation and updates
 
 Install [grunt-cli](http://gruntjs.com/)
 globally with `npm install -g grunt-cli`
 Then run `npm install` to install the local deps needed for development.
+
 
 #### npm deps only
 
