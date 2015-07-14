@@ -406,7 +406,11 @@ webpackJsonp([1],[
 	    return React.createElement(
 	      'div',
 	      { className: 'app-error' },
-	      gettext('Internal error. Please try again later.')
+	      React.createElement(
+	        'p',
+	        { className: 'msg' },
+	        gettext('Internal error. Please try again later.')
+	      )
 	    );
 	  }
 	

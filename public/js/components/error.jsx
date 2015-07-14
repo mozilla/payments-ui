@@ -18,7 +18,9 @@ module.exports = React.createClass({
     console.log('rendering app error:', this.props.error);
     return (
       <div className="app-error">
-        {gettext('Internal error. Please try again later.')}
+        <p className="msg">
+          {gettext('Internal error. Please try again later.')}
+        </p>
       </div>
     );
   },

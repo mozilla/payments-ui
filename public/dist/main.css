@@ -672,13 +672,6 @@ main {
   text-align: right;
 }
 
-.app-error {
-  font-family: "Fira Sans", Helvetica, Arial, sans-serif;
-  color: #d63920;
-  margin-top: 50%;
-  text-align: center;
-}
-
 .button {
   display: inline-block;
   text-decoration: none;
@@ -1090,6 +1083,26 @@ button.spinner:after {
 
 .tooltip.center:before {
   left: calc(50% - 1em);
+}
+
+.app-error {
+  background: rgba(255, 255, 255, 0.8);
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 10;
+}
+
+.app-error .msg {
+  font-family: "Fira Sans", Helvetica, Arial, sans-serif;
+  color: #d63920;
+  margin: 0;
+  position: relative;
+  text-align: center;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .management {
