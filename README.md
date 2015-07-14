@@ -134,7 +134,7 @@ We're using grunt-i18n-abide to run the extraction commands.
 Because we're using React we need to operate on the compiled JS file. This also means we aren't running extraction
 on un-used code.
 
-To run an extraction do the following:
+To run an extraction, checkout out the [payments-l10n repository](https://github.com/mozilla/payments-l10n/) so that it has the same parent directory as payments-ui (`../payments-l10n` from the current location). Then do the following:
 
 ```
 npm install

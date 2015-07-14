@@ -3,7 +3,7 @@ module.exports = {
      src: [
        'public/dist/*.js',
      ],
-     dest: 'locale/templates/LC_MESSAGES/messages.pot',
+     dest: '../payments-l10n/locale/templates/LC_MESSAGES/payments-ui.pot',
      options: {
        language: 'JavaScript',
      }
