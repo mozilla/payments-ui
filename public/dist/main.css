@@ -672,6 +672,13 @@ main {
   text-align: right;
 }
 
+.app-error {
+  font-family: "Fira Sans", Helvetica, Arial, sans-serif;
+  color: #d63920;
+  margin-top: 50%;
+  text-align: center;
+}
+
 .button {
   display: inline-block;
   text-decoration: none;

@@ -629,6 +629,13 @@ main {
   text-align: right;
 }
 
+.app-error {
+  font-family: "Fira Sans", Helvetica, Arial, sans-serif;
+  color: #d63920;
+  margin-top: 50%;
+  text-align: center;
+}
+
 .card-icon {
   background: url("../img/cardicons-sprite.svg") no-repeat;
 }
