@@ -18,7 +18,7 @@ module.exports = function(grunt) {
   grunt.registerTask('build-styleguide', ['sass', 'webpack:styleguide', 'cog']);
   grunt.registerTask('publish-styleguide',
                      ['build-styleguide', 'gh-pages:styleguide']);
-   grunt.registerTask('styleguide',
+  grunt.registerTask('styleguide',
                      ['build-styleguide', 'devserver']);
 
   grunt.registerTask('publish-docker', function() {
