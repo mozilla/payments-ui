@@ -12,6 +12,18 @@ module.exports = {
     options: {
       debounceDelay: 250
     }
+  },
+  styleguide: {
+    files: [
+      'public/dist/**/*',
+      'public/img/**/*',
+      'public/svg/**/*',
+      'styleguide/**/*',
+      '!styleguide/build/**/*',
+    ],
+    tasks: ['cog'],
+    options: {
+      debounceDelay: 250
+    }
   }
-
 };
