@@ -48,6 +48,17 @@ are identical and can't get mangled by a broken deps installation.
 
 We're using webpack to build a JS bundle.
 
+### Hot module reloading
+
+If you run the webpack-dev-server you can get hot module reloading.
+
+For example run `grunt serve`
+
+And then visit http://localhost:8080/webpack-dev-server/management.html
+
+You should find that changes to the react modules are reflected immediately without
+refresh.
+
 #### Under docker
 
 If you're using [payments-env](https://github.com/mozilla/payments-env/)
