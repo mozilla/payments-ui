@@ -6,6 +6,8 @@ var {
   AccordionContent,
   AccordionSection} = require('components/accordion');
 
+var Modal = require('components/modal');
+
 var gettext = require('utils').gettext;
 
 
@@ -81,6 +83,7 @@ var Management = React.createClass({
 module.exports = {
   component: Management,
   init: function() {
+    React.render(<Modal />, document.getElementById('modal'));
     React.render(<Management />, document.getElementById('view'));
   },
 };
