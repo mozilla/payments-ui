@@ -13,7 +13,6 @@
   margin: 0 auto;
   max-width: 100%;
   width: 300px;
-
   .text {
     display: block;
     margin: 0 auto;
@@ -37,12 +36,19 @@
 }
 
 button.spinner {
-  text-indent: 0;
-  font-size: 0;
+  position: relative;
+  text-indent: -999em;
   &:after {
     @include hidpi-background-image('spinnerwhite', 30px 30px);
-    margin: 0 auto;
+    content: '';
+    display: block;
     height: 30px;
+    left: 0;
+    margin: -15px auto 0;
+    position: absolute;
+    right: 0;
+    top: 50%;
     width: 30px;
+    z-index: 10;
   }
 }
