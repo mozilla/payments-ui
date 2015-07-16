@@ -2,16 +2,19 @@
 
 /* This is the shared karma config */
 
+var merge = require('lodash.merge');
 var RewirePlugin = require('rewire-webpack');
-var webpackConfig = require('./webpack.config.js');
+var webpackConfig = require('./webpack.config');
 
+
+var newWebpackConfig = merge({}, webpackConfig);
 // Remove the bits from the shared config
 // that we don't want for tests.
-delete webpackConfig.output;
-delete webpackConfig.entry;
+delete newWebpackConfig.output;
+delete newWebpackConfig.entry;
 
 // Add this just for testing:
-webpackConfig.plugins = [
+newWebpackConfig.plugins = [
   new RewirePlugin(),
 ];
 
@@ -41,7 +44,7 @@ module.exports = {
     'karma-webpack',
   ],
   singleRun: true,
-  webpack: webpackConfig,
+  webpack: newWebpackConfig,
   webpackServer: {
     noInfo: true,
   },
