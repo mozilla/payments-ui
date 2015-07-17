@@ -902,14 +902,14 @@ label:focus ~ .input-help-focused {
  */
 .vh,
 .visuallyhidden {
-  border: 0;
+  position: absolute;
+  overflow: hidden;
   clip: rect(0 0 0 0);
   height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
   width: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
 }
 
 @keyframes spin {
@@ -956,16 +956,23 @@ label:focus ~ .input-help-focused {
 }
 
 button.spinner {
-  text-indent: 0;
-  font-size: 0;
+  position: relative;
+  text-indent: -999em;
 }
 
 button.spinner:after {
   background-image: url("../img/spinnerwhite.png");
   background-size: 30px 30px;
-  margin: 0 auto;
+  content: '';
+  display: block;
   height: 30px;
+  left: 0;
+  margin: -15px auto 0;
+  position: absolute;
+  right: 0;
+  top: 50%;
   width: 30px;
+  z-index: 10;
 }
 
 @media (min--moz-device-pixel-ratio: 1.3), (-o-min-device-pixel-ratio: 2.6/2), (-webkit-min-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
