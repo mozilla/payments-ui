@@ -119,6 +119,10 @@
             line-height: 1.5em;
         }
 
+        .error {
+            background: $error-background-color;
+        }
+
         .disabled {
             background: $button-background-disabled-color;
         }
