@@ -21,9 +21,9 @@ module.exports = {
       {
         exclude: /(node_modules|bower_components)/,
         test: /\.jsx?$/,
-        // Stage 1 to enable ES7 rest properties.
+        // es7.objectRestSpread to enable ES7 rest spread operators
         // eg: let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 };
-        loaders: ['babel?stage=1'],
+        loaders: ['babel?optional[]=es7.objectRestSpread&stage=2'],
       },
     ],
   },
