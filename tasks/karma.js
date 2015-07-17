@@ -6,6 +6,7 @@ module.exports = {
   },
   dev: {
     configFile: 'karma.conf.js',
+    singleRun: false,
     autoWatch: true
   },
   run: {
