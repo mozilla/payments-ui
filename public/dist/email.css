@@ -167,13 +167,72 @@ h5 {
   border: 0;
 }
 
+.button {
+  display: inline-block;
+  text-decoration: none;
+}
+
+.button,
+a.button,
+button {
+  font-family: "Clear Sans", Helvetica, Arial, sans-serif;
+  background: #0095dd;
+  border: 0;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 18px;
+  margin: 10px 0;
+  padding: 0.5em 1em;
+  transition-duration: 150ms;
+  transition-property: background-color;
+  text-align: center;
+  width: 100%;
+  line-height: 1.5em;
+}
+
+.button:active,
+.button:hover,
+.button:focus,
+a.button:active,
+a.button:hover,
+a.button:focus,
+button:active,
+button:hover,
+button:focus {
+  background: #08c;
+}
+
+.button:focus,
+a.button:focus,
+button:focus {
+  border-color: #0096dc;
+  box-shadow: 0 0 5px 0 #0096dc;
+  outline: none;
+}
+
+.button:disabled,
+.button.disabled,
+a.button:disabled,
+a.button.disabled,
+button:disabled,
+button.disabled {
+  background: #8a9ba8;
+  cursor: auto;
+}
+
+button::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
 .card {
   padding-right: 5px;
   vertical-align: middle;
 }
 
 #logo {
-  background: url("http://placeholder") no-repeat 50% 0;
+  background: url("http://pay.dev/email-placeholder") no-repeat 50% 0;
   background-size: auto 55px;
   height: 55px;
   top: -27px;
@@ -210,9 +269,12 @@ h5 {
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 3px;
-  margin: 0 auto;
-  padding: 0 40px 20px;
   max-width: 400px;
+  margin: 0 auto;
+}
+
+#email #wrapper .main {
+  padding: 0 40px 0 40px;
 }
 
 #email #wrapper h1 {
@@ -271,6 +333,28 @@ h5 {
 #email #wrapper .cc td .card-icon {
   width: 40px;
   height: 30px;
+}
+
+#email #wrapper .error {
+  font-family: "Clear Sans", Helvetica, Arial, sans-serif;
+  background: #d63920;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 18px;
+  margin: 10px 0;
+  padding: 0.5em 0;
+  text-align: center;
+  width: 100%;
+  line-height: 1.5em;
+}
+
+#email #wrapper .footer {
+  background: #E0F1FA;
+  padding: 20px 40px 20px 40px;
+}
+
+#email #wrapper a.button {
+  padding: 10px 0 10px 0;
 }
 
 /*# sourceMappingURL=email.css.map */
