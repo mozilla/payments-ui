@@ -2,7 +2,7 @@
 
 var rewire = require('rewire');
 
-var actionTypes = require('actions/types');
+var actionTypes = require('constants/action-types');
 var appActions = require('actions/app');
 
 var helpers = require('./helpers');

@@ -1,6 +1,6 @@
 'use strict';
 
-var actionTypes = require('./types');
+var actionTypes = require('constants/action-types');
 
 
 // TODO: expand these actions to encapsulate the Ajax

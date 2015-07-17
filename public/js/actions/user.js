@@ -1,13 +1,11 @@
 'use strict';
 
 var $ = require('jquery');
-var assign = require('object-assign');
 
 var appActions = require('./app');
-var actionTypes = require('./types');
+var actionTypes = require('constants/action-types');
 
-
-module.exports = assign({}, {
+module.exports = {
 
   signIn: function(accessToken) {
     return function(dispatch) {
@@ -45,5 +43,4 @@ module.exports = assign({}, {
       });
     };
   },
-
-});
+};

@@ -5,7 +5,7 @@ var TestUtils;
 var assign = require('object-assign');
 var rewire = require('rewire');
 
-var actionTypes = require('actions/types');
+var actionTypes = require('constants/action-types');
 var reduxConfig = require('redux-config');
 var purchaseActions = require('actions/purchase');
 

@@ -1,6 +1,6 @@
 'use strict';
 
-var actionTypes = require('actions/types');
+var actionTypes = require('constants/action-types');
 var appActions = require('actions/app');
 var purchaseActions = require('actions/purchase');
 var dataStore = require('data-store');

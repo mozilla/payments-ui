@@ -1,6 +1,6 @@
 'use strict';
 
-var actionTypes = require('actions/types');
+var actionTypes = require('constants/action-types');
 
 
 exports.app = function(state, action) {

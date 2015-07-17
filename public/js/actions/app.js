@@ -1,16 +1,12 @@
 'use strict';
 
-var assign = require('object-assign');
+var actionTypes = require('constants/action-types');
 
-var actionTypes = require('./types');
-
-module.exports = assign({}, {
-
+module.exports = {
   error: function(debugMessage) {
     return {
       type: actionTypes.APP_ERROR,
       error: {debugMessage: debugMessage},
     };
   },
-
-});
+};
