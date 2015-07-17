@@ -107,9 +107,8 @@
             }
         }
 
-        .error {
+        .banner {
             @include font();
-            background: $error-background-color;
             border-radius: $small-border-radius;
             color: $message-text-color;
             font-size: $medium-font;
@@ -118,6 +117,10 @@
             text-align: center;
             width: 100%;
             line-height: 1.5em;
+        }
+
+        .disabled {
+            background: $button-background-disabled-color;
         }
 
         .footer {

@@ -335,9 +335,8 @@ button::-moz-focus-inner {
   height: 30px;
 }
 
-#email #wrapper .error {
+#email #wrapper .banner {
   font-family: "Clear Sans", Helvetica, Arial, sans-serif;
-  background: #d63920;
   border-radius: 4px;
   color: #fff;
   font-size: 18px;
@@ -346,6 +345,10 @@ button::-moz-focus-inner {
   text-align: center;
   width: 100%;
   line-height: 1.5em;
+}
+
+#email #wrapper .disabled {
+  background: #8a9ba8;
 }
 
 #email #wrapper .footer {
