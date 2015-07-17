@@ -38,6 +38,8 @@
 button.spinner {
   position: relative;
   text-indent: -999em;
+  direction: ltr;
+
   &:after {
     @include hidpi-background-image('spinnerwhite', 30px 30px);
     content: '';

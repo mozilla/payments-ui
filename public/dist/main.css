@@ -958,6 +958,7 @@ label:focus ~ .input-help-focused {
 button.spinner {
   position: relative;
   text-indent: -999em;
+  direction: ltr;
 }
 
 button.spinner:after {
