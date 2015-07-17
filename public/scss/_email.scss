@@ -6,7 +6,7 @@
 #logo {
     // http://placeholder is replaced by post processing in the
     // Email templating.
-    background: url('http://placeholder') no-repeat 50% 0;
+    background: url('http://pay.dev/email-placeholder') no-repeat 50% 0;
     background-size: auto 55px;
     height: 55px;
     top: -27px;
@@ -42,9 +42,12 @@
         background-color: #fff;
         border: 1px solid #ddd;
         border-radius: 3px;
-        margin: 0 auto;
-        padding: 0 40px 20px;
         max-width: 400px;
+        margin: 0 auto;
+
+        .main {
+            padding: 0 40px 0 40px;
+        }
 
         h1 {
             margin-top: 0;
@@ -103,8 +106,27 @@
                 height: 30px;
             }
         }
+
+        .error {
+            @include font();
+            background: $error-background-color;
+            border-radius: $small-border-radius;
+            color: $message-text-color;
+            font-size: $medium-font;
+            margin: 10px 0;
+            padding: 0.5em 0;
+            text-align: center;
+            width: 100%;
+            line-height: 1.5em;
+        }
+
+        .footer {
+            background: $baby-blue;
+            padding: 20px 40px 20px 40px;
+        }
+
+        a.button {
+            padding: 10px 0 10px 0;
+        }
     }
-
 }
-
-
