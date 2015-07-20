@@ -6,7 +6,8 @@
 #logo {
     // http://placeholder is replaced by post processing in the
     // Email templating.
-    background: url('http://pay.dev/email-placeholder') no-repeat 50% 0;
+    background-position: 50%;
+    background-repeat: no-repeat;
     background-size: auto 55px;
     height: 55px;
     top: -27px;
@@ -128,8 +129,18 @@
         }
 
         .footer {
-            background: $baby-blue;
             padding: 20px 40px 20px 40px;
+            text-align: center;
+        }
+
+        .footer-subscription_charged_unsuccessfully {
+            margin-top: 40px;
+            background-color: $baby-blue;
+        }
+
+        .footer-subscription_canceled {
+            margin-top: 40px;
+            background-color: $management-grey;
         }
 
         a.button {
