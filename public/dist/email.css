@@ -232,7 +232,8 @@ button::-moz-focus-inner {
 }
 
 #logo {
-  background: url("http://pay.dev/email-placeholder") no-repeat 50% 0;
+  background-position: 50%;
+  background-repeat: no-repeat;
   background-size: auto 55px;
   height: 55px;
   top: -27px;
@@ -356,8 +357,18 @@ button::-moz-focus-inner {
 }
 
 #email #wrapper .footer {
-  background: #E0F1FA;
   padding: 20px 40px 20px 40px;
+  text-align: center;
+}
+
+#email #wrapper .footer-subscription_charged_unsuccessfully {
+  margin-top: 40px;
+  background-color: #E0F1FA;
+}
+
+#email #wrapper .footer-subscription_canceled {
+  margin-top: 40px;
+  background-color: #F2F2F2;
 }
 
 #email #wrapper a.button {
