@@ -46,33 +46,48 @@ are identical and can't get mangled by a broken deps installation.
 
 ### Watching for file changes in development.
 
-We're using webpack to build a JS bundle.
-
-### Hot module reloading
-
-If you run the webpack-dev-server you can get hot module reloading.
-
-For example run `grunt serve`
-
-And then visit http://localhost:8080/webpack-dev-server/management.html
-
-You should find that changes to the react modules are reflected immediately without
-refresh.
-
-#### Under docker
-
 If you're using [payments-env](https://github.com/mozilla/payments-env/)
 to run the complete payments system then you'll want to use
 `grunt start` on your host to watch for file changes.
 In other words, start docker to run all the things but keep a shell open
-on your host just to compile static assets for the docker VM to serve.
+on the host machine just to compile static assets for the docker VM to serve.
 
-#### Standalone
+### Hot module reloading
 
-If you're running the UI standalone on your host then `grunt serve`
-runs the webpack dev-server.
+If you run the webpack-dev-server you can get hot module reloading. This turns
+on a feature where the code automatically updates in the browser as you change
+the code in your editor.
 
-### JavaScript Linting.
+For example run `grunt serve` to run the webpack-dev-server.
+
+And then visit:
+
+http://localhost:8080/webpack-dev-server/management.html
+
+You should find that changes to the react modules are reflected immediately without
+refresh.
+
+#### Developing with webpack-dev-server + docker for hot reloading.
+
+To be able to use hot module reloading in conjunction with our docker environment
+you can use [Charles Proxy](http://www.charlesproxy.com/) to rewrite API requests
+to pay.dev. This allows webpack-dev-server to be used to serve the front-end whilst
+continuing to allow API requests to be serviced via docker.
+
+There are two steps to getting this working:
+
+* Create an /etc/hosts entry `pay.webpack  127.0.0.1`
+* Install Charles Proxy and import the rewrite files from the charles directory.
+
+To see the payment interface with hot module loading enabled visit:
+
+http://pay.dev?webpack
+
+To see the management interface:
+
+http://pay.webpack:8080/webpack-dev-server/management.html
+
+### JavaScript Linting
 
 We're using eslint for JavaScript linting. Most editors will have instructions for
 enabling eslint (see below for how to configure vim + syntastic). Alternatively

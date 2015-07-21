@@ -13,7 +13,7 @@ newWebpackConfig.module.loaders[0].loaders.unshift('react-hot');
 
 module.exports = {
   options: {
-    host: '0.0.0.0',
+    host: 'localhost',
     inline: true,
     hot: true,
     publicPath: '/dist/',
