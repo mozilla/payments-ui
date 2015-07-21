@@ -30,7 +30,9 @@ webpackJsonp([0],{
 	var AccordionContent = _require.AccordionContent;
 	var AccordionSection = _require.AccordionSection;
 	
-	var gettext = __webpack_require__(161).gettext;
+	var Modal = __webpack_require__(161);
+	
+	var gettext = __webpack_require__(162).gettext;
 	
 	var Management = React.createClass({
 	
@@ -198,6 +200,7 @@ webpackJsonp([0],{
 	module.exports = {
 	  component: Management,
 	  init: function init() {
+	    React.render(React.createElement(Modal, null), document.getElementById('modal'));
 	    React.render(React.createElement(Management, null), document.getElementById('view'));
 	  }
 	};
@@ -305,6 +308,72 @@ webpackJsonp([0],{
 	  AccordionContent: AccordionContent,
 	  AccordionSection: AccordionSection
 	};
+
+/***/ },
+
+/***/ 161:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(3);
+	var gettext = __webpack_require__(162).gettext;
+	var cx = __webpack_require__(160);
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'Modal',
+	
+	  propTypes: {
+	    children: React.PropTypes.array.required,
+	    close: React.PropTypes.func,
+	    showModal: React.PropTypes.bool,
+	    title: React.PropTypes.string
+	  },
+	
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      showModal: true
+	    };
+	  },
+	
+	  render: function render() {
+	
+	    var classes = cx(['modal', { 'active': this.props.showModal }]);
+	
+	    return React.createElement(
+	      'div',
+	      { className: classes, onClick: this.props.close },
+	      React.createElement(
+	        'div',
+	        { className: 'inner' },
+	        React.createElement(
+	          'header',
+	          null,
+	          this.props.title ? React.createElement(
+	            'h2',
+	            null,
+	            this.props.title
+	          ) : null,
+	          React.createElement(
+	            'a',
+	            { href: '#', onClick: this.props.close, className: 'close' },
+	            React.createElement(
+	              'span',
+	              { className: 'vh' },
+	              gettext('Close')
+	            )
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'content' },
+	          this.props.children
+	        )
+	      )
+	    );
+	  }
+	});
 
 /***/ }
 

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 /**
  * 1. Set default font family to sans-serif.
@@ -1098,6 +1099,61 @@ button.spinner:after {
 
 .management .user p {
   font-size: 24px;
+}
+
+.modal {
+  background: rgba(0, 0, 0, 0.5);
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  transform-style: preserve-3d;
+  z-index: 20;
+}
+
+.modal.active {
+  opacity: 1;
+}
+
+.modal .inner {
+  background: #fff;
+  border-radius: 3px;
+  border: 1px solid #C3CFD8;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.5);
+  height: 468px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 318px;
+}
+
+.modal .close {
+  color: #666;
+  font-size: 24px;
+  line-height: 1ex;
+  padding: 10px;
+  position: absolute;
+  right: -5px;
+  text-decoration: none;
+  top: -5px;
+  z-index: 30;
+}
+
+.modal .close:before {
+  content: '×';
+}
+
+.modal header {
+  text-align: center;
+}
+
+.modal header h2 {
+  margin: 1.5em;
+  font-weight: 400;
 }
 
 .card-listing {
