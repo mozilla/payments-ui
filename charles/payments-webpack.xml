@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<?charles serialisation-version='2.0' ?>
+<rewriteSet-array>
+  <rewriteSet>
+    <active>true</active>
+    <name>Payments Webpack</name>
+    <hosts>
+      <locationPatterns>
+        <locationMatch>
+          <location>
+            <protocol>http</protocol>
+            <host>*</host>
+            <port>8080</port>
+            <path>*</path>
+          </location>
+          <enabled>true</enabled>
+        </locationMatch>
+      </locationPatterns>
+    </hosts>
+    <rules>
+      <rewriteRule>
+        <active>true</active>
+        <ruleType>6</ruleType>
+        <matchValue>http://.*?:8080/(api/.*?)</matchValue>
+        <matchHeaderRegex>false</matchHeaderRegex>
+        <matchValueRegex>true</matchValueRegex>
+        <matchRequest>false</matchRequest>
+        <matchResponse>false</matchResponse>
+        <newValue>http://pay.dev:8000/$1</newValue>
+        <newHeaderRegex>false</newHeaderRegex>
+        <newValueRegex>false</newValueRegex>
+        <matchWholeValue>false</matchWholeValue>
+        <caseSensitive>false</caseSensitive>
+        <replaceType>2</replaceType>
+      </rewriteRule>
+    </rules>
+  </rewriteSet>
+</rewriteSet-array>
