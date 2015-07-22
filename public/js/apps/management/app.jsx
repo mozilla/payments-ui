@@ -23,18 +23,18 @@ var App = React.createClass({
     };
   },
 
-  renderChild(result) {
-    var actions = bindActionCreators(managementActions, result.dispatch);
+  renderChild(connector) {
+    var actions = bindActionCreators(managementActions, connector.dispatch);
     var children = [];
 
-    if (result.management.error) {
+    if (connector.management.error) {
       children.push(
-        <ModalError {...actions} error={result.management.error} />
+        <ModalError {...actions} error={connector.management.error} />
       );
-    } else if (result.management.paymentMethods) {
+    } else if (connector.management.paymentMethods) {
       children.push((
         <ManageCards {...actions}
-          paymentMethods={result.management.paymentMethods} />
+          paymentMethods={connector.management.paymentMethods} />
       ));
     }
     children.push(<Management {...actions} />);
