@@ -20,6 +20,10 @@ describe('Modal', function() {
         </div>
       </Modal>
     );
+    this.eventStub = {
+      preventDefault: sinon.stub(),
+      stopPropagation: sinon.stub(),
+    };
   });
 
   it('should have a title', function() {
@@ -40,37 +44,25 @@ describe('Modal', function() {
 
   it('should call close func when clicking the modal background', function() {
     var modal = helpers.findByClass(this.Modal, 'modal');
-    var event = {
-      preventDefault: sinon.stub(),
-      stopPropagation: sinon.stub(),
-    };
-    TestUtils.Simulate.click(modal.getDOMNode(), event);
-    assert.ok(event.preventDefault.called);
-    assert.ok(event.stopPropagation.called);
+    TestUtils.Simulate.click(modal.getDOMNode(), this.eventStub);
+    assert.ok(this.eventStub.preventDefault.called);
+    assert.ok(this.eventStub.stopPropagation.called);
     assert.ok(this.closeFunc.called);
   });
 
   it('should call close func when clicking the close link', function() {
     var close = helpers.findByClass(this.Modal, 'close');
-    var event = {
-      preventDefault: sinon.stub(),
-      stopPropagation: sinon.stub(),
-    };
-    TestUtils.Simulate.click(close.getDOMNode(), event);
-    assert.ok(event.preventDefault.called);
-    assert.ok(event.stopPropagation.called);
+    TestUtils.Simulate.click(close.getDOMNode(), this.eventStub);
+    assert.ok(this.eventStub.preventDefault.called);
+    assert.ok(this.eventStub.stopPropagation.called);
     assert.ok(this.closeFunc.called);
   });
 
   it('should not call close func when clicking other content.', function() {
     var otherLink = helpers.findByClass(this.Modal, 'other-link');
-    var event = {
-      preventDefault: sinon.stub(),
-      stopPropagation: sinon.stub(),
-    };
-    TestUtils.Simulate.click(otherLink.getDOMNode(), event);
-    assert.notOk(event.preventDefault.called);
-    assert.notOk(event.stopPropagation.called);
+    TestUtils.Simulate.click(otherLink.getDOMNode(), this.eventStub);
+    assert.notOk(this.eventStub.preventDefault.called);
+    assert.notOk(this.eventStub.stopPropagation.called);
     assert.notOk(this.closeFunc.called);
   });
 
