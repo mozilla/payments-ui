@@ -11,7 +11,7 @@ module.exports = React.createClass({
 
   propTypes: {
     children: React.PropTypes.object.isRequired,
-    handleClose: React.PropTypes.func,
+    handleClose: React.PropTypes.func.isRequired,
     title: React.PropTypes.string,
   },
 

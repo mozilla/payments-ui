@@ -57,7 +57,7 @@ var AccordionSection = React.createClass({
   displayName: 'AccordionSection',
 
   propTypes: {
-    activate: React.PropTypes.func,
+    activate: React.PropTypes.func.isRequired,
     children: React.PropTypes.node.isRequired,
     isActive: React.PropTypes.bool,
   },

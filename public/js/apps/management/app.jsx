@@ -1,5 +1,7 @@
 'use strict';
 
+require('shims');
+
 var React = require('react');
 var Provider = require('redux/react').Provider;
 var Connector = require('redux/react').Connector;
@@ -11,6 +13,7 @@ var managementActions = require('actions/management');
 var ModalError = require('views/modal-error');
 var Management = require('views/management');
 var ManageCards = require('views/manage-cards');
+
 
 
 var App = React.createClass({

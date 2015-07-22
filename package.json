@@ -14,6 +14,7 @@
     "mozilla-payments-config": "0.0.8",
     "normalize.css": "3.0.3",
     "object-assign": "3.0.0",
+    "object.assign": "3.0.1",
     "react": "0.13.3",
     "react-maskedinput": "2.0.0",
     "redux": "0.12.0"

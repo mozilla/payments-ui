@@ -4,7 +4,7 @@ var React = require('react');
 var CardItem = require('components/card-item');
 
 module.exports = React.createClass({
-  displayName: 'CardChoice',
+  displayName: 'CardList',
 
   propTypes: {
     cards: React.PropTypes.arrayOf(

@@ -1,5 +1,7 @@
 'use strict';
 
+require('shims');
+
 var React = require('react');
 var Provider = require('redux/react').Provider;
 var Connector = require('redux/react').Connector;

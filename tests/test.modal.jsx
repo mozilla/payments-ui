@@ -38,7 +38,7 @@ describe('Modal', function() {
                  'Just some noddy content');
   });
 
-  it('clicking the modal background should call close func', function() {
+  it('should call close func when clicking the modal background', function() {
     var modal = helpers.findByClass(this.Modal, 'modal');
     var event = {
       preventDefault: sinon.stub(),
@@ -50,7 +50,7 @@ describe('Modal', function() {
     assert.ok(this.closeFunc.called);
   });
 
-  it('clicking the close link should call close func', function() {
+  it('should call close func when clicking the close link', function() {
     var close = helpers.findByClass(this.Modal, 'close');
     var event = {
       preventDefault: sinon.stub(),
@@ -62,7 +62,7 @@ describe('Modal', function() {
     assert.ok(this.closeFunc.called);
   });
 
-  it('clicking the content link should not call close func', function() {
+  it('should not call close func when clicking other content.', function() {
     var otherLink = helpers.findByClass(this.Modal, 'other-link');
     var event = {
       preventDefault: sinon.stub(),
