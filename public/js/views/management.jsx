@@ -15,7 +15,7 @@ module.exports = React.createClass({
   displayName: 'ManagementApp',
 
   propTypes: {
-    manageCards: React.PropTypes.func.isRequired,
+    getPayMethods: React.PropTypes.func.isRequired,
   },
 
   render: function() {
@@ -37,7 +37,7 @@ module.exports = React.createClass({
                 <header>
                   <h2>{gettext('Payment Accounts')}</h2>
                   <button
-                    onClick={this.props.manageCards}>{gettext('Change')}
+                    onClick={this.props.getPayMethods}>{gettext('Change')}
                   </button>
                 </header>
               </AccordionSection>

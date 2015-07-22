@@ -14,22 +14,14 @@ export default function management(state, action) {
     };
   }
 
-  if (action.type === actionTypes.MANAGE_MODAL_LOADING) {
-    return {
-      loading: true,
-      error: null,
-      paymentMethods: null,
-    };
-  }
-
-  if (action.type === actionTypes.MANAGE_CARD_LIST) {
+  if (action.type === actionTypes.GET_PAY_METHODS) {
     return {
       loading: false,
       paymentMethods: action.management.paymentMethods,
     };
   }
 
-  if (action.type === actionTypes.MANAGE_CLOSE_MODAL) {
+  if (action.type === actionTypes.CLOSE_MODAL) {
     return {
       loading: false,
       error: null,

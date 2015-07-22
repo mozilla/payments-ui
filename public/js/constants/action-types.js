@@ -1,9 +1,8 @@
 'use strict';
 
 export const APP_ERROR = 'APP_ERROR';
-export const APP_CLEAR_ERROR = 'APP_CLEAR_ERROR';
 export const USER_SIGNED_IN = 'USER_SIGNED_IN';
 export const COMPLETE_PURCHASE = 'COMPLETE_PURCHASE';
 export const PAY_WITH_NEW_CARD = 'PAY_WITH_NEW_CARD';
-export const MANAGE_CARD_LIST = 'MANAGE_CARD_LIST';
-export const MANAGE_CLOSE_MODAL = 'MANAGE_CLOSE_MODAL';
+export const GET_PAY_METHODS = 'GET_PAY_METHODS';
+export const CLOSE_MODAL = 'CLOSE_MODAL';

@@ -11,7 +11,8 @@ export function error(debugMessage) {
   };
 }
 
-export function manageCards() {
+
+export function getPayMethods() {
   return function(dispatch) {
     $.ajax({
       method: 'get',
@@ -19,7 +20,7 @@ export function manageCards() {
       context: this,
     }).then(function(data) {
       dispatch({
-        type: actionTypes.MANAGE_CARD_LIST,
+        type: actionTypes.GET_PAY_METHODS,
         management: {
           paymentMethods: data,
         },
@@ -31,9 +32,10 @@ export function manageCards() {
   };
 }
 
+
 export function closeModal() {
   console.log('closeModal');
   return {
-    type: actionTypes.MANAGE_CLOSE_MODAL,
+    type: actionTypes.CLOSE_MODAL,
   };
 }
