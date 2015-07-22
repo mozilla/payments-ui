@@ -3,7 +3,7 @@
 var $ = require('jquery');
 var React = require('react');
 
-var CardItem = require('components/card-item');
+var CardList = require('components/card-list');
 var SubmitButton = require('components/submit-button');
 
 var gettext = require('utils').gettext;
@@ -66,22 +66,16 @@ module.exports = React.createClass({
 
   render: function() {
     var cardData = this.props.cards;
-    var cardList = [];
-
     for (var i = 0; i < cardData.length; i += 1) {
       var card = cardData[i];
-      cardList.push(<CardItem {...card} key={'ci-' + i}
-                     onChangeHandler={this.handleCardChange}
-                     checked={this.state.card === card.resource_uri} />);
+      card.checked = this.state.card === card.resource_uri;
     }
 
     var formIsValid = this.state.card !== null;
 
     return (
       <form id="card-listing" onSubmit={this.handleSubmit}>
-        <ul className="card-listing">
-          {cardList}
-        </ul>
+        <CardList cards={cardData} onCardChange={this.handleCardChange} />
         <SubmitButton isDisabled={!formIsValid}
           showSpinner={this.state.isSubmitting}
           text={gettext('Subscribe')}

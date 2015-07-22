@@ -1032,6 +1032,7 @@ button.spinner:after {
 .app-error {
   background: rgba(255, 255, 255, 0.8);
   bottom: 0;
+  height: 100%;
   left: 0;
   position: absolute;
   right: 0;
@@ -1063,7 +1064,6 @@ button.spinner:after {
 .management .content {
   margin: 0 auto;
   max-width: 700px;
-  padding: 20px;
   width: 100%;
 }
 
@@ -1104,6 +1104,7 @@ button.spinner:after {
 .modal {
   background: rgba(0, 0, 0, 0.5);
   bottom: 0;
+  height: 100%;
   left: 0;
   opacity: 0;
   position: fixed;
