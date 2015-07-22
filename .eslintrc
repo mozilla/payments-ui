@@ -21,7 +21,7 @@
     "require": false,
   },
   "rules": {
-    "block-scoped-var": 2,
+    "block-scoped-var": 0,
     "camelcase": 0,
     "comma-dangle": [2, "always-multiline"],
     "comma-style": [2, "last"],

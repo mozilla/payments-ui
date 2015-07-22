@@ -11,11 +11,5 @@ export default function app(state, action) {
       },
     };
   }
-
-  if (action.type === actionTypes.CLEAR_ERROR) {
-    return {};
-  }
-
   return state || {};
 }
-

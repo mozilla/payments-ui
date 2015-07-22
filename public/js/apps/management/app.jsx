@@ -1,89 +1,67 @@
 'use strict';
 
 var React = require('react');
-var {
-  Accordion,
-  AccordionContent,
-  AccordionSection} = require('components/accordion');
+var Provider = require('redux/react').Provider;
+var Connector = require('redux/react').Connector;
+var bindActionCreators = require('redux').bindActionCreators;
 
-var Modal = require('components/modal');
+var reduxConfig = require('redux-config');
+var managementActions = require('actions/management');
 
-var gettext = require('utils').gettext;
+var ModalError = require('views/modal-error');
+var Management = require('views/management');
+var ManageCards = require('views/manage-cards');
 
 
-var Management = React.createClass({
+var App = React.createClass({
 
   displayName: 'ManagementApp',
 
-  render: function() {
+  selectData: function(state) {
+    return {
+      management: state.management,
+    };
+  },
+
+  renderChild(result) {
+    var actions = bindActionCreators(managementActions, result.dispatch);
+    var children = [];
+
+    if (result.management.error) {
+      children.push(
+        <ModalError {...actions} error={result.management.error} />
+      );
+    } else if (result.management.paymentMethods) {
+      children.push((
+        <ManageCards {...actions}
+          paymentMethods={result.management.paymentMethods} />
+      ));
+    }
+    children.push(<Management {...actions} />);
+    return <div>{children}</div>;
+  },
+
+  render () {
     return (
-
-      <div>
-        <header className="top-nav">
-          <h1 className="logo">Firefox Payments</h1>
-          <button>{gettext('Sign Out')}</button>
-        </header>
-
-        <div className="content">
-          <div className="user">
-            <p>Hello, placeholder@placeholder.com</p>
-          </div>
-
-          <Accordion>
-            <AccordionSection>
-              <header>
-                <h2>{gettext('Payment Accounts')}</h2>
-                <button data-activate>{gettext('Change')}</button>
-              </header>
-              <AccordionContent>
-                <p>Payment list will go here</p>
-                <ul>
-                  <li>4111 1111 1111 1111</li>
-                  <li>4222 2222 2222 2222</li>
-                </ul>
-              </AccordionContent>
-            </AccordionSection>
-
-            <AccordionSection>
-              <header>
-                <h2>{gettext('Receipts and Subscriptions')}</h2>
-                <button data-activate>{gettext('View/Change')}</button>
-              </header>
-              <AccordionContent>
-                <p>Placeholder</p>
-              </AccordionContent>
-            </AccordionSection>
-
-            <AccordionSection>
-              <header>
-                <h2>{gettext('Email Address and Password')}</h2>
-                <a className="button"
-                   href="https://mozilla.org/"
-                   target="_blank">{gettext('Change')}</a>
-                <p>placeholder@placeholder.com</p>
-              </header>
-            </AccordionSection>
-
-            <AccordionSection>
-              <header>
-                <h2>{gettext('Delete Account')}</h2>
-                <button data-activate>{gettext('Delete')}</button>
-              </header>
-              <AccordionContent>
-                <p>Placeholder content</p>
-              </AccordionContent>
-            </AccordionSection>
-          </Accordion>
-        </div>
-      </div>
+      <main>
+        <Connector select={this.selectData}>
+          {this.renderChild}
+        </Connector>
+      </main>
     );
   },
 });
 
+
 module.exports = {
-  component: Management,
+  component: App,
   init: function() {
-    React.render(<Modal />, document.getElementById('modal'));
-    React.render(<Management />, document.getElementById('view'));
+    React.render((
+      <Provider redux={reduxConfig.default}>
+        {function() {
+          return <App/>;
+        }}
+      </Provider>
+    ), document.body);
   },
 };

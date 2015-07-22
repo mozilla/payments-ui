@@ -18,13 +18,6 @@ module.exports = React.createClass({
     onCardChange: React.PropTypes.func.isRequired,
   },
 
-  getInitialState: function() {
-    return {
-      card: (this.props.cards.length === 1 ?
-             this.props.cards[0].resource_uri : null),
-    };
-  },
-
   render: function() {
     var cardData = this.props.cards;
     var cardList = [];

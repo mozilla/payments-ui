@@ -1,12 +1,10 @@
 'use strict';
 
-var actionTypes = require('constants/action-types');
+import * as actionTypes from 'constants/action-types';
 
-module.exports = {
-  error: function(debugMessage) {
-    return {
-      type: actionTypes.APP_ERROR,
-      error: {debugMessage: debugMessage},
-    };
-  },
-};
+export function error(debugMessage) {
+  return {
+    type: actionTypes.APP_ERROR,
+    error: {debugMessage: debugMessage},
+  };
+}
