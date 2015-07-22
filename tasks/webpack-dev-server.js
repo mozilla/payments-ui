@@ -14,11 +14,11 @@ newWebpackConfig.module.loaders[0].loaders.unshift('react-hot');
 module.exports = {
   options: {
     host: 'localhost',
-    inline: true,
-    hot: true,
-    publicPath: '/dist/',
     contentBase: 'public/',
     historyApiFallback: true,
+    hot: true,
+    inline: true,
+    publicPath: '/dist/',
   },
   start: {
     webpack: newWebpackConfig,

@@ -2,10 +2,9 @@
 
 var React;
 var TestUtils;
-var assign = require('object-assign');
 var rewire = require('rewire');
 
-var actionTypes = require('actions/types');
+var actionTypes = require('constants/action-types');
 var reduxConfig = require('redux-config');
 var purchaseActions = require('actions/purchase');
 
@@ -30,7 +29,7 @@ describe('Purchase', function() {
   });
 
   function mountView(userOverrides) {
-    var user = assign({}, defaultUser, userOverrides);
+    var user = Object.assign({}, defaultUser, userOverrides);
     var FluxContainer = helpers.getFluxContainer(redux);
 
     var Purchase = rewire('views/purchase');
@@ -58,7 +57,7 @@ describe('Purchase', function() {
 
     redux.dispatch({
       type: actionTypes.USER_SIGNED_IN,
-      user: assign({}, defaultUser, {
+      user: Object.assign({}, defaultUser, {
         payment_methods: paymentMethods,
       }),
     });
@@ -96,7 +95,7 @@ describe('Purchase', function() {
     // Dispatch a user that would normally trigger a card listing.
     redux.dispatch({
       type: actionTypes.USER_SIGNED_IN,
-      user: assign({}, defaultUser, {
+      user: Object.assign({}, defaultUser, {
         payment_methods: paymentMethods,
       }),
     });

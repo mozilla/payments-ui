@@ -1,7 +1,8 @@
 'use strict';
 
 var redux = require('redux');
-var dataStore = require('data-store');
+var dataStore = require('stores/index');
+console.log(dataStore);
 
 function createRedux() {
   return redux.createRedux(dataStore);

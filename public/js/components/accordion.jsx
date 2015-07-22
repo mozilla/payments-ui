@@ -11,7 +11,7 @@ var Accordion = React.createClass({
   displayName: 'Accordion',
 
   propTypes: {
-    children: React.PropTypes.array,
+    children: React.PropTypes.node.isRequired,
   },
 
   getInitialState: function() {
@@ -57,8 +57,8 @@ var AccordionSection = React.createClass({
   displayName: 'AccordionSection',
 
   propTypes: {
-    activate: React.PropTypes.function,
-    children: React.PropTypes.array,
+    activate: React.PropTypes.func.isRequired,
+    children: React.PropTypes.node.isRequired,
     isActive: React.PropTypes.bool,
   },
 
@@ -82,7 +82,7 @@ var AccordionContent = React.createClass({
   displayName: 'AccordionContent',
 
   propTypes: {
-    children: React.PropTypes.array,
+    children: React.PropTypes.node.isRequired,
   },
 
   render: function() {
