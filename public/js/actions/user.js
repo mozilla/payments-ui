@@ -1,11 +1,23 @@
 import $ from 'jquery';
 
-import * as appActions from './app';
 import * as actionTypes from 'constants/action-types';
+import * as settings from 'settings';
+
+import * as appActions from './app';
 
 
-export function signIn(accessToken, jquery=$) {
-  return function(dispatch) {
+function setUpCSRF(csrfToken, jquery) {
+  console.log('setting CSRF token for subsequent requests:', csrfToken);
+  jquery.ajaxSetup({
+    headers: {
+      'X-CSRFToken': csrfToken,
+    },
+  });
+}
+
+
+export function tokenSignIn(accessToken, jquery=$) {
+  return dispatch => {
     jquery.ajax({
       data: {
         access_token: accessToken,
@@ -13,15 +25,9 @@ export function signIn(accessToken, jquery=$) {
       method: 'post',
       url: '/api/auth/sign-in/',
       context: this,
-    }).then(function(data) {
+    }).then(data => {
 
-      console.log('setting CSRF token for subsequent requests:',
-                  data.csrf_token);
-      jquery.ajaxSetup({
-        headers: {
-          'X-CSRFToken': data.csrf_token,
-        },
-      });
+      setUpCSRF(data.csrf_token, jquery);
 
       console.log('login succeeded, setting user');
       dispatch({
@@ -32,10 +38,91 @@ export function signIn(accessToken, jquery=$) {
         },
       });
 
-    }).fail(function() {
+    }).fail(apiError => {
 
-      console.log('login failed');
-      dispatch(appActions.error('user login failed'));
+      console.log('FxA token sign-in failure:', apiError.responseJSON);
+      dispatch(appActions.error('FxA token sign-in failed'));
+
+    });
+  };
+}
+
+
+export function userSignIn(FxaClient=window.FxaRelierClient, jquery=$) {
+  return dispatch => {
+    console.log('signing in FxA user');
+
+    // FIXME: use require when we get
+    // https://github.com/mozilla/fxa-relier-client/issues/68
+    var fxaClient = new FxaClient(settings.fxaClientId, {
+      contentHost: settings.fxaContentHost,
+      oauthHost: settings.fxaOauthHost,
+    });
+
+    fxaClient.auth.signIn({
+      // TODO: use state here to check for CSRF? It might be for redirects only
+      // which wouldn't apply since we're using the lightbox.
+      state: 'n',
+      redirectUri: settings.fxaRedirectUri,
+      ui: 'lightbox',
+      scope: 'profile:email payments',
+    })
+    .then(fxaResult => {
+      console.log('FxA sign-in succeeded:', fxaResult);
+      console.log('requesting token for code', fxaResult.code);
+
+      jquery.ajax({
+        type: 'post',
+        url: '/api/auth/sign-in/',
+        dataType: 'json',
+        data: {
+          authorization_code: fxaResult.code,
+        },
+      })
+      .then(apiResult => {
+        console.log('API sign-in suceeded; result:', apiResult);
+
+        setUpCSRF(apiResult.csrf_token, jquery);
+
+        dispatch({
+          type: actionTypes.USER_SIGNED_IN,
+          user: {
+            email: apiResult.buyer_email,
+            payment_methods: apiResult.payment_methods,
+          },
+        });
+
+      })
+      .fail(apiError => {
+        console.error('API user sign-in failure:', apiError.responseJSON);
+        dispatch(appActions.error('API user sign-in failed'));
+      });
+
+    }, fxaError => {
+      console.error('FxA sign-in failure:', fxaError);
+      dispatch(appActions.error('FxA user sign-in failed'));
+    });
+  };
+}
+
+
+export function userSignOut(jquery=$) {
+  return dispatch => {
+    jquery.ajax({
+      method: 'post',
+      url: '/api/auth/sign-out/',
+      context: this,
+    }).then(() => {
+      console.log('API user sign-out succeeded');
+
+      dispatch({
+        type: actionTypes.USER_SIGNED_OUT,
+      });
+
+    }).fail(apiError => {
+
+      console.log('API user sign-out failure:', apiError.responseJSON);
+      dispatch(appActions.error('API user sign-out failed'));
 
     });
   };

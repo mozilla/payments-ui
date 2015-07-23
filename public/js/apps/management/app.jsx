@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 
 import reduxConfig from 'redux-config';
 import * as managementActions from 'actions/management';
+import * as userActions from 'actions/user';
 
 import ModalError from 'views/modal-error';
 import Management from 'views/management';
@@ -17,23 +18,29 @@ export default class ManagementApp extends Component {
   selectData(state) {
     return {
       management: state.management,
+      user: state.user,
     };
   }
 
   renderChild(connector) {
-    var actions = bindActionCreators(managementActions, connector.dispatch);
+    var boundMgmtActions = bindActionCreators(managementActions,
+                                              connector.dispatch);
+    var boundUserActions = bindActionCreators(userActions, connector.dispatch);
     var children = [];
     if (connector.management.error) {
       children.push(
-        <ModalError {...actions} error={connector.management.error} />
+        <ModalError {...boundMgmtActions} error={connector.management.error} />
       );
     } else if (connector.management.paymentMethods) {
       children.push((
-        <ManageCards {...actions}
+        <ManageCards {...boundMgmtActions}
           paymentMethods={connector.management.paymentMethods} />
       ));
     }
-    children.push(<Management {...actions} />);
+
+    children.push(<Management {...boundMgmtActions} {...boundUserActions}
+                              user={connector.user} />);
+
     return <div>{children}</div>;
   }
 

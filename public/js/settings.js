@@ -47,4 +47,10 @@ module.exports = {
     enabled: false,
     id: 'UA-35433268-60',
   },
+  // FxA relier client for user sign-in (not token sign in).
+  // This is the docker development client ID for pay.dev
+  fxaClientId: '8d7c6c8549cc6deb',
+  fxaRedirectUri: 'http://pay.dev:8000',
+  fxaContentHost: 'https://stable.dev.lcip.org',
+  fxaOauthHost: 'https://oauth-stable.dev.lcip.org/v1',
 };

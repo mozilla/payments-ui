@@ -15,6 +15,36 @@ export const testCards = {
 };
 
 
+export class FakeSyncPromise {
+  /*
+   * A minimal shim for a promise object that executes synchronously
+   * for easier testing.
+   * */
+
+  constructor() {
+    this.onResolved = null;
+    this.onRejected = null;
+  }
+
+  then(onResolved, onRejected) {
+    this.onResolved = onResolved;
+    this.onRejected = onRejected;
+  }
+
+  catch(onRejected) {
+    this.onRejected = onRejected;
+  }
+
+  reject(result) {
+    this.onRejected(result);
+  }
+
+  resolve(result) {
+    this.onResolved(result);
+  }
+}
+
+
 export const declinedError = {
   error_response: {
     braintree: {
@@ -81,7 +111,7 @@ export function getFluxContainer(redux) {
       return {redux: redux};
     },
 
-    render () {
+    render() {
       return this.props.children();
     },
 
@@ -118,7 +148,8 @@ export function fakeJquery(opt) {
     };
   } else if (opt.result === 'fail') {
     jqueryStubResponse.fail = function(callback) {
-      callback.call(componentContext);
+      var error = {};
+      callback.call(componentContext, error);
       return this;
     };
   } else {

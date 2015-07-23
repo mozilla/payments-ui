@@ -25,6 +25,7 @@
     "exports": false,
     "module": false,
     "require": false,
+    "FxaRelierClient": false,
   },
   "rules": {
     "block-scoped-var": 0,
