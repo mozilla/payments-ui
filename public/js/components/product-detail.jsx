@@ -1,18 +1,14 @@
-'use strict';
+import React, { Component, PropTypes } from 'react';
+import products from 'products';
+import { gettext } from 'utils';
 
-var React = require('react');
-var products = require('products');
-var gettext = require('utils').gettext;
+export default class ProductDetail extends Component {
 
-module.exports = React.createClass({
+  static propTypes = {
+    productId: PropTypes.string.isRequired,
+  };
 
-  displayName: 'ProductDetail',
-
-  propTypes: {
-    productId: React.PropTypes.string.isRequired,
-  },
-
-  render: function() {
+  render() {
 
     var productId = this.props.productId;
     var productData = products[productId];
@@ -29,5 +25,5 @@ module.exports = React.createClass({
         <div>{gettext('per month')}</div>
       </div>
     );
-  },
-});
+  }
+}

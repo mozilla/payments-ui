@@ -1,31 +1,27 @@
-'use strict';
-
 /*eslint react/no-multi-comp: 0 */
+import React, { Component, PropTypes } from 'react';
+import cx from 'classnames';
 
-var React = require('react');
-var cx = require('classnames');
 
+class Accordion extends Component {
 
-var Accordion = React.createClass({
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+  };
 
-  displayName: 'Accordion',
-
-  propTypes: {
-    children: React.PropTypes.node.isRequired,
-  },
-
-  getInitialState: function() {
+  constructor(props) {
+    super(props);
     var sections = [];
     React.Children.forEach(this.props.children, function() {
       sections.push({isActive: false});
     });
     sections[0].isActive = true;
-    return {
+    this.state = {
       sections: sections,
     };
-  },
+  }
 
-  activate: function(sectionIdx, e) {
+  activate(sectionIdx, e) {
     if (e.target.getAttribute('data-activate') !== null) {
       e.preventDefault();
       var sections = this.state.sections;
@@ -34,14 +30,13 @@ var Accordion = React.createClass({
       });
       this.setState({sections: sections});
     }
-  },
+  }
 
-  render: function() {
-    var that = this;
-    var children = React.Children.map(this.props.children, function(child, idx){
+  render() {
+    var children = React.Children.map(this.props.children, (child, idx) => {
       return React.cloneElement(child, {
-        activate: that.activate.bind(that, idx),
-        isActive: that.state.sections[idx].isActive,
+        activate: this.activate.bind(this, idx),
+        isActive: this.state.sections[idx].isActive,
       });
     });
     return (
@@ -49,21 +44,19 @@ var Accordion = React.createClass({
         {children}
       </div>
     );
-  },
-});
+  }
+}
 
-var AccordionSection = React.createClass({
 
-  displayName: 'AccordionSection',
+class AccordionSection extends Component {
 
-  propTypes: {
+  static propTypes = {
     activate: React.PropTypes.func.isRequired,
     children: React.PropTypes.node.isRequired,
     isActive: React.PropTypes.bool,
-  },
+  };
 
-  render: function() {
-
+  render() {
     var classes = cx(
       'ac-section', {'active': this.props.isActive});
 
@@ -73,29 +66,28 @@ var AccordionSection = React.createClass({
         {this.props.children}
       </section>
     );
-  },
-});
+  }
+}
 
 
-var AccordionContent = React.createClass({
+class AccordionContent extends Component {
 
-  displayName: 'AccordionContent',
-
-  propTypes: {
+  static propTypes = {
     children: React.PropTypes.node.isRequired,
-  },
+  };
 
-  render: function() {
+  render() {
     return (
       <div className="ac-content">
         {this.props.children}
       </div>
     );
-  },
-});
+  }
+}
 
-module.exports = {
-  Accordion: Accordion,
-  AccordionContent: AccordionContent,
-  AccordionSection: AccordionSection,
+
+export default {
+  Accordion,
+  AccordionContent,
+  AccordionSection,
 };

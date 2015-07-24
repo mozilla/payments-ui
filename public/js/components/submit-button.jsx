@@ -1,20 +1,16 @@
-'use strict';
-
-var cx = require('classnames');
-var React = require('react');
+import React, { Component, PropTypes } from 'react';
+import cx from 'classnames';
 
 
-module.exports = React.createClass({
-  displayName: 'SubmitButton',
+export default class SubmitButton extends Component {
 
-  propTypes: {
-    isDisabled: React.PropTypes.bool,
-    showSpinner: React.PropTypes.bool,
-    text: React.PropTypes.string.isRequired,
-  },
+  static propTypes = {
+    isDisabled: PropTypes.bool,
+    showSpinner: PropTypes.bool,
+    text: PropTypes.string.isRequired,
+  };
 
-  render: function() {
-
+  render() {
     var { isDisabled, text, showSpinner, ...buttonAttrs } = this.props;
 
     var buttonClassNames = cx({
@@ -33,5 +29,5 @@ module.exports = React.createClass({
         disabled={isDisabled}
         type="submit">{text}</button>
     );
-  },
-});
+  }
+}

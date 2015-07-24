@@ -1,12 +1,9 @@
-'use strict';
-
-var redux = require('redux');
-var dataStore = require('stores/index');
-console.log(dataStore);
+import { createRedux as createRedux_ } from 'redux';
+import * as stores from 'stores';
 
 function createRedux() {
-  return redux.createRedux(dataStore);
+  return createRedux_(stores);
 }
 
-exports.create = createRedux;
-exports.default = createRedux();
+export default createRedux();
+export { createRedux as create };

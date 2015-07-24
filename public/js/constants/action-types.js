@@ -1,5 +1,3 @@
-'use strict';
-
 export const APP_ERROR = 'APP_ERROR';
 export const USER_SIGNED_IN = 'USER_SIGNED_IN';
 export const COMPLETE_PURCHASE = 'COMPLETE_PURCHASE';

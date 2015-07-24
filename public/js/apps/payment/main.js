@@ -1,8 +1,6 @@
-'use strict';
-
-var $ = require('jquery');
-var tracking = require('tracking');
-var App = require('./app');
+import $ from 'jquery';
+import tracking from 'tracking';
+import { init as appInit } from './app';
 
 // Common ajax settings.
 $.ajaxSetup({
@@ -10,4 +8,4 @@ $.ajaxSetup({
 });
 
 tracking.init();
-App.init();
+appInit();

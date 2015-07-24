@@ -1,11 +1,9 @@
-'use strict';
-
-var $ = require('jquery');
-var App = require('./app');
+import $ from 'jquery';
+import { init as appInit } from './app';
 
 // Common ajax settings.
 $.ajaxSetup({
   dataType: 'json',
 });
 
-App.init();
+appInit();

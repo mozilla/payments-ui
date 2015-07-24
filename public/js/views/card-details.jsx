@@ -1,32 +1,31 @@
-'use strict';
+import $ from 'jquery';
+import React, { Component, PropTypes } from 'react';
 
-var $ = require('jquery');
-var React = require('react');
+import CardForm from 'components/card-form';
+import ProductDetail from 'components/product-detail';
+import Spinner from 'components/spinner';
 
-var CardForm = require('components/card-form');
-var ProductDetail = require('components/product-detail');
-var Spinner = require('components/spinner');
-
-var tracking = require('tracking');
+import { default as tracking } from 'tracking';
 
 
-module.exports = React.createClass({
+export default class CardDetailsView extends Component {
 
-  displayName: 'CardDetailsView',
+  static propTypes = {
+    productId: PropTypes.string.isRequired,
+  };
 
-  propTypes: {
-    productId: React.PropTypes.string.isRequired,
-  },
-
-  getInitialState: function() {
-    return {
+  constructor(props) {
+    super(props);
+    this.state = {
       braintree_token: false,
     };
-  },
+  }
 
-  componentDidMount: function() {
+  componentDidMount() {
     console.log('Requesting braintree token');
     // TODO: move this to a purchase action.
+
+    this.mounted = true;
 
     tracking.setPage('/card-details');
 
@@ -35,16 +34,20 @@ module.exports = React.createClass({
       url: '/api/braintree/token/generate/',
       context: this,
     }).then(function(data) {
-      if (this.isMounted()) {
+      if (this.mounted) {
         this.setState({'braintree_token': data.token}); // eslint-disable-line
       }
     }).fail(function() {
       // TODO: some error state.
       console.log('failed to get braintree token');
     });
-  },
+  }
 
-  render: function() {
+  componentWillUnmount() {
+    this.mounted = false;
+  }
+
+  render() {
 
     if (this.state.braintree_token) {
       return (
@@ -61,5 +64,5 @@ module.exports = React.createClass({
     } else {
       return <Spinner />;
     }
-  },
-});
+  }
+}

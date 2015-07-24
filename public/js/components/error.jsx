@@ -1,20 +1,14 @@
-'use strict';
-
-var React = require('react');
-
-var utils = require('utils');
-
-var gettext = utils.gettext;
+import React, { Component, PropTypes } from 'react';
+import { gettext } from 'utils';
 
 
-module.exports = React.createClass({
-  displayName: 'Error',
+export default class ErrorMessage extends Component {
 
-  propTypes: {
-    error: React.PropTypes.object.isRequired,
-  },
+  static propTypes = {
+    error: PropTypes.object.isRequired,
+  };
 
-  render: function() {
+  render() {
     console.log('rendering app error:', this.props.error);
     return (
       <div className="app-error">
@@ -23,6 +17,5 @@ module.exports = React.createClass({
         </p>
       </div>
     );
-  },
-
-});
+  }
+}

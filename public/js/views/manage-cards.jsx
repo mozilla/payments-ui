@@ -1,23 +1,19 @@
-'use strict';
+import React, { Component, PropTypes } from 'react';
 
-var React = require('react');
+import Modal from 'components/modal';
+import CardList from 'components/card-list';
 
-var Modal = require('components/modal');
-var CardList = require('components/card-list');
-
-var gettext = require('utils').gettext;
+import { gettext } from 'utils';
 
 
-module.exports = React.createClass({
+export default class ManageCards extends Component {
 
-  displayName: 'ManageCards',
+  static propTypes = {
+    closeModal: PropTypes.func.isRequired,
+    paymentMethods: PropTypes.array.isRequired,
+  };
 
-  propTypes: {
-    closeModal: React.PropTypes.func.isRequired,
-    paymentMethods: React.PropTypes.array.isRequired,
-  },
-
-  render: function() {
+  render() {
     return (
       <Modal
         handleClose={this.props.closeModal}
@@ -25,7 +21,6 @@ module.exports = React.createClass({
         <CardList cards={this.props.paymentMethods} />
       </Modal>
     );
-  },
+  }
 
-});
-
+}

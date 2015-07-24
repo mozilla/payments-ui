@@ -1,15 +1,13 @@
-'use strict';
+import React from 'react';
 
-var React = require('react');
+import ProductDetail from 'components/product-detail';
+import SubmitButton from 'components/submit-button';
 
-var ProductDetail = require('components/product-detail');
-var SubmitButton = require('components/submit-button');
-
-var gettext = require('utils').gettext;
-var tracking = require('tracking');
+import { gettext } from 'utils';
+import tracking from 'tracking';
 
 
-module.exports = React.createClass({
+export default React.createClass({
 
   displayName: 'CompleteView',
 

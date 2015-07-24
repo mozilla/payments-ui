@@ -1,14 +1,12 @@
-'use strict';
+import $ from 'jquery';
 
-var $ = require('jquery');
-
-var appActions = require('./app');
-var actionTypes = require('constants/action-types');
+import * as appActions from './app';
+import * as actionTypes from 'constants/action-types';
 
 
-export function signIn(accessToken) {
+export function signIn(accessToken, jquery=$) {
   return function(dispatch) {
-    $.ajax({
+    jquery.ajax({
       data: {
         access_token: accessToken,
       },
@@ -19,7 +17,7 @@ export function signIn(accessToken) {
 
       console.log('setting CSRF token for subsequent requests:',
                   data.csrf_token);
-      $.ajaxSetup({
+      jquery.ajaxSetup({
         headers: {
           'X-CSRFToken': data.csrf_token,
         },

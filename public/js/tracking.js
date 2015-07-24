@@ -1,11 +1,9 @@
-'use strict';
-
 /* global ga */
 
-var settings = require('settings');
+import settings from 'settings';
 
 
-class Tracking {
+export class Tracking {
 
   constructor(opts) {
     opts = opts || {};
@@ -86,7 +84,7 @@ class Tracking {
   }
 }
 
-module.exports = new Tracking({
+export default new Tracking({
   enabled: settings.tracking.enabled,
   trackingId: settings.tracking.id,
 });

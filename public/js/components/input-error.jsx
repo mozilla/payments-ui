@@ -1,10 +1,9 @@
-'use strict';
-
-var cx = require('classnames');
-var React = require('react');
+import React from 'react';
+import cx from 'classnames';
 
 
-module.exports = React.createClass({
+export default React.createClass({
+
   displayName: 'InputError',
 
   propTypes: {

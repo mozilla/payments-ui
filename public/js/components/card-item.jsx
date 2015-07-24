@@ -1,23 +1,19 @@
-'use strict';
-
-var React = require('react');
-var CardIcon = require('components/card-icon');
+import React, { Component, PropTypes } from 'react';
+import CardIcon from 'components/card-icon';
 
 
-module.exports = React.createClass({
+export default class CardItem extends Component {
 
-  displayName: 'CardItem',
+  static propTypes = {
+    checked: PropTypes.bool.isRequired,
+    id: PropTypes.number.isRequired,
+    onChangeHandler: PropTypes.func.isRequired,
+    resource_uri: PropTypes.string.isRequired,
+    truncated_id: PropTypes.string.isRequired,
+    type_name: PropTypes.string.isRequired,
+  };
 
-  propTypes: {
-    checked: React.PropTypes.bool.isRequired,
-    id: React.PropTypes.number.isRequired,
-    onChangeHandler: React.PropTypes.func.isRequired,
-    resource_uri: React.PropTypes.string.isRequired,
-    truncated_id: React.PropTypes.string.isRequired,
-    type_name: React.PropTypes.string.isRequired,
-  },
-
-  render: function() {
+  render() {
     var cardType = this.props.type_name.toLowerCase();
     var cardText = '●●●● ●●●● ●●●● ' + this.props.truncated_id;
     var inputId = 'card-' + this.props.id;
@@ -33,6 +29,5 @@ module.exports = React.createClass({
                className="text">{cardText}</label>
       </li>
     );
-  },
-
-});
+  }
+}

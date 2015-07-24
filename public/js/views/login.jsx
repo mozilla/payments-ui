@@ -1,29 +1,25 @@
-'use strict';
+import React, { Component, PropTypes } from 'react';
 
-var React = require('react');
+import Spinner from 'components/spinner';
 
-var Spinner = require('components/spinner');
-
-var gettext = require('utils').gettext;
-var tracking = require('tracking');
+import { gettext } from 'utils';
+import tracking from 'tracking';
 
 
-module.exports = React.createClass({
+export default class Login extends Component {
 
-  displayName: 'Login',
+  static propTypes = {
+    accessToken: PropTypes.string.isRequired,
+    signIn: PropTypes.func.isRequired,
+  };
 
-  propTypes: {
-    accessToken: React.PropTypes.string.isRequired,
-    signIn: React.PropTypes.func.isRequired,
-  },
-
-  componentDidMount: function() {
+  componentDidMount() {
     tracking.setPage('/login');
     this.props.signIn(this.props.accessToken);
-  },
+  }
 
-  render: function() {
+  render() {
     return <Spinner text={gettext('Signing in')}/>;
-  },
+  }
 
-});
+}
