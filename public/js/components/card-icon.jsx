@@ -1,14 +1,19 @@
-'use strict';
+import cx from 'classnames';
+import React, { Component, PropTypes } from 'react';
 
-var cx = require('classnames');
-var React = require('react');
+// Just a convenience mapping for cards from card-validator
+// to shorted classes used in CSS.
+const cardTypeMap = {
+  'american-express': 'amex',
+  'diners-club': 'diners',
+  'master-card': 'mastercard',
+};
 
+export default class CardIcon extends Component {
 
-module.exports = React.createClass({
-  displayName: 'CardIcon',
-
-  propTypes: {
-    cardType: React.PropTypes.oneOf([
+  static propTypes = {
+    cardType: PropTypes.oneOf([
+      'amex',
       'american-express',
       'diners-club',
       'discover',
@@ -18,23 +23,16 @@ module.exports = React.createClass({
       'master-card',
       'visa',
     ]),
-  },
+  }
 
-  // Just a convenience mapping for cards from card-validator
-  // to shorted classes used in CSS.
-  cardTypeMap: {
-    'american-express': 'amex',
-    'diners-club': 'diners',
-    'master-card': 'mastercard',
-  },
 
-  render: function() {
+  render() {
     // This is only displayed if a cardType is passed-in.
     var cardType = this.props.cardType;
     var cardClassName = cx([
       'card-icon',
-      'cctype-' + (this.cardTypeMap[cardType] || cardType),
+      'cctype-' + (cardTypeMap[cardType] || cardType),
     ]);
     return cardType ? <span className={cardClassName} /> : null;
-  },
-});
+  }
+}

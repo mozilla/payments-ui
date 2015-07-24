@@ -1,6 +1,5 @@
-'use strict';
+import * as actionTypes from 'constants/action-types';
 
-var actionTypes = require('constants/action-types');
 
 export default function user(state, action) {
   if (action.type === actionTypes.USER_SIGNED_IN) {

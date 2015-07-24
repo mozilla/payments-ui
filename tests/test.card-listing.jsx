@@ -1,10 +1,8 @@
-'use strict';
+import React from 'react';
+import TestUtils from 'react/lib/ReactTestUtils';
 
-var React;
-var TestUtils;
-
-var CardChoice = require('components/card-choice');
-var CardListing = require('views/card-listing');
+import CardChoice from 'components/card-choice';
+import CardListing from 'views/card-listing';
 
 
 describe('CardListingView', function() {
@@ -14,8 +12,6 @@ describe('CardListingView', function() {
   var savedVisa = {provider_id: '3vr3ym', type_name: 'Visa'};
 
   beforeEach(function() {
-    React = require('react');
-    TestUtils = require('react/lib/ReactTestUtils');
 
     payWithNewCardSpy = sinon.spy();
 

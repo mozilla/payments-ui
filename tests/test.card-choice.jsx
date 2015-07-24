@@ -1,12 +1,10 @@
-'use strict';
+import React from 'react';
+import TestUtils from 'react/lib/ReactTestUtils';
 
+import CardChoice from 'components/card-choice';
 
-var CardChoice = require('components/card-choice');
+import * as helpers from './helpers';
 
-var helpers = require('./helpers');
-
-var React;
-var TestUtils;
 
 describe('Card Choice', function() {
 
@@ -53,8 +51,6 @@ describe('Card Choice', function() {
   ];
 
   beforeEach(function() {
-    React = require('react');
-    TestUtils = require('react/lib/ReactTestUtils');
     this.CardChoice = TestUtils.renderIntoDocument(
       <CardChoice cards={cardListData} />
     );
@@ -129,8 +125,6 @@ describe('Single Card Choice', function() {
      ];
 
     beforeEach(function() {
-      React = require('react');
-      TestUtils = require('react/lib/ReactTestUtils');
       this.CardChoice = TestUtils.renderIntoDocument(
         <CardChoice cards={cardListData} />
       );

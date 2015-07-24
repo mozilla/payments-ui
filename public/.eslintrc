@@ -1,5 +1,10 @@
 {
   "env": {
     "browser": true,
+    "es6": "true",
   },
+  "rules": {
+    "global-strict": 0,
+    "strict": [2, "never"]
+  }
 }

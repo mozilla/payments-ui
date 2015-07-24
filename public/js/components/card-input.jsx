@@ -1,79 +1,74 @@
-'use strict';
+import classNames from 'classnames';
+import React, { Component, PropTypes } from 'react';
 
-var classNames = require('classnames');
-var React = require('react');
+import CardIcon from 'components/card-icon';
+import InputError from 'components/input-error';
+import MaskedInput from 'react-maskedinput';
 
-var CardIcon = require('components/card-icon');
-var InputError = require('components/input-error');
-var MaskedInput = require('react-maskedinput');
+import { defaults, gettext } from 'utils';
 
-var utils = require('utils');
-var gettext = utils.gettext;
-
-
-module.exports = React.createClass({
-
-  displayName: 'CardInput',
-
-  propTypes: {
-    attrs: React.PropTypes.object,
-    cardType: React.PropTypes.string,
-    classNames: React.PropTypes.array,
-    errorMessage: React.PropTypes.string,
-    errorModifier: React.PropTypes.string,
-    hasVal: React.PropTypes.bool,
-    id: React.PropTypes.string.isRequired,
-    isValid: React.PropTypes.bool,
-    label: React.PropTypes.string,
-    onChangeHandler: React.PropTypes.func.isRequired,
-    pattern: React.PropTypes.string,
-    placeholder: React.PropTypes.string,
-    showError: React.PropTypes.bool,
-  },
-
-  cardPatterns: {
-    'default': {
-      card: {
-        pattern: '1111 1111 1111 1111',
-      },
-      cvv: {
-        pattern: '111',
-        placeholder: gettext('CVV'),
-      },
+const cardPatterns = {
+  'default': {
+    card: {
+      pattern: '1111 1111 1111 1111',
     },
-    'american-express': {
-      card: {
-        pattern: '1111 111111 11111',
-      },
-      cvv: {
-        pattern: '1111',
-        placeholder: gettext('CID'),
-      },
-    },
-    'diners-club': {
-      card: {
-        pattern: '1111 111111 1111',
-      },
-      cvv: {
-        pattern: '111',
-        placeholder: gettext('CVV'),
-      },
+    cvv: {
+      pattern: '111',
+      placeholder: gettext('CVV'),
     },
   },
+  'american-express': {
+    card: {
+      pattern: '1111 111111 11111',
+    },
+    cvv: {
+      pattern: '1111',
+      placeholder: gettext('CID'),
+    },
+  },
+  'diners-club': {
+    card: {
+      pattern: '1111 111111 1111',
+    },
+    cvv: {
+      pattern: '111',
+      placeholder: gettext('CVV'),
+    },
+  },
+};
 
-  updatePattern: function(fieldId, cardType) {
+
+export default class CardInput extends Component {
+
+  static propTypes = {
+    attrs: PropTypes.object,
+    cardType: PropTypes.string,
+    classNames: PropTypes.array,
+    errorMessage: PropTypes.string,
+    errorModifier: PropTypes.string,
+    hasVal: PropTypes.bool,
+    id: PropTypes.string.isRequired,
+    isValid: PropTypes.bool,
+    label: PropTypes.string,
+    onChangeHandler: PropTypes.func.isRequired,
+    pattern: PropTypes.string,
+    placeholder: PropTypes.string,
+    showError: PropTypes.bool,
+  }
+
+  updatePattern(fieldId, cardType) {
     // Update the pattern for card + cvv field if card was detected.
-    if (cardType && this.cardPatterns[cardType]) {
-      return utils.defaults(
-        this.cardPatterns[cardType][fieldId] || {},
-        this.cardPatterns.default[fieldId]
+    if (cardType && cardPatterns[cardType]) {
+      return defaults(
+        cardPatterns[cardType][fieldId] || {},
+        cardPatterns.default[fieldId]
       );
     } else {
-      return this.cardPatterns.default[fieldId] || {};
+      return cardPatterns.default[fieldId] || {};
     }
-  },
+  }
 
-  render: function() {
+  render() {
 
     var labelClassNames = this.props.classNames || [];
     // Use a copy of the list to avoid appending ad infinitum.
@@ -95,8 +90,6 @@ module.exports = React.createClass({
 
     var showCardIcon = this.props.id === 'card';
 
-
-
     return (
       <label className={labelClass} htmlFor={this.props.id} >
         <span className="vh">{label}</span>
@@ -114,5 +107,5 @@ module.exports = React.createClass({
         />
       </label>
     );
-  },
-});
+  }
+}

@@ -1,39 +1,50 @@
-'use strict';
+import React, { Component, PropTypes } from 'react';
 
-var React = require('react');
-var bindActionCreators = require('redux').bindActionCreators;
-var Connector = require('redux/react').Connector;
+import { bindActionCreators } from 'redux';
+import { Connector } from 'redux/react';
 
-var CardDetails = require('views/card-details');
-var CardListing = require('views/card-listing');
-var CompletePayment = require('views/complete-payment');
-var purchaseActions = require('actions/purchase');
+import * as purchaseActions from 'actions/purchase';
+
+import DefaultCardDetails from 'views/card-details';
+import DefaultCardListing from 'views/card-listing';
+import DefaultCompletePayment from 'views/complete-payment';
 
 
-module.exports = React.createClass({
+export default class Purchase extends Component {
 
-  displayName: 'Purchase',
+  static propTypes = {
+    CardDetails: PropTypes.object,
+    CardListing: PropTypes.object,
+    CompletePayment: PropTypes.object,
+    productId: PropTypes.string.isRequired,
+    user: PropTypes.object.isRequired,
+  }
 
-  propTypes: {
-    productId: React.PropTypes.string.isRequired,
-    user: React.PropTypes.object.isRequired,
-  },
+  static defaultProps = {
+    CardDetails: DefaultCardDetails,
+    CardListing: DefaultCardListing,
+    CompletePayment: DefaultCompletePayment,
+  }
 
-  selectData: function(state) {
+  selectData(state) {
     return {
       purchase: state.purchase,
     };
-  },
+  }
 
   render () {
     var props = this.props;
+    var CompletePayment = this.props.CompletePayment;
+    var CardListing = this.props.CardListing;
+    var CardDetails = this.props.CardDetails;
     return (
       <Connector select={this.selectData}>
         {function(result) {
           if (result.purchase.completed) {
             return (
-              <CompletePayment productId={props.productId}
-                               userEmail={props.user.email} />
+              <CompletePayment
+                productId={props.productId}
+                userEmail={props.user.email} />
             );
           } else if (result.purchase.payment_methods.length > 0) {
             console.log('rendering card listing');
@@ -51,5 +62,5 @@ module.exports = React.createClass({
         }}
       </Connector>
     );
-  },
-});
+  }
+}

@@ -1,6 +1,5 @@
-'use strict';
+import * as actionTypes from 'constants/action-types';
 
-var actionTypes = require('constants/action-types');
 
 export default function management(state, action) {
   console.log('management store: got action', action);

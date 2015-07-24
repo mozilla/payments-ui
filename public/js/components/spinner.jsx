@@ -1,28 +1,23 @@
-'use strict';
+import React, { Component, PropTypes } from 'react';
+import { gettext } from 'utils';
 
-var React = require('react');
 
-var gettext = require('utils').gettext;
+export default class Spinner extends Component {
 
-module.exports = React.createClass({
-  displayName: 'Spinner',
+  static propTypes = {
+    text: PropTypes.string.isRequired,
+  }
 
-  propTypes: {
-    text: React.PropTypes.string.isRequired,
-  },
+  static defaultProps = {
+    text: gettext('Loading'),
+  }
 
-  getDefaultProps: function() {
-    return {
-      text: gettext('Loading'),
-    };
-  },
-
-  render: function() {
+  render() {
     return (
       <div className="spinner-cont">
         <div className="spinner" />
         <span className="text">{this.props.text}</span>
       </div>
     );
-  },
-});
+  }
+}

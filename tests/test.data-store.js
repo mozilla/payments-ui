@@ -1,9 +1,7 @@
-'use strict';
-
-var actionTypes = require('constants/action-types');
-var appActions = require('actions/app');
-var purchaseActions = require('actions/purchase');
-var dataStore = require('stores');
+import * as actionTypes from 'constants/action-types';
+import * as appActions from 'actions/app';
+import * as purchaseActions from 'actions/purchase';
+import * as dataStore from 'stores';
 
 
 describe('app', function() {

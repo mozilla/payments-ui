@@ -1,12 +1,10 @@
-'use strict';
+import React, { findDOMNode } from 'react';
+import TestUtils from 'react/lib/ReactTestUtils';
 
+import * as helpers from './helpers';
 
-var CardForm = require('components/card-form');
+import CardForm from 'components/card-form';
 
-var helpers = require('./helpers');
-
-var React;
-var TestUtils;
 
 describe('Card Details', function() {
 
@@ -20,8 +18,6 @@ describe('Card Details', function() {
   ];
 
   beforeEach(function() {
-    React = require('react');
-    TestUtils = require('react/lib/ReactTestUtils');
     this.CardForm = TestUtils.renderIntoDocument(
       <CardForm data-token="whatever" id="something"/>
     );
@@ -45,12 +41,12 @@ describe('Card Details', function() {
   });
 
   it('renders a token', function() {
-    var formNode = this.CardForm.getDOMNode();
+    var formNode = findDOMNode(this.CardForm);
     assert.equal(formNode.getAttribute('data-token'), 'whatever');
   });
 
   it('renders an id', function() {
-    var formNode = this.CardForm.getDOMNode();
+    var formNode = findDOMNode(this.CardForm);
     assert.equal(formNode.getAttribute('id'), 'something');
   });
 
@@ -100,7 +96,7 @@ describe('Card Details', function() {
   it('should not have a name attr on any input', function() {
     var inputs = helpers.findAllByTag(this.CardForm, 'input');
     for (var i = 0; i < inputs.length; i += 1) {
-      var input = inputs[i].getDOMNode();
+      var input = findDOMNode(inputs[i]);
       if (input.getAttribute('name') !== null) {
         throw new Error('A name attr should not be set on any cc form fields');
       }
@@ -110,7 +106,7 @@ describe('Card Details', function() {
   it('should have type=tel and autocomplete=off on all fields', function() {
     var inputs = helpers.findAllByTag(this.CardForm, 'input');
     for (var i = 0; i < inputs.length; i += 1) {
-      var input = inputs[i].getDOMNode();
+      var input = findDOMNode(inputs[i]);
       assert.equal(input.getAttribute('autocomplete'),
                    'off', 'autocomplete attr should be "off"');
       assert.equal(input.getAttribute('type'),

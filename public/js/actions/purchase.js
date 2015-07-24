@@ -1,5 +1,3 @@
-'use strict';
-
 import * as actionTypes from 'constants/action-types';
 
 // TODO: expand these actions to encapsulate the Ajax

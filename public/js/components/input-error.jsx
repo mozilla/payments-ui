@@ -1,18 +1,15 @@
-'use strict';
-
-var cx = require('classnames');
-var React = require('react');
+import React, { Component, PropTypes } from 'react';
+import cx from 'classnames';
 
 
-module.exports = React.createClass({
-  displayName: 'InputError',
+export default class InputError extends Component {
 
-  propTypes: {
-    errorMessage: React.PropTypes.string.isRequired,
-    errorModifier: React.PropTypes.oneOf(['center', 'right', 'left']),
-  },
+  static propTypes = {
+    errorMessage: PropTypes.string.isRequired,
+    errorModifier: PropTypes.oneOf(['center', 'right', 'left']),
+  }
 
-  render: function() {
+  render() {
     var { errorMessage, ...toolTipAttrs } = this.props;
     var errorClass = cx([
       'tooltip',
@@ -20,7 +17,8 @@ module.exports = React.createClass({
     ]);
     return (
       <span {...toolTipAttrs}
-            className={errorClass}>{errorMessage}</span>
+        className={errorClass}>{errorMessage}</span>
     );
-  },
-});
+  }
+
+}

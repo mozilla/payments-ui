@@ -1,5 +1,3 @@
-'use strict';
-
 import $ from 'jquery';
 import * as actionTypes from 'constants/action-types';
 

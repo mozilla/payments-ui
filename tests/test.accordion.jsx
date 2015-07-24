@@ -1,12 +1,11 @@
-'use strict';
+import React from 'react';
+import TestUtils from 'react/lib/ReactTestUtils';
 
-var React = require('react');
-var TestUtils = require('react/lib/ReactTestUtils');
-var helpers = require('./helpers');
+import { Accordion,
+         AccordionContent,
+         AccordionSection } from 'components/accordion';
 
-var {Accordion,
-     AccordionContent,
-     AccordionSection} = require('components/accordion');
+import * as helpers from './helpers';
 
 
 describe('Accordion', function() {

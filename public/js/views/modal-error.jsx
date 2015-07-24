@@ -1,26 +1,23 @@
-'use strict';
+import React, { Component, PropTypes } from 'react';
 
-var React = require('react');
-var Modal = require('components/modal');
+import Modal from 'components/modal';
+import ErrorMessage from 'components/error';
 
-var ErrorMessage = require('components/error');
 
-module.exports = React.createClass({
+export default class ModalError extends Component {
 
-  displayName: 'ModalError',
+  static propTypes = {
+    closeModal: PropTypes.func.isRequired,
+    error: PropTypes.object.isRequired,
+  };
 
-  propTypes: {
-    closeModal: React.PropTypes.func.isRequired,
-    error: React.PropTypes.object.isRequired,
-  },
-
-  render: function() {
+  render() {
     return (
       <Modal handleClose={this.props.closeModal}>
         <ErrorMessage error={this.props.error} />
       </Modal>
     );
-  },
+  }
 
-});
+}
 

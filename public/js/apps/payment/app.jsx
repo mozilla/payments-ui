@@ -1,42 +1,54 @@
-'use strict';
+import 'shims';
 
-require('shims');
+import React, { Component, PropTypes } from 'react';
 
-var React = require('react');
-var Provider = require('redux/react').Provider;
-var Connector = require('redux/react').Connector;
-var bindActionCreators = require('redux').bindActionCreators;
+import { Connector, Provider } from 'redux/react';
+import { bindActionCreators } from 'redux';
 
-var reduxConfig = require('redux-config');
-var ErrorMessage = require('components/error');
-var Login = require('views/login');
-var Purchase = require('views/purchase');
-var userActions = require('actions/user');
-var utils = require('utils');
+import reduxConfig from 'redux-config';
+import ErrorMessage from 'components/error';
+import DefaultLogin from 'views/login';
+import DefaultPurchase from 'views/purchase';
+import * as userActions from 'actions/user';
+import { parseQuery } from 'utils';
 
 
-var App = React.createClass({
+export default class PaymentApp extends Component {
 
-  displayName: 'PaymentApp',
+  static propTypes = {
+    Login: PropTypes.node,
+    Purchase: PropTypes.node,
+    win: PropTypes.object,
+  }
 
-  getInitialState: function() {
-    var qs = utils.parseQuery(window.location.href);
+  static defaultProps = {
+    Login: DefaultLogin,
+    Purchase: DefaultPurchase,
+    win: window,
+  }
+
+  constructor(props) {
+    super(props);
+    var qs = parseQuery(props.win.location.href);
     // TODO: we should validate/clean this input to raise early errors.
-    return {
+    this.state = {
       accessToken: qs.access_token,
       productId: qs.product,
     };
-  },
+  }
 
-  selectData: function(state) {
+  selectData(state) {
     return {
       app: state.app,
       user: state.user,
     };
-  },
+  }
 
-  render () {
+  render() {
     var state = this.state;
+    var Login = this.props.Login;
+    var Purchase = this.props.Purchase;
+
     return (
       <main>
         <Connector select={this.selectData}>
@@ -62,19 +74,16 @@ var App = React.createClass({
         </Connector>
       </main>
     );
-  },
-});
+  }
+}
 
 
-module.exports = {
-  component: App,
-  init: function() {
-    React.render((
-      <Provider redux={reduxConfig.default}>
-        {function() {
-          return <App/>;
-        }}
-      </Provider>
-    ), document.body);
-  },
-};
+export function init() {
+  React.render((
+    <Provider redux={reduxConfig}>
+      {function() {
+        return <PaymentApp/>;
+      }}
+    </Provider>
+  ), document.body);
+}

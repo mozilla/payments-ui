@@ -1,7 +1,5 @@
-'use strict';
-
-var actionTypes = require('constants/action-types');
-var appActions = require('actions/app');
+import * as actionTypes from 'constants/action-types';
+import * as appActions from 'actions/app';
 
 
 describe('appActions', function() {

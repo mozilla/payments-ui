@@ -1,24 +1,20 @@
-'use strict';
+import React, { Component, PropTypes } from 'react';
 
-var React = require('react');
-
-var {
+import {
   Accordion,
   AccordionContent,
-  AccordionSection,
-} = require('components/accordion');
+  AccordionSection } from 'components/accordion';
 
-var gettext = require('utils').gettext;
+import { gettext } from 'utils';
 
-module.exports = React.createClass({
 
-  displayName: 'ManagementApp',
+export default class Management extends Component {
 
-  propTypes: {
-    getPayMethods: React.PropTypes.func.isRequired,
-  },
+  static propTypes = {
+    getPayMethods: PropTypes.func.isRequired,
+  };
 
-  render: function() {
+  render() {
     return (
 
         <div>
@@ -75,5 +71,5 @@ module.exports = React.createClass({
           </div>
         </div>
     );
-  },
-});
+  }
+}

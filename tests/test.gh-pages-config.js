@@ -1,6 +1,4 @@
-'use strict';
-
-var ghPagesConfig = require('../tasks/gh-pages');
+import ghPagesConfig from '../tasks/gh-pages';
 
 describe('grunt-gh-pages config', function() {
   it('Docker builds should be silent=true', function() {

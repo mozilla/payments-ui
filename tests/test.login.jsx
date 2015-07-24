@@ -1,20 +1,13 @@
-'use strict';
+import React from 'react';
+import TestUtils from 'react/lib/ReactTestUtils';
 
-var React;
-var TestUtils;
-
-var Login = require('views/login');
+import Login from 'views/login';
 
 
 describe('Login', function() {
 
   var accessToken = 'some-oauth-access-token';
   var signInSpy = sinon.spy();
-
-  beforeEach(function() {
-    React = require('react');
-    TestUtils = require('react/lib/ReactTestUtils');
-  });
 
   function mountView() {
     return TestUtils.renderIntoDocument(

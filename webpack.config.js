@@ -23,7 +23,7 @@ module.exports = {
         test: /\.jsx?$/,
         // es7.objectRestSpread to enable ES7 rest spread operators
         // eg: let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 };
-        loaders: ['babel?optional[]=es7.objectRestSpread&stage=2'],
+        loaders: ['babel?optional[]=es7.objectRestSpread&optional[]=es7.classProperties&stage=2'],
       },
     ],
   },

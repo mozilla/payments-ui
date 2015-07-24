@@ -1,11 +1,9 @@
-'use strict';
+import React, { findDOMNode } from 'react';
+import TestUtils from 'react/lib/ReactTestUtils';
 
-var React;
-var TestUtils;
+import * as helpers from './helpers';
 
-var CompletePayment = require('views/complete-payment');
-
-var helpers = require('./helpers');
+import CompletePayment from 'views/complete-payment';
 
 
 describe('CompletePayment', function() {
@@ -18,8 +16,6 @@ describe('CompletePayment', function() {
         postMessage: this.sandbox.stub(),
       },
     };
-    React = require('react');
-    TestUtils = require('react/lib/ReactTestUtils');
     this.CompletePayment = TestUtils.renderIntoDocument(
       <CompletePayment productId='mozilla-concrete-brick'
                        userEmail={this.email}
@@ -33,7 +29,7 @@ describe('CompletePayment', function() {
 
   it('should show where the receipt was emailed', function() {
     var email = helpers.findByClass(this.CompletePayment, 'email');
-    assert.equal(email.getDOMNode().textContent, this.email);
+    assert.equal(findDOMNode(email).textContent, this.email);
   });
 
   it('should fire handleClick when OK button is clicked', function() {

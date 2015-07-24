@@ -1,10 +1,9 @@
-'use strict';
+import React, { findDOMNode } from 'react';
+import TestUtils from 'react/lib/ReactTestUtils';
 
-var React = require('react');
-var TestUtils = require('react/lib/ReactTestUtils');
-var helpers = require('./helpers');
+import * as helpers from './helpers';
 
-var Spinner = require('components/spinner');
+import Spinner from 'components/spinner';
 
 
 describe('Spinner', function() {
@@ -12,13 +11,13 @@ describe('Spinner', function() {
   it('Uses loading as the default text', function() {
     var Spinner_ = TestUtils.renderIntoDocument(<Spinner />);
     var textNode = helpers.findByClass(Spinner_, 'text');
-    assert.equal(textNode.getDOMNode().firstChild.nodeValue, 'Loading');
+    assert.equal(findDOMNode(textNode).firstChild.nodeValue, 'Loading');
   });
 
   it('Uses custom text as supplied', function() {
     var Spinner_ = TestUtils.renderIntoDocument(<Spinner text="whatever" />);
     var textNode = helpers.findByClass(Spinner_, 'text');
-    assert.equal(textNode.getDOMNode().firstChild.nodeValue, 'whatever');
+    assert.equal(findDOMNode(textNode).firstChild.nodeValue, 'whatever');
   });
 
 });
