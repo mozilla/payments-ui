@@ -22,7 +22,7 @@ export default class CardChoice extends Component {
       }
     )).isRequired,
     productId: PropTypes.string.isRequired,
-  };
+  }
 
   constructor(props) {
     super(props);

@@ -11,7 +11,7 @@ export default class CardItem extends Component {
     resource_uri: PropTypes.string.isRequired,
     truncated_id: PropTypes.string.isRequired,
     type_name: PropTypes.string.isRequired,
-  };
+  }
 
   render() {
     var cardType = this.props.type_name.toLowerCase();

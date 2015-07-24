@@ -9,7 +9,7 @@ export default class Modal extends Component {
     children: PropTypes.object.isRequired,
     handleClose: PropTypes.func.isRequired,
     title: PropTypes.string,
-  };
+  }
 
   onClose = (e) => {
     var targetClassName = e.target.getAttribute('class') || '';

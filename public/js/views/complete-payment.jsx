@@ -1,33 +1,29 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import ProductDetail from 'components/product-detail';
 import SubmitButton from 'components/submit-button';
 
 import { gettext } from 'utils';
-import tracking from 'tracking';
+import { default as tracking } from 'tracking';
 
 
-export default React.createClass({
+export default class CompletePayment extends Component {
 
-  displayName: 'CompleteView',
-
-  propTypes: {
+  static propTypes = {
     productId: React.PropTypes.string.isRequired,
     userEmail: React.PropTypes.string.isRequired,
     win: React.PropTypes.object,
-  },
+  }
 
-  getDefaultProps: function() {
-    return {
-      win: window,
-    };
-  },
+  static defaultProps = {
+    win: window,
+  }
 
-  componentDidMount: function() {
+  componentDidMount() {
     tracking.setPage('/complete-payment');
-  },
+  }
 
-  handleClick: function(e) {
+  handleClick = (e) => {
     e.preventDefault();
     var win = this.props.win;
     if (win.parent !== window) {
@@ -43,21 +39,20 @@ export default React.createClass({
     } else {
       console.log('Not iframed. No-op');
     }
-  },
+  }
 
-  render: function() {
-    var component = this;
+  render() {
     return (
       <div className="complete">
-        <ProductDetail productId={component.props.productId} />
+        <ProductDetail productId={this.props.productId} />
         <p className="accepted">{gettext('Payment Accepted')}</p>
         <p className="receipt">
           {gettext('Your receipt has been sent to')}
           <span className="email">{this.props.userEmail}</span>
         </p>
         <SubmitButton text={gettext('OK')}
-                      onClick={component.handleClick} />
+                      onClick={this.handleClick} />
       </div>
     );
-  },
-});
+  }
+}

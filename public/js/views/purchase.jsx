@@ -5,9 +5,9 @@ import { Connector } from 'redux/react';
 
 import * as purchaseActions from 'actions/purchase';
 
-import CardDetails from 'views/card-details';
-import CardListing from 'views/card-listing';
-import CompletePayment from 'views/complete-payment';
+import DefaultCardDetails from 'views/card-details';
+import DefaultCardListing from 'views/card-listing';
+import DefaultCompletePayment from 'views/complete-payment';
 
 
 export default class Purchase extends Component {
@@ -21,9 +21,9 @@ export default class Purchase extends Component {
   }
 
   static defaultProps = {
-    CardDetails: CardDetails,
-    CardListing: CardListing,
-    CompletePayment: CompletePayment,
+    CardDetails: DefaultCardDetails,
+    CardListing: DefaultCardListing,
+    CompletePayment: DefaultCompletePayment,
   }
 
   selectData(state) {
@@ -34,22 +34,22 @@ export default class Purchase extends Component {
 
   render () {
     var props = this.props;
-    var CompletePayment_ = this.props.CompletePayment;
-    var CardListing_ = this.props.CardListing;
-    var CardDetails_ = this.props.CardDetails;
+    var CompletePayment = this.props.CompletePayment;
+    var CardListing = this.props.CardListing;
+    var CardDetails = this.props.CardDetails;
     return (
       <Connector select={this.selectData}>
         {function(result) {
           if (result.purchase.completed) {
             return (
-              <CompletePayment_
+              <CompletePayment
                 productId={props.productId}
                 userEmail={props.user.email} />
             );
           } else if (result.purchase.payment_methods.length > 0) {
             console.log('rendering card listing');
             return (
-              <CardListing_
+              <CardListing
                 productId={props.productId}
                 paymentMethods={result.purchase.payment_methods}
                 {...bindActionCreators(purchaseActions, result.dispatch)}
@@ -57,7 +57,7 @@ export default class Purchase extends Component {
             );
           } else {
             console.log('rendering card entry');
-            return <CardDetails_ productId={props.productId} />;
+            return <CardDetails productId={props.productId} />;
           }
         }}
       </Connector>

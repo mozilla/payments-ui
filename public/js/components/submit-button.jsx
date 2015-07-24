@@ -8,7 +8,7 @@ export default class SubmitButton extends Component {
     isDisabled: PropTypes.bool,
     showSpinner: PropTypes.bool,
     text: PropTypes.string.isRequired,
-  };
+  }
 
   render() {
     var { isDisabled, text, showSpinner, ...buttonAttrs } = this.props;

@@ -81,7 +81,7 @@ export default class CardForm extends Component {
     expiration: PropTypes.object,
     id: PropTypes.string.isRequired,
     productId: PropTypes.string.isRequired,
-  };
+  }
 
   constructor(props) {
     super(props);

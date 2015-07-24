@@ -2,16 +2,16 @@
 * Populates an object with defaults if the key is not yet defined.
 * Similar to _.defaults except this takes only a single defaults object.
 * @param {object} object - the object to populate defaults on
-* @param {object} defaults - the defaults to use
+* @param {object} opt - the defaults to use
 * @returns {object}
 */
 
-export function defaults(object, defaults_) {
+export function defaults(object, opt) {
   object = object || {};
-  defaults_ = defaults_ || {};
-  Object.keys(defaults_).forEach(function(key) {
+  opt = opt || {};
+  Object.keys(opt).forEach(function(key) {
     if (typeof object[key] === 'undefined') {
-      object[key] = defaults_[key];
+      object[key] = opt[key];
     }
   });
   return object;

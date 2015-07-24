@@ -7,7 +7,7 @@ class Accordion extends Component {
 
   static propTypes = {
     children: PropTypes.node.isRequired,
-  };
+  }
 
   constructor(props) {
     super(props);
@@ -54,7 +54,7 @@ class AccordionSection extends Component {
     activate: React.PropTypes.func.isRequired,
     children: React.PropTypes.node.isRequired,
     isActive: React.PropTypes.bool,
-  };
+  }
 
   render() {
     var classes = cx(
@@ -74,7 +74,7 @@ class AccordionContent extends Component {
 
   static propTypes = {
     children: React.PropTypes.node.isRequired,
-  };
+  }
 
   render() {
     return (

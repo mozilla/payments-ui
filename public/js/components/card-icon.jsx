@@ -23,7 +23,7 @@ export default class CardIcon extends Component {
       'master-card',
       'visa',
     ]),
-  };
+  }
 
 
   render() {

@@ -12,7 +12,7 @@ export default class CardDetailsView extends Component {
 
   static propTypes = {
     productId: PropTypes.string.isRequired,
-  };
+  }
 
   constructor(props) {
     super(props);

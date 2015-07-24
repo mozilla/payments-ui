@@ -1,9 +1,8 @@
-import { createRedux as createRedux_ } from 'redux';
+import { createRedux } from 'redux';
 import * as stores from 'stores';
 
-function createRedux() {
-  return createRedux_(stores);
+export function create() {
+  return createRedux(stores);
 }
 
-export default createRedux();
-export { createRedux as create };
+export default create();

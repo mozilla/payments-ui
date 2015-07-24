@@ -54,7 +54,7 @@ export default class CardInput extends Component {
     pattern: PropTypes.string,
     placeholder: PropTypes.string,
     showError: PropTypes.bool,
-  };
+  }
 
   updatePattern(fieldId, cardType) {
     // Update the pattern for card + cvv field if card was detected.

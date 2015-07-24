@@ -6,7 +6,7 @@ export default class ErrorMessage extends Component {
 
   static propTypes = {
     error: PropTypes.object.isRequired,
-  };
+  }
 
   render() {
     console.log('rendering app error:', this.props.error);

@@ -13,7 +13,7 @@ export default class CardListing extends Component {
     payWithNewCard: PropTypes.func.isRequired,
     paymentMethods: PropTypes.array.isRequired,
     productId: PropTypes.string.isRequired,
-  };
+  }
 
   componentDidMount() {
     tracking.setPage('/card-listing');

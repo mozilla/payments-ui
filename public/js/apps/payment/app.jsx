@@ -7,8 +7,8 @@ import { bindActionCreators } from 'redux';
 
 import reduxConfig from 'redux-config';
 import ErrorMessage from 'components/error';
-import Login from 'views/login';
-import Purchase from 'views/purchase';
+import DefaultLogin from 'views/login';
+import DefaultPurchase from 'views/purchase';
 import * as userActions from 'actions/user';
 import { parseQuery } from 'utils';
 
@@ -16,14 +16,14 @@ import { parseQuery } from 'utils';
 export default class PaymentApp extends Component {
 
   static propTypes = {
-    Login: PropTypes.object,
-    Purchase: PropTypes.object,
+    Login: PropTypes.node,
+    Purchase: PropTypes.node,
     win: PropTypes.object,
   }
 
   static defaultProps = {
-    Login: Login,
-    Purchase: Purchase,
+    Login: DefaultLogin,
+    Purchase: DefaultPurchase,
     win: window,
   }
 
@@ -46,8 +46,8 @@ export default class PaymentApp extends Component {
 
   render() {
     var state = this.state;
-    var Login_ = this.props.Login;
-    var Purchase_ = this.props.Purchase;
+    var Login = this.props.Login;
+    var Purchase = this.props.Purchase;
 
     return (
       <main>
@@ -59,7 +59,7 @@ export default class PaymentApp extends Component {
             } else if (!result.user.signedIn) {
               console.log('rendering login');
               return (
-                <Login_
+                <Login
                   accessToken={state.accessToken}
                   {...bindActionCreators(userActions, result.dispatch) }
                 />
@@ -67,7 +67,7 @@ export default class PaymentApp extends Component {
             } else {
               console.log('rendering purchase flow');
               return (
-                <Purchase_ user={result.user} productId={state.productId} />
+                <Purchase user={result.user} productId={state.productId} />
               );
             }
           }}

@@ -6,7 +6,7 @@ export default class ProductDetail extends Component {
 
   static propTypes = {
     productId: PropTypes.string.isRequired,
-  };
+  }
 
   render() {
 

@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import tracking from 'tracking';
-import { init as appInit } from './app';
+import { init as initApp } from './app';
 
 // Common ajax settings.
 $.ajaxSetup({
@@ -8,4 +8,4 @@ $.ajaxSetup({
 });
 
 tracking.init();
-appInit();
+initApp();
