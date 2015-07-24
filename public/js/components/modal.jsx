@@ -1,21 +1,17 @@
-'use strict';
-
-var React = require('react');
-var gettext = require('utils').gettext;
-var cx = require('classnames');
+import React, { Component, PropTypes } from 'react';
+import { gettext } from 'utils';
+import cx from 'classnames';
 
 
-module.exports = React.createClass({
+export default class Modal extends Component {
 
-  displayName: 'Modal',
+  static propTypes = {
+    children: PropTypes.object.isRequired,
+    handleClose: PropTypes.func.isRequired,
+    title: PropTypes.string,
+  }
 
-  propTypes: {
-    children: React.PropTypes.object.isRequired,
-    handleClose: React.PropTypes.func.isRequired,
-    title: React.PropTypes.string,
-  },
-
-  onClose: function(e) {
+  onClose = (e) => {
     var targetClassName = e.target.getAttribute('class') || '';
     var classes = targetClassName.split(' ');
     // Only deal with closing the window if the event
@@ -27,9 +23,9 @@ module.exports = React.createClass({
       e.stopPropagation();
       this.props.handleClose();
     }
-  },
+  }
 
-  render: function() {
+  render() {
     var classes = cx(['modal', {'active': true}]);
 
     return (
@@ -47,5 +43,5 @@ module.exports = React.createClass({
         </div>
       </div>
     );
-  },
-});
+  }
+}

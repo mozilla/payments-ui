@@ -1,29 +1,25 @@
-'use strict';
+import React, { Component, PropTypes } from 'react';
 
-var React = require('react');
+import CardChoice from 'components/card-choice';
+import ProductDetail from 'components/product-detail';
 
-var CardChoice = require('components/card-choice');
-var ProductDetail = require('components/product-detail');
-
-var gettext = require('utils').gettext;
-var tracking = require('tracking');
+import { gettext } from 'utils';
+import tracking from 'tracking';
 
 
-module.exports = React.createClass({
+export default class CardListing extends Component {
 
-  displayName: 'CardListing',
+  static propTypes = {
+    payWithNewCard: PropTypes.func.isRequired,
+    paymentMethods: PropTypes.array.isRequired,
+    productId: PropTypes.string.isRequired,
+  }
 
-  propTypes: {
-    payWithNewCard: React.PropTypes.func.isRequired,
-    paymentMethods: React.PropTypes.array.isRequired,
-    productId: React.PropTypes.string.isRequired,
-  },
-
-  componentDidMount: function() {
+  componentDidMount() {
     tracking.setPage('/card-listing');
-  },
+  }
 
-  render: function() {
+  render() {
     return (
       <div className="card-listing">
         <ProductDetail productId={this.props.productId} />
@@ -37,5 +33,5 @@ module.exports = React.createClass({
         </a>
       </div>
     );
-  },
-});
+  }
+}

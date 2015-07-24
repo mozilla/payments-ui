@@ -4,17 +4,25 @@ webpackJsonp([1],[
 
 	'use strict';
 	
-	var $ = __webpack_require__(1);
-	var tracking = __webpack_require__(208);
-	var App = __webpack_require__(210);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _jquery = __webpack_require__(1);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	var _tracking = __webpack_require__(208);
+	
+	var _tracking2 = _interopRequireDefault(_tracking);
+	
+	var _app = __webpack_require__(210);
 	
 	// Common ajax settings.
-	$.ajaxSetup({
+	_jquery2['default'].ajaxSetup({
 	  dataType: 'json'
 	});
 	
-	tracking.init();
-	App.init();
+	_tracking2['default'].init();
+	(0, _app.init)();
 
 /***/ },
 /* 1 */,
@@ -227,15 +235,23 @@ webpackJsonp([1],[
 /* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* global ga */
+	
 	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 	
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	/* global ga */
+	var _settings = __webpack_require__(209);
 	
-	var settings = __webpack_require__(209);
+	var _settings2 = _interopRequireDefault(_settings);
 	
 	var Tracking = (function () {
 	  function Tracking(opts) {
@@ -273,12 +289,10 @@ webpackJsonp([1],[
 	        ga('send', 'pageview');
 	        /*eslint-enable */
 	      } else {
-	        console.log('Tracking init. (Analytics is OFF)');
-	      }
+	          console.log('Tracking init. (Analytics is OFF)');
+	        }
 	      this.initialized = true;
 	    }
-	  }, {
-	    key: 'sendEvent',
 	
 	    /*
 	     * Param           Type    Required  Description
@@ -290,6 +304,8 @@ webpackJsonp([1],[
 	     * opts.value      Number  No        Values must be non-negative.
 	     *                                   Useful to pass counts (e.g. 4 times)
 	     */
+	  }, {
+	    key: 'sendEvent',
 	    value: function sendEvent(opts) {
 	      if (!opts.category) {
 	        throw new Error('sendEvent: opts.category is required');
@@ -308,13 +324,13 @@ webpackJsonp([1],[
 	      }
 	      console.log(this.logPrefix, 'sendEvent', JSON.stringify(opts));
 	    }
-	  }, {
-	    key: 'setPage',
 	
 	    /*
 	     * Should be called when a new view is show.
 	     * Used in a SPA when the url is changed.
 	     */
+	  }, {
+	    key: 'setPage',
 	    value: function setPage(page) {
 	      if (!page) {
 	        throw new Error('setPage: page is required');
@@ -329,9 +345,10 @@ webpackJsonp([1],[
 	  return Tracking;
 	})();
 	
-	module.exports = new Tracking({
-	  enabled: settings.tracking.enabled,
-	  trackingId: settings.tracking.id
+	exports.Tracking = Tracking;
+	exports['default'] = new Tracking({
+	  enabled: _settings2['default'].tracking.enabled,
+	  trackingId: _settings2['default'].tracking.id
 	});
 
 /***/ },
@@ -354,81 +371,145 @@ webpackJsonp([1],[
 
 	'use strict';
 	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	__webpack_require__(20);
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
-	var React = __webpack_require__(27);
-	var Provider = __webpack_require__(183).Provider;
-	var Connector = __webpack_require__(183).Connector;
-	var bindActionCreators = __webpack_require__(4).bindActionCreators;
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 	
-	var reduxConfig = __webpack_require__(3);
-	var ErrorMessage = __webpack_require__(201);
-	var Login = __webpack_require__(211);
-	var Purchase = __webpack_require__(213);
-	var userActions = __webpack_require__(265);
-	var utils = __webpack_require__(199);
+	exports.init = init;
 	
-	var App = React.createClass({
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	  displayName: 'PaymentApp',
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	  getInitialState: function getInitialState() {
-	    var qs = utils.parseQuery(window.location.href);
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	__webpack_require__(3);
+	
+	var _react = __webpack_require__(10);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reduxReact = __webpack_require__(166);
+	
+	var _redux = __webpack_require__(179);
+	
+	var _reduxConfig = __webpack_require__(189);
+	
+	var _reduxConfig2 = _interopRequireDefault(_reduxConfig);
+	
+	var _componentsError = __webpack_require__(201);
+	
+	var _componentsError2 = _interopRequireDefault(_componentsError);
+	
+	var _viewsLogin = __webpack_require__(211);
+	
+	var _viewsLogin2 = _interopRequireDefault(_viewsLogin);
+	
+	var _viewsPurchase = __webpack_require__(213);
+	
+	var _viewsPurchase2 = _interopRequireDefault(_viewsPurchase);
+	
+	var _actionsUser = __webpack_require__(265);
+	
+	var userActions = _interopRequireWildcard(_actionsUser);
+	
+	var _utils = __webpack_require__(199);
+	
+	var PaymentApp = (function (_Component) {
+	  _inherits(PaymentApp, _Component);
+	
+	  _createClass(PaymentApp, null, [{
+	    key: 'propTypes',
+	    value: {
+	      Login: _react.PropTypes.node,
+	      Purchase: _react.PropTypes.node,
+	      win: _react.PropTypes.object
+	    },
+	    enumerable: true
+	  }, {
+	    key: 'defaultProps',
+	    value: {
+	      Login: _viewsLogin2['default'],
+	      Purchase: _viewsPurchase2['default'],
+	      win: window
+	    },
+	    enumerable: true
+	  }]);
+	
+	  function PaymentApp(props) {
+	    _classCallCheck(this, PaymentApp);
+	
+	    _get(Object.getPrototypeOf(PaymentApp.prototype), 'constructor', this).call(this, props);
+	    var qs = (0, _utils.parseQuery)(props.win.location.href);
 	    // TODO: we should validate/clean this input to raise early errors.
-	    return {
+	    this.state = {
 	      accessToken: qs.access_token,
 	      productId: qs.product
 	    };
-	  },
+	  }
 	
-	  selectData: function selectData(state) {
-	    return {
-	      app: state.app,
-	      user: state.user
-	    };
-	  },
+	  _createClass(PaymentApp, [{
+	    key: 'selectData',
+	    value: function selectData(state) {
+	      return {
+	        app: state.app,
+	        user: state.user
+	      };
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var state = this.state;
+	      var Login = this.props.Login;
+	      var Purchase = this.props.Purchase;
 	
-	  render: function render() {
-	    var state = this.state;
-	    return React.createElement(
-	      'main',
-	      null,
-	      React.createElement(
-	        Connector,
-	        { select: this.selectData },
-	        function (result) {
-	          if (result.app.error) {
-	            console.log('rendering app error');
-	            return React.createElement(ErrorMessage, { error: result.app.error });
-	          } else if (!result.user.signedIn) {
-	            console.log('rendering login');
-	            return React.createElement(Login, _extends({
-	              accessToken: state.accessToken
-	            }, bindActionCreators(userActions, result.dispatch)));
-	          } else {
-	            console.log('rendering purchase flow');
-	            return React.createElement(Purchase, { user: result.user, productId: state.productId });
+	      return _react2['default'].createElement(
+	        'main',
+	        null,
+	        _react2['default'].createElement(
+	          _reduxReact.Connector,
+	          { select: this.selectData },
+	          function (result) {
+	            if (result.app.error) {
+	              console.log('rendering app error');
+	              return _react2['default'].createElement(_componentsError2['default'], { error: result.app.error });
+	            } else if (!result.user.signedIn) {
+	              console.log('rendering login');
+	              return _react2['default'].createElement(Login, _extends({
+	                accessToken: state.accessToken
+	              }, (0, _redux.bindActionCreators)(userActions, result.dispatch)));
+	            } else {
+	              console.log('rendering purchase flow');
+	              return _react2['default'].createElement(Purchase, { user: result.user, productId: state.productId });
+	            }
 	          }
-	        }
-	      )
-	    );
-	  }
-	});
+	        )
+	      );
+	    }
+	  }]);
 	
-	module.exports = {
-	  component: App,
-	  init: function init() {
-	    React.render(React.createElement(
-	      Provider,
-	      { redux: reduxConfig['default'] },
-	      function () {
-	        return React.createElement(App, null);
-	      }
-	    ), document.body);
-	  }
-	};
+	  return PaymentApp;
+	})(_react.Component);
+	
+	exports['default'] = PaymentApp;
+	
+	function init() {
+	  _react2['default'].render(_react2['default'].createElement(
+	    _reduxReact.Provider,
+	    { redux: _reduxConfig2['default'] },
+	    function () {
+	      return _react2['default'].createElement(PaymentApp, null);
+	    }
+	  ), document.body);
+	}
 
 /***/ },
 /* 211 */
@@ -436,32 +517,68 @@ webpackJsonp([1],[
 
 	'use strict';
 	
-	var React = __webpack_require__(27);
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 	
-	var Spinner = __webpack_require__(212);
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
-	var gettext = __webpack_require__(199).gettext;
-	var tracking = __webpack_require__(208);
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 	
-	module.exports = React.createClass({
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	  displayName: 'Login',
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	  propTypes: {
-	    accessToken: React.PropTypes.string.isRequired,
-	    signIn: React.PropTypes.func.isRequired
-	  },
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	  componentDidMount: function componentDidMount() {
-	    tracking.setPage('/login');
-	    this.props.signIn(this.props.accessToken);
-	  },
+	var _react = __webpack_require__(10);
 	
-	  render: function render() {
-	    return React.createElement(Spinner, { text: gettext('Signing in') });
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _componentsSpinner = __webpack_require__(212);
+	
+	var _componentsSpinner2 = _interopRequireDefault(_componentsSpinner);
+	
+	var _utils = __webpack_require__(199);
+	
+	var _tracking = __webpack_require__(208);
+	
+	var _tracking2 = _interopRequireDefault(_tracking);
+	
+	var Login = (function (_Component) {
+	  _inherits(Login, _Component);
+	
+	  function Login() {
+	    _classCallCheck(this, Login);
+	
+	    _get(Object.getPrototypeOf(Login.prototype), 'constructor', this).apply(this, arguments);
 	  }
 	
-	});
+	  _createClass(Login, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      _tracking2['default'].setPage('/login');
+	      this.props.signIn(this.props.accessToken);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2['default'].createElement(_componentsSpinner2['default'], { text: (0, _utils.gettext)('Signing in') });
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: {
+	      accessToken: _react.PropTypes.string.isRequired,
+	      signIn: _react.PropTypes.func.isRequired
+	    },
+	    enumerable: true
+	  }]);
+	
+	  return Login;
+	})(_react.Component);
+	
+	exports['default'] = Login;
+	module.exports = exports['default'];
 
 /***/ },
 /* 212 */
@@ -469,36 +586,68 @@ webpackJsonp([1],[
 
 	'use strict';
 	
-	var React = __webpack_require__(27);
-	
-	var gettext = __webpack_require__(199).gettext;
-	
-	module.exports = React.createClass({
-	  displayName: 'Spinner',
-	
-	  propTypes: {
-	    text: React.PropTypes.string.isRequired
-	  },
-	
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      text: gettext('Loading')
-	    };
-	  },
-	
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      { className: 'spinner-cont' },
-	      React.createElement('div', { className: 'spinner' }),
-	      React.createElement(
-	        'span',
-	        { className: 'text' },
-	        this.props.text
-	      )
-	    );
-	  }
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
 	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(10);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _utils = __webpack_require__(199);
+	
+	var Spinner = (function (_Component) {
+	  _inherits(Spinner, _Component);
+	
+	  function Spinner() {
+	    _classCallCheck(this, Spinner);
+	
+	    _get(Object.getPrototypeOf(Spinner.prototype), 'constructor', this).apply(this, arguments);
+	  }
+	
+	  _createClass(Spinner, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2['default'].createElement(
+	        'div',
+	        { className: "spinner-cont" },
+	        _react2['default'].createElement('div', { className: "spinner" }),
+	        _react2['default'].createElement(
+	          'span',
+	          { className: "text" },
+	          this.props.text
+	        )
+	      );
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: {
+	      text: _react.PropTypes.string.isRequired
+	    },
+	    enumerable: true
+	  }, {
+	    key: 'defaultProps',
+	    value: {
+	      text: (0, _utils.gettext)('Loading')
+	    },
+	    enumerable: true
+	  }]);
+	
+	  return Spinner;
+	})(_react.Component);
+	
+	exports['default'] = Spinner;
+	module.exports = exports['default'];
 
 /***/ },
 /* 213 */
@@ -506,55 +655,117 @@ webpackJsonp([1],[
 
 	'use strict';
 	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var React = __webpack_require__(27);
-	var bindActionCreators = __webpack_require__(4).bindActionCreators;
-	var Connector = __webpack_require__(183).Connector;
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
-	var CardDetails = __webpack_require__(214);
-	var CardListing = __webpack_require__(262);
-	var CompletePayment = __webpack_require__(264);
-	var purchaseActions = __webpack_require__(261);
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 	
-	module.exports = React.createClass({
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	  displayName: 'Purchase',
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	  propTypes: {
-	    productId: React.PropTypes.string.isRequired,
-	    user: React.PropTypes.object.isRequired
-	  },
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	  selectData: function selectData(state) {
-	    return {
-	      purchase: state.purchase
-	    };
-	  },
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	  render: function render() {
-	    var props = this.props;
-	    return React.createElement(
-	      Connector,
-	      { select: this.selectData },
-	      function (result) {
-	        if (result.purchase.completed) {
-	          return React.createElement(CompletePayment, { productId: props.productId,
-	            userEmail: props.user.email });
-	        } else if (result.purchase.payment_methods.length > 0) {
-	          console.log('rendering card listing');
-	          return React.createElement(CardListing, _extends({
-	            productId: props.productId,
-	            paymentMethods: result.purchase.payment_methods
-	          }, bindActionCreators(purchaseActions, result.dispatch)));
-	        } else {
-	          console.log('rendering card entry');
-	          return React.createElement(CardDetails, { productId: props.productId });
-	        }
-	      }
-	    );
+	var _react = __webpack_require__(10);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _redux = __webpack_require__(179);
+	
+	var _reduxReact = __webpack_require__(166);
+	
+	var _actionsPurchase = __webpack_require__(214);
+	
+	var purchaseActions = _interopRequireWildcard(_actionsPurchase);
+	
+	var _viewsCardDetails = __webpack_require__(215);
+	
+	var _viewsCardDetails2 = _interopRequireDefault(_viewsCardDetails);
+	
+	var _viewsCardListing = __webpack_require__(262);
+	
+	var _viewsCardListing2 = _interopRequireDefault(_viewsCardListing);
+	
+	var _viewsCompletePayment = __webpack_require__(264);
+	
+	var _viewsCompletePayment2 = _interopRequireDefault(_viewsCompletePayment);
+	
+	var Purchase = (function (_Component) {
+	  _inherits(Purchase, _Component);
+	
+	  function Purchase() {
+	    _classCallCheck(this, Purchase);
+	
+	    _get(Object.getPrototypeOf(Purchase.prototype), 'constructor', this).apply(this, arguments);
 	  }
-	});
+	
+	  _createClass(Purchase, [{
+	    key: 'selectData',
+	    value: function selectData(state) {
+	      return {
+	        purchase: state.purchase
+	      };
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var props = this.props;
+	      var CompletePayment = this.props.CompletePayment;
+	      var CardListing = this.props.CardListing;
+	      var CardDetails = this.props.CardDetails;
+	      return _react2['default'].createElement(
+	        _reduxReact.Connector,
+	        { select: this.selectData },
+	        function (result) {
+	          if (result.purchase.completed) {
+	            return _react2['default'].createElement(CompletePayment, {
+	              productId: props.productId,
+	              userEmail: props.user.email });
+	          } else if (result.purchase.payment_methods.length > 0) {
+	            console.log('rendering card listing');
+	            return _react2['default'].createElement(CardListing, _extends({
+	              productId: props.productId,
+	              paymentMethods: result.purchase.payment_methods
+	            }, (0, _redux.bindActionCreators)(purchaseActions, result.dispatch)));
+	          } else {
+	            console.log('rendering card entry');
+	            return _react2['default'].createElement(CardDetails, { productId: props.productId });
+	          }
+	        }
+	      );
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: {
+	      CardDetails: _react.PropTypes.object,
+	      CardListing: _react.PropTypes.object,
+	      CompletePayment: _react.PropTypes.object,
+	      productId: _react.PropTypes.string.isRequired,
+	      user: _react.PropTypes.object.isRequired
+	    },
+	    enumerable: true
+	  }, {
+	    key: 'defaultProps',
+	    value: {
+	      CardDetails: _viewsCardDetails2['default'],
+	      CardListing: _viewsCardListing2['default'],
+	      CompletePayment: _viewsCompletePayment2['default']
+	    },
+	    enumerable: true
+	  }]);
+	
+	  return Purchase;
+	})(_react.Component);
+	
+	exports['default'] = Purchase;
+	module.exports = exports['default'];
 
 /***/ },
 /* 214 */
@@ -562,68 +773,34 @@ webpackJsonp([1],[
 
 	'use strict';
 	
-	var $ = __webpack_require__(1);
-	var React = __webpack_require__(27);
-	
-	var CardForm = __webpack_require__(219);
-	var ProductDetail = __webpack_require__(215);
-	var Spinner = __webpack_require__(212);
-	
-	var tracking = __webpack_require__(208);
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'CardDetailsView',
-	
-	  propTypes: {
-	    productId: React.PropTypes.string.isRequired
-	  },
-	
-	  getInitialState: function getInitialState() {
-	    return {
-	      braintree_token: false
-	    };
-	  },
-	
-	  componentDidMount: function componentDidMount() {
-	    console.log('Requesting braintree token');
-	    // TODO: move this to a purchase action.
-	
-	    tracking.setPage('/card-details');
-	
-	    $.ajax({
-	      method: 'post',
-	      url: '/api/braintree/token/generate/',
-	      context: this
-	    }).then(function (data) {
-	      if (this.isMounted()) {
-	        this.setState({ 'braintree_token': data.token }); // eslint-disable-line
-	      }
-	    }).fail(function () {
-	      // TODO: some error state.
-	      console.log('failed to get braintree token');
-	    });
-	  },
-	
-	  render: function render() {
-	
-	    if (this.state.braintree_token) {
-	      return React.createElement(
-	        'div',
-	        { className: 'card-details' },
-	        React.createElement(ProductDetail, { productId: this.props.productId }),
-	        React.createElement(CardForm, {
-	          'data-token': this.state.braintree_token,
-	          id: 'braintree-form',
-	          method: 'post',
-	          productId: this.props.productId
-	        })
-	      );
-	    } else {
-	      return React.createElement(Spinner, null);
-	    }
-	  }
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
 	});
+	exports.complete = complete;
+	exports.payWithNewCard = payWithNewCard;
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+	
+	var _constantsActionTypes = __webpack_require__(192);
+	
+	// TODO: expand these actions to encapsulate the Ajax
+	// logic more directly. This will allow the Ajax requests to
+	// be tested more easily. CardForm and CardChoice will need
+	// to be refactored.
+	
+	var actionTypes = _interopRequireWildcard(_constantsActionTypes);
+	
+	function complete() {
+	  return {
+	    type: actionTypes.COMPLETE_PURCHASE
+	  };
+	}
+	
+	function payWithNewCard() {
+	  return {
+	    type: actionTypes.PAY_WITH_NEW_CARD
+	  };
+	}
 
 /***/ },
 /* 215 */
@@ -631,53 +808,119 @@ webpackJsonp([1],[
 
 	'use strict';
 	
-	var React = __webpack_require__(27);
-	var products = __webpack_require__(216);
-	var gettext = __webpack_require__(199).gettext;
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'ProductDetail',
-	
-	  propTypes: {
-	    productId: React.PropTypes.string.isRequired
-	  },
-	
-	  render: function render() {
-	
-	    var productId = this.props.productId;
-	    var productData = products[productId];
-	
-	    if (!productData) {
-	      throw new Error('Invalid product: ' + productId);
-	    }
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'product' },
-	      React.createElement(
-	        'h1',
-	        { className: 'title' },
-	        productData.seller.name.en
-	      ),
-	      React.createElement(
-	        'div',
-	        null,
-	        productData.description.en
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'price' },
-	        productData.price.en
-	      ),
-	      React.createElement(
-	        'div',
-	        null,
-	        gettext('per month')
-	      )
-	    );
-	  }
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
 	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	var _jquery = __webpack_require__(1);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	var _react = __webpack_require__(10);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _componentsCardForm = __webpack_require__(220);
+	
+	var _componentsCardForm2 = _interopRequireDefault(_componentsCardForm);
+	
+	var _componentsProductDetail = __webpack_require__(216);
+	
+	var _componentsProductDetail2 = _interopRequireDefault(_componentsProductDetail);
+	
+	var _componentsSpinner = __webpack_require__(212);
+	
+	var _componentsSpinner2 = _interopRequireDefault(_componentsSpinner);
+	
+	var _tracking = __webpack_require__(208);
+	
+	var _tracking2 = _interopRequireDefault(_tracking);
+	
+	var CardDetailsView = (function (_Component) {
+	  _inherits(CardDetailsView, _Component);
+	
+	  _createClass(CardDetailsView, null, [{
+	    key: 'propTypes',
+	    value: {
+	      productId: _react.PropTypes.string.isRequired
+	    },
+	    enumerable: true
+	  }]);
+	
+	  function CardDetailsView(props) {
+	    _classCallCheck(this, CardDetailsView);
+	
+	    _get(Object.getPrototypeOf(CardDetailsView.prototype), 'constructor', this).call(this, props);
+	    this.state = {
+	      braintree_token: false
+	    };
+	  }
+	
+	  _createClass(CardDetailsView, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      console.log('Requesting braintree token');
+	      // TODO: move this to a purchase action.
+	
+	      this.mounted = true;
+	
+	      _tracking2['default'].setPage('/card-details');
+	
+	      _jquery2['default'].ajax({
+	        method: 'post',
+	        url: '/api/braintree/token/generate/',
+	        context: this
+	      }).then(function (data) {
+	        if (this.mounted) {
+	          this.setState({ 'braintree_token': data.token }); // eslint-disable-line
+	        }
+	      }).fail(function () {
+	        // TODO: some error state.
+	        console.log('failed to get braintree token');
+	      });
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      this.mounted = false;
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	
+	      if (this.state.braintree_token) {
+	        return _react2['default'].createElement(
+	          'div',
+	          { className: "card-details" },
+	          _react2['default'].createElement(_componentsProductDetail2['default'], { productId: this.props.productId }),
+	          _react2['default'].createElement(_componentsCardForm2['default'], {
+	            'data-token': this.state.braintree_token,
+	            id: "braintree-form",
+	            method: "post",
+	            productId: this.props.productId
+	          })
+	        );
+	      } else {
+	        return _react2['default'].createElement(_componentsSpinner2['default'], null);
+	      }
+	    }
+	  }]);
+	
+	  return CardDetailsView;
+	})(_react.Component);
+	
+	exports['default'] = CardDetailsView;
+	module.exports = exports['default'];
 
 /***/ },
 /* 216 */
@@ -685,13 +928,106 @@ webpackJsonp([1],[
 
 	'use strict';
 	
-	module.exports = {
-	  'mozilla-concrete-brick': __webpack_require__(217),
-	  'mozilla-concrete-mortar': __webpack_require__(218)
-	};
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(10);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _products = __webpack_require__(217);
+	
+	var _products2 = _interopRequireDefault(_products);
+	
+	var _utils = __webpack_require__(199);
+	
+	var ProductDetail = (function (_Component) {
+	  _inherits(ProductDetail, _Component);
+	
+	  function ProductDetail() {
+	    _classCallCheck(this, ProductDetail);
+	
+	    _get(Object.getPrototypeOf(ProductDetail.prototype), 'constructor', this).apply(this, arguments);
+	  }
+	
+	  _createClass(ProductDetail, [{
+	    key: 'render',
+	    value: function render() {
+	
+	      var productId = this.props.productId;
+	      var productData = _products2['default'][productId];
+	
+	      if (!productData) {
+	        throw new Error('Invalid product: ' + productId);
+	      }
+	
+	      return _react2['default'].createElement(
+	        'div',
+	        { className: "product" },
+	        _react2['default'].createElement(
+	          'h1',
+	          { className: "title" },
+	          productData.seller.name.en
+	        ),
+	        _react2['default'].createElement(
+	          'div',
+	          null,
+	          productData.description.en
+	        ),
+	        _react2['default'].createElement(
+	          'div',
+	          { className: "price" },
+	          productData.price.en
+	        ),
+	        _react2['default'].createElement(
+	          'div',
+	          null,
+	          (0, _utils.gettext)('per month')
+	        )
+	      );
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: {
+	      productId: _react.PropTypes.string.isRequired
+	    },
+	    enumerable: true
+	  }]);
+	
+	  return ProductDetail;
+	})(_react.Component);
+	
+	exports['default'] = ProductDetail;
+	module.exports = exports['default'];
 
 /***/ },
 /* 217 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports['default'] = {
+	  'mozilla-concrete-brick': __webpack_require__(218),
+	  'mozilla-concrete-mortar': __webpack_require__(219)
+	};
+	module.exports = exports['default'];
+
+/***/ },
+/* 218 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -717,7 +1053,7 @@ webpackJsonp([1],[
 	}
 
 /***/ },
-/* 218 */
+/* 219 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -743,27 +1079,64 @@ webpackJsonp([1],[
 	}
 
 /***/ },
-/* 219 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
-	var $ = __webpack_require__(1);
-	var CardValidator = __webpack_require__(220);
-	var React = __webpack_require__(27);
-	var braintree = __webpack_require__(255);
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var utils = __webpack_require__(199);
-	var gettext = utils.gettext;
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var CardInput = __webpack_require__(256);
-	var SubmitButton = __webpack_require__(260);
-	var purchaseActions = __webpack_require__(261);
-	var reduxConfig = __webpack_require__(3);
+	var _jquery = __webpack_require__(1);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	var _cardValidator = __webpack_require__(221);
+	
+	var _cardValidator2 = _interopRequireDefault(_cardValidator);
+	
+	var _react = __webpack_require__(10);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _braintreeWeb = __webpack_require__(256);
+	
+	var _braintreeWeb2 = _interopRequireDefault(_braintreeWeb);
+	
+	var _utils = __webpack_require__(199);
+	
+	var _componentsCardInput = __webpack_require__(257);
+	
+	var _componentsCardInput2 = _interopRequireDefault(_componentsCardInput);
+	
+	var _componentsSubmitButton = __webpack_require__(261);
+	
+	var _componentsSubmitButton2 = _interopRequireDefault(_componentsSubmitButton);
+	
+	var _actionsPurchase = __webpack_require__(214);
+	
+	var purchaseActions = _interopRequireWildcard(_actionsPurchase);
+	
+	var _reduxConfig = __webpack_require__(189);
+	
+	var _reduxConfig2 = _interopRequireDefault(_reduxConfig);
 	
 	var defaultFieldAttrs = {
 	  'autoComplete': 'off',
@@ -773,21 +1146,140 @@ webpackJsonp([1],[
 	  'type': 'tel'
 	};
 	
-	module.exports = React.createClass({
-	
-	  displayName: 'CardForm',
-	
-	  propTypes: {
-	    card: React.PropTypes.object,
-	    cvv: React.PropTypes.object,
-	    'data-token': React.PropTypes.string.isRequired,
-	    expiration: React.PropTypes.object,
-	    id: React.PropTypes.string.isRequired,
-	    productId: React.PropTypes.string.isRequired
+	var errorKeyToFieldMap = {
+	  '__all__': {
+	    field: 'card',
+	    error: 'declined'
 	  },
+	  'fraud': {
+	    field: 'card',
+	    error: 'declined'
+	  },
+	  'cvv': {
+	    field: 'cvv',
+	    error: 'invalid'
+	  }
+	};
 	
-	  getInitialState: function getInitialState() {
-	    return {
+	var fieldProps = {
+	  card: {
+	    'attrs': defaultFieldAttrs,
+	    'classNames': ['card'],
+	    'errors': {
+	      invalid: (0, _utils.gettext)('Incorrect card number'),
+	      declined: (0, _utils.gettext)('Card was declined')
+	    },
+	    'id': 'card',
+	    'placeholder': (0, _utils.gettext)('Card number'),
+	    'validator': _cardValidator2['default'].number
+	  },
+	  expiration: {
+	    'attrs': defaultFieldAttrs,
+	    'classNames': ['expiration'],
+	    'errors': {
+	      invalid: (0, _utils.gettext)('Invalid expiry date')
+	    },
+	    'id': 'expiration',
+	    // Expiration pattern doesn't change based on card type.
+	    'pattern': '11/11',
+	    'placeholder': 'MM/YY',
+	    'validator': _cardValidator2['default'].expirationDate
+	  },
+	  cvv: {
+	    'attrs': defaultFieldAttrs,
+	    'autocomplete': 'off',
+	    'classNames': ['cvv'],
+	    'errors': {
+	      invalid: (0, _utils.gettext)('Invalid CVV')
+	    },
+	    'errorModifier': 'right',
+	    'id': 'cvv',
+	    'validator': _cardValidator2['default'].cvv
+	  }
+	};
+	
+	var CardForm = (function (_Component) {
+	  _inherits(CardForm, _Component);
+	
+	  _createClass(CardForm, null, [{
+	    key: 'propTypes',
+	    value: {
+	      card: _react.PropTypes.object,
+	      cvv: _react.PropTypes.object,
+	      'data-token': _react.PropTypes.string.isRequired,
+	      expiration: _react.PropTypes.object,
+	      id: _react.PropTypes.string.isRequired,
+	      productId: _react.PropTypes.string.isRequired
+	    },
+	    enumerable: true
+	  }]);
+	
+	  function CardForm(props) {
+	    var _this = this;
+	
+	    _classCallCheck(this, CardForm);
+	
+	    _get(Object.getPrototypeOf(CardForm.prototype), 'constructor', this).call(this, props);
+	
+	    this.handleChange = function (e) {
+	      var fieldId = e.target.id;
+	      var val = e.target.value;
+	
+	      var fieldData = fieldProps[fieldId];
+	      var valData = fieldData.validator(_this.stripPlaceholder(val));
+	      fieldData.hasVal = val.length > 0 || false;
+	      fieldData.isValid = valData.isValid === true;
+	      fieldData.showError = !valData.isValid && !valData.isPotentiallyValid;
+	      fieldData.errorMessage = fieldData.errors.invalid;
+	
+	      var newState = _defineProperty({}, e.target.id, e.target.value);
+	
+	      // Only the card field has card data upon validation.
+	      if (fieldId === 'card') {
+	        var cardData = valData.card || {};
+	        newState.cardType = cardData.type;
+	      }
+	
+	      _this.setState(newState);
+	    };
+	
+	    this.handleSubmit = function (e) {
+	      e.preventDefault();
+	      _this.setState({ isSubmitting: true });
+	      var that = _this;
+	      var client = new _braintreeWeb2['default'].api.Client({
+	        clientToken: _this.props['data-token']
+	      });
+	      client.tokenizeCard({
+	        number: _this.state.card,
+	        expirationDate: _this.state.expiration,
+	        cvv: _this.state.cvv
+	      }, function (err, nonce) {
+	        if (err) {
+	          // TODO: error handling
+	          console.log(err);
+	        } else {
+	          _jquery2['default'].ajax({
+	            data: {
+	              pay_method_nonce: nonce,
+	              plan_id: that.props.productId
+	            },
+	            url: '/api/braintree/subscriptions/',
+	            method: 'post',
+	            dataType: 'json',
+	            context: that
+	          }).done(function () {
+	            console.log('Successfully subscribed + completed payment');
+	
+	            _reduxConfig2['default'].dispatch(purchaseActions.complete());
+	          }).fail(function ($xhr) {
+	            this.processApiErrors($xhr.responseJSON);
+	          });
+	        }
+	      });
+	    };
+	
+	    this.state = {
 	      isSubmitting: false,
 	      cardType: null,
 	      errors: {},
@@ -795,196 +1287,93 @@ webpackJsonp([1],[
 	      expiration: '',
 	      cvv: ''
 	    };
-	  },
+	  }
 	
-	  fieldProps: {
-	    card: {
-	      'attrs': defaultFieldAttrs,
-	      'classNames': ['card'],
-	      'errors': {
-	        invalid: gettext('Incorrect card number'),
-	        declined: gettext('Card was declined')
-	      },
-	      'id': 'card',
-	      'placeholder': gettext('Card number'),
-	      'validator': CardValidator.number
-	    },
-	    expiration: {
-	      'attrs': defaultFieldAttrs,
-	      'classNames': ['expiration'],
-	      'errors': {
-	        invalid: gettext('Invalid expiry date')
-	      },
-	      'id': 'expiration',
-	      // Expiration pattern doesn't change based on card type.
-	      'pattern': '11/11',
-	      'placeholder': 'MM/YY',
-	      'validator': CardValidator.expirationDate
-	    },
-	    cvv: {
-	      'attrs': defaultFieldAttrs,
-	      'autocomplete': 'off',
-	      'classNames': ['cvv'],
-	      'errors': {
-	        invalid: gettext('Invalid CVV')
-	      },
-	      'errorModifier': 'right',
-	      'id': 'cvv',
-	      'validator': CardValidator.cvv
-	    }
-	  },
-	
-	  handleChange: function handleChange(e) {
-	    var fieldId = e.target.id;
-	    var val = e.target.value;
-	
-	    var fieldProps = this.fieldProps[fieldId];
-	    var valData = fieldProps.validator(this.stripPlaceholder(val));
-	    fieldProps.hasVal = val.length > 0 || false;
-	    fieldProps.isValid = valData.isValid === true;
-	    fieldProps.showError = !valData.isValid && !valData.isPotentiallyValid;
-	    fieldProps.errorMessage = fieldProps.errors.invalid;
-	
-	    var newState = _defineProperty({}, e.target.id, e.target.value);
-	
-	    // Only the card field has card data upon validation.
-	    if (fieldId === 'card') {
-	      var cardData = valData.card || {};
-	      newState.cardType = cardData.type;
-	    }
-	
-	    this.setState(newState);
-	  },
-	
-	  handleSubmit: function handleSubmit(e) {
-	    e.preventDefault();
-	    this.setState({ isSubmitting: true });
-	    var that = this;
-	    var client = new braintree.api.Client({
-	      clientToken: this.props['data-token']
-	    });
-	    client.tokenizeCard({
-	      number: this.state.card,
-	      expirationDate: this.state.expiration,
-	      cvv: this.state.cvv
-	    }, function (err, nonce) {
-	      if (err) {
-	        // TODO: error handling
-	        console.log(err);
-	      } else {
-	        $.ajax({
-	          data: {
-	            pay_method_nonce: nonce,
-	            plan_id: that.props.productId
-	          },
-	          url: '/api/braintree/subscriptions/',
-	          method: 'post',
-	          dataType: 'json',
-	          context: that
-	        }).done(function () {
-	          console.log('Successfully subscribed + completed payment');
-	
-	          reduxConfig['default'].dispatch(purchaseActions.complete());
-	        }).fail(function ($xhr) {
-	          this.processApiErrors($xhr.responseJSON);
+	  _createClass(CardForm, [{
+	    key: 'processApiErrors',
+	    value: function processApiErrors(errors) {
+	      if (errors.error_response && errors.error_response.braintree) {
+	        var apiErrors = errors.error_response.braintree;
+	        // Iterate over the error object and create a new data
+	        // structure keyed by field or otherwise push onto
+	        // a list of generic errors.
+	        Object.keys(apiErrors).forEach(function (key) {
+	          console.log('API ErrorMessage: ' + JSON.stringify(apiErrors[key]));
+	          var errorData = errorKeyToFieldMap[key] || {};
+	          var field = errorData.field;
+	          if (field) {
+	            var fieldData = fieldProps[field];
+	            fieldData.isValid = false;
+	            fieldData.showError = true;
+	            fieldData.errorMessage = fieldData.errors[errorData.error];
+	          }
 	        });
 	      }
-	    });
-	  },
-	
-	  errorKeyToFieldMap: {
-	    '__all__': {
-	      field: 'card',
-	      error: 'declined'
-	    },
-	    'fraud': {
-	      field: 'card',
-	      error: 'declined'
-	    },
-	    'cvv': {
-	      field: 'cvv',
-	      error: 'invalid'
-	    }
-	  },
-	
-	  processApiErrors: function processApiErrors(errors) {
-	    var that = this;
-	    if (errors.error_response && errors.error_response.braintree) {
-	      var apiErrors = errors.error_response.braintree;
-	      // Iterate over the error object and create a new data
-	      // structure keyed by field or otherwise push onto
-	      // a list of generic errors.
-	      Object.keys(apiErrors).forEach(function (key) {
-	        console.log('API ErrorMessage: ' + JSON.stringify(apiErrors[key]));
-	        var errorData = that.errorKeyToFieldMap[key] || {};
-	        var field = errorData.field;
-	        if (field) {
-	          var fieldData = that.fieldProps[field];
-	          fieldData.isValid = false;
-	          fieldData.showError = true;
-	          fieldData.errorMessage = fieldData.errors[errorData.error];
-	        }
+	      this.setState({
+	        isSubmitting: false
 	      });
 	    }
-	    this.setState({
-	      isSubmitting: false
-	    });
-	  },
+	  }, {
+	    key: 'stripPlaceholder',
+	    value: function stripPlaceholder(val) {
+	      return val ? val.replace(/_/g, '') : '';
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var formIsValid = true;
 	
-	  stripPlaceholder: function stripPlaceholder(val) {
-	    return val ? val.replace(/_/g, '') : '';
-	  },
+	      // Update form validity based on fieldProps.
+	      Object.keys(fieldProps).forEach(function (field) {
+	        if (!fieldProps[field].isValid) {
+	          formIsValid = false;
+	        }
+	      });
 	
-	  render: function render() {
+	      return _react2['default'].createElement(
+	        'form',
+	        _extends({}, this.props, { onSubmit: this.handleSubmit }),
+	        _react2['default'].createElement(_componentsCardInput2['default'], _extends({}, fieldProps.card, {
+	          cardType: this.state.cardType,
+	          onChangeHandler: this.handleChange })),
+	        _react2['default'].createElement(_componentsCardInput2['default'], _extends({}, fieldProps.expiration, {
+	          cardType: this.state.cardType,
+	          onChangeHandler: this.handleChange })),
+	        _react2['default'].createElement(_componentsCardInput2['default'], _extends({}, fieldProps.cvv, {
+	          cardType: this.state.cardType,
+	          onChangeHandler: this.handleChange })),
+	        _react2['default'].createElement(_componentsSubmitButton2['default'], { isDisabled: !formIsValid,
+	          showSpinner: this.state.isSubmitting,
+	          text: (0, _utils.gettext)('Subscribe') })
+	      );
+	    }
+	  }]);
 	
-	    var formIsValid = true;
-	    var that = this;
+	  return CardForm;
+	})(_react.Component);
 	
-	    // Update form validity based on fieldProps.
-	    Object.keys(this.fieldProps).forEach(function (field) {
-	      if (!that.fieldProps[field].isValid) {
-	        formIsValid = false;
-	      }
-	    });
-	
-	    return React.createElement(
-	      'form',
-	      _extends({}, this.props, { onSubmit: this.handleSubmit }),
-	      React.createElement(CardInput, _extends({}, this.fieldProps.card, {
-	        cardType: this.state.cardType,
-	        onChangeHandler: this.handleChange })),
-	      React.createElement(CardInput, _extends({}, this.fieldProps.expiration, {
-	        cardType: this.state.cardType,
-	        onChangeHandler: this.handleChange })),
-	      React.createElement(CardInput, _extends({}, this.fieldProps.cvv, {
-	        cardType: this.state.cardType,
-	        onChangeHandler: this.handleChange })),
-	      React.createElement(SubmitButton, { isDisabled: !formIsValid,
-	        showSpinner: this.state.isSubmitting,
-	        text: gettext('Subscribe') })
-	    );
-	  }
-	});
-
-/***/ },
-/* 220 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  number: __webpack_require__(223),
-	  expirationDate: __webpack_require__(250),
-	  expirationMonth: __webpack_require__(252),
-	  expirationYear: __webpack_require__(221),
-	  cvv: __webpack_require__(253),
-	  postalCode: __webpack_require__(254)
-	};
-
+	exports['default'] = CardForm;
+	module.exports = exports['default'];
 
 /***/ },
 /* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isString = __webpack_require__(222);
+	module.exports = {
+	  number: __webpack_require__(224),
+	  expirationDate: __webpack_require__(251),
+	  expirationMonth: __webpack_require__(253),
+	  expirationYear: __webpack_require__(222),
+	  cvv: __webpack_require__(254),
+	  postalCode: __webpack_require__(255)
+	};
+
+
+/***/ },
+/* 222 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isString = __webpack_require__(223);
 	var maxYear = 19;
 	
 	function verification(isValid, isPotentiallyValid, isCurrentYear) {
@@ -1045,7 +1434,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 222 */
+/* 223 */
 /***/ function(module, exports) {
 
 	/**
@@ -1104,14 +1493,14 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 223 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isString = __webpack_require__(222);
-	var extend = __webpack_require__(224);
-	var luhn10 = __webpack_require__(235);
-	var getCardTypes = __webpack_require__(236);
-	var isNumber = __webpack_require__(249);
+	var isString = __webpack_require__(223);
+	var extend = __webpack_require__(225);
+	var luhn10 = __webpack_require__(236);
+	var getCardTypes = __webpack_require__(237);
+	var isNumber = __webpack_require__(250);
 	
 	function verification(card, isPotentiallyValid, isValid) {
 	  return extend({}, {card: card, isPotentiallyValid: isPotentiallyValid, isValid: isValid});
@@ -1165,7 +1554,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 224 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1176,9 +1565,9 @@ webpackJsonp([1],[
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseAssign = __webpack_require__(225),
-	    createAssigner = __webpack_require__(231),
-	    keys = __webpack_require__(227);
+	var baseAssign = __webpack_require__(226),
+	    createAssigner = __webpack_require__(232),
+	    keys = __webpack_require__(228);
 	
 	/**
 	 * A specialized version of `_.assign` for customizing assigned values without
@@ -1251,7 +1640,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 225 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1262,8 +1651,8 @@ webpackJsonp([1],[
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseCopy = __webpack_require__(226),
-	    keys = __webpack_require__(227);
+	var baseCopy = __webpack_require__(227),
+	    keys = __webpack_require__(228);
 	
 	/**
 	 * The base implementation of `_.assign` without support for argument juggling,
@@ -1284,7 +1673,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 226 */
+/* 227 */
 /***/ function(module, exports) {
 
 	/**
@@ -1322,7 +1711,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 227 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1333,9 +1722,9 @@ webpackJsonp([1],[
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(228),
-	    isArguments = __webpack_require__(229),
-	    isArray = __webpack_require__(230);
+	var getNative = __webpack_require__(229),
+	    isArguments = __webpack_require__(230),
+	    isArray = __webpack_require__(231);
 	
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -1564,7 +1953,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 228 */
+/* 229 */
 /***/ function(module, exports) {
 
 	/**
@@ -1701,7 +2090,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 229 */
+/* 230 */
 /***/ function(module, exports) {
 
 	/**
@@ -1815,7 +2204,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 230 */
+/* 231 */
 /***/ function(module, exports) {
 
 	/**
@@ -1995,7 +2384,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 231 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2006,9 +2395,9 @@ webpackJsonp([1],[
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var bindCallback = __webpack_require__(232),
-	    isIterateeCall = __webpack_require__(233),
-	    restParam = __webpack_require__(234);
+	var bindCallback = __webpack_require__(233),
+	    isIterateeCall = __webpack_require__(234),
+	    restParam = __webpack_require__(235);
 	
 	/**
 	 * Creates a function that assigns properties of source object(s) to a given
@@ -2053,7 +2442,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 232 */
+/* 233 */
 /***/ function(module, exports) {
 
 	/**
@@ -2124,7 +2513,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 233 */
+/* 234 */
 /***/ function(module, exports) {
 
 	/**
@@ -2262,7 +2651,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 234 */
+/* 235 */
 /***/ function(module, exports) {
 
 	/**
@@ -2335,7 +2724,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 235 */
+/* 236 */
 /***/ function(module, exports) {
 
 	/*eslint-disable*/
@@ -2347,11 +2736,11 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 236 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isString = __webpack_require__(222);
-	var clone = __webpack_require__(237);
+	var isString = __webpack_require__(223);
+	var clone = __webpack_require__(238);
 	
 	var types = [
 	  {
@@ -2466,7 +2855,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 237 */
+/* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2477,8 +2866,8 @@ webpackJsonp([1],[
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseClone = __webpack_require__(238),
-	    bindCallback = __webpack_require__(248);
+	var baseClone = __webpack_require__(239),
+	    bindCallback = __webpack_require__(249);
 	
 	/**
 	 * Creates a deep clone of `value`. If `customizer` is provided it is invoked
@@ -2535,7 +2924,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 238 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -2546,13 +2935,13 @@ webpackJsonp([1],[
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var arrayCopy = __webpack_require__(239),
-	    arrayEach = __webpack_require__(240),
-	    baseAssign = __webpack_require__(241),
-	    baseFor = __webpack_require__(247),
-	    getNative = __webpack_require__(244),
-	    isArray = __webpack_require__(246),
-	    keys = __webpack_require__(243);
+	var arrayCopy = __webpack_require__(240),
+	    arrayEach = __webpack_require__(241),
+	    baseAssign = __webpack_require__(242),
+	    baseFor = __webpack_require__(248),
+	    getNative = __webpack_require__(245),
+	    isArray = __webpack_require__(247),
+	    keys = __webpack_require__(244);
 	
 	/** `Object#toString` result references. */
 	var argsTag = '[object Arguments]',
@@ -2868,7 +3257,7 @@ webpackJsonp([1],[
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 239 */
+/* 240 */
 /***/ function(module, exports) {
 
 	/**
@@ -2903,7 +3292,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 240 */
+/* 241 */
 /***/ function(module, exports) {
 
 	/**
@@ -2940,7 +3329,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 241 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2951,8 +3340,8 @@ webpackJsonp([1],[
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseCopy = __webpack_require__(242),
-	    keys = __webpack_require__(243);
+	var baseCopy = __webpack_require__(243),
+	    keys = __webpack_require__(244);
 	
 	/**
 	 * The base implementation of `_.assign` without support for argument juggling,
@@ -2973,7 +3362,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 242 */
+/* 243 */
 /***/ function(module, exports) {
 
 	/**
@@ -3011,7 +3400,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 243 */
+/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3022,9 +3411,9 @@ webpackJsonp([1],[
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(244),
-	    isArguments = __webpack_require__(245),
-	    isArray = __webpack_require__(246);
+	var getNative = __webpack_require__(245),
+	    isArguments = __webpack_require__(246),
+	    isArray = __webpack_require__(247);
 	
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -3253,7 +3642,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 244 */
+/* 245 */
 /***/ function(module, exports) {
 
 	/**
@@ -3390,7 +3779,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 245 */
+/* 246 */
 /***/ function(module, exports) {
 
 	/**
@@ -3504,7 +3893,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 246 */
+/* 247 */
 /***/ function(module, exports) {
 
 	/**
@@ -3684,7 +4073,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 247 */
+/* 248 */
 /***/ function(module, exports) {
 
 	/**
@@ -3776,7 +4165,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 248 */
+/* 249 */
 /***/ function(module, exports) {
 
 	/**
@@ -3847,7 +4236,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 249 */
+/* 250 */
 /***/ function(module, exports) {
 
 	/**
@@ -3912,13 +4301,13 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 250 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var parseDate = __webpack_require__(251);
-	var expirationMonth = __webpack_require__(252);
-	var expirationYear = __webpack_require__(221);
-	var isString = __webpack_require__(222);
+	var parseDate = __webpack_require__(252);
+	var expirationMonth = __webpack_require__(253);
+	var expirationYear = __webpack_require__(222);
+	var isString = __webpack_require__(223);
 	
 	function verification(isValid, isPotentiallyValid, month, year) {
 	  return {
@@ -3963,7 +4352,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 251 */
+/* 252 */
 /***/ function(module, exports) {
 
 	function parseDate(value) {
@@ -3991,10 +4380,10 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 252 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isString = __webpack_require__(222);
+	var isString = __webpack_require__(223);
 	
 	function verification(isValid, isPotentiallyValid, isValidForThisYear) {
 	  return {
@@ -4033,10 +4422,10 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 253 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isString = __webpack_require__(222);
+	var isString = __webpack_require__(223);
 	var DEFAULT_LENGTH = 3;
 	
 	function verification(isValid, isPotentiallyValid) {
@@ -4059,10 +4448,10 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 254 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isString = __webpack_require__(222);
+	var isString = __webpack_require__(223);
 	
 	function verification(isValid, isPotentiallyValid) {
 	  return {isValid: isValid, isPotentiallyValid: isPotentiallyValid};
@@ -4082,7 +4471,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 255 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var require;var require;/* WEBPACK VAR INJECTION */(function(global) {!function(){function t(e,n){e instanceof t?(this.enc=e.enc,this.pos=e.pos):(this.enc=e,this.pos=n)}function e(t,e,n,i,r){this.stream=t,this.header=e,this.length=n,this.tag=i,this.sub=r}function n(t){var e,n,i="";for(e=0;e+3<=t.length;e+=3)n=parseInt(t.substring(e,e+3),16),i+=ee.charAt(n>>6)+ee.charAt(63&n);for(e+1==t.length?(n=parseInt(t.substring(e,e+1),16),i+=ee.charAt(n<<2)):e+2==t.length&&(n=parseInt(t.substring(e,e+2),16),i+=ee.charAt(n>>2)+ee.charAt((3&n)<<4));(3&i.length)>0;)i+=ne;return i}function i(t){var e,n,i,r="",o=0;for(e=0;e<t.length&&t.charAt(e)!=ne;++e)i=ee.indexOf(t.charAt(e)),0>i||(0==o?(r+=l(i>>2),n=3&i,o=1):1==o?(r+=l(n<<2|i>>4),n=15&i,o=2):2==o?(r+=l(n),r+=l(i>>2),n=3&i,o=3):(r+=l(n<<2|i>>4),r+=l(15&i),o=0));return 1==o&&(r+=l(n<<2)),r}function r(t){var e,n=i(t),r=new Array;for(e=0;2*e<n.length;++e)r[e]=parseInt(n.substring(2*e,2*e+2),16);return r}function o(t,e,n){null!=t&&("number"==typeof t?this.fromNumber(t,e,n):null==e&&"string"!=typeof t?this.fromString(t,256):this.fromString(t,e))}function s(){return new o(null)}function a(t,e,n,i,r,o){for(;--o>=0;){var s=e*this[t++]+n[i]+r;r=Math.floor(s/67108864),n[i++]=67108863&s}return r}function u(t,e,n,i,r,o){for(var s=32767&e,a=e>>15;--o>=0;){var u=32767&this[t],c=this[t++]>>15,l=a*u+c*s;u=s*u+((32767&l)<<15)+n[i]+(1073741823&r),r=(u>>>30)+(l>>>15)+a*c+(r>>>30),n[i++]=1073741823&u}return r}function c(t,e,n,i,r,o){for(var s=16383&e,a=e>>14;--o>=0;){var u=16383&this[t],c=this[t++]>>14,l=a*u+c*s;u=s*u+((16383&l)<<14)+n[i]+r,r=(u>>28)+(l>>14)+a*c,n[i++]=268435455&u}return r}function l(t){return ue.charAt(t)}function p(t,e){var n=ce[t.charCodeAt(e)];return null==n?-1:n}function h(t){for(var e=this.t-1;e>=0;--e)t[e]=this[e];t.t=this.t,t.s=this.s}function d(t){this.t=1,this.s=0>t?-1:0,t>0?this[0]=t:-1>t?this[0]=t+this.DV:this.t=0}function f(t){var e=s();return e.fromInt(t),e}function m(t,e){var n;if(16==e)n=4;else if(8==e)n=3;else if(256==e)n=8;else if(2==e)n=1;else if(32==e)n=5;else{if(4!=e)return void this.fromRadix(t,e);n=2}this.t=0,this.s=0;for(var i=t.length,r=!1,s=0;--i>=0;){var a=8==n?255&t[i]:p(t,i);0>a?"-"==t.charAt(i)&&(r=!0):(r=!1,0==s?this[this.t++]=a:s+n>this.DB?(this[this.t-1]|=(a&(1<<this.DB-s)-1)<<s,this[this.t++]=a>>this.DB-s):this[this.t-1]|=a<<s,s+=n,s>=this.DB&&(s-=this.DB))}8==n&&0!=(128&t[0])&&(this.s=-1,s>0&&(this[this.t-1]|=(1<<this.DB-s)-1<<s)),this.clamp(),r&&o.ZERO.subTo(this,this)}function y(){for(var t=this.s&this.DM;this.t>0&&this[this.t-1]==t;)--this.t}function g(t){if(this.s<0)return"-"+this.negate().toString(t);var e;if(16==t)e=4;else if(8==t)e=3;else if(2==t)e=1;else if(32==t)e=5;else{if(4!=t)return this.toRadix(t);e=2}var n,i=(1<<e)-1,r=!1,o="",s=this.t,a=this.DB-s*this.DB%e;if(s-->0)for(a<this.DB&&(n=this[s]>>a)>0&&(r=!0,o=l(n));s>=0;)e>a?(n=(this[s]&(1<<a)-1)<<e-a,n|=this[--s]>>(a+=this.DB-e)):(n=this[s]>>(a-=e)&i,0>=a&&(a+=this.DB,--s)),n>0&&(r=!0),r&&(o+=l(n));return r?o:"0"}function b(){var t=s();return o.ZERO.subTo(this,t),t}function v(){return this.s<0?this.negate():this}function _(t){var e=this.s-t.s;if(0!=e)return e;var n=this.t;if(e=n-t.t,0!=e)return this.s<0?-e:e;for(;--n>=0;)if(0!=(e=this[n]-t[n]))return e;return 0}function E(t){var e,n=1;return 0!=(e=t>>>16)&&(t=e,n+=16),0!=(e=t>>8)&&(t=e,n+=8),0!=(e=t>>4)&&(t=e,n+=4),0!=(e=t>>2)&&(t=e,n+=2),0!=(e=t>>1)&&(t=e,n+=1),n}function w(){return this.t<=0?0:this.DB*(this.t-1)+E(this[this.t-1]^this.s&this.DM)}function A(t,e){var n;for(n=this.t-1;n>=0;--n)e[n+t]=this[n];for(n=t-1;n>=0;--n)e[n]=0;e.t=this.t+t,e.s=this.s}function C(t,e){for(var n=t;n<this.t;++n)e[n-t]=this[n];e.t=Math.max(this.t-t,0),e.s=this.s}function S(t,e){var n,i=t%this.DB,r=this.DB-i,o=(1<<r)-1,s=Math.floor(t/this.DB),a=this.s<<i&this.DM;for(n=this.t-1;n>=0;--n)e[n+s+1]=this[n]>>r|a,a=(this[n]&o)<<i;for(n=s-1;n>=0;--n)e[n]=0;e[s]=a,e.t=this.t+s+1,e.s=this.s,e.clamp()}function T(t,e){e.s=this.s;var n=Math.floor(t/this.DB);if(n>=this.t)return void(e.t=0);var i=t%this.DB,r=this.DB-i,o=(1<<i)-1;e[0]=this[n]>>i;for(var s=n+1;s<this.t;++s)e[s-n-1]|=(this[s]&o)<<r,e[s-n]=this[s]>>i;i>0&&(e[this.t-n-1]|=(this.s&o)<<r),e.t=this.t-n,e.clamp()}function x(t,e){for(var n=0,i=0,r=Math.min(t.t,this.t);r>n;)i+=this[n]-t[n],e[n++]=i&this.DM,i>>=this.DB;if(t.t<this.t){for(i-=t.s;n<this.t;)i+=this[n],e[n++]=i&this.DM,i>>=this.DB;i+=this.s}else{for(i+=this.s;n<t.t;)i-=t[n],e[n++]=i&this.DM,i>>=this.DB;i-=t.s}e.s=0>i?-1:0,-1>i?e[n++]=this.DV+i:i>0&&(e[n++]=i),e.t=n,e.clamp()}function P(t,e){var n=this.abs(),i=t.abs(),r=n.t;for(e.t=r+i.t;--r>=0;)e[r]=0;for(r=0;r<i.t;++r)e[r+n.t]=n.am(0,i[r],e,r,0,n.t);e.s=0,e.clamp(),this.s!=t.s&&o.ZERO.subTo(e,e)}function N(t){for(var e=this.abs(),n=t.t=2*e.t;--n>=0;)t[n]=0;for(n=0;n<e.t-1;++n){var i=e.am(n,e[n],t,2*n,0,1);(t[n+e.t]+=e.am(n+1,2*e[n],t,2*n+1,i,e.t-n-1))>=e.DV&&(t[n+e.t]-=e.DV,t[n+e.t+1]=1)}t.t>0&&(t[t.t-1]+=e.am(n,e[n],t,2*n,0,1)),t.s=0,t.clamp()}function I(t,e,n){var i=t.abs();if(!(i.t<=0)){var r=this.abs();if(r.t<i.t)return null!=e&&e.fromInt(0),void(null!=n&&this.copyTo(n));null==n&&(n=s());var a=s(),u=this.s,c=t.s,l=this.DB-E(i[i.t-1]);l>0?(i.lShiftTo(l,a),r.lShiftTo(l,n)):(i.copyTo(a),r.copyTo(n));var p=a.t,h=a[p-1];if(0!=h){var d=h*(1<<this.F1)+(p>1?a[p-2]>>this.F2:0),f=this.FV/d,m=(1<<this.F1)/d,y=1<<this.F2,g=n.t,b=g-p,v=null==e?s():e;for(a.dlShiftTo(b,v),n.compareTo(v)>=0&&(n[n.t++]=1,n.subTo(v,n)),o.ONE.dlShiftTo(p,v),v.subTo(a,a);a.t<p;)a[a.t++]=0;for(;--b>=0;){var _=n[--g]==h?this.DM:Math.floor(n[g]*f+(n[g-1]+y)*m);if((n[g]+=a.am(0,_,n,b,0,p))<_)for(a.dlShiftTo(b,v),n.subTo(v,n);n[g]<--_;)n.subTo(v,n)}null!=e&&(n.drShiftTo(p,e),u!=c&&o.ZERO.subTo(e,e)),n.t=p,n.clamp(),l>0&&n.rShiftTo(l,n),0>u&&o.ZERO.subTo(n,n)}}}function O(t){var e=s();return this.abs().divRemTo(t,null,e),this.s<0&&e.compareTo(o.ZERO)>0&&t.subTo(e,e),e}function R(t){this.m=t}function k(t){return t.s<0||t.compareTo(this.m)>=0?t.mod(this.m):t}function D(t){return t}function M(t){t.divRemTo(this.m,null,t)}function U(t,e,n){t.multiplyTo(e,n),this.reduce(n)}function L(t,e){t.squareTo(e),this.reduce(e)}function F(){if(this.t<1)return 0;var t=this[0];if(0==(1&t))return 0;var e=3&t;return e=e*(2-(15&t)*e)&15,e=e*(2-(255&t)*e)&255,e=e*(2-((65535&t)*e&65535))&65535,e=e*(2-t*e%this.DV)%this.DV,e>0?this.DV-e:-e}function B(t){this.m=t,this.mp=t.invDigit(),this.mpl=32767&this.mp,this.mph=this.mp>>15,this.um=(1<<t.DB-15)-1,this.mt2=2*t.t}function z(t){var e=s();return t.abs().dlShiftTo(this.m.t,e),e.divRemTo(this.m,null,e),t.s<0&&e.compareTo(o.ZERO)>0&&this.m.subTo(e,e),e}function V(t){var e=s();return t.copyTo(e),this.reduce(e),e}function j(t){for(;t.t<=this.mt2;)t[t.t++]=0;for(var e=0;e<this.m.t;++e){var n=32767&t[e],i=n*this.mpl+((n*this.mph+(t[e]>>15)*this.mpl&this.um)<<15)&t.DM;for(n=e+this.m.t,t[n]+=this.m.am(0,i,t,e,0,this.m.t);t[n]>=t.DV;)t[n]-=t.DV,t[++n]++}t.clamp(),t.drShiftTo(this.m.t,t),t.compareTo(this.m)>=0&&t.subTo(this.m,t)}function H(t,e){t.squareTo(e),this.reduce(e)}function Y(t,e,n){t.multiplyTo(e,n),this.reduce(n)}function q(){return 0==(this.t>0?1&this[0]:this.s)}function G(t,e){if(t>4294967295||1>t)return o.ONE;var n=s(),i=s(),r=e.convert(this),a=E(t)-1;for(r.copyTo(n);--a>=0;)if(e.sqrTo(n,i),(t&1<<a)>0)e.mulTo(i,r,n);else{var u=n;n=i,i=u}return e.revert(n)}function W(t,e){var n;return n=256>t||e.isEven()?new R(e):new B(e),this.exp(t,n)}function Q(t,e){return new o(t,e)}function K(t,e){if(e<t.length+11)throw new Error("Message too long for RSA");for(var n=new Array,i=t.length-1;i>=0&&e>0;){var r=t.charCodeAt(i--);128>r?n[--e]=r:r>127&&2048>r?(n[--e]=63&r|128,n[--e]=r>>6|192):(n[--e]=63&r|128,n[--e]=r>>6&63|128,n[--e]=r>>12|224)}n[--e]=0;for(var s=0,a=0,u=0;e>2;)0==u&&(a=le.random.randomWords(1,0)[0]),s=a>>u&255,u=(u+8)%32,0!=s&&(n[--e]=s);return n[--e]=2,n[--e]=0,new o(n)}function Z(){this.n=null,this.e=0,this.d=null,this.p=null,this.q=null,this.dmp1=null,this.dmq1=null,this.coeff=null}function X(t,e){if(!(null!=t&&null!=e&&t.length>0&&e.length>0))throw new Error("Invalid RSA public key");this.n=Q(t,16),this.e=parseInt(e,16)}function J(t){return t.modPowInt(this.e,this.n)}function $(t){var e=K(t,this.n.bitLength()+7>>3);if(null==e)return null;var n=this.doPublic(e);if(null==n)return null;var i=n.toString(16);return 0==(1&i.length)?i:"0"+i}t.prototype.get=function(t){if(void 0==t&&(t=this.pos++),t>=this.enc.length)throw"Requesting byte offset "+t+" on a stream of length "+this.enc.length;return this.enc[t]},t.prototype.hexDigits="0123456789ABCDEF",t.prototype.hexByte=function(t){return this.hexDigits.charAt(t>>4&15)+this.hexDigits.charAt(15&t)},t.prototype.hexDump=function(t,e){for(var n="",i=t;e>i;++i)switch(n+=this.hexByte(this.get(i)),15&i){case 7:n+="  ";break;case 15:n+="\n";break;default:n+=" "}return n},t.prototype.parseStringISO=function(t,e){for(var n="",i=t;e>i;++i)n+=String.fromCharCode(this.get(i));return n},t.prototype.parseStringUTF=function(t,e){for(var n="",i=0,r=t;e>r;){var i=this.get(r++);n+=String.fromCharCode(128>i?i:i>191&&224>i?(31&i)<<6|63&this.get(r++):(15&i)<<12|(63&this.get(r++))<<6|63&this.get(r++))}return n},t.prototype.reTime=/^((?:1[89]|2\d)?\d\d)(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])([01]\d|2[0-3])(?:([0-5]\d)(?:([0-5]\d)(?:[.,](\d{1,3}))?)?)?(Z|[-+](?:[0]\d|1[0-2])([0-5]\d)?)?$/,t.prototype.parseTime=function(t,e){var n=this.parseStringISO(t,e),i=this.reTime.exec(n);return i?(n=i[1]+"-"+i[2]+"-"+i[3]+" "+i[4],i[5]&&(n+=":"+i[5],i[6]&&(n+=":"+i[6],i[7]&&(n+="."+i[7]))),i[8]&&(n+=" UTC","Z"!=i[8]&&(n+=i[8],i[9]&&(n+=":"+i[9]))),n):"Unrecognized time: "+n},t.prototype.parseInteger=function(t,e){var n=e-t;if(n>4){n<<=3;var i=this.get(t);if(0==i)n-=8;else for(;128>i;)i<<=1,--n;return"("+n+" bit)"}for(var r=0,o=t;e>o;++o)r=r<<8|this.get(o);return r},t.prototype.parseBitString=function(t,e){var n=this.get(t),i=(e-t-1<<3)-n,r="("+i+" bit)";if(20>=i){var o=n;r+=" ";for(var s=e-1;s>t;--s){for(var a=this.get(s),u=o;8>u;++u)r+=a>>u&1?"1":"0";o=0}}return r},t.prototype.parseOctetString=function(t,e){var n=e-t,i="("+n+" byte) ";n>20&&(e=t+20);for(var r=t;e>r;++r)i+=this.hexByte(this.get(r));return n>20&&(i+=String.fromCharCode(8230)),i},t.prototype.parseOID=function(t,e){for(var n,i=0,r=0,o=t;e>o;++o){var s=this.get(o);i=i<<7|127&s,r+=7,128&s||(void 0==n?n=parseInt(i/40)+"."+i%40:n+="."+(r>=31?"bigint":i),i=r=0),n+=String.fromCharCode()}return n},e.prototype.typeName=function(){if(void 0==this.tag)return"unknown";var t=this.tag>>6,e=(this.tag>>5&1,31&this.tag);switch(t){case 0:switch(e){case 0:return"EOC";case 1:return"BOOLEAN";case 2:return"INTEGER";case 3:return"BIT_STRING";case 4:return"OCTET_STRING";case 5:return"NULL";case 6:return"OBJECT_IDENTIFIER";case 7:return"ObjectDescriptor";case 8:return"EXTERNAL";case 9:return"REAL";case 10:return"ENUMERATED";case 11:return"EMBEDDED_PDV";case 12:return"UTF8String";case 16:return"SEQUENCE";case 17:return"SET";case 18:return"NumericString";case 19:return"PrintableString";case 20:return"TeletexString";case 21:return"VideotexString";case 22:return"IA5String";case 23:return"UTCTime";case 24:return"GeneralizedTime";case 25:return"GraphicString";case 26:return"VisibleString";case 27:return"GeneralString";case 28:return"UniversalString";case 30:return"BMPString";default:return"Universal_"+e.toString(16)}case 1:return"Application_"+e.toString(16);case 2:return"["+e+"]";case 3:return"Private_"+e.toString(16)}},e.prototype.content=function(){if(void 0==this.tag)return null;var t=this.tag>>6;if(0!=t)return null==this.sub?null:"("+this.sub.length+")";var e=31&this.tag,n=this.posContent(),i=Math.abs(this.length);switch(e){case 1:return 0==this.stream.get(n)?"false":"true";case 2:return this.stream.parseInteger(n,n+i);case 3:return this.sub?"("+this.sub.length+" elem)":this.stream.parseBitString(n,n+i);case 4:return this.sub?"("+this.sub.length+" elem)":this.stream.parseOctetString(n,n+i);case 6:return this.stream.parseOID(n,n+i);case 16:case 17:return"("+this.sub.length+" elem)";case 12:return this.stream.parseStringUTF(n,n+i);case 18:case 19:case 20:case 21:case 22:case 26:return this.stream.parseStringISO(n,n+i);case 23:case 24:return this.stream.parseTime(n,n+i)}return null},e.prototype.toString=function(){return this.typeName()+"@"+this.stream.pos+"[header:"+this.header+",length:"+this.length+",sub:"+(null==this.sub?"null":this.sub.length)+"]"},e.prototype.print=function(t){if(void 0==t&&(t=""),document.writeln(t+this),null!=this.sub){t+="  ";for(var e=0,n=this.sub.length;n>e;++e)this.sub[e].print(t)}},e.prototype.toPrettyString=function(t){void 0==t&&(t="");var e=t+this.typeName()+" @"+this.stream.pos;if(this.length>=0&&(e+="+"),e+=this.length,32&this.tag?e+=" (constructed)":3!=this.tag&&4!=this.tag||null==this.sub||(e+=" (encapsulates)"),e+="\n",null!=this.sub){t+="  ";for(var n=0,i=this.sub.length;i>n;++n)e+=this.sub[n].toPrettyString(t)}return e},e.prototype.posStart=function(){return this.stream.pos},e.prototype.posContent=function(){return this.stream.pos+this.header},e.prototype.posEnd=function(){return this.stream.pos+this.header+Math.abs(this.length)},e.decodeLength=function(t){var e=t.get(),n=127&e;if(n==e)return n;if(n>3)throw"Length over 24 bits not supported at position "+(t.pos-1);if(0==n)return-1;e=0;for(var i=0;n>i;++i)e=e<<8|t.get();return e},e.hasContent=function(n,i,r){if(32&n)return!0;if(3>n||n>4)return!1;var o=new t(r);3==n&&o.get();var s=o.get();if(s>>6&1)return!1;try{var a=e.decodeLength(o);return o.pos-r.pos+a==i}catch(u){return!1}},e.decode=function(n){n instanceof t||(n=new t(n,0));var i=new t(n),r=n.get(),o=e.decodeLength(n),s=n.pos-i.pos,a=null;if(e.hasContent(r,o,n)){var u=n.pos;if(3==r&&n.get(),a=[],o>=0){for(var c=u+o;n.pos<c;)a[a.length]=e.decode(n);if(n.pos!=c)throw"Content size is not correct for container starting at offset "+u}else try{for(;;){var l=e.decode(n);if(0==l.tag)break;a[a.length]=l}o=u-n.pos}catch(p){throw"Exception while decoding undefined length content: "+p}}else n.pos+=o;return new e(i,s,o,r,a)};var te,ee="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",ne="=",ie=0xdeadbeefcafe,re=15715070==(16777215&ie);re&&"Microsoft Internet Explorer"==navigator.appName?(o.prototype.am=u,te=30):re&&"Netscape"!=navigator.appName?(o.prototype.am=a,te=26):(o.prototype.am=c,te=28),o.prototype.DB=te,o.prototype.DM=(1<<te)-1,o.prototype.DV=1<<te;var oe=52;o.prototype.FV=Math.pow(2,oe),o.prototype.F1=oe-te,o.prototype.F2=2*te-oe;var se,ae,ue="0123456789abcdefghijklmnopqrstuvwxyz",ce=new Array;for(se="0".charCodeAt(0),ae=0;9>=ae;++ae)ce[se++]=ae;for(se="a".charCodeAt(0),ae=10;36>ae;++ae)ce[se++]=ae;for(se="A".charCodeAt(0),ae=10;36>ae;++ae)ce[se++]=ae;R.prototype.convert=k,R.prototype.revert=D,R.prototype.reduce=M,R.prototype.mulTo=U,R.prototype.sqrTo=L,B.prototype.convert=z,B.prototype.revert=V,B.prototype.reduce=j,B.prototype.mulTo=Y,B.prototype.sqrTo=H,o.prototype.copyTo=h,o.prototype.fromInt=d,o.prototype.fromString=m,o.prototype.clamp=y,o.prototype.dlShiftTo=A,o.prototype.drShiftTo=C,o.prototype.lShiftTo=S,o.prototype.rShiftTo=T,o.prototype.subTo=x,o.prototype.multiplyTo=P,o.prototype.squareTo=N,o.prototype.divRemTo=I,o.prototype.invDigit=F,o.prototype.isEven=q,o.prototype.exp=G,o.prototype.toString=g,o.prototype.negate=b,o.prototype.abs=v,o.prototype.compareTo=_,o.prototype.bitLength=w,o.prototype.mod=O,o.prototype.modPowInt=W,o.ZERO=f(0),o.ONE=f(1),Z.prototype.doPublic=J,Z.prototype.setPublic=X,Z.prototype.encrypt=$;var le={cipher:{},hash:{},keyexchange:{},mode:{},misc:{},codec:{},exception:{corrupt:function(t){this.toString=function(){return"CORRUPT: "+this.message},this.message=t},invalid:function(t){this.toString=function(){return"INVALID: "+this.message},this.message=t},bug:function(t){this.toString=function(){return"BUG: "+this.message},this.message=t},notReady:function(t){this.toString=function(){return"NOT READY: "+this.message},this.message=t}}};"undefined"!=typeof module&&module.exports&&(module.exports=le),le.cipher.aes=function(t){this._tables[0][0][0]||this._precompute();var e,n,i,r,o,s=this._tables[0][4],a=this._tables[1],u=t.length,c=1;if(4!==u&&6!==u&&8!==u)throw new le.exception.invalid("invalid aes key size");for(this._key=[r=t.slice(0),o=[]],e=u;4*u+28>e;e++)i=r[e-1],(e%u===0||8===u&&e%u===4)&&(i=s[i>>>24]<<24^s[i>>16&255]<<16^s[i>>8&255]<<8^s[255&i],e%u===0&&(i=i<<8^i>>>24^c<<24,c=c<<1^283*(c>>7))),r[e]=r[e-u]^i;for(n=0;e;n++,e--)i=r[3&n?e:e-4],o[n]=4>=e||4>n?i:a[0][s[i>>>24]]^a[1][s[i>>16&255]]^a[2][s[i>>8&255]]^a[3][s[255&i]]},le.cipher.aes.prototype={encrypt:function(t){return this._crypt(t,0)},decrypt:function(t){return this._crypt(t,1)},_tables:[[[],[],[],[],[]],[[],[],[],[],[]]],_precompute:function(){var t,e,n,i,r,o,s,a,u,c=this._tables[0],l=this._tables[1],p=c[4],h=l[4],d=[],f=[];for(t=0;256>t;t++)f[(d[t]=t<<1^283*(t>>7))^t]=t;for(e=n=0;!p[e];e^=i||1,n=f[n]||1)for(s=n^n<<1^n<<2^n<<3^n<<4,s=s>>8^255&s^99,p[e]=s,h[s]=e,o=d[r=d[i=d[e]]],u=16843009*o^65537*r^257*i^16843008*e,a=257*d[s]^16843008*s,t=0;4>t;t++)c[t][e]=a=a<<24^a>>>8,l[t][s]=u=u<<24^u>>>8;for(t=0;5>t;t++)c[t]=c[t].slice(0),l[t]=l[t].slice(0)},_crypt:function(t,e){if(4!==t.length)throw new le.exception.invalid("invalid aes block size");var n,i,r,o,s=this._key[e],a=t[0]^s[0],u=t[e?3:1]^s[1],c=t[2]^s[2],l=t[e?1:3]^s[3],p=s.length/4-2,h=4,d=[0,0,0,0],f=this._tables[e],m=f[0],y=f[1],g=f[2],b=f[3],v=f[4];for(o=0;p>o;o++)n=m[a>>>24]^y[u>>16&255]^g[c>>8&255]^b[255&l]^s[h],i=m[u>>>24]^y[c>>16&255]^g[l>>8&255]^b[255&a]^s[h+1],r=m[c>>>24]^y[l>>16&255]^g[a>>8&255]^b[255&u]^s[h+2],l=m[l>>>24]^y[a>>16&255]^g[u>>8&255]^b[255&c]^s[h+3],h+=4,a=n,u=i,c=r;for(o=0;4>o;o++)d[e?3&-o:o]=v[a>>>24]<<24^v[u>>16&255]<<16^v[c>>8&255]<<8^v[255&l]^s[h++],n=a,a=u,u=c,c=l,l=n;return d}},le.bitArray={bitSlice:function(t,e,n){return t=le.bitArray._shiftRight(t.slice(e/32),32-(31&e)).slice(1),void 0===n?t:le.bitArray.clamp(t,n-e)},extract:function(t,e,n){var i,r=Math.floor(-e-n&31);return i=-32&(e+n-1^e)?t[e/32|0]<<32-r^t[e/32+1|0]>>>r:t[e/32|0]>>>r,i&(1<<n)-1},concat:function(t,e){if(0===t.length||0===e.length)return t.concat(e);var n=t[t.length-1],i=le.bitArray.getPartial(n);return 32===i?t.concat(e):le.bitArray._shiftRight(e,i,0|n,t.slice(0,t.length-1))},bitLength:function(t){var e,n=t.length;return 0===n?0:(e=t[n-1],32*(n-1)+le.bitArray.getPartial(e))},clamp:function(t,e){if(32*t.length<e)return t;t=t.slice(0,Math.ceil(e/32));var n=t.length;return e=31&e,n>0&&e&&(t[n-1]=le.bitArray.partial(e,t[n-1]&2147483648>>e-1,1)),t},partial:function(t,e,n){return 32===t?e:(n?0|e:e<<32-t)+1099511627776*t},getPartial:function(t){return Math.round(t/1099511627776)||32},equal:function(t,e){if(le.bitArray.bitLength(t)!==le.bitArray.bitLength(e))return!1;var n,i=0;for(n=0;n<t.length;n++)i|=t[n]^e[n];return 0===i},_shiftRight:function(t,e,n,i){var r,o,s=0;for(void 0===i&&(i=[]);e>=32;e-=32)i.push(n),n=0;if(0===e)return i.concat(t);for(r=0;r<t.length;r++)i.push(n|t[r]>>>e),n=t[r]<<32-e;return s=t.length?t[t.length-1]:0,o=le.bitArray.getPartial(s),i.push(le.bitArray.partial(e+o&31,e+o>32?n:i.pop(),1)),i},_xor4:function(t,e){return[t[0]^e[0],t[1]^e[1],t[2]^e[2],t[3]^e[3]]}},le.codec.hex={fromBits:function(t){var e,n="";for(e=0;e<t.length;e++)n+=((0|t[e])+0xf00000000000).toString(16).substr(4);return n.substr(0,le.bitArray.bitLength(t)/4)},toBits:function(t){var e,n,i=[];for(t=t.replace(/\s|0x/g,""),n=t.length,t+="00000000",e=0;e<t.length;e+=8)i.push(0^parseInt(t.substr(e,8),16));return le.bitArray.clamp(i,4*n)}},le.codec.utf8String={fromBits:function(t){var e,n,i="",r=le.bitArray.bitLength(t);for(e=0;r/8>e;e++)0===(3&e)&&(n=t[e/4]),i+=String.fromCharCode(n>>>24),n<<=8;return decodeURIComponent(escape(i))},toBits:function(t){t=unescape(encodeURIComponent(t));var e,n=[],i=0;for(e=0;e<t.length;e++)i=i<<8|t.charCodeAt(e),3===(3&e)&&(n.push(i),i=0);return 3&e&&n.push(le.bitArray.partial(8*(3&e),i)),n}},le.codec.base64={_chars:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",fromBits:function(t,e,n){var i,r="",o=0,s=le.codec.base64._chars,a=0,u=le.bitArray.bitLength(t);for(n&&(s=s.substr(0,62)+"-_"),i=0;6*r.length<u;)r+=s.charAt((a^t[i]>>>o)>>>26),6>o?(a=t[i]<<6-o,o+=26,i++):(a<<=6,o-=6);for(;3&r.length&&!e;)r+="=";return r},toBits:function(t,e){t=t.replace(/\s|=/g,"");var n,i,r=[],o=0,s=le.codec.base64._chars,a=0;for(e&&(s=s.substr(0,62)+"-_"),n=0;n<t.length;n++){if(i=s.indexOf(t.charAt(n)),0>i)throw new le.exception.invalid("this isn't base64!");o>26?(o-=26,r.push(a^i>>>o),a=i<<32-o):(o+=6,a^=i<<32-o)}return 56&o&&r.push(le.bitArray.partial(56&o,a,1)),r}},le.codec.base64url={fromBits:function(t){return le.codec.base64.fromBits(t,1,1)},toBits:function(t){return le.codec.base64.toBits(t,1)}},void 0===le.beware&&(le.beware={}),le.beware["CBC mode is dangerous because it doesn't protect message integrity."]=function(){le.mode.cbc={name:"cbc",encrypt:function(t,e,n,i){if(i&&i.length)throw new le.exception.invalid("cbc can't authenticate data");if(128!==le.bitArray.bitLength(n))throw new le.exception.invalid("cbc iv must be 128 bits");var r,o=le.bitArray,s=o._xor4,a=o.bitLength(e),u=0,c=[];if(7&a)throw new le.exception.invalid("pkcs#5 padding only works for multiples of a byte");for(r=0;a>=u+128;r+=4,u+=128)n=t.encrypt(s(n,e.slice(r,r+4))),c.splice(r,0,n[0],n[1],n[2],n[3]);return a=16843009*(16-(a>>3&15)),n=t.encrypt(s(n,o.concat(e,[a,a,a,a]).slice(r,r+4))),c.splice(r,0,n[0],n[1],n[2],n[3]),c},decrypt:function(t,e,n,i){if(i&&i.length)throw new le.exception.invalid("cbc can't authenticate data");if(128!==le.bitArray.bitLength(n))throw new le.exception.invalid("cbc iv must be 128 bits");if(127&le.bitArray.bitLength(e)||!e.length)throw new le.exception.corrupt("cbc ciphertext must be a positive multiple of the block size");var r,o,s,a=le.bitArray,u=a._xor4,c=[];for(i=i||[],r=0;r<e.length;r+=4)o=e.slice(r,r+4),s=u(n,t.decrypt(o)),c.splice(r,0,s[0],s[1],s[2],s[3]),n=o;if(o=255&c[r-1],0==o||o>16)throw new le.exception.corrupt("pkcs#5 padding corrupt");if(s=16843009*o,!a.equal(a.bitSlice([s,s,s,s],0,8*o),a.bitSlice(c,32*c.length-8*o,32*c.length)))throw new le.exception.corrupt("pkcs#5 padding corrupt");return a.bitSlice(c,0,32*c.length-8*o)}}},le.misc.hmac=function(t,e){this._hash=e=e||le.hash.sha256;var n,i=[[],[]],r=e.prototype.blockSize/32;for(this._baseHash=[new e,new e],t.length>r&&(t=e.hash(t)),n=0;r>n;n++)i[0][n]=909522486^t[n],i[1][n]=1549556828^t[n];this._baseHash[0].update(i[0]),this._baseHash[1].update(i[1])},le.misc.hmac.prototype.encrypt=le.misc.hmac.prototype.mac=function(t,e){var n=new this._hash(this._baseHash[0]).update(t,e).finalize();return new this._hash(this._baseHash[1]).update(n).finalize()},le.hash.sha256=function(t){this._key[0]||this._precompute(),t?(this._h=t._h.slice(0),this._buffer=t._buffer.slice(0),this._length=t._length):this.reset()},le.hash.sha256.hash=function(t){return(new le.hash.sha256).update(t).finalize()},le.hash.sha256.prototype={blockSize:512,reset:function(){return this._h=this._init.slice(0),this._buffer=[],this._length=0,this},update:function(t){"string"==typeof t&&(t=le.codec.utf8String.toBits(t));var e,n=this._buffer=le.bitArray.concat(this._buffer,t),i=this._length,r=this._length=i+le.bitArray.bitLength(t);for(e=512+i&-512;r>=e;e+=512)this._block(n.splice(0,16));return this},finalize:function(){var t,e=this._buffer,n=this._h;for(e=le.bitArray.concat(e,[le.bitArray.partial(1,1)]),t=e.length+2;15&t;t++)e.push(0);for(e.push(Math.floor(this._length/4294967296)),e.push(0|this._length);e.length;)this._block(e.splice(0,16));return this.reset(),n},_init:[],_key:[],_precompute:function(){function t(t){return 4294967296*(t-Math.floor(t))|0}var e,n=0,i=2;t:for(;64>n;i++){for(e=2;i>=e*e;e++)if(i%e===0)continue t;8>n&&(this._init[n]=t(Math.pow(i,.5))),this._key[n]=t(Math.pow(i,1/3)),n++}},_block:function(t){var e,n,i,r,o=t.slice(0),s=this._h,a=this._key,u=s[0],c=s[1],l=s[2],p=s[3],h=s[4],d=s[5],f=s[6],m=s[7];for(e=0;64>e;e++)16>e?n=o[e]:(i=o[e+1&15],r=o[e+14&15],n=o[15&e]=(i>>>7^i>>>18^i>>>3^i<<25^i<<14)+(r>>>17^r>>>19^r>>>10^r<<15^r<<13)+o[15&e]+o[e+9&15]|0),n=n+m+(h>>>6^h>>>11^h>>>25^h<<26^h<<21^h<<7)+(f^h&(d^f))+a[e],m=f,f=d,d=h,h=p+n|0,p=l,l=c,c=u,u=n+(c&l^p&(c^l))+(c>>>2^c>>>13^c>>>22^c<<30^c<<19^c<<10)|0;s[0]=s[0]+u|0,s[1]=s[1]+c|0,s[2]=s[2]+l|0,s[3]=s[3]+p|0,s[4]=s[4]+h|0,s[5]=s[5]+d|0,s[6]=s[6]+f|0,s[7]=s[7]+m|0}},le.random={randomWords:function(t,e){var n,i,r=[],o=this.isReady(e);if(o===this._NOT_READY)throw new le.exception.notReady("generator isn't seeded");for(o&this._REQUIRES_RESEED&&this._reseedFromPools(!(o&this._READY)),n=0;t>n;n+=4)(n+1)%this._MAX_WORDS_PER_BURST===0&&this._gate(),i=this._gen4words(),r.push(i[0],i[1],i[2],i[3]);return this._gate(),r.slice(0,t)},setDefaultParanoia:function(t){this._defaultParanoia=t},addEntropy:function(t,e,n){n=n||"user";var i,r,o,s=(new Date).valueOf(),a=this._robins[n],u=this.isReady(),c=0;switch(i=this._collectorIds[n],void 0===i&&(i=this._collectorIds[n]=this._collectorIdNext++),void 0===a&&(a=this._robins[n]=0),this._robins[n]=(this._robins[n]+1)%this._pools.length,typeof t){case"number":void 0===e&&(e=1),this._pools[a].update([i,this._eventId++,1,e,s,1,0|t]);break;case"object":var l=Object.prototype.toString.call(t);if("[object Uint32Array]"===l){for(o=[],r=0;r<t.length;r++)o.push(t[r]);t=o}else for("[object Array]"!==l&&(c=1),r=0;r<t.length&&!c;r++)"number"!=typeof t[r]&&(c=1);if(!c){if(void 0===e)for(e=0,r=0;r<t.length;r++)for(o=t[r];o>0;)e++,o>>>=1;this._pools[a].update([i,this._eventId++,2,e,s,t.length].concat(t))}break;case"string":void 0===e&&(e=t.length),this._pools[a].update([i,this._eventId++,3,e,s,t.length]),this._pools[a].update(t);break;default:c=1}if(c)throw new le.exception.bug("random: addEntropy only supports number, array of numbers or string");this._poolEntropy[a]+=e,this._poolStrength+=e,u===this._NOT_READY&&(this.isReady()!==this._NOT_READY&&this._fireEvent("seeded",Math.max(this._strength,this._poolStrength)),this._fireEvent("progress",this.getProgress()))},isReady:function(t){var e=this._PARANOIA_LEVELS[void 0!==t?t:this._defaultParanoia];return this._strength&&this._strength>=e?this._poolEntropy[0]>this._BITS_PER_RESEED&&(new Date).valueOf()>this._nextReseed?this._REQUIRES_RESEED|this._READY:this._READY:this._poolStrength>=e?this._REQUIRES_RESEED|this._NOT_READY:this._NOT_READY},getProgress:function(t){var e=this._PARANOIA_LEVELS[t?t:this._defaultParanoia];return this._strength>=e?1:this._poolStrength>e?1:this._poolStrength/e},startCollectors:function(){if(!this._collectorsStarted){if(window.addEventListener)window.addEventListener("load",this._loadTimeCollector,!1),window.addEventListener("mousemove",this._mouseCollector,!1);else{if(!document.attachEvent)throw new le.exception.bug("can't attach event");document.attachEvent("onload",this._loadTimeCollector),document.attachEvent("onmousemove",this._mouseCollector)}this._collectorsStarted=!0}},stopCollectors:function(){this._collectorsStarted&&(window.removeEventListener?(window.removeEventListener("load",this._loadTimeCollector,!1),window.removeEventListener("mousemove",this._mouseCollector,!1)):window.detachEvent&&(window.detachEvent("onload",this._loadTimeCollector),window.detachEvent("onmousemove",this._mouseCollector)),this._collectorsStarted=!1)},addEventListener:function(t,e){this._callbacks[t][this._callbackI++]=e},removeEventListener:function(t,e){var n,i,r=this._callbacks[t],o=[];for(i in r)r.hasOwnProperty(i)&&r[i]===e&&o.push(i);for(n=0;n<o.length;n++)i=o[n],delete r[i]},_pools:[new le.hash.sha256],_poolEntropy:[0],_reseedCount:0,_robins:{},_eventId:0,_collectorIds:{},_collectorIdNext:0,_strength:0,_poolStrength:0,_nextReseed:0,_key:[0,0,0,0,0,0,0,0],_counter:[0,0,0,0],_cipher:void 0,_defaultParanoia:6,_collectorsStarted:!1,_callbacks:{progress:{},seeded:{}},_callbackI:0,_NOT_READY:0,_READY:1,_REQUIRES_RESEED:2,_MAX_WORDS_PER_BURST:65536,_PARANOIA_LEVELS:[0,48,64,96,128,192,256,384,512,768,1024],_MILLISECONDS_PER_RESEED:3e4,_BITS_PER_RESEED:80,_gen4words:function(){for(var t=0;4>t&&(this._counter[t]=this._counter[t]+1|0,!this._counter[t]);t++);return this._cipher.encrypt(this._counter)},_gate:function(){this._key=this._gen4words().concat(this._gen4words()),this._cipher=new le.cipher.aes(this._key)},_reseed:function(t){this._key=le.hash.sha256.hash(this._key.concat(t)),this._cipher=new le.cipher.aes(this._key);for(var e=0;4>e&&(this._counter[e]=this._counter[e]+1|0,!this._counter[e]);e++);},_reseedFromPools:function(t){var e,n=[],i=0;for(this._nextReseed=n[0]=(new Date).valueOf()+this._MILLISECONDS_PER_RESEED,e=0;16>e;e++)n.push(4294967296*Math.random()|0);for(e=0;e<this._pools.length&&(n=n.concat(this._pools[e].finalize()),i+=this._poolEntropy[e],this._poolEntropy[e]=0,t||!(this._reseedCount&1<<e));e++);this._reseedCount>=1<<this._pools.length&&(this._pools.push(new le.hash.sha256),this._poolEntropy.push(0)),this._poolStrength-=i,i>this._strength&&(this._strength=i),this._reseedCount++,this._reseed(n)},_mouseCollector:function(t){var e=t.x||t.clientX||t.offsetX||0,n=t.y||t.clientY||t.offsetY||0;le.random.addEntropy([e,n],2,"mouse")},_loadTimeCollector:function(){le.random.addEntropy((new Date).valueOf(),2,"loadtime")},_fireEvent:function(t,e){var n,i=le.random._callbacks[t],r=[];for(n in i)i.hasOwnProperty(n)&&r.push(i[n]);for(n=0;n<r.length;n++)r[n](e)}},function(){try{var t=new Uint32Array(32);crypto.getRandomValues(t),le.random.addEntropy(t,1024,"crypto.getRandomValues")}catch(e){}}(),function(){for(var t in le.beware)le.beware.hasOwnProperty(t)&&le.beware[t]()}();var pe={sjcl:le,version:"1.3.10"};pe.generateAesKey=function(){return{key:le.random.randomWords(8,0),encrypt:function(t){return this.encryptWithIv(t,le.random.randomWords(4,0))},encryptWithIv:function(t,e){var n=new le.cipher.aes(this.key),i=le.codec.utf8String.toBits(t),r=le.mode.cbc.encrypt(n,i,e),o=le.bitArray.concat(e,r);return le.codec.base64.fromBits(o)}}},pe.create=function(t){return new pe.EncryptionClient(t)},pe.EncryptionClient=function(t){var i=this,o=[];i.publicKey=t,i.version=pe.version;var s=function(t,e){var n,i,r;n=document.createElement(t);for(i in e)e.hasOwnProperty(i)&&(r=e[i],n.setAttribute(i,r));return n},a=function(t){return window.jQuery&&t instanceof jQuery?t[0]:t.nodeType&&1===t.nodeType?t:document.getElementById(t)},u=function(t){var e,n,i,r,o=[];if("INTEGER"===t.typeName()&&(e=t.posContent(),n=t.posEnd(),i=t.stream.hexDump(e,n).replace(/[ \n]/g,""),o.push(i)),null!==t.sub)for(r=0;r<t.sub.length;r++)o=o.concat(u(t.sub[r]));return o},c=function(t){var e,n,i=[],r=t.children;for(n=0;n<r.length;n++)e=r[n],1===e.nodeType&&e.attributes["data-encrypted-name"]?i.push(e):e.children&&e.children.length>0&&(i=i.concat(c(e)));return i},l=function(){var n,i,o,s,a,c;try{a=r(t),n=e.decode(a)}catch(l){throw"Invalid encryption key. Please use the key labeled 'Client-Side Encryption Key'"}if(o=u(n),2!==o.length)throw"Invalid encryption key. Please use the key labeled 'Client-Side Encryption Key'";return s=o[0],i=o[1],c=new Z,c.setPublic(s,i),c},p=function(){return{key:le.random.randomWords(8,0),sign:function(t){var e=new le.misc.hmac(this.key,le.hash.sha256),n=e.encrypt(t);return le.codec.base64.fromBits(n)}}};i.encrypt=function(t){var e=l(),r=pe.generateAesKey(),o=p(),s=r.encrypt(t),a=o.sign(le.codec.base64.toBits(s)),u=le.bitArray.concat(r.key,o.key),c=le.codec.base64.fromBits(u),h=e.encrypt(c),d="$bt4|javascript_"+i.version.replace(/\./g,"_")+"$",f=null;return h&&(f=n(h)),d+f+"$"+s+"$"+a},i.encryptForm=function(t){var e,n,r,u,l,p;for(t=a(t),p=c(t);o.length>0;){try{t.removeChild(o[0])}catch(h){}o.splice(0,1)}for(l=0;l<p.length;l++)e=p[l],r=e.getAttribute("data-encrypted-name"),n=i.encrypt(e.value),e.removeAttribute("name"),u=s("input",{value:n,type:"hidden",name:r}),o.push(u),t.appendChild(u)},i.onSubmitEncryptForm=function(t,e){var n;t=a(t),n=function(n){return i.encryptForm(t),e?e(n):n},window.jQuery?window.jQuery(t).submit(n):t.addEventListener?t.addEventListener("submit",n,!1):t.attachEvent&&t.attachEvent("onsubmit",n)},i.formEncrypter={encryptForm:i.encryptForm,extractForm:a,onSubmitEncryptForm:i.onSubmitEncryptForm},le.random.startCollectors()},window.Braintree=pe
@@ -4093,160 +4482,165 @@ webpackJsonp([1],[
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 256 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	var classNames = __webpack_require__(200);
-	var React = __webpack_require__(27);
-	
-	var CardIcon = __webpack_require__(207);
-	var InputError = __webpack_require__(257);
-	var MaskedInput = __webpack_require__(258);
-	
-	var utils = __webpack_require__(199);
-	var gettext = utils.gettext;
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'CardInput',
-	
-	  propTypes: {
-	    attrs: React.PropTypes.object,
-	    cardType: React.PropTypes.string,
-	    classNames: React.PropTypes.array,
-	    errorMessage: React.PropTypes.string,
-	    errorModifier: React.PropTypes.string,
-	    hasVal: React.PropTypes.bool,
-	    id: React.PropTypes.string.isRequired,
-	    isValid: React.PropTypes.bool,
-	    label: React.PropTypes.string,
-	    onChangeHandler: React.PropTypes.func.isRequired,
-	    pattern: React.PropTypes.string,
-	    placeholder: React.PropTypes.string,
-	    showError: React.PropTypes.bool
-	  },
-	
-	  cardPatterns: {
-	    'default': {
-	      card: {
-	        pattern: '1111 1111 1111 1111'
-	      },
-	      cvv: {
-	        pattern: '111',
-	        placeholder: gettext('CVV')
-	      }
-	    },
-	    'american-express': {
-	      card: {
-	        pattern: '1111 111111 11111'
-	      },
-	      cvv: {
-	        pattern: '1111',
-	        placeholder: gettext('CID')
-	      }
-	    },
-	    'diners-club': {
-	      card: {
-	        pattern: '1111 111111 1111'
-	      },
-	      cvv: {
-	        pattern: '111',
-	        placeholder: gettext('CVV')
-	      }
-	    }
-	  },
-	
-	  updatePattern: function updatePattern(fieldId, cardType) {
-	    // Update the pattern for card + cvv field if card was detected.
-	    if (cardType && this.cardPatterns[cardType]) {
-	      return utils.defaults(this.cardPatterns[cardType][fieldId] || {}, this.cardPatterns['default'][fieldId]);
-	    } else {
-	      return this.cardPatterns['default'][fieldId] || {};
-	    }
-	  },
-	
-	  render: function render() {
-	
-	    var labelClassNames = this.props.classNames || [];
-	    // Use a copy of the list to avoid appending ad infinitum.
-	    labelClassNames = labelClassNames.slice(0);
-	    // Only show invalid classname when invalid and there's a value.
-	    labelClassNames.push({
-	      'invalid': (this.props.hasVal || this.props.showError) && this.props.isValid === false
-	    });
-	    var labelClass = classNames(labelClassNames);
-	
-	    // Work out the pattern / placeholder based on the card type.
-	    // Note: Due to a bug in InputMask the pattern updates are no-op.
-	    var patternData = this.updatePattern(this.props.id, this.props.cardType);
-	    var pattern = patternData.pattern || this.props.pattern;
-	    var placeholder = patternData.placeholder || this.props.placeholder;
-	    var label = patternData.label || patternData.placeholder || this.props.label || this.props.pattern;
-	
-	    var showCardIcon = this.props.id === 'card';
-	
-	    return React.createElement(
-	      'label',
-	      { className: labelClass, htmlFor: this.props.id },
-	      React.createElement(
-	        'span',
-	        { className: 'vh' },
-	        label
-	      ),
-	      this.props.showError ? React.createElement(InputError, { errorMessage: this.props.errorMessage,
-	        errorModifier: this.props.errorModifier }) : null,
-	      showCardIcon ? React.createElement(CardIcon, { cardType: this.props.cardType }) : null,
-	      React.createElement(MaskedInput, _extends({}, this.props.attrs, {
-	        id: this.props.id,
-	        className: this.props.id + '-input',
-	        onChange: this.props.onChangeHandler,
-	        pattern: pattern,
-	        placeholder: placeholder
-	      }))
-	    );
-	  }
-	});
-
-/***/ },
 /* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
-	var cx = __webpack_require__(200);
-	var React = __webpack_require__(27);
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 	
-	module.exports = React.createClass({
-	  displayName: 'InputError',
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	  propTypes: {
-	    errorMessage: React.PropTypes.string.isRequired,
-	    errorModifier: React.PropTypes.oneOf(['center', 'right', 'left'])
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	var _classnames = __webpack_require__(200);
+	
+	var _classnames2 = _interopRequireDefault(_classnames);
+	
+	var _react = __webpack_require__(10);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _componentsCardIcon = __webpack_require__(207);
+	
+	var _componentsCardIcon2 = _interopRequireDefault(_componentsCardIcon);
+	
+	var _componentsInputError = __webpack_require__(258);
+	
+	var _componentsInputError2 = _interopRequireDefault(_componentsInputError);
+	
+	var _reactMaskedinput = __webpack_require__(259);
+	
+	var _reactMaskedinput2 = _interopRequireDefault(_reactMaskedinput);
+	
+	var _utils = __webpack_require__(199);
+	
+	var cardPatterns = {
+	  'default': {
+	    card: {
+	      pattern: '1111 1111 1111 1111'
+	    },
+	    cvv: {
+	      pattern: '111',
+	      placeholder: (0, _utils.gettext)('CVV')
+	    }
 	  },
-	
-	  render: function render() {
-	    var _props = this.props;
-	    var errorMessage = _props.errorMessage;
-	
-	    var toolTipAttrs = _objectWithoutProperties(_props, ['errorMessage']);
-	
-	    var errorClass = cx(['tooltip', this.props.errorModifier || 'left']);
-	    return React.createElement(
-	      'span',
-	      _extends({}, toolTipAttrs, {
-	        className: errorClass }),
-	      errorMessage
-	    );
+	  'american-express': {
+	    card: {
+	      pattern: '1111 111111 11111'
+	    },
+	    cvv: {
+	      pattern: '1111',
+	      placeholder: (0, _utils.gettext)('CID')
+	    }
+	  },
+	  'diners-club': {
+	    card: {
+	      pattern: '1111 111111 1111'
+	    },
+	    cvv: {
+	      pattern: '111',
+	      placeholder: (0, _utils.gettext)('CVV')
+	    }
 	  }
-	});
+	};
+	
+	var CardInput = (function (_Component) {
+	  _inherits(CardInput, _Component);
+	
+	  function CardInput() {
+	    _classCallCheck(this, CardInput);
+	
+	    _get(Object.getPrototypeOf(CardInput.prototype), 'constructor', this).apply(this, arguments);
+	  }
+	
+	  _createClass(CardInput, [{
+	    key: 'updatePattern',
+	    value: function updatePattern(fieldId, cardType) {
+	      // Update the pattern for card + cvv field if card was detected.
+	      if (cardType && cardPatterns[cardType]) {
+	        return (0, _utils.defaults)(cardPatterns[cardType][fieldId] || {}, cardPatterns['default'][fieldId]);
+	      } else {
+	        return cardPatterns['default'][fieldId] || {};
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	
+	      var labelClassNames = this.props.classNames || [];
+	      // Use a copy of the list to avoid appending ad infinitum.
+	      labelClassNames = labelClassNames.slice(0);
+	      // Only show invalid classname when invalid and there's a value.
+	      labelClassNames.push({
+	        'invalid': (this.props.hasVal || this.props.showError) && this.props.isValid === false
+	      });
+	      var labelClass = (0, _classnames2['default'])(labelClassNames);
+	
+	      // Work out the pattern / placeholder based on the card type.
+	      // Note: Due to a bug in InputMask the pattern updates are no-op.
+	      var patternData = this.updatePattern(this.props.id, this.props.cardType);
+	      var pattern = patternData.pattern || this.props.pattern;
+	      var placeholder = patternData.placeholder || this.props.placeholder;
+	      var label = patternData.label || patternData.placeholder || this.props.label || this.props.pattern;
+	
+	      var showCardIcon = this.props.id === 'card';
+	
+	      return _react2['default'].createElement(
+	        'label',
+	        { className: labelClass, htmlFor: this.props.id },
+	        _react2['default'].createElement(
+	          'span',
+	          { className: "vh" },
+	          label
+	        ),
+	        this.props.showError ? _react2['default'].createElement(_componentsInputError2['default'], { errorMessage: this.props.errorMessage,
+	          errorModifier: this.props.errorModifier }) : null,
+	        showCardIcon ? _react2['default'].createElement(_componentsCardIcon2['default'], { cardType: this.props.cardType }) : null,
+	        _react2['default'].createElement(_reactMaskedinput2['default'], _extends({}, this.props.attrs, {
+	          id: this.props.id,
+	          className: this.props.id + '-input',
+	          onChange: this.props.onChangeHandler,
+	          pattern: pattern,
+	          placeholder: placeholder
+	        }))
+	      );
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: {
+	      attrs: _react.PropTypes.object,
+	      cardType: _react.PropTypes.string,
+	      classNames: _react.PropTypes.array,
+	      errorMessage: _react.PropTypes.string,
+	      errorModifier: _react.PropTypes.string,
+	      hasVal: _react.PropTypes.bool,
+	      id: _react.PropTypes.string.isRequired,
+	      isValid: _react.PropTypes.bool,
+	      label: _react.PropTypes.string,
+	      onChangeHandler: _react.PropTypes.func.isRequired,
+	      pattern: _react.PropTypes.string,
+	      placeholder: _react.PropTypes.string,
+	      showError: _react.PropTypes.bool
+	    },
+	    enumerable: true
+	  }]);
+	
+	  return CardInput;
+	})(_react.Component);
+	
+	exports['default'] = CardInput;
+	module.exports = exports['default'];
 
 /***/ },
 /* 258 */
@@ -4254,10 +4648,82 @@ webpackJsonp([1],[
 
 	'use strict';
 	
-	var React = __webpack_require__(27)
-	var $__0=   __webpack_require__(157),getSelection=$__0.getSelection,setSelection=$__0.setSelection
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 	
-	var InputMask = __webpack_require__(259)
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(10);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _classnames = __webpack_require__(200);
+	
+	var _classnames2 = _interopRequireDefault(_classnames);
+	
+	var InputError = (function (_Component) {
+	  _inherits(InputError, _Component);
+	
+	  function InputError() {
+	    _classCallCheck(this, InputError);
+	
+	    _get(Object.getPrototypeOf(InputError.prototype), 'constructor', this).apply(this, arguments);
+	  }
+	
+	  _createClass(InputError, [{
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props;
+	      var errorMessage = _props.errorMessage;
+	
+	      var toolTipAttrs = _objectWithoutProperties(_props, ['errorMessage']);
+	
+	      var errorClass = (0, _classnames2['default'])(['tooltip', this.props.errorModifier || 'left']);
+	      return _react2['default'].createElement(
+	        'span',
+	        _extends({}, toolTipAttrs, {
+	          className: errorClass }),
+	        errorMessage
+	      );
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: {
+	      errorMessage: _react.PropTypes.string.isRequired,
+	      errorModifier: _react.PropTypes.oneOf(['center', 'right', 'left'])
+	    },
+	    enumerable: true
+	  }]);
+	
+	  return InputError;
+	})(_react.Component);
+	
+	exports['default'] = InputError;
+	module.exports = exports['default'];
+
+/***/ },
+/* 259 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(10)
+	var $__0=   __webpack_require__(140),getSelection=$__0.getSelection,setSelection=$__0.setSelection
+	
+	var InputMask = __webpack_require__(260)
 	
 	var KEYCODE_Z = 90
 	var KEYCODE_Y = 89
@@ -4411,7 +4877,7 @@ webpackJsonp([1],[
 	module.exports = MaskedInput
 
 /***/ },
-/* 259 */
+/* 260 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4899,57 +5365,6 @@ webpackJsonp([1],[
 	module.exports = InputMask
 
 /***/ },
-/* 260 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-	
-	var cx = __webpack_require__(200);
-	var React = __webpack_require__(27);
-	
-	module.exports = React.createClass({
-	  displayName: 'SubmitButton',
-	
-	  propTypes: {
-	    isDisabled: React.PropTypes.bool,
-	    showSpinner: React.PropTypes.bool,
-	    text: React.PropTypes.string.isRequired
-	  },
-	
-	  render: function render() {
-	    var _props = this.props;
-	    var isDisabled = _props.isDisabled;
-	    var text = _props.text;
-	    var showSpinner = _props.showSpinner;
-	
-	    var buttonAttrs = _objectWithoutProperties(_props, ['isDisabled', 'text', 'showSpinner']);
-	
-	    var buttonClassNames = cx({
-	      'spinner': showSpinner
-	    });
-	
-	    // If we're showing the spinner we want the
-	    // button to be automagically disabled.
-	    if (showSpinner) {
-	      isDisabled = true;
-	    }
-	
-	    return React.createElement(
-	      'button',
-	      _extends({}, buttonAttrs, {
-	        className: buttonClassNames,
-	        disabled: isDisabled,
-	        type: 'submit' }),
-	      text
-	    );
-	  }
-	});
-
-/***/ },
 /* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -4958,31 +5373,82 @@ webpackJsonp([1],[
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
-	exports.complete = complete;
-	exports.payWithNewCard = payWithNewCard;
 	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _constantsActionTypes = __webpack_require__(16);
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
-	var actionTypes = _interopRequireWildcard(_constantsActionTypes);
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 	
-	// TODO: expand these actions to encapsulate the Ajax
-	// logic more directly. This will allow the Ajax requests to
-	// be tested more easily. CardForm and CardChoice will need
-	// to be refactored.
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	function complete() {
-	  return {
-	    type: actionTypes.COMPLETE_PURCHASE
-	  };
-	}
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 	
-	function payWithNewCard() {
-	  return {
-	    type: actionTypes.PAY_WITH_NEW_CARD
-	  };
-	}
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(10);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _classnames = __webpack_require__(200);
+	
+	var _classnames2 = _interopRequireDefault(_classnames);
+	
+	var SubmitButton = (function (_Component) {
+	  _inherits(SubmitButton, _Component);
+	
+	  function SubmitButton() {
+	    _classCallCheck(this, SubmitButton);
+	
+	    _get(Object.getPrototypeOf(SubmitButton.prototype), 'constructor', this).apply(this, arguments);
+	  }
+	
+	  _createClass(SubmitButton, [{
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props;
+	      var isDisabled = _props.isDisabled;
+	      var text = _props.text;
+	      var showSpinner = _props.showSpinner;
+	
+	      var buttonAttrs = _objectWithoutProperties(_props, ['isDisabled', 'text', 'showSpinner']);
+	
+	      var buttonClassNames = (0, _classnames2['default'])({
+	        'spinner': showSpinner
+	      });
+	
+	      // If we're showing the spinner we want the
+	      // button to be automagically disabled.
+	      if (showSpinner) {
+	        isDisabled = true;
+	      }
+	
+	      return _react2['default'].createElement(
+	        'button',
+	        _extends({}, buttonAttrs, {
+	          className: buttonClassNames,
+	          disabled: isDisabled,
+	          type: "submit" }),
+	        text
+	      );
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: {
+	      isDisabled: _react.PropTypes.bool,
+	      showSpinner: _react.PropTypes.bool,
+	      text: _react.PropTypes.string.isRequired
+	    },
+	    enumerable: true
+	  }]);
+	
+	  return SubmitButton;
+	})(_react.Component);
+	
+	exports['default'] = SubmitButton;
+	module.exports = exports['default'];
 
 /***/ },
 /* 262 */
@@ -4990,46 +5456,86 @@ webpackJsonp([1],[
 
 	'use strict';
 	
-	var React = __webpack_require__(27);
-	
-	var CardChoice = __webpack_require__(263);
-	var ProductDetail = __webpack_require__(215);
-	
-	var gettext = __webpack_require__(199).gettext;
-	var tracking = __webpack_require__(208);
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'CardListing',
-	
-	  propTypes: {
-	    payWithNewCard: React.PropTypes.func.isRequired,
-	    paymentMethods: React.PropTypes.array.isRequired,
-	    productId: React.PropTypes.string.isRequired
-	  },
-	
-	  componentDidMount: function componentDidMount() {
-	    tracking.setPage('/card-listing');
-	  },
-	
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      { className: 'card-listing' },
-	      React.createElement(ProductDetail, { productId: this.props.productId }),
-	      React.createElement(CardChoice, {
-	        cards: this.props.paymentMethods,
-	        productId: this.props.productId
-	      }),
-	      React.createElement(
-	        'a',
-	        { className: 'card-add bottom-link', href: '#',
-	          onClick: this.props.payWithNewCard },
-	        gettext('Add new credit card')
-	      )
-	    );
-	  }
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
 	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(10);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _componentsCardChoice = __webpack_require__(263);
+	
+	var _componentsCardChoice2 = _interopRequireDefault(_componentsCardChoice);
+	
+	var _componentsProductDetail = __webpack_require__(216);
+	
+	var _componentsProductDetail2 = _interopRequireDefault(_componentsProductDetail);
+	
+	var _utils = __webpack_require__(199);
+	
+	var _tracking = __webpack_require__(208);
+	
+	var _tracking2 = _interopRequireDefault(_tracking);
+	
+	var CardListing = (function (_Component) {
+	  _inherits(CardListing, _Component);
+	
+	  function CardListing() {
+	    _classCallCheck(this, CardListing);
+	
+	    _get(Object.getPrototypeOf(CardListing.prototype), 'constructor', this).apply(this, arguments);
+	  }
+	
+	  _createClass(CardListing, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      _tracking2['default'].setPage('/card-listing');
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2['default'].createElement(
+	        'div',
+	        { className: "card-listing" },
+	        _react2['default'].createElement(_componentsProductDetail2['default'], { productId: this.props.productId }),
+	        _react2['default'].createElement(_componentsCardChoice2['default'], {
+	          cards: this.props.paymentMethods,
+	          productId: this.props.productId
+	        }),
+	        _react2['default'].createElement(
+	          'a',
+	          { className: "card-add bottom-link", href: "#",
+	            onClick: this.props.payWithNewCard },
+	          (0, _utils.gettext)('Add new credit card')
+	        )
+	      );
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: {
+	      payWithNewCard: _react.PropTypes.func.isRequired,
+	      paymentMethods: _react.PropTypes.array.isRequired,
+	      productId: _react.PropTypes.string.isRequired
+	    },
+	    enumerable: true
+	  }]);
+	
+	  return CardListing;
+	})(_react.Component);
+	
+	exports['default'] = CardListing;
+	module.exports = exports['default'];
 
 /***/ },
 /* 263 */
@@ -5037,83 +5543,135 @@ webpackJsonp([1],[
 
 	'use strict';
 	
-	var $ = __webpack_require__(1);
-	var React = __webpack_require__(27);
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 	
-	var CardList = __webpack_require__(205);
-	var SubmitButton = __webpack_require__(260);
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
-	var gettext = __webpack_require__(199).gettext;
-	var purchaseActions = __webpack_require__(261);
-	var reduxConfig = __webpack_require__(3);
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 	
-	module.exports = React.createClass({
-	  displayName: 'CardChoice',
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	  propTypes: {
-	    cards: React.PropTypes.arrayOf(React.PropTypes.shape({
-	      id: React.PropTypes.number,
-	      resource_uri: React.PropTypes.string,
-	      truncated_id: React.PropTypes.string,
-	      type_name: React.PropTypes.string
-	    })).isRequired,
-	    productId: React.PropTypes.string.isRequired
-	  },
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	  getInitialState: function getInitialState() {
-	    return {
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	var _jquery = __webpack_require__(1);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	var _react = __webpack_require__(10);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _componentsCardList = __webpack_require__(205);
+	
+	var _componentsCardList2 = _interopRequireDefault(_componentsCardList);
+	
+	var _componentsSubmitButton = __webpack_require__(261);
+	
+	var _componentsSubmitButton2 = _interopRequireDefault(_componentsSubmitButton);
+	
+	var _utils = __webpack_require__(199);
+	
+	var _actionsPurchase = __webpack_require__(214);
+	
+	var purchaseActions = _interopRequireWildcard(_actionsPurchase);
+	
+	var _reduxConfig = __webpack_require__(189);
+	
+	var _reduxConfig2 = _interopRequireDefault(_reduxConfig);
+	
+	var CardChoice = (function (_Component) {
+	  _inherits(CardChoice, _Component);
+	
+	  _createClass(CardChoice, null, [{
+	    key: 'propTypes',
+	    value: {
+	      cards: _react.PropTypes.arrayOf(_react.PropTypes.shape({
+	        id: _react.PropTypes.number,
+	        resource_uri: _react.PropTypes.string,
+	        truncated_id: _react.PropTypes.string,
+	        type_name: _react.PropTypes.string
+	      })).isRequired,
+	      productId: _react.PropTypes.string.isRequired
+	    },
+	    enumerable: true
+	  }]);
+	
+	  function CardChoice(props) {
+	    var _this = this;
+	
+	    _classCallCheck(this, CardChoice);
+	
+	    _get(Object.getPrototypeOf(CardChoice.prototype), 'constructor', this).call(this, props);
+	
+	    this.handleSubmit = function (e) {
+	      e.preventDefault();
+	
+	      _this.setState({ isSubmitting: true });
+	
+	      _jquery2['default'].ajax({
+	        data: {
+	          pay_method_uri: _this.state.card,
+	          plan_id: _this.props.productId
+	        },
+	        url: '/api/braintree/subscriptions/',
+	        method: 'post',
+	        dataType: 'json',
+	        context: _this
+	      }).done(function () {
+	        console.log('Successfully subscribed with existing card');
+	
+	        _reduxConfig2['default'].dispatch(purchaseActions.complete());
+	      }).fail(function () {
+	        // TODO: handler errors.
+	      });
+	    };
+	
+	    this.handleCardChange = function (e) {
+	      _this.setState({ card: e.target.value });
+	    };
+	
+	    this.state = {
 	      isSubmitting: false,
 	      card: this.props.cards.length === 1 ? this.props.cards[0].resource_uri : null
 	    };
-	  },
-	
-	  handleSubmit: function handleSubmit(e) {
-	    e.preventDefault();
-	
-	    this.setState({ isSubmitting: true });
-	
-	    $.ajax({
-	      data: {
-	        pay_method_uri: this.state.card,
-	        plan_id: this.props.productId
-	      },
-	      url: '/api/braintree/subscriptions/',
-	      method: 'post',
-	      dataType: 'json',
-	      context: this
-	    }).done(function () {
-	      console.log('Successfully subscribed with existing card');
-	
-	      reduxConfig['default'].dispatch(purchaseActions.complete());
-	    }).fail(function () {});
-	  },
-	
-	  handleCardChange: function handleCardChange(e) {
-	    this.setState({ card: e.target.value });
-	  },
-	
-	  render: function render() {
-	    var cardData = this.props.cards;
-	    for (var i = 0; i < cardData.length; i += 1) {
-	      var card = cardData[i];
-	      card.checked = this.state.card === card.resource_uri;
-	    }
-	
-	    var formIsValid = this.state.card !== null;
-	
-	    return React.createElement(
-	      'form',
-	      { id: 'card-listing', onSubmit: this.handleSubmit },
-	      React.createElement(CardList, { cards: cardData, onCardChange: this.handleCardChange }),
-	      React.createElement(SubmitButton, { isDisabled: !formIsValid,
-	        showSpinner: this.state.isSubmitting,
-	        text: gettext('Subscribe')
-	      })
-	    );
 	  }
-	});
 	
-	// TODO: handler errors.
+	  _createClass(CardChoice, [{
+	    key: 'render',
+	    value: function render() {
+	      var cardData = this.props.cards;
+	      for (var i = 0; i < cardData.length; i += 1) {
+	        var card = cardData[i];
+	        card.checked = this.state.card === card.resource_uri;
+	      }
+	
+	      var formIsValid = this.state.card !== null;
+	
+	      return _react2['default'].createElement(
+	        'form',
+	        { id: "card-listing", onSubmit: this.handleSubmit },
+	        _react2['default'].createElement(_componentsCardList2['default'], {
+	          cards: cardData,
+	          onCardChange: this.handleCardChange }),
+	        _react2['default'].createElement(_componentsSubmitButton2['default'], { isDisabled: !formIsValid,
+	          showSpinner: this.state.isSubmitting,
+	          text: (0, _utils.gettext)('Subscribe')
+	        })
+	      );
+	    }
+	  }]);
+	
+	  return CardChoice;
+	})(_react.Component);
+	
+	exports['default'] = CardChoice;
+	module.exports = exports['default'];
 
 /***/ },
 /* 264 */
@@ -5121,78 +5679,119 @@ webpackJsonp([1],[
 
 	'use strict';
 	
-	var React = __webpack_require__(27);
-	
-	var ProductDetail = __webpack_require__(215);
-	var SubmitButton = __webpack_require__(260);
-	
-	var gettext = __webpack_require__(199).gettext;
-	var tracking = __webpack_require__(208);
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'CompleteView',
-	
-	  propTypes: {
-	    productId: React.PropTypes.string.isRequired,
-	    userEmail: React.PropTypes.string.isRequired,
-	    win: React.PropTypes.object
-	  },
-	
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      win: window
-	    };
-	  },
-	
-	  componentDidMount: function componentDidMount() {
-	    tracking.setPage('/complete-payment');
-	  },
-	
-	  handleClick: function handleClick(e) {
-	    e.preventDefault();
-	    var win = this.props.win;
-	    if (win.parent !== window) {
-	      // Note: the targetOrigin is wide open.
-	      // Nothing sensitive should be sent whilst
-	      // that's the case.
-	      console.log('Telling parent to close modal.');
-	      // Stringifying the object is necessary for
-	      // IE9 support.
-	      win.parent.postMessage(JSON.stringify({
-	        event: 'purchase-completed'
-	      }), '*');
-	    } else {
-	      console.log('Not iframed. No-op');
-	    }
-	  },
-	
-	  render: function render() {
-	    var component = this;
-	    return React.createElement(
-	      'div',
-	      { className: 'complete' },
-	      React.createElement(ProductDetail, { productId: component.props.productId }),
-	      React.createElement(
-	        'p',
-	        { className: 'accepted' },
-	        gettext('Payment Accepted')
-	      ),
-	      React.createElement(
-	        'p',
-	        { className: 'receipt' },
-	        gettext('Your receipt has been sent to'),
-	        React.createElement(
-	          'span',
-	          { className: 'email' },
-	          this.props.userEmail
-	        )
-	      ),
-	      React.createElement(SubmitButton, { text: gettext('OK'),
-	        onClick: component.handleClick })
-	    );
-	  }
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
 	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(10);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _componentsProductDetail = __webpack_require__(216);
+	
+	var _componentsProductDetail2 = _interopRequireDefault(_componentsProductDetail);
+	
+	var _componentsSubmitButton = __webpack_require__(261);
+	
+	var _componentsSubmitButton2 = _interopRequireDefault(_componentsSubmitButton);
+	
+	var _utils = __webpack_require__(199);
+	
+	var _tracking = __webpack_require__(208);
+	
+	var _tracking2 = _interopRequireDefault(_tracking);
+	
+	var CompletePayment = (function (_Component) {
+	  _inherits(CompletePayment, _Component);
+	
+	  function CompletePayment() {
+	    var _this = this;
+	
+	    _classCallCheck(this, CompletePayment);
+	
+	    _get(Object.getPrototypeOf(CompletePayment.prototype), 'constructor', this).apply(this, arguments);
+	
+	    this.handleClick = function (e) {
+	      e.preventDefault();
+	      var win = _this.props.win;
+	      if (win.parent !== window) {
+	        // Note: the targetOrigin is wide open.
+	        // Nothing sensitive should be sent whilst
+	        // that's the case.
+	        console.log('Telling parent to close modal.');
+	        // Stringifying the object is necessary for
+	        // IE9 support.
+	        win.parent.postMessage(JSON.stringify({
+	          event: 'purchase-completed'
+	        }), '*');
+	      } else {
+	        console.log('Not iframed. No-op');
+	      }
+	    };
+	  }
+	
+	  _createClass(CompletePayment, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      _tracking2['default'].setPage('/complete-payment');
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2['default'].createElement(
+	        'div',
+	        { className: "complete" },
+	        _react2['default'].createElement(_componentsProductDetail2['default'], { productId: this.props.productId }),
+	        _react2['default'].createElement(
+	          'p',
+	          { className: "accepted" },
+	          (0, _utils.gettext)('Payment Accepted')
+	        ),
+	        _react2['default'].createElement(
+	          'p',
+	          { className: "receipt" },
+	          (0, _utils.gettext)('Your receipt has been sent to'),
+	          _react2['default'].createElement(
+	            'span',
+	            { className: "email" },
+	            this.props.userEmail
+	          )
+	        ),
+	        _react2['default'].createElement(_componentsSubmitButton2['default'], { text: (0, _utils.gettext)('OK'),
+	          onClick: this.handleClick })
+	      );
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: {
+	      productId: _react2['default'].PropTypes.string.isRequired,
+	      userEmail: _react2['default'].PropTypes.string.isRequired,
+	      win: _react2['default'].PropTypes.object
+	    },
+	    enumerable: true
+	  }, {
+	    key: 'defaultProps',
+	    value: {
+	      win: window
+	    },
+	    enumerable: true
+	  }]);
+	
+	  return CompletePayment;
+	})(_react.Component);
+	
+	exports['default'] = CompletePayment;
+	module.exports = exports['default'];
 
 /***/ },
 /* 265 */
@@ -5204,14 +5803,28 @@ webpackJsonp([1],[
 	  value: true
 	});
 	exports.signIn = signIn;
-	var $ = __webpack_require__(1);
 	
-	var appActions = __webpack_require__(266);
-	var actionTypes = __webpack_require__(16);
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _jquery = __webpack_require__(1);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	var _app = __webpack_require__(266);
+	
+	var appActions = _interopRequireWildcard(_app);
+	
+	var _constantsActionTypes = __webpack_require__(192);
+	
+	var actionTypes = _interopRequireWildcard(_constantsActionTypes);
 	
 	function signIn(accessToken) {
+	  var jquery = arguments.length <= 1 || arguments[1] === undefined ? _jquery2['default'] : arguments[1];
+	
 	  return function (dispatch) {
-	    $.ajax({
+	    jquery.ajax({
 	      data: {
 	        access_token: accessToken
 	      },
@@ -5221,7 +5834,7 @@ webpackJsonp([1],[
 	    }).then(function (data) {
 	
 	      console.log('setting CSRF token for subsequent requests:', data.csrf_token);
-	      $.ajaxSetup({
+	      jquery.ajaxSetup({
 	        headers: {
 	          'X-CSRFToken': data.csrf_token
 	        }
@@ -5256,7 +5869,7 @@ webpackJsonp([1],[
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _constantsActionTypes = __webpack_require__(16);
+	var _constantsActionTypes = __webpack_require__(192);
 	
 	var actionTypes = _interopRequireWildcard(_constantsActionTypes);
 	

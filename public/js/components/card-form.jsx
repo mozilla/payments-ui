@@ -1,20 +1,17 @@
-'use strict';
+import $ from 'jquery';
+import CardValidator from 'card-validator';
+import React, { Component, PropTypes } from 'react';
+import braintree from 'braintree-web';
 
-var $ = require('jquery');
-var CardValidator = require('card-validator');
-var React = require('react');
-var braintree = require('braintree-web');
+import { gettext } from 'utils';
 
-var utils = require('utils');
-var gettext = utils.gettext;
-
-var CardInput = require('components/card-input');
-var SubmitButton = require('components/submit-button');
-var purchaseActions = require('actions/purchase');
-var reduxConfig = require('redux-config');
+import CardInput from 'components/card-input';
+import SubmitButton from 'components/submit-button';
+import * as purchaseActions from 'actions/purchase';
+import reduxConfig from 'redux-config';
 
 
-var defaultFieldAttrs = {
+const defaultFieldAttrs = {
   'autoComplete': 'off',
   // inputMode is not yet supported in React.
   // See https://github.com/facebook/react/pull/3798
@@ -22,22 +19,73 @@ var defaultFieldAttrs = {
   'type': 'tel',
 };
 
-
-module.exports = React.createClass({
-
-  displayName: 'CardForm',
-
-  propTypes: {
-    card: React.PropTypes.object,
-    cvv: React.PropTypes.object,
-    'data-token': React.PropTypes.string.isRequired,
-    expiration: React.PropTypes.object,
-    id: React.PropTypes.string.isRequired,
-    productId: React.PropTypes.string.isRequired,
+const errorKeyToFieldMap = {
+  '__all__': {
+    field: 'card',
+    error: 'declined',
   },
+  'fraud': {
+    field: 'card',
+    error: 'declined',
+  },
+  'cvv': {
+    field: 'cvv',
+    error: 'invalid',
+  },
+};
 
-  getInitialState: function() {
-    return {
+const fieldProps = {
+  card: {
+    'attrs': defaultFieldAttrs,
+    'classNames': ['card'],
+    'errors': {
+      invalid: gettext('Incorrect card number'),
+      declined: gettext('Card was declined'),
+    },
+    'id': 'card',
+    'placeholder': gettext('Card number'),
+    'validator': CardValidator.number,
+  },
+  expiration: {
+    'attrs': defaultFieldAttrs,
+    'classNames': ['expiration'],
+    'errors': {
+      invalid: gettext('Invalid expiry date'),
+    },
+    'id': 'expiration',
+    // Expiration pattern doesn't change based on card type.
+    'pattern': '11/11',
+    'placeholder': 'MM/YY',
+    'validator': CardValidator.expirationDate,
+  },
+  cvv: {
+    'attrs': defaultFieldAttrs,
+    'autocomplete': 'off',
+    'classNames': ['cvv'],
+    'errors': {
+      invalid: gettext('Invalid CVV'),
+    },
+    'errorModifier': 'right',
+    'id': 'cvv',
+    'validator': CardValidator.cvv,
+  },
+};
+
+
+export default class CardForm extends Component {
+
+  static propTypes = {
+    card: PropTypes.object,
+    cvv: PropTypes.object,
+    'data-token': PropTypes.string.isRequired,
+    expiration: PropTypes.object,
+    id: PropTypes.string.isRequired,
+    productId: PropTypes.string.isRequired,
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
       isSubmitting: false,
       cardType: null,
       errors: {},
@@ -45,55 +93,18 @@ module.exports = React.createClass({
       expiration: '',
       cvv: '',
     };
-  },
+  }
 
-  fieldProps: {
-    card: {
-      'attrs': defaultFieldAttrs,
-      'classNames': ['card'],
-      'errors': {
-        invalid: gettext('Incorrect card number'),
-        declined: gettext('Card was declined'),
-      },
-      'id': 'card',
-      'placeholder': gettext('Card number'),
-      'validator': CardValidator.number,
-    },
-    expiration: {
-      'attrs': defaultFieldAttrs,
-      'classNames': ['expiration'],
-      'errors': {
-        invalid: gettext('Invalid expiry date'),
-      },
-      'id': 'expiration',
-      // Expiration pattern doesn't change based on card type.
-      'pattern': '11/11',
-      'placeholder': 'MM/YY',
-      'validator': CardValidator.expirationDate,
-    },
-    cvv: {
-      'attrs': defaultFieldAttrs,
-      'autocomplete': 'off',
-      'classNames': ['cvv'],
-      'errors': {
-        invalid: gettext('Invalid CVV'),
-      },
-      'errorModifier': 'right',
-      'id': 'cvv',
-      'validator': CardValidator.cvv,
-    },
-  },
-
-  handleChange: function(e) {
+  handleChange = (e) => {
     var fieldId = e.target.id;
     var val = e.target.value;
 
-    var fieldProps = this.fieldProps[fieldId];
-    var valData = fieldProps.validator(this.stripPlaceholder(val));
-    fieldProps.hasVal = val.length > 0 || false;
-    fieldProps.isValid = valData.isValid === true;
-    fieldProps.showError = !valData.isValid && !valData.isPotentiallyValid;
-    fieldProps.errorMessage = fieldProps.errors.invalid;
+    var fieldData = fieldProps[fieldId];
+    var valData = fieldData.validator(this.stripPlaceholder(val));
+    fieldData.hasVal = val.length > 0 || false;
+    fieldData.isValid = valData.isValid === true;
+    fieldData.showError = !valData.isValid && !valData.isPotentiallyValid;
+    fieldData.errorMessage = fieldData.errors.invalid;
 
     var newState = {
       [e.target.id]: e.target.value,
@@ -106,9 +117,9 @@ module.exports = React.createClass({
     }
 
     this.setState(newState);
-  },
+  }
 
-  handleSubmit: function(e) {
+  handleSubmit = (e) => {
     e.preventDefault();
     this.setState({isSubmitting: true});
     var that = this;
@@ -136,7 +147,7 @@ module.exports = React.createClass({
         }).done(function() {
           console.log('Successfully subscribed + completed payment');
 
-          reduxConfig.default.dispatch(
+          reduxConfig.dispatch(
             purchaseActions.complete()
           );
 
@@ -145,25 +156,9 @@ module.exports = React.createClass({
         });
       }
     });
-  },
+  }
 
-  errorKeyToFieldMap: {
-    '__all__': {
-      field: 'card',
-      error: 'declined',
-    },
-    'fraud': {
-      field: 'card',
-      error: 'declined',
-    },
-    'cvv': {
-      field: 'cvv',
-      error: 'invalid',
-    },
-  },
-
-  processApiErrors: function(errors) {
-    var that = this;
+  processApiErrors(errors) {
     if (errors.error_response && errors.error_response.braintree) {
       var apiErrors = errors.error_response.braintree;
       // Iterate over the error object and create a new data
@@ -171,10 +166,10 @@ module.exports = React.createClass({
       // a list of generic errors.
       Object.keys(apiErrors).forEach(function(key) {
         console.log('API ErrorMessage: ' + JSON.stringify(apiErrors[key]));
-        var errorData = that.errorKeyToFieldMap[key] || {};
+        var errorData = errorKeyToFieldMap[key] || {};
         var field = errorData.field;
         if (field) {
-          var fieldData = that.fieldProps[field];
+          var fieldData = fieldProps[field];
           fieldData.isValid = false;
           fieldData.showError = true;
           fieldData.errorMessage = fieldData.errors[errorData.error];
@@ -184,33 +179,31 @@ module.exports = React.createClass({
     this.setState({
       isSubmitting: false,
     });
-  },
+  }
 
-  stripPlaceholder: function(val) {
+  stripPlaceholder(val) {
     return val ? val.replace(/_/g, '') : '';
-  },
+  }
 
-  render: function() {
-
+  render() {
     var formIsValid = true;
-    var that = this;
 
     // Update form validity based on fieldProps.
-    Object.keys(this.fieldProps).forEach(function(field) {
-      if (!that.fieldProps[field].isValid) {
+    Object.keys(fieldProps).forEach(function(field) {
+      if (!fieldProps[field].isValid) {
         formIsValid = false;
       }
     });
 
     return (
       <form {...this.props} onSubmit={this.handleSubmit}>
-        <CardInput {...this.fieldProps.card}
+        <CardInput {...fieldProps.card}
           cardType={this.state.cardType}
           onChangeHandler={this.handleChange} />
-        <CardInput {...this.fieldProps.expiration}
+        <CardInput {...fieldProps.expiration}
           cardType={this.state.cardType}
           onChangeHandler={this.handleChange} />
-        <CardInput {...this.fieldProps.cvv}
+        <CardInput {...fieldProps.cvv}
           cardType={this.state.cardType}
           onChangeHandler={this.handleChange} />
         <SubmitButton isDisabled={!formIsValid}
@@ -218,5 +211,5 @@ module.exports = React.createClass({
           text={gettext('Subscribe')} />
       </form>
     );
-  },
-});
+  }
+}

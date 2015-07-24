@@ -1,35 +1,28 @@
-'use strict';
+import 'shims';
 
-require('shims');
+import React, { Component } from 'react';
+import { Provider, Connector } from 'redux/react';
+import { bindActionCreators } from 'redux';
 
-var React = require('react');
-var Provider = require('redux/react').Provider;
-var Connector = require('redux/react').Connector;
-var bindActionCreators = require('redux').bindActionCreators;
+import reduxConfig from 'redux-config';
+import * as managementActions from 'actions/management';
 
-var reduxConfig = require('redux-config');
-var managementActions = require('actions/management');
-
-var ModalError = require('views/modal-error');
-var Management = require('views/management');
-var ManageCards = require('views/manage-cards');
+import ModalError from 'views/modal-error';
+import Management from 'views/management';
+import ManageCards from 'views/manage-cards';
 
 
+export default class ManagementApp extends Component {
 
-var App = React.createClass({
-
-  displayName: 'ManagementApp',
-
-  selectData: function(state) {
+  selectData(state) {
     return {
       management: state.management,
     };
-  },
+  }
 
   renderChild(connector) {
     var actions = bindActionCreators(managementActions, connector.dispatch);
     var children = [];
-
     if (connector.management.error) {
       children.push(
         <ModalError {...actions} error={connector.management.error} />
@@ -42,9 +35,9 @@ var App = React.createClass({
     }
     children.push(<Management {...actions} />);
     return <div>{children}</div>;
-  },
+  }
 
-  render () {
+  render() {
     return (
       <main>
         <Connector select={this.selectData}>
@@ -52,19 +45,16 @@ var App = React.createClass({
         </Connector>
       </main>
     );
-  },
-});
+  }
+}
 
 
-module.exports = {
-  component: App,
-  init: function() {
-    React.render((
-      <Provider redux={reduxConfig.default}>
-        {function() {
-          return <App/>;
-        }}
-      </Provider>
-    ), document.body);
-  },
-};
+export function init() {
+  React.render((
+    <Provider redux={reduxConfig}>
+      {function() {
+        return <ManagementApp/>;
+      }}
+    </Provider>
+  ), document.body);
+}

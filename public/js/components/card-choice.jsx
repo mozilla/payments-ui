@@ -1,40 +1,39 @@
-'use strict';
+import $ from 'jquery';
+import React, { Component, PropTypes } from 'react';
 
-var $ = require('jquery');
-var React = require('react');
+import CardList from 'components/card-list';
+import SubmitButton from 'components/submit-button';
 
-var CardList = require('components/card-list');
-var SubmitButton = require('components/submit-button');
+import { gettext } from 'utils';
+import * as purchaseActions from 'actions/purchase';
 
-var gettext = require('utils').gettext;
-var purchaseActions = require('actions/purchase');
-var reduxConfig = require('redux-config');
+import reduxConfig from 'redux-config';
 
 
-module.exports = React.createClass({
-  displayName: 'CardChoice',
+export default class CardChoice extends Component {
 
-  propTypes: {
-    cards: React.PropTypes.arrayOf(
-      React.PropTypes.shape({
-        id: React.PropTypes.number,
-        resource_uri: React.PropTypes.string,
-        truncated_id: React.PropTypes.string,
-        type_name: React.PropTypes.string,
+  static propTypes = {
+    cards: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number,
+        resource_uri: PropTypes.string,
+        truncated_id: PropTypes.string,
+        type_name: PropTypes.string,
       }
     )).isRequired,
-    productId: React.PropTypes.string.isRequired,
-  },
+    productId: PropTypes.string.isRequired,
+  }
 
-  getInitialState: function() {
-    return {
+  constructor(props) {
+    super(props);
+    this.state = {
       isSubmitting: false,
       card: (this.props.cards.length === 1 ?
              this.props.cards[0].resource_uri : null),
     };
-  },
+  }
 
-  handleSubmit: function(e) {
+  handleSubmit = (e) => {
     e.preventDefault();
 
     this.setState({isSubmitting: true});
@@ -51,20 +50,20 @@ module.exports = React.createClass({
     }).done(function() {
       console.log('Successfully subscribed with existing card');
 
-      reduxConfig.default.dispatch(
+      reduxConfig.dispatch(
         purchaseActions.complete()
       );
 
     }).fail(function() {
       // TODO: handler errors.
     });
-  },
+  }
 
-  handleCardChange: function(e) {
+  handleCardChange = (e) => {
     this.setState({card: e.target.value});
-  },
+  }
 
-  render: function() {
+  render() {
     var cardData = this.props.cards;
     for (var i = 0; i < cardData.length; i += 1) {
       var card = cardData[i];
@@ -75,12 +74,14 @@ module.exports = React.createClass({
 
     return (
       <form id="card-listing" onSubmit={this.handleSubmit}>
-        <CardList cards={cardData} onCardChange={this.handleCardChange} />
+        <CardList
+          cards={cardData}
+          onCardChange={this.handleCardChange} />
         <SubmitButton isDisabled={!formIsValid}
           showSpinner={this.state.isSubmitting}
           text={gettext('Subscribe')}
         />
       </form>
     );
-  },
-});
+  }
+}
