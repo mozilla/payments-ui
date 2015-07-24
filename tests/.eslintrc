@@ -3,6 +3,10 @@
     "mocha": true,
     "node": true,
   },
+  "rules": {
+    "strict": 0,
+    "global-strict": 0,
+  },
   "globals": {
     "assert": false,
     "sinon": false,

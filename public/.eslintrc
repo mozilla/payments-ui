@@ -2,4 +2,8 @@
   "env": {
     "browser": true,
   },
+  "rules": {
+    "global-strict": 0,
+    "strict": [2, "never"]
+  }
 }
