@@ -12,20 +12,48 @@ export default class Management extends Component {
 
   static propTypes = {
     getPayMethods: PropTypes.func.isRequired,
-  };
+    user: React.PropTypes.object.isRequired,
+    userSignIn: React.PropTypes.func.isRequired,
+    userSignOut: React.PropTypes.func.isRequired,
+  }
+
+  userSignIn = click => {
+    click.preventDefault();
+    this.props.userSignIn();
+  }
+
+  userSignOut = click => {
+    click.preventDefault();
+    this.props.userSignOut();
+  }
 
   render() {
+    var greeting;
+    var headerOnClick;
+    var headerText;
+
+    if (this.props.user.signedIn) {
+      headerText = gettext('Sign Out');
+      headerOnClick = this.userSignOut;
+      // TODO: fix this when gettext() has formatters.
+      greeting = 'Hello, ' + this.props.user.email;
+    } else {
+      headerText = gettext('Sign In');
+      headerOnClick = this.userSignIn;
+      greeting = gettext('Not signed in');
+    }
+
     return (
 
         <div>
           <header className="top-nav">
             <h1 className="logo">Firefox Payments</h1>
-            <button>{gettext('Sign Out')}</button>
+            <button onClick={headerOnClick}>{headerText}</button>
           </header>
 
           <div className="content">
             <div className="user">
-              <p>Hello, placeholder@placeholder.com</p>
+              <p>{greeting}</p>
             </div>
 
             <Accordion>
@@ -54,7 +82,7 @@ export default class Management extends Component {
                   <a className="button"
                      href="https://mozilla.org/"
                      target="_blank">{gettext('Change')}</a>
-                  <p>placeholder@placeholder.com</p>
+                  {this.props.user ? <p>{this.props.user.email}</p> : null}
                 </header>
               </AccordionSection>
 

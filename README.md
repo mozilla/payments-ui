@@ -44,6 +44,13 @@ JS libs are committed from `node_modules` as webpack knows how to find deps in
 Whilst this creates noise it does help ensure deps in the browser
 are identical and can't get mangled by a broken deps installation.
 
+#### dealing with bower
+
+Unfortunately some deps only work with bower. For these cases, make sure
+`bower.json` has the package name and version, run `bower install`, and
+commit the distributed files to `public/bower_components`. Hopefully these
+cases will be rare.
+
 ### Watching for file changes in development.
 
 If you're using [payments-env](https://github.com/mozilla/payments-env/)

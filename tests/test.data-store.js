@@ -66,6 +66,8 @@ describe('user', function() {
     var user = dataStore.user(undefined, {});
     assert.deepEqual(user, {
       signedIn: false,
+      email: null,
+      payment_methods: [],
     });
   });
 
@@ -75,6 +77,24 @@ describe('user', function() {
     var user = dataStore.user({}, userSignedIn());
 
     assert.deepEqual(user, dispatchedUser);
+  });
+
+  it('should reset a user on sign-out', function() {
+    // Receive a sign-in action.
+    var state = {};
+    state.user = dataStore.user(state.user, userSignedIn());
+
+    // Receive a sign-out but pass in the previous signed-in state too.
+    var user = dataStore.user(state.user, {
+      type: actionTypes.USER_SIGNED_OUT,
+    });
+
+    assert.deepEqual(user, {
+      signedIn: false,
+      email: null,
+      payment_methods: [],
+    });
+
   });
 
   it('should preserve user state', function() {

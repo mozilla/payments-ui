@@ -36,69 +36,198 @@ describe('userActions', function() {
     };
   }
 
-  it('should dispatch sign-in action', function() {
-    var setup = setApiSignInResult();
+  describe('tokenSignIn', function() {
 
-    userActions.signIn('access-token', setup.jquery)(dispatchSpy);
+    it('should dispatch sign-in action', function() {
+      var { jquery } = setApiSignInResult();
 
-    var action = dispatchSpy.firstCall.args[0];
-    assert.equal(action.type, actionTypes.USER_SIGNED_IN);
+      userActions.tokenSignIn('access-token', jquery)(dispatchSpy);
+
+      var action = dispatchSpy.firstCall.args[0];
+      assert.equal(action.type, actionTypes.USER_SIGNED_IN);
+    });
+
+    it('should set the email from sign-in', function() {
+      var { jquery, data } = setApiSignInResult();
+
+      userActions.tokenSignIn('access-token', jquery)(dispatchSpy);
+
+      var action = dispatchSpy.firstCall.args[0];
+      assert.equal(action.user.email, data.buyer_email);
+    });
+
+    it('should set saved payment methods from sign-in', function() {
+      var data = fakeSignInResult();
+      var payMethods = [{'provider_id': '3vr3ym'}];
+      data.payment_methods = payMethods;
+      var { jquery } = setApiSignInResult({data: data});
+
+      userActions.tokenSignIn('access-token', jquery)(dispatchSpy);
+
+      var action = dispatchSpy.firstCall.args[0];
+      assert.equal(action.user.payment_methods, payMethods);
+    });
+
+    it('should set empty payment methods', function() {
+      var { jquery } = setApiSignInResult();
+
+      userActions.tokenSignIn('access-token', jquery)(dispatchSpy);
+
+      var action = dispatchSpy.firstCall.args[0];
+      assert.deepEqual(action.user.payment_methods, []);
+    });
+
+    it('should sign-in with access token', function() {
+      var jquery = helpers.fakeJquery({returnedData: fakeSignInResult()});
+      userActions.tokenSignIn('access-token', jquery.stub)(dispatchSpy);
+
+      assert.equal(jquery.ajaxSpy.firstCall.args[0].data.access_token,
+                   'access-token');
+    });
+
+    it('should configure CSRF headers on sign-in', function() {
+      var data = fakeSignInResult();
+      var jquery = helpers.fakeJquery({returnedData: data});
+      userActions.tokenSignIn('access-token', jquery.stub)(dispatchSpy);
+
+      assert.deepEqual(jquery.ajaxSetupSpy.firstCall.args[0].headers,
+                       {'X-CSRFToken': data.csrf_token});
+    });
+
+    it('should set app error on failure', function() {
+      var { jquery } = setApiSignInResult({jqueryOpt: {result: 'fail'}});
+
+      userActions.tokenSignIn('access-token', jquery)(dispatchSpy);
+
+      var action = dispatchSpy.firstCall.args[0];
+      assert.deepEqual(action, appActions.error('FxA token sign-in failed'));
+    });
+
   });
 
-  it('should set email from sign-in', function() {
-    var setup = setApiSignInResult();
+  describe('userSignIn', function() {
+    var fxaSignIn;
 
-    userActions.signIn('access-token', setup.jquery)(dispatchSpy);
+    function setFxaRelierStub(opt) {
+      opt = opt || {};
 
-    var action = dispatchSpy.firstCall.args[0];
-    assert.equal(action.user.email, setup.data.buyer_email);
+      var signInPromise = new helpers.FakeSyncPromise();
+
+      function FxaRelierClient() {
+      }
+
+      FxaRelierClient.prototype.auth = {
+        signIn: function() {
+          return signInPromise;
+        },
+      };
+
+      return {
+        client: FxaRelierClient,
+        promise: signInPromise,
+      };
+    }
+
+    function signInAction(jquery) {
+      userActions.userSignIn(fxaSignIn.client, jquery)(dispatchSpy);
+    }
+
+    function resolveSignIn() {
+      fxaSignIn.promise.resolve({code: 'fxa-auth-code'});
+    }
+
+    beforeEach(function() {
+      fxaSignIn = setFxaRelierStub();
+    });
+
+    it('should dispatch a sign-in action', function() {
+      var { jquery } = setApiSignInResult();
+
+      signInAction(jquery);
+      resolveSignIn();
+
+      var action = dispatchSpy.firstCall.args[0];
+      assert.equal(action.type, actionTypes.USER_SIGNED_IN);
+    });
+
+    it('should dispatch an FxA sign-in error', function() {
+      var { jquery } = setApiSignInResult();
+
+      signInAction(jquery);
+
+      var fxaError = new Error('some FxA error');
+      fxaSignIn.promise.reject(fxaError);
+
+      var action = dispatchSpy.firstCall.args[0];
+      assert.deepEqual(action, appActions.error('FxA user sign-in failed'));
+    });
+
+    it('should dispatch an API sign-in error', function() {
+      var { jquery } = setApiSignInResult({jqueryOpt: {result: 'fail'}});
+
+      signInAction(jquery);
+      resolveSignIn();
+
+      var action = dispatchSpy.firstCall.args[0];
+      assert.deepEqual(action, appActions.error('API user sign-in failed'));
+    });
+
+    it('should configure CSRF headers on sign-in', function() {
+      var data = fakeSignInResult();
+      var jquery = helpers.fakeJquery({returnedData: data});
+
+      signInAction(jquery.stub);
+      resolveSignIn();
+
+      assert.deepEqual(jquery.ajaxSetupSpy.firstCall.args[0].headers,
+                       {'X-CSRFToken': data.csrf_token});
+    });
+
+    it('should set the email from sign-in', function() {
+      var { jquery, data } = setApiSignInResult();
+
+      signInAction(jquery);
+      resolveSignIn();
+
+      var action = dispatchSpy.firstCall.args[0];
+      assert.equal(action.user.email, data.buyer_email);
+    });
+
+    it('should set saved payment methods from sign-in', function() {
+      var data = fakeSignInResult();
+      var payMethods = [{'provider_id': '3vr3ym'}];
+      data.payment_methods = payMethods;
+      var { jquery } = setApiSignInResult({data: data});
+
+      signInAction(jquery);
+      resolveSignIn();
+
+      var action = dispatchSpy.firstCall.args[0];
+      assert.equal(action.user.payment_methods, payMethods);
+    });
+
   });
 
-  it('should set saved payment methods from sign-in', function() {
-    var data = fakeSignInResult();
-    var payMethods = [{'provider_id': '3vr3ym'}];
-    data.payment_methods = payMethods;
-    var setup = setApiSignInResult({data: data});
+  describe('userSignOut', function() {
 
-    userActions.signIn('access-token', setup.jquery)(dispatchSpy);
+    it('should dispatch a sign-out action', function() {
+      var jquery = helpers.fakeJquery();
 
-    var action = dispatchSpy.firstCall.args[0];
-    assert.equal(action.user.payment_methods, payMethods);
-  });
+      userActions.userSignOut(jquery.stub)(dispatchSpy);
 
-  it('should set empty payment methods', function() {
-    var setup = setApiSignInResult();
+      var action = dispatchSpy.firstCall.args[0];
+      assert.equal(action.type, actionTypes.USER_SIGNED_OUT);
+    });
 
-    userActions.signIn('access-token', setup.jquery)(dispatchSpy);
+    it('should dispatch a sign-out error', function() {
+      var jquery = helpers.fakeJquery({result: 'fail'});
 
-    var action = dispatchSpy.firstCall.args[0];
-    assert.deepEqual(action.user.payment_methods, []);
-  });
+      userActions.userSignOut(jquery.stub)(dispatchSpy);
 
-  it('should sign-in with access token', function() {
-    var jquery = helpers.fakeJquery({returnedData: fakeSignInResult()});
-    userActions.signIn('access-token', jquery.stub)(dispatchSpy);
+      var action = dispatchSpy.firstCall.args[0];
+      assert.deepEqual(action, appActions.error('API user sign-out failed'));
+    });
 
-    assert.equal(jquery.ajaxSpy.firstCall.args[0].data.access_token,
-                 'access-token');
-  });
-
-  it('should configure CSRF headers on sign-in', function() {
-    var data = fakeSignInResult();
-    var jquery = helpers.fakeJquery({returnedData: data});
-    userActions.signIn('access-token', jquery.stub)(dispatchSpy);
-
-    assert.deepEqual(jquery.ajaxSetupSpy.firstCall.args[0].headers,
-                     {'X-CSRFToken': data.csrf_token});
-  });
-
-  it('should set app error on failure', function() {
-    var setup = setApiSignInResult({jqueryOpt: {result: 'fail'}});
-
-    userActions.signIn('access-token', setup.jquery)(dispatchSpy);
-
-    var action = dispatchSpy.firstCall.args[0];
-    assert.deepEqual(action, appActions.error('user login failed'));
   });
 
 });
