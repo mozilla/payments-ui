@@ -10,12 +10,12 @@ export default class Login extends Component {
 
   static propTypes = {
     accessToken: PropTypes.string.isRequired,
-    signIn: PropTypes.func.isRequired,
+    tokenSignIn: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
     tracking.setPage('/login');
-    this.props.signIn(this.props.accessToken);
+    this.props.tokenSignIn(this.props.accessToken);
   }
 
   render() {
