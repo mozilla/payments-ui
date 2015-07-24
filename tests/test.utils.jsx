@@ -1,6 +1,4 @@
-'use strict';
-
-var utils = require('utils');
+import * as utils from 'utils';
 
 
 describe('utils.parseQuery', function() {

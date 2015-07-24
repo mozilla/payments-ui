@@ -1,25 +1,16 @@
-'use strict';
+import * as actionTypes from 'constants/action-types';
+import * as appActions from 'actions/app';
+import * as userActions from 'actions/user';
 
-var rewire = require('rewire');
-
-var actionTypes = require('constants/action-types');
-var appActions = require('actions/app');
-
-var helpers = require('./helpers');
+import * as helpers from './helpers';
 
 
 describe('userActions', function() {
 
   var dispatchSpy;
-  var userActions;
 
   beforeEach(function() {
     dispatchSpy = sinon.spy();
-    userActions = rewire('actions/user');
-    userActions.__set__({
-      // Replace with a non-functioning stub by default until overidden.
-      '$': {},
-    });
   });
 
   function fakeSignInResult() {
@@ -38,45 +29,47 @@ describe('userActions', function() {
     opt.jqueryOpt.returnedData = opt.data;
 
     var jquery = helpers.fakeJquery(opt.jqueryOpt);
-    userActions.__set__('$', jquery.stub);
 
-    return opt.data;
+    return {
+      data: opt.data,
+      jquery: jquery.stub,
+    };
   }
 
   it('should dispatch sign-in action', function() {
-    setApiSignInResult();
+    var setup = setApiSignInResult();
 
-    userActions.signIn('access-token')(dispatchSpy);
+    userActions.signIn('access-token', setup.jquery)(dispatchSpy);
 
     var action = dispatchSpy.firstCall.args[0];
     assert.equal(action.type, actionTypes.USER_SIGNED_IN);
   });
 
   it('should set email from sign-in', function() {
-    var data = setApiSignInResult();
+    var setup = setApiSignInResult();
 
-    userActions.signIn('access-token')(dispatchSpy);
+    userActions.signIn('access-token', setup.jquery)(dispatchSpy);
 
     var action = dispatchSpy.firstCall.args[0];
-    assert.equal(action.user.email, data.buyer_email);
+    assert.equal(action.user.email, setup.data.buyer_email);
   });
 
   it('should set saved payment methods from sign-in', function() {
     var data = fakeSignInResult();
     var payMethods = [{'provider_id': '3vr3ym'}];
     data.payment_methods = payMethods;
-    setApiSignInResult({data: data});
+    var setup = setApiSignInResult({data: data});
 
-    userActions.signIn('access-token')(dispatchSpy);
+    userActions.signIn('access-token', setup.jquery)(dispatchSpy);
 
     var action = dispatchSpy.firstCall.args[0];
     assert.equal(action.user.payment_methods, payMethods);
   });
 
   it('should set empty payment methods', function() {
-    setApiSignInResult();
+    var setup = setApiSignInResult();
 
-    userActions.signIn('access-token')(dispatchSpy);
+    userActions.signIn('access-token', setup.jquery)(dispatchSpy);
 
     var action = dispatchSpy.firstCall.args[0];
     assert.deepEqual(action.user.payment_methods, []);
@@ -84,8 +77,7 @@ describe('userActions', function() {
 
   it('should sign-in with access token', function() {
     var jquery = helpers.fakeJquery({returnedData: fakeSignInResult()});
-    userActions.__set__('$', jquery.stub);
-    userActions.signIn('access-token')(dispatchSpy);
+    userActions.signIn('access-token', jquery.stub)(dispatchSpy);
 
     assert.equal(jquery.ajaxSpy.firstCall.args[0].data.access_token,
                  'access-token');
@@ -94,17 +86,16 @@ describe('userActions', function() {
   it('should configure CSRF headers on sign-in', function() {
     var data = fakeSignInResult();
     var jquery = helpers.fakeJquery({returnedData: data});
-    userActions.__set__('$', jquery.stub);
-    userActions.signIn('access-token')(dispatchSpy);
+    userActions.signIn('access-token', jquery.stub)(dispatchSpy);
 
     assert.deepEqual(jquery.ajaxSetupSpy.firstCall.args[0].headers,
                      {'X-CSRFToken': data.csrf_token});
   });
 
   it('should set app error on failure', function() {
-    setApiSignInResult({jqueryOpt: {result: 'fail'}});
+    var setup = setApiSignInResult({jqueryOpt: {result: 'fail'}});
 
-    userActions.signIn('access-token')(dispatchSpy);
+    userActions.signIn('access-token', setup.jquery)(dispatchSpy);
 
     var action = dispatchSpy.firstCall.args[0];
     assert.deepEqual(action, appActions.error('user login failed'));

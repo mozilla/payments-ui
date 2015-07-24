@@ -1,14 +1,14 @@
-'use strict';
+import React from 'react';
+import TestUtils from 'react/lib/ReactTestUtils';
 
-var React;
-var TestUtils;
-var rewire = require('rewire');
+import * as helpers from './helpers';
 
-var actionTypes = require('constants/action-types');
-var reduxConfig = require('redux-config');
-var purchaseActions = require('actions/purchase');
+import * as actionTypes from 'constants/action-types';
+import * as purchaseActions from 'actions/purchase';
+import { create as reduxCreate } from 'redux-config';
 
-var helpers = require('./helpers');
+import Purchase from 'views/purchase';
+
 
 describe('Purchase', function() {
 
@@ -23,26 +23,23 @@ describe('Purchase', function() {
   var redux;
 
   beforeEach(function() {
-    React = require('react');
-    TestUtils = require('react/lib/ReactTestUtils');
-    redux = reduxConfig.create();
+    redux = reduxCreate();
   });
 
   function mountView(userOverrides) {
     var user = Object.assign({}, defaultUser, userOverrides);
     var FluxContainer = helpers.getFluxContainer(redux);
 
-    var Purchase = rewire('views/purchase');
-    Purchase.__set__({
-      'CompletePayment': FakeCompletePayment,
-      'CardListing': FakeCardListing,
-      'CardDetails': FakeCardDetails,
-    });
-
     var container = TestUtils.renderIntoDocument(
       <FluxContainer>
         {function() {
-          return <Purchase user={user} productId={productId} />;
+          return (
+            <Purchase
+              CardDetails={FakeCardDetails}
+              CardListing={FakeCardListing}
+              CompletePayment={FakeCompletePayment}
+              user={user} productId={productId} />
+          );
         }}
       </FluxContainer>
     );

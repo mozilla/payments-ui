@@ -1,17 +1,17 @@
-'use strict';
+import React from 'react';
+import TestUtils from 'react/lib/ReactTestUtils';
 
-var React = require('react');
-var TestUtils;
-var rewire = require('rewire');
+import * as actionTypes from 'constants/action-types';
+import * as appActions from 'actions/app';
+import { create as reduxCreate } from 'redux-config';
+import ErrorMessage from 'components/error';
 
-var actionTypes = require('constants/action-types');
-var appActions = require('actions/app');
-var reduxConfig = require('redux-config');
-var ErrorMessage = require('components/error');
+import * as helpers from './helpers';
 
-var helpers = require('./helpers');
+import PaymentApp from 'apps/payment/app';
 
-describe('App', function() {
+
+describe('Payment App', function() {
 
   var accessToken = 'some-oauth-token';
   var productId = 'mozilla-concrete-brick';
@@ -20,35 +20,31 @@ describe('App', function() {
   var redux;
 
   beforeEach(function() {
-    TestUtils = require('react/lib/ReactTestUtils');
-    redux = reduxConfig.create();
+    redux = reduxCreate();
   });
 
   function mountView() {
     var FluxContainer = helpers.getFluxContainer(redux);
 
-    var app = rewire('apps/payment/app');
-    app.__set__({
-      'Login': FakeLogin,
-      'Purchase': FakePurchase,
-      'window': {
-        'location': {
-          'href': ('http://pay.dev/?access_token=' + accessToken +
-                   '&product=' + productId),
-        },
+    var fakeWin = {
+      'location': {
+        'href': ('http://pay.dev/?access_token=' + accessToken +
+                 '&product=' + productId),
       },
-    });
+    };
 
-    var App = app.component;
     var container = TestUtils.renderIntoDocument(
       <FluxContainer>
         {function() {
-          return <App />;
+          return (
+            <PaymentApp
+              Login={FakeLogin} Purchase={FakePurchase} win={fakeWin} />
+          );
         }}
       </FluxContainer>
     );
     return TestUtils.findRenderedComponentWithType(
-      container, App
+      container, PaymentApp
     );
   }
 

@@ -1,11 +1,4 @@
-'use strict';
-
-var rewire = require('rewire');
-var tracking = rewire('tracking');
-
-// Get at the top level var in the tracking module
-// using rewire.
-var Tracking = tracking.__get__('Tracking');
+import { Tracking } from 'tracking';
 
 
 describe('Tracking uninitialized', function() {
@@ -42,9 +35,9 @@ describe('Tracking functions', function() {
   });
 
   it('should throw if page not set', function() {
-    assert.throws(function() {
+    assert.throws(() => {
       this.t.setPage();
-    }.bind(this), Error, /page is required/);
+    }, Error, /page is required/);
   });
 
   it('should call ga', function() {
@@ -53,17 +46,17 @@ describe('Tracking functions', function() {
   });
 
   it('should throw if category not set', function() {
-    assert.throws(function() {
+    assert.throws(() => {
       this.t.sendEvent({});
-    }.bind(this), Error, /opts\.category is required/);
+    }, Error, /opts\.category is required/);
   });
 
   it('should throw if action not set', function() {
-    assert.throws(function() {
+    assert.throws(() => {
       this.t.sendEvent({
         category: 'whatever',
       });
-    }.bind(this), Error, /opts\.action is required/);
+    }, Error, /opts\.action is required/);
   });
 
   it('should call _ga', function() {

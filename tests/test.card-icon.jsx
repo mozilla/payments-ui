@@ -1,14 +1,10 @@
-'use strict';
+import React, { findDOMNode } from 'react';
+import TestUtils from 'react/lib/ReactTestUtils';
 
-var React;
-var TestUtils;
-
-var CardIcon = require('components/card-icon');
-
+import CardIcon from 'components/card-icon';
 
 describe('Card Icon', function() {
 
-  var cardIcon;
   var cards = [
     'amex',
     'discover',
@@ -18,18 +14,12 @@ describe('Card Icon', function() {
     'visa',
   ];
 
-  beforeEach(function() {
-    React = require('react');
-    TestUtils = require('react/lib/ReactTestUtils');
-    cardIcon = TestUtils.renderIntoDocument(
-      <CardIcon cardType="american-express" />
-    );
-  });
-
   function testCard(cardType) {
     return function() {
-      cardIcon.setProps({'cardType': cardType});
-      var cardIconNode = cardIcon.getDOMNode();
+      var CardIcon_ = TestUtils.renderIntoDocument(
+        <CardIcon cardType={cardType} />
+       );
+      var cardIconNode = findDOMNode(CardIcon_);
       assert.include(
         cardIconNode.getAttribute('class'), 'cctype-' + cardType);
     };

@@ -1,11 +1,9 @@
-'use strict';
+import React, { findDOMNode } from 'react';
+import TestUtils from 'react/lib/ReactTestUtils';
 
-var React = require('react');
-var TestUtils = require('react/lib/ReactTestUtils');
+import Modal from 'components/modal';
 
-var Modal = require('components/modal');
-
-var helpers = require('./helpers');
+import * as helpers from './helpers';
 
 
 describe('Modal', function() {
@@ -28,17 +26,17 @@ describe('Modal', function() {
 
   it('should have a title', function() {
     var title = helpers.findByTag(this.Modal, 'h2');
-    assert.equal(title.getDOMNode().firstChild.nodeValue, 'whatever');
+    assert.equal(findDOMNode(title).firstChild.nodeValue, 'whatever');
   });
 
   it('should have child content', function() {
     var content = helpers.findByClass(this.Modal, 'm-content');
-    assert.equal(content.getDOMNode().nodeName.toLowerCase(), 'div');
+    assert.equal(findDOMNode(content).nodeName.toLowerCase(), 'div');
   });
 
   it('should have child paragraph', function() {
     var text = helpers.findByClass(this.Modal, 'm-text');
-    assert.equal(text.getDOMNode().firstChild.nodeValue,
+    assert.equal(findDOMNode(text).firstChild.nodeValue,
                  'Just some noddy content');
   });
 
@@ -52,7 +50,7 @@ describe('Modal', function() {
 
   it('should call close func when clicking the close link', function() {
     var close = helpers.findByClass(this.Modal, 'close');
-    TestUtils.Simulate.click(close.getDOMNode(), this.eventStub);
+    TestUtils.Simulate.click(findDOMNode(close), this.eventStub);
     assert.ok(this.eventStub.preventDefault.called);
     assert.ok(this.eventStub.stopPropagation.called);
     assert.ok(this.closeFunc.called);
@@ -60,7 +58,7 @@ describe('Modal', function() {
 
   it('should not call close func when clicking other content.', function() {
     var otherLink = helpers.findByClass(this.Modal, 'other-link');
-    TestUtils.Simulate.click(otherLink.getDOMNode(), this.eventStub);
+    TestUtils.Simulate.click(findDOMNode(otherLink), this.eventStub);
     assert.notOk(this.eventStub.preventDefault.called);
     assert.notOk(this.eventStub.stopPropagation.called);
     assert.notOk(this.closeFunc.called);

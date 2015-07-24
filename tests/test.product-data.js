@@ -1,7 +1,5 @@
-'use strict';
+import products from 'products';
 
-
-var products = require('products');
 
 describe('products', function() {
 
