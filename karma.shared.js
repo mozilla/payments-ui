@@ -18,6 +18,9 @@ newWebpackConfig.plugins = [
   new RewirePlugin(),
 ];
 
+// Expose the right kind of source map for test-loader.js
+newWebpackConfig.devtool= 'inline-source-map';
+
 module.exports = {
   basePath: '',
   browsers: ['Firefox'],
