@@ -67,6 +67,17 @@ export const cvvError = {
 };
 
 
+export function findById(component, id){
+  var results = TestUtils.findAllInRenderedTree(component, function(inst) {
+    return TestUtils.isDOMComponent(inst) && inst.props.id === id;
+  });
+  if (results.length !== 1) {
+    throw new Error('zero or multiple DOM nodes found for id ' + id);
+  }
+  return results[0];
+}
+
+
 export function findByClass(component, className){
   return TestUtils.findRenderedDOMComponentWithClass(component, className);
 }
