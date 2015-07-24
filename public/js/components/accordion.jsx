@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import cx from 'classnames';
 
 
-class Accordion extends Component {
+export class Accordion extends Component {
 
   static propTypes = {
     children: PropTypes.node.isRequired,
@@ -48,7 +48,7 @@ class Accordion extends Component {
 }
 
 
-class AccordionSection extends Component {
+export class AccordionSection extends Component {
 
   static propTypes = {
     activate: React.PropTypes.func.isRequired,
@@ -70,7 +70,7 @@ class AccordionSection extends Component {
 }
 
 
-class AccordionContent extends Component {
+export class AccordionContent extends Component {
 
   static propTypes = {
     children: React.PropTypes.node.isRequired,
@@ -84,10 +84,3 @@ class AccordionContent extends Component {
     );
   }
 }
-
-
-export default {
-  Accordion,
-  AccordionContent,
-  AccordionSection,
-};
