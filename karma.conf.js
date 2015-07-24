@@ -1,5 +1,3 @@
-'use strict';
-
 var karmaConfig = require('./karma.shared');
 
 module.exports = function (config) {
