@@ -1,0 +1,6 @@
+{
+  "name": "moz-payments-ui",
+  "dependencies": {
+    "fxa-relier-client": "https://github.com/mozilla/fxa-relier-client.git#0.0.8"
+  }
+}
