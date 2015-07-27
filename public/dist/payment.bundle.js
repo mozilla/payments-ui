@@ -380,17 +380,17 @@ webpackJsonp([1],[
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	__webpack_require__(5);
+	__webpack_require__(3);
 	
-	var _react = __webpack_require__(12);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reduxReact = __webpack_require__(168);
+	var _reduxReact = __webpack_require__(166);
 	
-	var _redux = __webpack_require__(181);
+	var _redux = __webpack_require__(179);
 	
-	var _reduxConfig = __webpack_require__(191);
+	var _reduxConfig = __webpack_require__(189);
 	
 	var _reduxConfig2 = _interopRequireDefault(_reduxConfig);
 	
@@ -410,7 +410,7 @@ webpackJsonp([1],[
 	
 	var userActions = _interopRequireWildcard(_actionsUser);
 	
-	var _utils = __webpack_require__(202);
+	var _utils = __webpack_require__(200);
 	
 	var PaymentApp = (function (_Component) {
 	  _inherits(PaymentApp, _Component);
@@ -520,7 +520,7 @@ webpackJsonp([1],[
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(12);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -528,7 +528,7 @@ webpackJsonp([1],[
 	
 	var _componentsSpinner2 = _interopRequireDefault(_componentsSpinner);
 	
-	var _utils = __webpack_require__(202);
+	var _utils = __webpack_require__(200);
 	
 	var _tracking = __webpack_require__(211);
 	
@@ -589,11 +589,11 @@ webpackJsonp([1],[
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(12);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _utils = __webpack_require__(202);
+	var _utils = __webpack_require__(200);
 	
 	var Spinner = (function (_Component) {
 	  _inherits(Spinner, _Component);
@@ -662,13 +662,13 @@ webpackJsonp([1],[
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(12);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _redux = __webpack_require__(181);
+	var _redux = __webpack_require__(179);
 	
-	var _reduxReact = __webpack_require__(168);
+	var _reduxReact = __webpack_require__(166);
 	
 	var _actionsPurchase = __webpack_require__(216);
 	
@@ -770,7 +770,7 @@ webpackJsonp([1],[
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _constantsActionTypes = __webpack_require__(4);
+	var _constantsActionTypes = __webpack_require__(192);
 	
 	// TODO: expand these actions to encapsulate the Ajax
 	// logic more directly. This will allow the Ajax requests to
@@ -815,7 +815,7 @@ webpackJsonp([1],[
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
-	var _react = __webpack_require__(12);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -931,7 +931,7 @@ webpackJsonp([1],[
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(12);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -939,7 +939,7 @@ webpackJsonp([1],[
 	
 	var _products2 = _interopRequireDefault(_products);
 	
-	var _utils = __webpack_require__(202);
+	var _utils = __webpack_require__(200);
 	
 	var ProductDetail = (function (_Component) {
 	  _inherits(ProductDetail, _Component);
@@ -1101,7 +1101,7 @@ webpackJsonp([1],[
 	
 	var _cardValidator2 = _interopRequireDefault(_cardValidator);
 	
-	var _react = __webpack_require__(12);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -1109,7 +1109,7 @@ webpackJsonp([1],[
 	
 	var _braintreeWeb2 = _interopRequireDefault(_braintreeWeb);
 	
-	var _utils = __webpack_require__(202);
+	var _utils = __webpack_require__(200);
 	
 	var _componentsCardInput = __webpack_require__(259);
 	
@@ -1123,7 +1123,7 @@ webpackJsonp([1],[
 	
 	var purchaseActions = _interopRequireWildcard(_actionsPurchase);
 	
-	var _reduxConfig = __webpack_require__(191);
+	var _reduxConfig = __webpack_require__(189);
 	
 	var _reduxConfig2 = _interopRequireDefault(_reduxConfig);
 	
@@ -4496,7 +4496,7 @@ webpackJsonp([1],[
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var _react = __webpack_require__(12);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -4512,7 +4512,7 @@ webpackJsonp([1],[
 	
 	var _reactMaskedinput2 = _interopRequireDefault(_reactMaskedinput);
 	
-	var _utils = __webpack_require__(202);
+	var _utils = __webpack_require__(200);
 	
 	var cardPatterns = {
 	  'default': {
@@ -4655,7 +4655,7 @@ webpackJsonp([1],[
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(12);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -4709,8 +4709,8 @@ webpackJsonp([1],[
 
 	'use strict';
 	
-	var React = __webpack_require__(12)
-	var $__0=   __webpack_require__(142),getSelection=$__0.getSelection,setSelection=$__0.setSelection
+	var React = __webpack_require__(10)
+	var $__0=   __webpack_require__(140),getSelection=$__0.getSelection,setSelection=$__0.setSelection
 	
 	var InputMask = __webpack_require__(262)
 	
@@ -5377,7 +5377,7 @@ webpackJsonp([1],[
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(12);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -5459,7 +5459,7 @@ webpackJsonp([1],[
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(12);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -5471,7 +5471,7 @@ webpackJsonp([1],[
 	
 	var _componentsProductDetail2 = _interopRequireDefault(_componentsProductDetail);
 	
-	var _utils = __webpack_require__(202);
+	var _utils = __webpack_require__(200);
 	
 	var _tracking = __webpack_require__(211);
 	
@@ -5552,7 +5552,7 @@ webpackJsonp([1],[
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
-	var _react = __webpack_require__(12);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -5564,13 +5564,13 @@ webpackJsonp([1],[
 	
 	var _componentsSubmitButton2 = _interopRequireDefault(_componentsSubmitButton);
 	
-	var _utils = __webpack_require__(202);
+	var _utils = __webpack_require__(200);
 	
 	var _actionsPurchase = __webpack_require__(216);
 	
 	var purchaseActions = _interopRequireWildcard(_actionsPurchase);
 	
-	var _reduxConfig = __webpack_require__(191);
+	var _reduxConfig = __webpack_require__(189);
 	
 	var _reduxConfig2 = _interopRequireDefault(_reduxConfig);
 	
@@ -5682,7 +5682,7 @@ webpackJsonp([1],[
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(12);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -5694,7 +5694,7 @@ webpackJsonp([1],[
 	
 	var _componentsSubmitButton2 = _interopRequireDefault(_componentsSubmitButton);
 	
-	var _utils = __webpack_require__(202);
+	var _utils = __webpack_require__(200);
 	
 	var _tracking = __webpack_require__(211);
 	

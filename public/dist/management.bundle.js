@@ -47,21 +47,21 @@ webpackJsonp([0],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	__webpack_require__(5);
+	__webpack_require__(3);
 	
-	var _react = __webpack_require__(12);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reduxReact = __webpack_require__(168);
+	var _reduxReact = __webpack_require__(166);
 	
-	var _redux = __webpack_require__(181);
+	var _redux = __webpack_require__(179);
 	
-	var _reduxConfig = __webpack_require__(191);
+	var _reduxConfig = __webpack_require__(189);
 	
 	var _reduxConfig2 = _interopRequireDefault(_reduxConfig);
 	
-	var _actionsManagement = __webpack_require__(3);
+	var _actionsManagement = __webpack_require__(196);
 	
 	var managementActions = _interopRequireWildcard(_actionsManagement);
 	
@@ -69,7 +69,9 @@ webpackJsonp([0],{
 	
 	var userActions = _interopRequireWildcard(_actionsUser);
 	
-	var _viewsModalError = __webpack_require__(200);
+	var _utils = __webpack_require__(200);
+	
+	var _viewsModalError = __webpack_require__(201);
 	
 	var _viewsModalError2 = _interopRequireDefault(_viewsModalError);
 	
@@ -101,17 +103,23 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'renderChild',
 	    value: function renderChild(connector) {
+	      var qs = (0, _utils.parseQuery)(this.props.window.location.href);
+	      var accessToken = qs.access_token;
 	      var boundMgmtActions = (0, _redux.bindActionCreators)(managementActions, connector.dispatch);
 	      var boundUserActions = (0, _redux.bindActionCreators)(userActions, connector.dispatch);
 	      var children = [];
+	      var Management = this.props.Management;
+	      var ManageCards = this.props.ManageCards;
+	
 	      if (connector.management.error) {
 	        children.push(_react2['default'].createElement(_viewsModalError2['default'], _extends({}, boundMgmtActions, { error: connector.management.error })));
 	      } else if (connector.management.paymentMethods) {
-	        children.push(_react2['default'].createElement(_viewsManageCards2['default'], _extends({}, boundMgmtActions, {
+	        children.push(_react2['default'].createElement(ManageCards, _extends({}, boundMgmtActions, {
 	          paymentMethods: connector.management.paymentMethods })));
 	      }
 	
-	      children.push(_react2['default'].createElement(_viewsManagement2['default'], _extends({}, boundMgmtActions, boundUserActions, {
+	      children.push(_react2['default'].createElement(Management, _extends({}, boundMgmtActions, boundUserActions, {
+	        accessToken: accessToken,
 	        user: connector.user })));
 	
 	      return _react2['default'].createElement(
@@ -123,16 +131,36 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this = this;
+	
 	      return _react2['default'].createElement(
 	        'main',
 	        null,
 	        _react2['default'].createElement(
 	          _reduxReact.Connector,
 	          { select: this.selectData },
-	          this.renderChild
+	          function (connector) {
+	            return _this.renderChild(connector);
+	          }
 	        )
 	      );
 	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: {
+	      ManageCards: _react.PropTypes.element,
+	      Management: _react.PropTypes.element,
+	      window: _react.PropTypes.object
+	    },
+	    enumerable: true
+	  }, {
+	    key: 'defaultProps',
+	    value: {
+	      ManageCards: _viewsManageCards2['default'],
+	      Management: _viewsManagement2['default'],
+	      window: window
+	    },
+	    enumerable: true
 	  }]);
 	
 	  return ManagementApp;
@@ -152,7 +180,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 3:
+/***/ 196:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -172,7 +200,7 @@ webpackJsonp([0],{
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
-	var _constantsActionTypes = __webpack_require__(4);
+	var _constantsActionTypes = __webpack_require__(192);
 	
 	var actionTypes = _interopRequireWildcard(_constantsActionTypes);
 	
@@ -212,7 +240,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 200:
+/***/ 201:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -231,11 +259,11 @@ webpackJsonp([0],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(12);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsModal = __webpack_require__(201);
+	var _componentsModal = __webpack_require__(202);
 	
 	var _componentsModal2 = _interopRequireDefault(_componentsModal);
 	
@@ -278,7 +306,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 201:
+/***/ 202:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -297,11 +325,11 @@ webpackJsonp([0],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(12);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _utils = __webpack_require__(202);
+	var _utils = __webpack_require__(200);
 	
 	var _classnames = __webpack_require__(203);
 	
@@ -404,13 +432,13 @@ webpackJsonp([0],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(12);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
 	var _componentsAccordion = __webpack_require__(206);
 	
-	var _utils = __webpack_require__(202);
+	var _utils = __webpack_require__(200);
 	
 	var Management = (function (_Component) {
 	  _inherits(Management, _Component);
@@ -434,6 +462,14 @@ webpackJsonp([0],{
 	  }
 	
 	  _createClass(Management, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      if (this.props.accessToken) {
+	        console.log('page loaded with access token; signing in');
+	        this.props.tokenSignIn(this.props.accessToken);
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var greeting;
@@ -464,7 +500,8 @@ webpackJsonp([0],{
 	          ),
 	          _react2['default'].createElement(
 	            'button',
-	            { onClick: headerOnClick },
+	            { id: "sign-in-toggle",
+	              onClick: headerOnClick },
 	            headerText
 	          )
 	        ),
@@ -588,10 +625,12 @@ webpackJsonp([0],{
 	  }], [{
 	    key: 'propTypes',
 	    value: {
+	      accessToken: _react.PropTypes.string,
 	      getPayMethods: _react.PropTypes.func.isRequired,
-	      user: _react2['default'].PropTypes.object.isRequired,
-	      userSignIn: _react2['default'].PropTypes.func.isRequired,
-	      userSignOut: _react2['default'].PropTypes.func.isRequired
+	      tokenSignIn: _react.PropTypes.func.isRequired,
+	      user: _react.PropTypes.object.isRequired,
+	      userSignIn: _react.PropTypes.func.isRequired,
+	      userSignOut: _react.PropTypes.func.isRequired
 	    },
 	    enumerable: true
 	  }]);
@@ -624,7 +663,7 @@ webpackJsonp([0],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(12);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -781,11 +820,11 @@ webpackJsonp([0],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(12);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsModal = __webpack_require__(201);
+	var _componentsModal = __webpack_require__(202);
 	
 	var _componentsModal2 = _interopRequireDefault(_componentsModal);
 	
@@ -793,7 +832,7 @@ webpackJsonp([0],{
 	
 	var _componentsCardList2 = _interopRequireDefault(_componentsCardList);
 	
-	var _utils = __webpack_require__(202);
+	var _utils = __webpack_require__(200);
 	
 	var ManageCards = (function (_Component) {
 	  _inherits(ManageCards, _Component);
