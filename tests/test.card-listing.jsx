@@ -32,7 +32,7 @@ describe('CardListingView', function() {
   it('should request to pay with new card when clicking link', function() {
     var addLink = TestUtils.findRenderedDOMComponentWithTag(
       View, 'a');
-    TestUtils.Simulate.click(addLink.getDOMNode());
+    TestUtils.Simulate.click(addLink);
     assert.ok(payWithNewCardSpy.called);
   });
 

@@ -42,7 +42,7 @@ describe('Modal', function() {
 
   it('should call close func when clicking the modal background', function() {
     var modal = helpers.findByClass(this.Modal, 'modal');
-    TestUtils.Simulate.click(modal.getDOMNode(), this.eventStub);
+    TestUtils.Simulate.click(modal, this.eventStub);
     assert.ok(this.eventStub.preventDefault.called);
     assert.ok(this.eventStub.stopPropagation.called);
     assert.ok(this.closeFunc.called);

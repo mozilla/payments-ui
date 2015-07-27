@@ -1,19 +1,32 @@
 import 'shims';
 
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Provider, Connector } from 'redux/react';
 import { bindActionCreators } from 'redux';
 
 import reduxConfig from 'redux-config';
 import * as managementActions from 'actions/management';
 import * as userActions from 'actions/user';
+import { parseQuery } from 'utils';
 
 import ModalError from 'views/modal-error';
-import Management from 'views/management';
-import ManageCards from 'views/manage-cards';
+import { default as DefaultManagement } from 'views/management';
+import { default as DefaultManageCards } from 'views/manage-cards';
 
 
 export default class ManagementApp extends Component {
+
+  static propTypes = {
+    ManageCards: PropTypes.element,
+    Management: PropTypes.element,
+    window: PropTypes.object,
+  }
+
+  static defaultProps = {
+    ManageCards: DefaultManageCards,
+    Management: DefaultManagement,
+    window: window,
+  }
 
   selectData(state) {
     return {
@@ -23,10 +36,15 @@ export default class ManagementApp extends Component {
   }
 
   renderChild(connector) {
+    var qs = parseQuery(this.props.window.location.href);
+    var accessToken = qs.access_token;
     var boundMgmtActions = bindActionCreators(managementActions,
                                               connector.dispatch);
     var boundUserActions = bindActionCreators(userActions, connector.dispatch);
     var children = [];
+    var Management = this.props.Management;
+    var ManageCards = this.props.ManageCards;
+
     if (connector.management.error) {
       children.push(
         <ModalError {...boundMgmtActions} error={connector.management.error} />
@@ -39,6 +57,7 @@ export default class ManagementApp extends Component {
     }
 
     children.push(<Management {...boundMgmtActions} {...boundUserActions}
+                              accessToken={accessToken}
                               user={connector.user} />);
 
     return <div>{children}</div>;
@@ -48,7 +67,7 @@ export default class ManagementApp extends Component {
     return (
       <main>
         <Connector select={this.selectData}>
-          {this.renderChild}
+          {(connector) => this.renderChild(connector)}
         </Connector>
       </main>
     );
@@ -59,9 +78,7 @@ export default class ManagementApp extends Component {
 export function init() {
   React.render((
     <Provider redux={reduxConfig}>
-      {function() {
-        return <ManagementApp/>;
-      }}
+      {() => <ManagementApp/>}
     </Provider>
   ), document.body);
 }

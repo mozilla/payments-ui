@@ -11,10 +11,19 @@ import { gettext } from 'utils';
 export default class Management extends Component {
 
   static propTypes = {
+    accessToken: PropTypes.string,
     getPayMethods: PropTypes.func.isRequired,
-    user: React.PropTypes.object.isRequired,
-    userSignIn: React.PropTypes.func.isRequired,
-    userSignOut: React.PropTypes.func.isRequired,
+    tokenSignIn: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired,
+    userSignIn: PropTypes.func.isRequired,
+    userSignOut: PropTypes.func.isRequired,
+  }
+
+  componentDidMount() {
+    if (this.props.accessToken) {
+      console.log('page loaded with access token; signing in');
+      this.props.tokenSignIn(this.props.accessToken);
+    }
   }
 
   userSignIn = click => {
@@ -48,7 +57,8 @@ export default class Management extends Component {
         <div>
           <header className="top-nav">
             <h1 className="logo">Firefox Payments</h1>
-            <button onClick={headerOnClick}>{headerText}</button>
+            <button id="sign-in-toggle"
+                    onClick={headerOnClick}>{headerText}</button>
           </header>
 
           <div className="content">
