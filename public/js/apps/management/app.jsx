@@ -1,7 +1,7 @@
 import 'shims';
 
 import React, { Component, PropTypes } from 'react';
-import { Provider, Connector } from 'redux/react';
+import { Provider, Connector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import reduxConfig from 'redux-config';

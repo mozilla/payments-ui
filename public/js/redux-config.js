@@ -1,8 +1,8 @@
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import * as reducers from 'reducers';
 
 export function createReduxStore() {
-  return createStore(reducers);
+  return createStore(combineReducers(reducers));
 }
 
 export default createReduxStore();
