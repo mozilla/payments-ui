@@ -80,7 +80,7 @@ export default class PaymentApp extends Component {
 
 export function init() {
   React.render((
-    <Provider redux={reduxConfig}>
+    <Provider store={reduxConfig}>
       {function() {
         return <PaymentApp/>;
       }}

@@ -5,7 +5,7 @@ import * as helpers from './helpers';
 
 import * as actionTypes from 'constants/action-types';
 import * as purchaseActions from 'actions/purchase';
-import { create as reduxCreate } from 'redux-config';
+import { createReduxStore } from 'redux-config';
 
 import Purchase from 'views/purchase';
 
@@ -20,15 +20,15 @@ describe('Purchase', function() {
   var FakeCompletePayment = helpers.stubComponent();
   var FakeCardListing = helpers.stubComponent();
   var FakeCardDetails = helpers.stubComponent();
-  var redux;
+  var store;
 
   beforeEach(function() {
-    redux = reduxCreate();
+    store = createReduxStore();
   });
 
   function mountView(userOverrides) {
     var user = Object.assign({}, defaultUser, userOverrides);
-    var FluxContainer = helpers.getFluxContainer(redux);
+    var FluxContainer = helpers.getFluxContainer(store);
 
     var container = TestUtils.renderIntoDocument(
       <FluxContainer>
@@ -52,7 +52,7 @@ describe('Purchase', function() {
     var paymentMethods = [{type: 'Visa'}];
     var View = mountView();
 
-    redux.dispatch({
+    store.dispatch({
       type: actionTypes.USER_SIGNED_IN,
       user: Object.assign({}, defaultUser, {
         payment_methods: paymentMethods,
@@ -77,7 +77,7 @@ describe('Purchase', function() {
   it('should render a payment completed page', function() {
     var View = mountView();
 
-    redux.dispatch(purchaseActions.complete());
+    store.dispatch(purchaseActions.complete());
 
     var child = TestUtils.findRenderedComponentWithType(
       View, FakeCompletePayment
@@ -90,14 +90,14 @@ describe('Purchase', function() {
     var View = mountView();
 
     // Dispatch a user that would normally trigger a card listing.
-    redux.dispatch({
+    store.dispatch({
       type: actionTypes.USER_SIGNED_IN,
       user: Object.assign({}, defaultUser, {
         payment_methods: paymentMethods,
       }),
     });
 
-    redux.dispatch(purchaseActions.payWithNewCard());
+    store.dispatch(purchaseActions.payWithNewCard());
 
     // Instead make sure a new card entry form was rendered.
     TestUtils.findRenderedComponentWithType(

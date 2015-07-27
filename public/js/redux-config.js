@@ -1,8 +1,8 @@
-import { createRedux } from 'redux';
-import * as stores from 'stores';
+import { createStore } from 'redux';
+import * as reducers from 'reducers';
 
-export function create() {
-  return createRedux(stores);
+export function createReduxStore() {
+  return createStore(reducers);
 }
 
-export default create();
+export default createReduxStore();

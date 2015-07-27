@@ -77,7 +77,7 @@ export default class ManagementApp extends Component {
 
 export function init() {
   React.render((
-    <Provider redux={reduxConfig}>
+    <Provider store={reduxConfig}>
       {() => <ManagementApp/>}
     </Provider>
   ), document.body);
