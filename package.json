@@ -16,6 +16,7 @@
     "object.assign": "3.0.1",
     "react": "0.13.3",
     "react-maskedinput": "2.0.0",
+    "react-redux": "0.2.2",
     "redux": "1.0.0-rc"
   },
   "devDependencies": {
