@@ -1,11 +1,8 @@
 'use strict';
 
 /* This is the shared karma config */
-
 var merge = require('lodash.merge');
-var RewirePlugin = require('rewire-webpack');
 var webpackConfig = require('./webpack.config');
-
 
 var newWebpackConfig = merge({}, webpackConfig);
 // Remove the bits from the shared config
@@ -13,13 +10,10 @@ var newWebpackConfig = merge({}, webpackConfig);
 delete newWebpackConfig.output;
 delete newWebpackConfig.entry;
 
-// Add this just for testing:
-newWebpackConfig.plugins = [
-  new RewirePlugin(),
-];
+newWebpackConfig.plugins = [];
 
 // Expose the right kind of source map for test-loader.js
-newWebpackConfig.devtool= 'inline-source-map';
+newWebpackConfig.devtool = 'inline-source-map';
 
 module.exports = {
   basePath: '',
