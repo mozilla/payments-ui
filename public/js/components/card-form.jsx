@@ -8,7 +8,7 @@ import { gettext } from 'utils';
 import CardInput from 'components/card-input';
 import SubmitButton from 'components/submit-button';
 import * as purchaseActions from 'actions/purchase';
-import reduxConfig from 'redux-config';
+import dataStore from 'data-store';
 
 
 const defaultFieldAttrs = {
@@ -147,7 +147,7 @@ export default class CardForm extends Component {
         }).done(function() {
           console.log('Successfully subscribed + completed payment');
 
-          reduxConfig.dispatch(
+          dataStore.dispatch(
             purchaseActions.complete()
           );
 

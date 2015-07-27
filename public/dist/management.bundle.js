@@ -53,33 +53,33 @@ webpackJsonp([0],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reduxReact = __webpack_require__(166);
+	var _reactRedux = __webpack_require__(166);
 	
-	var _redux = __webpack_require__(179);
+	var _redux = __webpack_require__(178);
 	
-	var _reduxConfig = __webpack_require__(189);
+	var _dataStore = __webpack_require__(190);
 	
-	var _reduxConfig2 = _interopRequireDefault(_reduxConfig);
+	var _dataStore2 = _interopRequireDefault(_dataStore);
 	
-	var _actionsManagement = __webpack_require__(196);
+	var _actionsManagement = __webpack_require__(198);
 	
 	var managementActions = _interopRequireWildcard(_actionsManagement);
 	
-	var _actionsUser = __webpack_require__(197);
+	var _actionsUser = __webpack_require__(199);
 	
 	var userActions = _interopRequireWildcard(_actionsUser);
 	
-	var _utils = __webpack_require__(200);
+	var _utils = __webpack_require__(202);
 	
-	var _viewsModalError = __webpack_require__(201);
+	var _viewsModalError = __webpack_require__(203);
 	
 	var _viewsModalError2 = _interopRequireDefault(_viewsModalError);
 	
-	var _viewsManagement = __webpack_require__(205);
+	var _viewsManagement = __webpack_require__(207);
 	
 	var _viewsManagement2 = _interopRequireDefault(_viewsManagement);
 	
-	var _viewsManageCards = __webpack_require__(207);
+	var _viewsManageCards = __webpack_require__(209);
 	
 	var _viewsManageCards2 = _interopRequireDefault(_viewsManageCards);
 	
@@ -137,7 +137,7 @@ webpackJsonp([0],{
 	        'main',
 	        null,
 	        _react2['default'].createElement(
-	          _reduxReact.Connector,
+	          _reactRedux.Connector,
 	          { select: this.selectData },
 	          function (connector) {
 	            return _this.renderChild(connector);
@@ -170,8 +170,8 @@ webpackJsonp([0],{
 	
 	function init() {
 	  _react2['default'].render(_react2['default'].createElement(
-	    _reduxReact.Provider,
-	    { redux: _reduxConfig2['default'] },
+	    _reactRedux.Provider,
+	    { store: _dataStore2['default'] },
 	    function () {
 	      return _react2['default'].createElement(ManagementApp, null);
 	    }
@@ -180,7 +180,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 196:
+/***/ 198:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -200,7 +200,7 @@ webpackJsonp([0],{
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
-	var _constantsActionTypes = __webpack_require__(192);
+	var _constantsActionTypes = __webpack_require__(194);
 	
 	var actionTypes = _interopRequireWildcard(_constantsActionTypes);
 	
@@ -240,7 +240,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 201:
+/***/ 203:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -263,11 +263,11 @@ webpackJsonp([0],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsModal = __webpack_require__(202);
+	var _componentsModal = __webpack_require__(204);
 	
 	var _componentsModal2 = _interopRequireDefault(_componentsModal);
 	
-	var _componentsError = __webpack_require__(204);
+	var _componentsError = __webpack_require__(206);
 	
 	var _componentsError2 = _interopRequireDefault(_componentsError);
 	
@@ -306,7 +306,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 202:
+/***/ 204:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -329,9 +329,9 @@ webpackJsonp([0],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _utils = __webpack_require__(200);
+	var _utils = __webpack_require__(202);
 	
-	var _classnames = __webpack_require__(203);
+	var _classnames = __webpack_require__(205);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
@@ -413,7 +413,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 205:
+/***/ 207:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -436,9 +436,9 @@ webpackJsonp([0],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsAccordion = __webpack_require__(206);
+	var _componentsAccordion = __webpack_require__(208);
 	
-	var _utils = __webpack_require__(200);
+	var _utils = __webpack_require__(202);
 	
 	var Management = (function (_Component) {
 	  _inherits(Management, _Component);
@@ -643,7 +643,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 206:
+/***/ 208:
 /***/ function(module, exports, __webpack_require__) {
 
 	/*eslint react/no-multi-comp: 0 */
@@ -667,7 +667,7 @@ webpackJsonp([0],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _classnames = __webpack_require__(203);
+	var _classnames = __webpack_require__(205);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
@@ -801,7 +801,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 207:
+/***/ 209:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -824,15 +824,15 @@ webpackJsonp([0],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsModal = __webpack_require__(202);
+	var _componentsModal = __webpack_require__(204);
 	
 	var _componentsModal2 = _interopRequireDefault(_componentsModal);
 	
-	var _componentsCardList = __webpack_require__(208);
+	var _componentsCardList = __webpack_require__(210);
 	
 	var _componentsCardList2 = _interopRequireDefault(_componentsCardList);
 	
-	var _utils = __webpack_require__(200);
+	var _utils = __webpack_require__(202);
 	
 	var ManageCards = (function (_Component) {
 	  _inherits(ManageCards, _Component);

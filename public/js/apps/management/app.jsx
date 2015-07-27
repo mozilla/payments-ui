@@ -1,10 +1,10 @@
 import 'shims';
 
 import React, { Component, PropTypes } from 'react';
-import { Provider, Connector } from 'redux/react';
+import { Provider, Connector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import reduxConfig from 'redux-config';
+import dataStore from 'data-store';
 import * as managementActions from 'actions/management';
 import * as userActions from 'actions/user';
 import { parseQuery } from 'utils';
@@ -77,7 +77,7 @@ export default class ManagementApp extends Component {
 
 export function init() {
   React.render((
-    <Provider redux={reduxConfig}>
+    <Provider store={dataStore}>
       {() => <ManagementApp/>}
     </Provider>
   ), document.body);
