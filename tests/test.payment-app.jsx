@@ -3,7 +3,7 @@ import TestUtils from 'react/lib/ReactTestUtils';
 
 import * as actionTypes from 'constants/action-types';
 import * as appActions from 'actions/app';
-import { createReduxStore } from 'redux-config';
+import { createReduxStore } from 'data-store';
 import ErrorMessage from 'components/error';
 
 import * as helpers from './helpers';

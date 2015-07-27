@@ -5,7 +5,7 @@ import * as helpers from './helpers';
 
 import * as actionTypes from 'constants/action-types';
 import * as purchaseActions from 'actions/purchase';
-import { createReduxStore } from 'redux-config';
+import { createReduxStore } from 'data-store';
 
 import Purchase from 'views/purchase';
 

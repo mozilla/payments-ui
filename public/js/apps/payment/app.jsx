@@ -5,7 +5,7 @@ import React, { Component, PropTypes } from 'react';
 import { Connector, Provider } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import reduxConfig from 'redux-config';
+import dataStore from 'data-store';
 import ErrorMessage from 'components/error';
 import DefaultLogin from 'views/login';
 import DefaultPurchase from 'views/purchase';
@@ -80,7 +80,7 @@ export default class PaymentApp extends Component {
 
 export function init() {
   React.render((
-    <Provider store={reduxConfig}>
+    <Provider store={dataStore}>
       {function() {
         return <PaymentApp/>;
       }}
