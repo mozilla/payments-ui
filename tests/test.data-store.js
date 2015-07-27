@@ -1,7 +1,7 @@
 import * as actionTypes from 'constants/action-types';
 import * as appActions from 'actions/app';
 import * as purchaseActions from 'actions/purchase';
-import * as dataStore from 'stores';
+import * as reducers from 'reducers';
 
 
 describe('app', function() {
@@ -15,14 +15,14 @@ describe('app', function() {
   }
 
   it('should initialize an app', function() {
-    var app = dataStore.app(undefined, {});
+    var app = reducers.app(undefined, {});
     assert.deepEqual(app, {});
   });
 
   it('should set an app error', function() {
     var dispatchedApp = appWithError();
 
-    var app = dataStore.app(
+    var app = reducers.app(
       {}, appActions.error(dispatchedApp.error.debugMessage));
 
     assert.deepEqual(app, dispatchedApp);
@@ -33,10 +33,10 @@ describe('app', function() {
     var state = {};
 
     // Receive an error action:
-    state.app = dataStore.app(
+    state.app = reducers.app(
       state, appActions.error(dispatchedApp.error.debugMessage));
     // Receive and ignore some other action:
-    state.app = dataStore.app(state.app, {});
+    state.app = reducers.app(state.app, {});
 
     assert.deepEqual(state.app, dispatchedApp);
   });
@@ -63,7 +63,7 @@ describe('user', function() {
   }
 
   it('should initialize an empty user', function() {
-    var user = dataStore.user(undefined, {});
+    var user = reducers.user(undefined, {});
     assert.deepEqual(user, {
       signedIn: false,
       email: null,
@@ -74,7 +74,7 @@ describe('user', function() {
   it('should return a user on sign-in', function() {
     var dispatchedUser = userData();
 
-    var user = dataStore.user({}, userSignedIn());
+    var user = reducers.user({}, userSignedIn());
 
     assert.deepEqual(user, dispatchedUser);
   });
@@ -82,10 +82,10 @@ describe('user', function() {
   it('should reset a user on sign-out', function() {
     // Receive a sign-in action.
     var state = {};
-    state.user = dataStore.user(state.user, userSignedIn());
+    state.user = reducers.user(state.user, userSignedIn());
 
     // Receive a sign-out but pass in the previous signed-in state too.
-    var user = dataStore.user(state.user, {
+    var user = reducers.user(state.user, {
       type: actionTypes.USER_SIGNED_OUT,
     });
 
@@ -102,10 +102,10 @@ describe('user', function() {
     var state = {};
 
     // Receive a user action:
-    state.user = dataStore.user(state.user, userSignedIn());
+    state.user = reducers.user(state.user, userSignedIn());
 
     // Receive and ignore another action:
-    state.user = dataStore.user(state.user, {});
+    state.user = reducers.user(state.user, {});
 
     assert.deepEqual(state.user, dispatchedUser);
   });
@@ -116,7 +116,7 @@ describe('user', function() {
 describe('purchase', function() {
 
   it('should initialize a purchase', function() {
-    var purchase = dataStore.purchase(undefined, {});
+    var purchase = reducers.purchase(undefined, {});
     assert.deepEqual(purchase, {
       completed: false,
       payment_methods: [],
@@ -124,7 +124,7 @@ describe('purchase', function() {
   });
 
   it('should handle completed purchases', function() {
-    var purchase = dataStore.purchase(undefined, purchaseActions.complete());
+    var purchase = reducers.purchase(undefined, purchaseActions.complete());
     assert.deepEqual(purchase, {
       completed: true,
     });
@@ -133,7 +133,7 @@ describe('purchase', function() {
   it('should infer saved payment methods when user signs in', function() {
     var paymentMethods = [{type: 'Visa'}];
 
-    var purchase = dataStore.purchase(undefined, {
+    var purchase = reducers.purchase(undefined, {
       type: actionTypes.USER_SIGNED_IN,
       user: {
         payment_methods: paymentMethods,

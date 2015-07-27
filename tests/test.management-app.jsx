@@ -1,7 +1,7 @@
 import React from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
 
-import { create as createRedux } from 'redux-config';
+import { createReduxStore } from 'data-store';
 
 import ManagementApp from 'apps/management/app';
 
@@ -12,7 +12,7 @@ describe('management/app', function() {
   var fakeWindow;
   var FakeManagement;
   var FakeManageCards;
-  var redux;
+  var store;
 
   beforeEach(function() {
     fakeWindow = {
@@ -22,11 +22,11 @@ describe('management/app', function() {
     };
     FakeManagement = helpers.stubComponent();
     FakeManageCards = helpers.stubComponent();
-    redux = createRedux();
+    store = createReduxStore();
   });
 
   function mountView({ window = fakeWindow } = {}) {
-    var FluxContainer = helpers.getFluxContainer(redux);
+    var FluxContainer = helpers.getFluxContainer(store);
 
     var container = TestUtils.renderIntoDocument(
       <FluxContainer>

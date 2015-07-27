@@ -98,7 +98,7 @@ export function findAllByTag(component, tag){
 }
 
 
-export function getFluxContainer(redux) {
+export function getFluxContainer(store) {
   //
   // Get a container component to set context stubs so you can use it
   // to wrap a component for testing.
@@ -115,11 +115,11 @@ export function getFluxContainer(redux) {
     },
 
     childContextTypes: {
-      redux: React.PropTypes.object.isRequired,
+      store: React.PropTypes.object.isRequired,
     },
 
     getChildContext: function() {
-      return {redux: redux};
+      return {store: store};
     },
 
     render() {

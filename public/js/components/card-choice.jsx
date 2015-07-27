@@ -7,7 +7,7 @@ import SubmitButton from 'components/submit-button';
 import { gettext } from 'utils';
 import * as purchaseActions from 'actions/purchase';
 
-import reduxConfig from 'redux-config';
+import dataStore from 'data-store';
 
 
 export default class CardChoice extends Component {
@@ -50,7 +50,7 @@ export default class CardChoice extends Component {
     }).done(function() {
       console.log('Successfully subscribed with existing card');
 
-      reduxConfig.dispatch(
+      dataStore.dispatch(
         purchaseActions.complete()
       );
 

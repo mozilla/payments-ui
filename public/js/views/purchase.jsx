@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 import { bindActionCreators } from 'redux';
-import { Connector } from 'redux/react';
+import { Connector } from 'react-redux';
 
 import * as purchaseActions from 'actions/purchase';
 

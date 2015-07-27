@@ -3,7 +3,7 @@ import TestUtils from 'react/lib/ReactTestUtils';
 
 import * as actionTypes from 'constants/action-types';
 import * as appActions from 'actions/app';
-import { create as reduxCreate } from 'redux-config';
+import { createReduxStore } from 'data-store';
 import ErrorMessage from 'components/error';
 
 import * as helpers from './helpers';
@@ -17,14 +17,14 @@ describe('Payment App', function() {
   var productId = 'mozilla-concrete-brick';
   var FakeLogin = helpers.stubComponent();
   var FakePurchase = helpers.stubComponent();
-  var redux;
+  var store;
 
   beforeEach(function() {
-    redux = reduxCreate();
+    store = createReduxStore();
   });
 
   function mountView() {
-    var FluxContainer = helpers.getFluxContainer(redux);
+    var FluxContainer = helpers.getFluxContainer(store);
 
     var fakeWin = {
       'location': {
@@ -50,7 +50,7 @@ describe('Payment App', function() {
 
   it('should render an error', function() {
     var View = mountView();
-    redux.dispatch(appActions.error('this is some error'));
+    store.dispatch(appActions.error('this is some error'));
     var error = TestUtils.findRenderedComponentWithType(
       View, ErrorMessage
     );
@@ -74,7 +74,7 @@ describe('Payment App', function() {
     };
 
     var View = mountView();
-    redux.dispatch({
+    store.dispatch({
       type: actionTypes.USER_SIGNED_IN,
       user: user,
     });
