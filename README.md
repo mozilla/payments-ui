@@ -72,19 +72,25 @@ And then visit:
 http://localhost:8080/webpack-dev-server/management.html
 
 You should find that changes to the react modules are reflected immediately without
-refresh.
+refresh. Read on if you want to also interact with the API server.
 
 #### Developing with webpack-dev-server + docker for hot reloading.
 
 To be able to use hot module reloading in conjunction with our docker environment
-you can use [Charles Proxy](http://www.charlesproxy.com/) to rewrite API requests
+you can use [Charles Proxy][charles] to rewrite API requests
 to pay.dev. This allows webpack-dev-server to be used to serve the front-end whilst
 continuing to allow API requests to be serviced via docker.
 
-There are two steps to getting this working:
+There are a couple steps to getting this working:
 
-* Create an /etc/hosts entry `pay.webpack  127.0.0.1`
-* Install Charles Proxy and import the rewrite files from the charles directory.
+* Create an `/etc/hosts` entry like `127.0.0.1  pay.webpack`
+* Install [Charles Proxy][charles]
+* Open *Tools > Rewrite* and tick the box *Enable Rewrite*
+* Click the *Import* button and select the file `charles/payments-webpack.xml`
+  * You should see **Payments Webpack** appear in the Sets list
+  * Click OK
+
+[charles]: http://www.charlesproxy.com/
 
 To see the payment interface with hot module loading enabled visit:
 
