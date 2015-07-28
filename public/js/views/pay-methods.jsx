@@ -6,19 +6,30 @@ import CardList from 'components/card-list';
 import { gettext } from 'utils';
 
 
-export default class ManageCards extends Component {
+export default class PayMethods extends Component {
 
   static propTypes = {
     closeModal: PropTypes.func.isRequired,
     paymentMethods: PropTypes.array.isRequired,
   };
 
+  renderChild() {
+    if (this.props.paymentMethods && this.props.paymentMethods.length) {
+      return <CardList cards={this.props.paymentMethods} />;
+    }
+    return (<p className="no-results">
+      {gettext("You haven't added have any credit cards yet")}
+    </p>);
+  }
+
   render() {
     return (
       <Modal
         handleClose={this.props.closeModal}
         title={gettext('Payment Methods')}>
-        <CardList cards={this.props.paymentMethods} />
+        <div>
+          {this.renderChild()}
+        </div>
       </Modal>
     );
   }

@@ -8,6 +8,7 @@
     "fallback-colors": false,
     "font-faces": false,
     "font-sizes": false,
+    "floats": false,
     "ids": false,
     "important": false,
     "outline-none": false,

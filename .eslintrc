@@ -62,7 +62,7 @@
     "no-underscore-dangle": 0,
     "no-unused-vars": 2,
     "no-with": 2,
-    "quotes": [2, "single"],
+    "quotes": [2, "single", "avoid-escape"],
     "react/display-name": 0,
     "react/jsx-boolean-value": 1,
     "react/jsx-quotes": 1,
