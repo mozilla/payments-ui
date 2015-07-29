@@ -3,6 +3,8 @@ import * as appActions from 'actions/app';
 import * as purchaseActions from 'actions/purchase';
 import * as reducers from 'reducers';
 
+import { defaults as defaultUser } from 'reducers/user';
+
 
 describe('app', function() {
 
@@ -47,15 +49,15 @@ describe('app', function() {
 describe('user', function() {
 
   function userData() {
-    return {
+    return Object.assign({}, defaultUser, {
       signedIn: true,
       email: 'f@f.com',
       payment_methods: [{provider_id: '1234'}],
-    };
+    });
   }
 
   function userSignedIn(user) {
-    user = user || userData();
+    user = user ? Object.assign({}, defaultUser, user) : userData();
     return {
       type: actionTypes.USER_SIGNED_IN,
       user: user,
@@ -64,19 +66,37 @@ describe('user', function() {
 
   it('should initialize an empty user', function() {
     var user = reducers.user(undefined, {});
-    assert.deepEqual(user, {
-      signedIn: false,
-      email: null,
-      payment_methods: [],
-    });
+    assert.deepEqual(user, defaultUser);
   });
 
   it('should return a user on sign-in', function() {
     var dispatchedUser = userData();
-
     var user = reducers.user({}, userSignedIn());
-
     assert.deepEqual(user, dispatchedUser);
+  });
+
+  it('should add a braintreeToken', function() {
+    var user = reducers.user({}, {
+      type: actionTypes.GOT_BRAINTREE_TOKEN,
+      user: {
+        braintreeToken: 'bt-token',
+      },
+    });
+    assert.deepEqual(user,
+      Object.assign({}, defaultUser, { braintreeToken: 'bt-token'}));
+  });
+
+  it('should maintain state when braintreeToken is added', function() {
+    var state = {};
+    state.user = reducers.user(state.user, userSignedIn());
+    var user = reducers.user(state.user, {
+      type: actionTypes.GOT_BRAINTREE_TOKEN,
+      user: {
+        braintreeToken: 'bt-token',
+      },
+    });
+    assert.deepEqual(user,
+      Object.assign({}, userData(), { braintreeToken: 'bt-token'}));
   });
 
   it('should reset a user on sign-out', function() {
@@ -88,13 +108,7 @@ describe('user', function() {
     var user = reducers.user(state.user, {
       type: actionTypes.USER_SIGNED_OUT,
     });
-
-    assert.deepEqual(user, {
-      signedIn: false,
-      email: null,
-      payment_methods: [],
-    });
-
+    assert.deepEqual(user, defaultUser);
   });
 
   it('should preserve user state', function() {
@@ -106,7 +120,6 @@ describe('user', function() {
 
     // Receive and ignore another action:
     state.user = reducers.user(state.user, {});
-
     assert.deepEqual(state.user, dispatchedUser);
   });
 

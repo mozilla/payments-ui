@@ -4,18 +4,21 @@ import { bindActionCreators } from 'redux';
 import { Connector } from 'react-redux';
 
 import * as purchaseActions from 'actions/purchase';
+import * as userActions from 'actions/user';
 
 import DefaultCardDetails from 'views/card-details';
 import DefaultCardListing from 'views/card-listing';
 import DefaultCompletePayment from 'views/complete-payment';
+import DefaultBraintreeToken from 'views/braintree-token';
 
 
 export default class Purchase extends Component {
 
   static propTypes = {
-    CardDetails: PropTypes.object,
-    CardListing: PropTypes.object,
-    CompletePayment: PropTypes.object,
+    BraintreeToken: PropTypes.func.isRequired,
+    CardDetails: PropTypes.func.isRequired,
+    CardListing: PropTypes.func.isRequired,
+    CompletePayment: PropTypes.func.isRequired,
     productId: PropTypes.string.isRequired,
     user: PropTypes.object.isRequired,
   }
@@ -24,19 +27,22 @@ export default class Purchase extends Component {
     CardDetails: DefaultCardDetails,
     CardListing: DefaultCardListing,
     CompletePayment: DefaultCompletePayment,
+    BraintreeToken: DefaultBraintreeToken,
   }
 
   selectData(state) {
     return {
       purchase: state.purchase,
+      user: state.user,
     };
   }
 
   render () {
     var props = this.props;
-    var CompletePayment = this.props.CompletePayment;
-    var CardListing = this.props.CardListing;
-    var CardDetails = this.props.CardDetails;
+    var BraintreeToken = props.BraintreeToken;
+    var CompletePayment = props.CompletePayment;
+    var CardListing = props.CardListing;
+    var CardDetails = props.CardDetails;
     return (
       <Connector select={this.selectData}>
         {function(result) {
@@ -55,11 +61,23 @@ export default class Purchase extends Component {
                 {...bindActionCreators(purchaseActions, result.dispatch)}
               />
             );
+          } else if (!result.user.braintreeToken) {
+            console.log('Retreiving Braintree Token');
+            return (
+              <BraintreeToken
+                {...bindActionCreators(userActions, result.dispatch) }
+              />
+            );
           } else {
             console.log('rendering card entry');
-            return <CardDetails productId={props.productId} />;
+            return (
+              <CardDetails
+                braintreeToken={result.user.braintreeToken}
+                productId={props.productId}
+              />
+            );
           }
-        }}
+       }}
       </Connector>
     );
   }

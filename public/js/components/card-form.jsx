@@ -75,9 +75,9 @@ const fieldProps = {
 export default class CardForm extends Component {
 
   static propTypes = {
+    braintreeToken: PropTypes.string.isRequired,
     card: PropTypes.object,
     cvv: PropTypes.object,
-    'data-token': PropTypes.string.isRequired,
     expiration: PropTypes.object,
     id: PropTypes.string.isRequired,
     productId: PropTypes.string.isRequired,
@@ -86,12 +86,12 @@ export default class CardForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isSubmitting: false,
-      cardType: null,
-      errors: {},
       card: '',
-      expiration: '',
+      cardType: null,
       cvv: '',
+      errors: {},
+      expiration: '',
+      isSubmitting: false,
     };
   }
 
@@ -124,7 +124,7 @@ export default class CardForm extends Component {
     this.setState({isSubmitting: true});
     var that = this;
     var client = new braintree.api.Client({
-      clientToken: this.props['data-token'],
+      clientToken: this.props.braintreeToken,
     });
     client.tokenizeCard({
       number: this.state.card,

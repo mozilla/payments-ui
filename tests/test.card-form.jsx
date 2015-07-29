@@ -6,7 +6,7 @@ import * as helpers from './helpers';
 import CardForm from 'components/card-form';
 
 
-describe('Card Details', function() {
+describe('Card Form', function() {
 
   var cards = [
     'amex',
@@ -19,7 +19,7 @@ describe('Card Details', function() {
 
   beforeEach(function() {
     this.CardForm = TestUtils.renderIntoDocument(
-      <CardForm data-token="whatever" id="something"/>
+      <CardForm braintreeToken="whatever" id="something"/>
     );
   });
 
@@ -40,9 +40,8 @@ describe('Card Details', function() {
     it('Detects ' + card, testCard(card));
   });
 
-  it('renders a token', function() {
-    var formNode = findDOMNode(this.CardForm);
-    assert.equal(formNode.getAttribute('data-token'), 'whatever');
+  it('has a braintree token prop', function() {
+    assert.equal(this.CardForm.props.braintreeToken, 'whatever');
   });
 
   it('renders an id', function() {
