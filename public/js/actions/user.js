@@ -127,3 +127,25 @@ export function userSignOut(jquery=$) {
     });
   };
 }
+
+
+export function getBraintreeToken() {
+  console.log('Requesting braintree token');
+  return dispatch => {
+    $.ajax({
+      method: 'post',
+      url: '/api/braintree/token/generate/',
+      context: this,
+    }).then(data => {
+      dispatch({
+        type: actionTypes.GOT_BRAINTREE_TOKEN,
+        user: {
+          braintreeToken: data.token,
+        },
+      });
+    }).fail(apiError => {
+      console.log('failed to get braintree token', apiError.responseJSON);
+      dispatch(appActions.error('Failed to get a braintree token'));
+    });
+  };
+}

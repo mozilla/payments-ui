@@ -18,7 +18,7 @@ export default class PayMethods extends Component {
       return <CardList cards={this.props.paymentMethods} />;
     }
     return (<p className="no-results">
-      {gettext("You haven't added have any credit cards yet")}
+      {gettext("You haven't added any credit cards yet")}
     </p>);
   }
 

@@ -148,9 +148,9 @@ webpackJsonp([0],{
 	  }], [{
 	    key: 'propTypes',
 	    value: {
-	      Management: _react.PropTypes.element,
-	      PayMethods: _react.PropTypes.element,
-	      window: _react.PropTypes.object
+	      Management: _react.PropTypes.func.iRequired,
+	      PayMethods: _react.PropTypes.func.isRequired,
+	      window: _react.PropTypes.object.isRequired
 	    },
 	    enumerable: true
 	  }, {
@@ -852,7 +852,7 @@ webpackJsonp([0],{
 	      return _react2['default'].createElement(
 	        'p',
 	        { className: "no-results" },
-	        (0, _utils.gettext)("You haven't added have any credit cards yet")
+	        (0, _utils.gettext)("You haven't added any credit cards yet")
 	      );
 	    }
 	  }, {

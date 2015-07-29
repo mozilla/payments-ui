@@ -9,6 +9,7 @@ import dataStore from 'data-store';
 import ErrorMessage from 'components/error';
 import DefaultLogin from 'views/login';
 import DefaultPurchase from 'views/purchase';
+
 import * as userActions from 'actions/user';
 import { parseQuery } from 'utils';
 
@@ -16,8 +17,8 @@ import { parseQuery } from 'utils';
 export default class PaymentApp extends Component {
 
   static propTypes = {
-    Login: PropTypes.node,
-    Purchase: PropTypes.node,
+    Login: PropTypes.func.isRequired,
+    Purchase: PropTypes.func.isRequired,
     win: PropTypes.object,
   }
 
@@ -67,7 +68,10 @@ export default class PaymentApp extends Component {
             } else {
               console.log('rendering purchase flow');
               return (
-                <Purchase user={result.user} productId={state.productId} />
+                <Purchase
+                  productId={state.productId}
+                  user={result.user}
+                />
               );
             }
           }}
