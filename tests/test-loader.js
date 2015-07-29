@@ -4,5 +4,5 @@
 
 import 'shims';
 
-var context = require.context('.', true, /test\..*?.jsx?$/);
+var context = require.context('.', true, /.*?test\..*?.jsx?$/);
 context.keys().forEach(context);
