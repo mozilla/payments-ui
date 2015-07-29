@@ -15,6 +15,7 @@ describe('userActions', function() {
 
   function fakeSignInResult() {
     return {
+      braintreeToken: null,
       buyer_email: 'person@somehwere.com',
       csrf_token: 'some-csrf-token',
       payment_methods: [],

@@ -1,14 +1,14 @@
 import React from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
 
-import * as actionTypes from 'constants/action-types';
-import * as appActions from 'actions/app';
-import { createReduxStore } from 'data-store';
-import ErrorMessage from 'components/error';
-
 import * as helpers from './helpers';
 
+import { createReduxStore } from 'data-store';
+import { defaults as defaultUser } from 'reducers/user';
+import * as actionTypes from 'constants/action-types';
+import * as appActions from 'actions/app';
 import PaymentApp from 'apps/payment/app';
+import ErrorMessage from 'components/error';
 
 
 describe('Payment App', function() {
@@ -48,6 +48,11 @@ describe('Payment App', function() {
     );
   }
 
+  it('should have a defaultUser imported correctly', function() {
+    assert.equal(defaultUser.braintreeToken, null);
+    assert.equal(defaultUser.signedIn, false);
+  });
+
   it('should render an error', function() {
     var View = mountView();
     store.dispatch(appActions.error('this is some error'));
@@ -67,11 +72,10 @@ describe('Payment App', function() {
   });
 
   it('should render a purchase page', function() {
-    var user = {
+    var user = Object.assign({}, defaultUser, {
       email: 'f@f.com',
-      payment_methods: [],
       signedIn: true,
-    };
+    });
 
     var View = mountView();
     store.dispatch({
