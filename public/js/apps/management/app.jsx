@@ -11,20 +11,20 @@ import { parseQuery } from 'utils';
 
 import ModalError from 'views/modal-error';
 import { default as DefaultManagement } from 'views/management';
-import { default as DefaultManageCards } from 'views/manage-cards';
+import { default as DefaultPayMethods } from 'views/pay-methods';
 
 
 export default class ManagementApp extends Component {
 
   static propTypes = {
-    ManageCards: PropTypes.element,
     Management: PropTypes.element,
+    PayMethods: PropTypes.element,
     window: PropTypes.object,
   }
 
   static defaultProps = {
-    ManageCards: DefaultManageCards,
     Management: DefaultManagement,
+    PayMethods: DefaultPayMethods,
     window: window,
   }
 
@@ -43,7 +43,7 @@ export default class ManagementApp extends Component {
     var boundUserActions = bindActionCreators(userActions, connector.dispatch);
     var children = [];
     var Management = this.props.Management;
-    var ManageCards = this.props.ManageCards;
+    var PayMethods = this.props.PayMethods;
 
     if (connector.management.error) {
       children.push(
@@ -51,7 +51,7 @@ export default class ManagementApp extends Component {
       );
     } else if (connector.management.paymentMethods) {
       children.push((
-        <ManageCards {...boundMgmtActions}
+        <PayMethods {...boundMgmtActions}
           paymentMethods={connector.management.paymentMethods} />
       ));
     }
