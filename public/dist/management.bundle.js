@@ -79,9 +79,9 @@ webpackJsonp([0],{
 	
 	var _viewsManagement2 = _interopRequireDefault(_viewsManagement);
 	
-	var _viewsManageCards = __webpack_require__(209);
+	var _viewsPayMethods = __webpack_require__(209);
 	
-	var _viewsManageCards2 = _interopRequireDefault(_viewsManageCards);
+	var _viewsPayMethods2 = _interopRequireDefault(_viewsPayMethods);
 	
 	var ManagementApp = (function (_Component) {
 	  _inherits(ManagementApp, _Component);
@@ -109,12 +109,12 @@ webpackJsonp([0],{
 	      var boundUserActions = (0, _redux.bindActionCreators)(userActions, connector.dispatch);
 	      var children = [];
 	      var Management = this.props.Management;
-	      var ManageCards = this.props.ManageCards;
+	      var PayMethods = this.props.PayMethods;
 	
 	      if (connector.management.error) {
 	        children.push(_react2['default'].createElement(_viewsModalError2['default'], _extends({}, boundMgmtActions, { error: connector.management.error })));
 	      } else if (connector.management.paymentMethods) {
-	        children.push(_react2['default'].createElement(ManageCards, _extends({}, boundMgmtActions, {
+	        children.push(_react2['default'].createElement(PayMethods, _extends({}, boundMgmtActions, {
 	          paymentMethods: connector.management.paymentMethods })));
 	      }
 	
@@ -148,16 +148,16 @@ webpackJsonp([0],{
 	  }], [{
 	    key: 'propTypes',
 	    value: {
-	      ManageCards: _react.PropTypes.element,
 	      Management: _react.PropTypes.element,
+	      PayMethods: _react.PropTypes.element,
 	      window: _react.PropTypes.object
 	    },
 	    enumerable: true
 	  }, {
 	    key: 'defaultProps',
 	    value: {
-	      ManageCards: _viewsManageCards2['default'],
 	      Management: _viewsManagement2['default'],
+	      PayMethods: _viewsPayMethods2['default'],
 	      window: window
 	    },
 	    enumerable: true
@@ -834,16 +834,28 @@ webpackJsonp([0],{
 	
 	var _utils = __webpack_require__(202);
 	
-	var ManageCards = (function (_Component) {
-	  _inherits(ManageCards, _Component);
+	var PayMethods = (function (_Component) {
+	  _inherits(PayMethods, _Component);
 	
-	  function ManageCards() {
-	    _classCallCheck(this, ManageCards);
+	  function PayMethods() {
+	    _classCallCheck(this, PayMethods);
 	
-	    _get(Object.getPrototypeOf(ManageCards.prototype), 'constructor', this).apply(this, arguments);
+	    _get(Object.getPrototypeOf(PayMethods.prototype), 'constructor', this).apply(this, arguments);
 	  }
 	
-	  _createClass(ManageCards, [{
+	  _createClass(PayMethods, [{
+	    key: 'renderChild',
+	    value: function renderChild() {
+	      if (this.props.paymentMethods && this.props.paymentMethods.length) {
+	        return _react2['default'].createElement(_componentsCardList2['default'], { cards: this.props.paymentMethods });
+	      }
+	      return _react2['default'].createElement(
+	        'p',
+	        { className: "no-results" },
+	        (0, _utils.gettext)("You haven't added have any credit cards yet")
+	      );
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2['default'].createElement(
@@ -851,7 +863,11 @@ webpackJsonp([0],{
 	        {
 	          handleClose: this.props.closeModal,
 	          title: (0, _utils.gettext)('Payment Methods') },
-	        _react2['default'].createElement(_componentsCardList2['default'], { cards: this.props.paymentMethods })
+	        _react2['default'].createElement(
+	          'div',
+	          null,
+	          this.renderChild()
+	        )
 	      );
 	    }
 	  }], [{
@@ -863,10 +879,10 @@ webpackJsonp([0],{
 	    enumerable: true
 	  }]);
 	
-	  return ManageCards;
+	  return PayMethods;
 	})(_react.Component);
 	
-	exports['default'] = ManageCards;
+	exports['default'] = PayMethods;
 	module.exports = exports['default'];
 
 /***/ }

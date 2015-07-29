@@ -1203,6 +1203,19 @@ button.spinner:after {
   text-align: right;
 }
 
+.no-results {
+  text-align: center;
+  padding: 2em 0;
+}
+
+.add-card {
+  float: left;
+}
+
+.delete {
+  float: right;
+}
+
 .complete {
   text-align: center;
 }
