@@ -1,14 +1,9 @@
-import $ from 'jquery';
 import CardValidator from 'card-validator';
 import React, { Component, PropTypes } from 'react';
-import braintree from 'braintree-web';
-
-import { gettext } from 'utils';
 
 import CardInput from 'components/card-input';
 import SubmitButton from 'components/submit-button';
-import * as purchaseActions from 'actions/purchase';
-import dataStore from 'data-store';
+import { gettext } from 'utils';
 
 
 const defaultFieldAttrs = {
@@ -75,12 +70,18 @@ const fieldProps = {
 export default class CardForm extends Component {
 
   static propTypes = {
-    braintreeToken: PropTypes.string.isRequired,
     card: PropTypes.object,
     cvv: PropTypes.object,
     expiration: PropTypes.object,
+    handleCardSubmit: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired,
-    productId: PropTypes.string.isRequired,
+    submissionErrors: PropTypes.object,
+    submitPrompt: PropTypes.string,
+  }
+
+  static defaultProps = {
+    // This should always be overidden with a localized value.
+    submitPrompt: 'Submit',
   }
 
   constructor(props) {
@@ -122,43 +123,17 @@ export default class CardForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.setState({isSubmitting: true});
-    var that = this;
-    var client = new braintree.api.Client({
-      clientToken: this.props.braintreeToken,
-    });
-    client.tokenizeCard({
+    this.props.handleCardSubmit({
       number: this.state.card,
-      expirationDate: this.state.expiration,
       cvv: this.state.cvv,
-    }, function(err, nonce) {
-      if (err) {
-        // TODO: error handling
-        console.log(err);
-      } else {
-        $.ajax({
-          data: {
-            pay_method_nonce: nonce,
-            plan_id: that.props.productId,
-          },
-          url: '/api/braintree/subscriptions/',
-          method: 'post',
-          dataType: 'json',
-          context: that,
-        }).done(function() {
-          console.log('Successfully subscribed + completed payment');
-
-          dataStore.dispatch(
-            purchaseActions.complete()
-          );
-
-        }).fail(function($xhr) {
-          this.processApiErrors($xhr.responseJSON);
-        });
-      }
+      expiration: this.state.expiration,
     });
   }
 
-  processApiErrors(errors) {
+  mapErrorsToFields(errors) {
+    console.log('mapping submission errors to form fields', errors);
+    // TODO: map non-braintree errors like __all__
+    // TODO: map braintree errors for unexpected fields (such as `plan_id`)
     if (errors.error_response && errors.error_response.braintree) {
       var apiErrors = errors.error_response.braintree;
       // Iterate over the error object and create a new data
@@ -176,9 +151,6 @@ export default class CardForm extends Component {
         }
       });
     }
-    this.setState({
-      isSubmitting: false,
-    });
   }
 
   stripPlaceholder(val) {
@@ -186,6 +158,10 @@ export default class CardForm extends Component {
   }
 
   render() {
+    if (this.props.submissionErrors) {
+      this.mapErrorsToFields(this.props.submissionErrors);
+    }
+
     var formIsValid = true;
 
     // Update form validity based on fieldProps.
@@ -208,7 +184,7 @@ export default class CardForm extends Component {
           onChangeHandler={this.handleChange} />
         <SubmitButton isDisabled={!formIsValid}
           showSpinner={this.state.isSubmitting}
-          text={gettext('Subscribe')} />
+          text={this.props.submitPrompt} />
       </form>
     );
   }

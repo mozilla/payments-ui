@@ -16,22 +16,32 @@ describe('Card Form', function() {
     'mastercard',
     'visa',
   ];
+  var handleCardSubmit;
+
+  function mountView({errors=null} = {}) {
+    return TestUtils.renderIntoDocument(
+      <CardForm
+        submissionErrors={errors}
+        handleCardSubmit={handleCardSubmit}
+        id="something"
+      />
+    );
+  }
 
   beforeEach(function() {
-    this.CardForm = TestUtils.renderIntoDocument(
-      <CardForm braintreeToken="whatever" id="something"/>
-    );
+    handleCardSubmit = sinon.spy();
   });
 
   function testCard(cardType) {
+    var view = mountView();
     return function() {
-      this.CardForm.handleChange({
+      view.handleChange({
         target: {
           value: helpers.testCards[cardType],
           id: 'card',
         },
       });
-      var cardIcon = helpers.findByClass(this.CardForm, 'card-icon');
+      var cardIcon = helpers.findByClass(view, 'card-icon');
       assert.include(cardIcon.props.className, 'cctype-' + cardType);
     };
   }
@@ -40,52 +50,51 @@ describe('Card Form', function() {
     it('Detects ' + card, testCard(card));
   });
 
-  it('has a braintree token prop', function() {
-    assert.equal(this.CardForm.props.braintreeToken, 'whatever');
-  });
-
   it('renders an id', function() {
-    var formNode = findDOMNode(this.CardForm);
+    var view = mountView();
+    var formNode = findDOMNode(view);
     assert.equal(formNode.getAttribute('id'), 'something');
   });
 
   it('shows a card error on invalid input', function() {
-    this.CardForm.handleChange({
+    var view = mountView();
+    view.handleChange({
       target: {
         value: helpers.testCards.invalidVisa,
         id: 'card',
       },
     });
-    var card = helpers.findByClass(this.CardForm, 'card');
+    var card = helpers.findByClass(view, 'card');
     assert.include(card.props.className, 'invalid');
     var cardError = helpers.findByClass(card, 'tooltip');
     assert.ok(TestUtils.isCompositeComponent(cardError));
   });
 
-  it('shows a expiration error on invalid input', function() {
-    this.CardForm.handleChange({
+  it('shows an expiration error on invalid input', function() {
+    var view = mountView();
+    view.handleChange({
       target: {
         value: '13/__',
         id: 'expiration',
       },
     });
-    var expiration = helpers.findByClass(this.CardForm, 'expiration');
+    var expiration = helpers.findByClass(view, 'expiration');
     assert.include(expiration.props.className, 'invalid');
     var expirationError = helpers.findByClass(expiration, 'tooltip');
     assert.ok(TestUtils.isCompositeComponent(expirationError));
   });
 
-  it('shows a cvv message on an api error', function() {
-    this.CardForm.processApiErrors(helpers.cvvError);
-    var cvv = helpers.findByClass(this.CardForm, 'cvv');
+  it('shows a cvv message from error props', function() {
+    var view = mountView({errors: helpers.cvvError});
+    var cvv = helpers.findByClass(view, 'cvv');
     assert.include(cvv.props.className, 'invalid');
     var cvvError = helpers.findByClass(cvv, 'tooltip');
     assert.ok(TestUtils.isCompositeComponent(cvvError));
   });
 
   it('shows a card declined message', function() {
-    this.CardForm.processApiErrors(helpers.declinedError);
-    var card = helpers.findByClass(this.CardForm, 'card');
+    var view = mountView({errors: helpers.declinedError});
+    var card = helpers.findByClass(view, 'card');
     assert.include(card.props.className, 'invalid');
     var cardError = helpers.findByClass(card, 'tooltip');
     assert.include(cardError.props.children, 'declined');
@@ -93,7 +102,8 @@ describe('Card Form', function() {
   });
 
   it('should not have a name attr on any input', function() {
-    var inputs = helpers.findAllByTag(this.CardForm, 'input');
+    var view = mountView();
+    var inputs = helpers.findAllByTag(view, 'input');
     for (var i = 0; i < inputs.length; i += 1) {
       var input = findDOMNode(inputs[i]);
       if (input.getAttribute('name') !== null) {
@@ -103,7 +113,8 @@ describe('Card Form', function() {
   });
 
   it('should have type=tel and autocomplete=off on all fields', function() {
-    var inputs = helpers.findAllByTag(this.CardForm, 'input');
+    var view = mountView();
+    var inputs = helpers.findAllByTag(view, 'input');
     for (var i = 0; i < inputs.length; i += 1) {
       var input = findDOMNode(inputs[i]);
       assert.equal(input.getAttribute('autocomplete'),

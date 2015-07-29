@@ -132,15 +132,14 @@ export function getFluxContainer(store) {
 }
 
 
-export function fakeJquery(opt) {
+export function fakeJquery({xhrError={}, returnedData={},
+                            result='success'} = {}) {
   //
   // Return a context to work with a fake jquery object in a test.
   //
+  // result must be one of 'success', 'fail'
+  //
   var componentContext;
-  opt = opt || {};
-  opt.returnedData = opt.returnedData || {};
-  // Must be one of 'success', 'fail'
-  opt.result = opt.result || 'success';
 
   var jqueryStubResponse = {
     fail: function() {
@@ -151,20 +150,19 @@ export function fakeJquery(opt) {
     },
   };
 
-  if (opt.result === 'success') {
+  if (result === 'success') {
     jqueryStubResponse.then = function(callback) {
       console.log('jquery stub: executing success');
-      callback.call(componentContext, opt.returnedData);
+      callback.call(componentContext, returnedData);
       return this;
     };
-  } else if (opt.result === 'fail') {
+  } else if (result === 'fail') {
     jqueryStubResponse.fail = function(callback) {
-      var error = {};
-      callback.call(componentContext, error);
+      callback.call(componentContext, xhrError);
       return this;
     };
   } else {
-    throw new Error('unexpected jquery stub result: ' + opt.result);
+    throw new Error('unexpected jquery stub result: ' + result);
   }
 
   var jqueryStub = {
