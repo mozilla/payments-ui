@@ -5520,7 +5520,7 @@ webpackJsonp([1],{
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return _react2['default'].createElement(_componentsSpinner2['default'], { text: (0, _utils.gettext)('Requesting token') });
+	      return _react2['default'].createElement(_componentsSpinner2['default'], { text: (0, _utils.gettext)('Setting up payment') });
 	    }
 	  }], [{
 	    key: 'propTypes',
