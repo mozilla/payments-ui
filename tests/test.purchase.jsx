@@ -13,7 +13,6 @@ import Purchase from 'views/purchase';
 
 describe('Purchase', function() {
 
-
   var testUser;
   var productId = 'mozilla-concrete-brick';
   var FakeBraintreeToken = helpers.stubComponent();

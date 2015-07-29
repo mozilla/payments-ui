@@ -1,13 +1,13 @@
 import * as actionTypes from 'constants/action-types';
 import * as reducers from 'reducers';
 
-import { defaults as defaultUser } from 'reducers/user';
+import { initialUserState } from 'reducers/user';
 
 
 describe('User Reducer', function() {
 
   function userData() {
-    return Object.assign({}, defaultUser, {
+    return Object.assign({}, initialUserState, {
       signedIn: true,
       email: 'f@f.com',
       payment_methods: [{provider_id: '1234'}],
@@ -15,7 +15,7 @@ describe('User Reducer', function() {
   }
 
   function userSignedIn(user) {
-    user = user ? Object.assign({}, defaultUser, user) : userData();
+    user = user ? Object.assign({}, initialUserState, user) : userData();
     return {
       type: actionTypes.USER_SIGNED_IN,
       user: user,
@@ -24,7 +24,7 @@ describe('User Reducer', function() {
 
   it('should initialize an empty user', function() {
     var user = reducers.user(undefined, {});
-    assert.deepEqual(user, defaultUser);
+    assert.deepEqual(user, initialUserState);
   });
 
   it('should return a user on sign-in', function() {
@@ -41,7 +41,7 @@ describe('User Reducer', function() {
       },
     });
     assert.deepEqual(user,
-      Object.assign({}, defaultUser, { braintreeToken: 'bt-token'}));
+      Object.assign({}, initialUserState, { braintreeToken: 'bt-token'}));
   });
 
   it('should maintain state when braintreeToken is added', function() {
@@ -66,7 +66,7 @@ describe('User Reducer', function() {
     var user = reducers.user(state.user, {
       type: actionTypes.USER_SIGNED_OUT,
     });
-    assert.deepEqual(user, defaultUser);
+    assert.deepEqual(user, initialUserState);
   });
 
   it('should preserve user state', function() {
@@ -79,6 +79,32 @@ describe('User Reducer', function() {
     // Receive and ignore another action:
     state.user = reducers.user(state.user, {});
     assert.deepEqual(state.user, dispatchedUser);
+  });
+
+  it('should reset subscriptions when loading', function() {
+    var existingUser = userData();
+    existingUser.subscriptions = [{}];
+
+    var user = reducers.user(existingUser, {
+      type: actionTypes.LOADING_USER_SUBSCRIPTIONS,
+    });
+    assert.equal(user.subscriptions, null);
+    // Check that the existing data was preserved too.
+    assert.equal(user.email, existingUser.email);
+  });
+
+  it('should merge in subscription data', function() {
+    var existingUser = userData();
+    var data = [{id: 123}];
+
+    var user = reducers.user(existingUser, {
+      type: actionTypes.GOT_USER_SUBSCRIPTIONS,
+      subscriptions: data,
+    });
+
+    assert.equal(user.subscriptions, data);
+    // Check that the existing data was preserved too.
+    assert.equal(user.email, existingUser.email);
   });
 
 });

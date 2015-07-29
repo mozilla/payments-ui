@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 import dataStore from 'data-store';
 import * as managementActions from 'actions/management';
 import * as userActions from 'actions/user';
+import * as subscriptionActions from 'actions/subscriptions';
 import { parseQuery } from 'utils';
 
 import ModalError from 'views/modal-error';
@@ -41,6 +42,8 @@ export default class ManagementApp extends Component {
     var boundMgmtActions = bindActionCreators(managementActions,
                                               connector.dispatch);
     var boundUserActions = bindActionCreators(userActions, connector.dispatch);
+    var boundSubscriptionActions = bindActionCreators(subscriptionActions,
+                                                      connector.dispatch);
     var children = [];
     var Management = this.props.Management;
     var PayMethods = this.props.PayMethods;
@@ -56,7 +59,10 @@ export default class ManagementApp extends Component {
       ));
     }
 
-    children.push(<Management {...boundMgmtActions} {...boundUserActions}
+    children.push(<Management {...boundMgmtActions}
+                              {...boundUserActions}
+                              {...boundSubscriptionActions}
+                              userSubscriptions={connector.user.subscriptions}
                               accessToken={accessToken}
                               user={connector.user} />);
 

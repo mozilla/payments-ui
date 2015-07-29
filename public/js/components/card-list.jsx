@@ -11,8 +11,8 @@ export default class CardList extends Component {
         resource_uri: PropTypes.string,
         truncated_id: PropTypes.string,
         type_name: PropTypes.string,
-      }
-    )).isRequired,
+      })
+    ).isRequired,
     onCardChange: PropTypes.func.isRequired,
   }
 
