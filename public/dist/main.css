@@ -983,6 +983,68 @@ button.spinner:after {
   }
 }
 
+.subscription-list {
+  margin: 0;
+  padding: 0;
+}
+
+.subscription-list li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.subscription {
+  padding-bottom: 2em;
+}
+
+.subscription .product {
+  float: left;
+}
+
+.subscription .product img {
+  display: block;
+  width: 50px;
+  float: left;
+  margin-right: 10px;
+}
+
+.subscription .product .seller {
+  padding: 0;
+  margin: 0 0 0.1em 0;
+  font-weight: normal;
+  float: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subscription .product .description {
+  text-align: left;
+}
+
+.subscription .price {
+  float: right;
+}
+
+.subscription nav {
+  clear: both;
+}
+
+.subscription nav .cancel {
+  float: left;
+}
+
+.subscription nav .change-pay-account {
+  float: right;
+}
+
+.subscription:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 .tooltip {
   opacity: 1;
   transition: 0.1s opacity 150ms;

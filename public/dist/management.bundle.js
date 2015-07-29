@@ -47,39 +47,43 @@ webpackJsonp([0],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	__webpack_require__(3);
+	__webpack_require__(7);
 	
-	var _react = __webpack_require__(10);
+	var _react = __webpack_require__(14);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRedux = __webpack_require__(166);
+	var _reactRedux = __webpack_require__(170);
 	
-	var _redux = __webpack_require__(178);
+	var _redux = __webpack_require__(182);
 	
-	var _dataStore = __webpack_require__(190);
+	var _dataStore = __webpack_require__(194);
 	
 	var _dataStore2 = _interopRequireDefault(_dataStore);
 	
-	var _actionsManagement = __webpack_require__(198);
+	var _actionsManagement = __webpack_require__(201);
 	
 	var managementActions = _interopRequireWildcard(_actionsManagement);
 	
-	var _actionsUser = __webpack_require__(199);
+	var _actionsUser = __webpack_require__(3);
 	
 	var userActions = _interopRequireWildcard(_actionsUser);
 	
-	var _utils = __webpack_require__(202);
+	var _actionsSubscriptions = __webpack_require__(202);
 	
-	var _viewsModalError = __webpack_require__(203);
+	var subscriptionActions = _interopRequireWildcard(_actionsSubscriptions);
+	
+	var _utils = __webpack_require__(203);
+	
+	var _viewsModalError = __webpack_require__(204);
 	
 	var _viewsModalError2 = _interopRequireDefault(_viewsModalError);
 	
-	var _viewsManagement = __webpack_require__(207);
+	var _viewsManagement = __webpack_require__(208);
 	
 	var _viewsManagement2 = _interopRequireDefault(_viewsManagement);
 	
-	var _viewsPayMethods = __webpack_require__(209);
+	var _viewsPayMethods = __webpack_require__(216);
 	
 	var _viewsPayMethods2 = _interopRequireDefault(_viewsPayMethods);
 	
@@ -107,6 +111,7 @@ webpackJsonp([0],{
 	      var accessToken = qs.access_token;
 	      var boundMgmtActions = (0, _redux.bindActionCreators)(managementActions, connector.dispatch);
 	      var boundUserActions = (0, _redux.bindActionCreators)(userActions, connector.dispatch);
+	      var boundSubscriptionActions = (0, _redux.bindActionCreators)(subscriptionActions, connector.dispatch);
 	      var children = [];
 	      var Management = this.props.Management;
 	      var PayMethods = this.props.PayMethods;
@@ -118,7 +123,8 @@ webpackJsonp([0],{
 	          paymentMethods: connector.management.paymentMethods })));
 	      }
 	
-	      children.push(_react2['default'].createElement(Management, _extends({}, boundMgmtActions, boundUserActions, {
+	      children.push(_react2['default'].createElement(Management, _extends({}, boundMgmtActions, boundUserActions, boundSubscriptionActions, {
+	        userSubscriptions: connector.user.subscriptions,
 	        accessToken: accessToken,
 	        user: connector.user })));
 	
@@ -180,7 +186,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 198:
+/***/ 201:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -200,7 +206,7 @@ webpackJsonp([0],{
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
-	var _constantsActionTypes = __webpack_require__(194);
+	var _constantsActionTypes = __webpack_require__(4);
 	
 	var actionTypes = _interopRequireWildcard(_constantsActionTypes);
 	
@@ -240,7 +246,64 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 203:
+/***/ 202:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports.getUserSubscriptions = getUserSubscriptions;
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _jquery = __webpack_require__(1);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	var _constantsActionTypes = __webpack_require__(4);
+	
+	var actionTypes = _interopRequireWildcard(_constantsActionTypes);
+	
+	var _app = __webpack_require__(6);
+	
+	var appActions = _interopRequireWildcard(_app);
+	
+	function getUserSubscriptions() {
+	  var _this = this;
+	
+	  var jquery = arguments.length <= 0 || arguments[0] === undefined ? _jquery2['default'] : arguments[0];
+	
+	  return function (dispatch) {
+	    dispatch({
+	      type: actionTypes.LOADING_USER_SUBSCRIPTIONS
+	    });
+	
+	    jquery.ajax({
+	      method: 'get',
+	      url: '/api/braintree/subscriptions/',
+	      context: _this
+	    }).then(function (data) {
+	
+	      console.log('got subscriptions from API:', data);
+	      dispatch({
+	        type: actionTypes.GOT_USER_SUBSCRIPTIONS,
+	        subscriptions: data.subscriptions
+	      });
+	    }).fail(function (apiError) {
+	
+	      console.log('error getting subscriptions:', apiError.responseJSON);
+	      dispatch(appActions.error('failed to get subscriptions'));
+	    });
+	  };
+	}
+
+/***/ },
+
+/***/ 204:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -259,15 +322,15 @@ webpackJsonp([0],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(10);
+	var _react = __webpack_require__(14);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsModal = __webpack_require__(204);
+	var _componentsModal = __webpack_require__(205);
 	
 	var _componentsModal2 = _interopRequireDefault(_componentsModal);
 	
-	var _componentsError = __webpack_require__(206);
+	var _componentsError = __webpack_require__(207);
 	
 	var _componentsError2 = _interopRequireDefault(_componentsError);
 	
@@ -306,7 +369,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 204:
+/***/ 205:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -325,13 +388,13 @@ webpackJsonp([0],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(10);
+	var _react = __webpack_require__(14);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _utils = __webpack_require__(202);
+	var _utils = __webpack_require__(203);
 	
-	var _classnames = __webpack_require__(205);
+	var _classnames = __webpack_require__(206);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
@@ -413,7 +476,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 207:
+/***/ 208:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -432,13 +495,17 @@ webpackJsonp([0],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(10);
+	var _react = __webpack_require__(14);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsAccordion = __webpack_require__(208);
+	var _componentsAccordion = __webpack_require__(209);
 	
-	var _utils = __webpack_require__(202);
+	var _componentsSubscriptionList = __webpack_require__(210);
+	
+	var _componentsSubscriptionList2 = _interopRequireDefault(_componentsSubscriptionList);
+	
+	var _utils = __webpack_require__(203);
 	
 	var Management = (function (_Component) {
 	  _inherits(Management, _Component);
@@ -450,13 +517,18 @@ webpackJsonp([0],{
 	
 	    _get(Object.getPrototypeOf(Management.prototype), 'constructor', this).apply(this, arguments);
 	
-	    this.userSignIn = function (click) {
-	      click.preventDefault();
+	    this.showSubscriptions = function (event) {
+	      event.preventDefault();
+	      _this.props.getUserSubscriptions();
+	    };
+	
+	    this.userSignIn = function (event) {
+	      event.preventDefault();
 	      _this.props.userSignIn();
 	    };
 	
-	    this.userSignOut = function (click) {
-	      click.preventDefault();
+	    this.userSignOut = function (event) {
+	      event.preventDefault();
 	      _this.props.userSignOut();
 	    };
 	  }
@@ -548,12 +620,12 @@ webpackJsonp([0],{
 	                _react2['default'].createElement(
 	                  'h2',
 	                  null,
-	                  (0, _utils.gettext)('Receipts and Subscriptions')
+	                  (0, _utils.gettext)('Receipts and History')
 	                ),
 	                _react2['default'].createElement(
 	                  'button',
 	                  { 'data-activate': true },
-	                  (0, _utils.gettext)('View/Change')
+	                  (0, _utils.gettext)('View')
 	                )
 	              ),
 	              _react2['default'].createElement(
@@ -564,6 +636,34 @@ webpackJsonp([0],{
 	                  null,
 	                  'Placeholder'
 	                )
+	              )
+	            ),
+	            _react2['default'].createElement(
+	              _componentsAccordion.AccordionSection,
+	              null,
+	              _react2['default'].createElement(
+	                'header',
+	                null,
+	                _react2['default'].createElement(
+	                  'h2',
+	                  null,
+	                  (0, _utils.gettext)('Subscriptions')
+	                ),
+	                _react2['default'].createElement(
+	                  'button',
+	                  {
+	                    onClick: this.showSubscriptions,
+	                    id: "show-subscriptions",
+	                    'data-activate': true },
+	                  (0, _utils.gettext)('View/Change')
+	                )
+	              ),
+	              _react2['default'].createElement(
+	                _componentsAccordion.AccordionContent,
+	                null,
+	                _react2['default'].createElement(_componentsSubscriptionList2['default'], {
+	                  subscriptions: this.props.userSubscriptions
+	                })
 	              )
 	            ),
 	            _react2['default'].createElement(
@@ -627,10 +727,12 @@ webpackJsonp([0],{
 	    value: {
 	      accessToken: _react.PropTypes.string,
 	      getPayMethods: _react.PropTypes.func.isRequired,
+	      getUserSubscriptions: _react.PropTypes.func.isRequired,
 	      tokenSignIn: _react.PropTypes.func.isRequired,
 	      user: _react.PropTypes.object.isRequired,
 	      userSignIn: _react.PropTypes.func.isRequired,
-	      userSignOut: _react.PropTypes.func.isRequired
+	      userSignOut: _react.PropTypes.func.isRequired,
+	      userSubscriptions: _react.PropTypes.array
 	    },
 	    enumerable: true
 	  }]);
@@ -643,7 +745,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 208:
+/***/ 209:
 /***/ function(module, exports, __webpack_require__) {
 
 	/*eslint react/no-multi-comp: 0 */
@@ -663,11 +765,11 @@ webpackJsonp([0],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(10);
+	var _react = __webpack_require__(14);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _classnames = __webpack_require__(205);
+	var _classnames = __webpack_require__(206);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
@@ -801,7 +903,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 209:
+/***/ 210:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -820,19 +922,236 @@ webpackJsonp([0],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(10);
+	var _react = __webpack_require__(14);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsModal = __webpack_require__(204);
+	var _utils = __webpack_require__(203);
+	
+	var _componentsSpinner = __webpack_require__(211);
+	
+	var _componentsSpinner2 = _interopRequireDefault(_componentsSpinner);
+	
+	var _componentsSubscription = __webpack_require__(212);
+	
+	var _componentsSubscription2 = _interopRequireDefault(_componentsSubscription);
+	
+	var SubscriptionList = (function (_Component) {
+	  _inherits(SubscriptionList, _Component);
+	
+	  function SubscriptionList() {
+	    _classCallCheck(this, SubscriptionList);
+	
+	    _get(Object.getPrototypeOf(SubscriptionList.prototype), 'constructor', this).apply(this, arguments);
+	  }
+	
+	  _createClass(SubscriptionList, [{
+	    key: 'render',
+	    value: function render() {
+	      console.log('subscriptions:', this.props.subscriptions);
+	
+	      if (this.props.subscriptions === null) {
+	        return _react2['default'].createElement(_componentsSpinner2['default'], null);
+	      } else {
+	
+	        var subs = [];
+	        this.props.subscriptions.forEach(function (data) {
+	          subs.push(_react2['default'].createElement(
+	            'li',
+	            { key: data.id },
+	            _react2['default'].createElement(_componentsSubscription2['default'], data)
+	          ));
+	        });
+	
+	        if (subs.length) {
+	          return _react2['default'].createElement(
+	            'ul',
+	            { className: "subscription-list" },
+	            subs
+	          );
+	        } else {
+	          return _react2['default'].createElement(
+	            'p',
+	            null,
+	            (0, _utils.gettext)("You haven't subscribed to anything yet.")
+	          );
+	        }
+	      }
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: {
+	      subscriptions: _react.PropTypes.array
+	    },
+	    enumerable: true
+	  }, {
+	    key: 'defaultProps',
+	    value: {
+	      subscriptions: null
+	    },
+	    enumerable: true
+	  }]);
+	
+	  return SubscriptionList;
+	})(_react.Component);
+	
+	exports['default'] = SubscriptionList;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 212:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(14);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _utils = __webpack_require__(203);
+	
+	var _products = __webpack_require__(213);
+	
+	var products = _interopRequireWildcard(_products);
+	
+	var Subscription = (function (_Component) {
+	  _inherits(Subscription, _Component);
+	
+	  function Subscription() {
+	    _classCallCheck(this, Subscription);
+	
+	    _get(Object.getPrototypeOf(Subscription.prototype), 'constructor', this).apply(this, arguments);
+	  }
+	
+	  _createClass(Subscription, [{
+	    key: 'render',
+	    value: function render() {
+	      var productData = products.get(this.props.seller_product.public_id);
+	
+	      return _react2['default'].createElement(
+	        'div',
+	        { className: "subscription" },
+	        _react2['default'].createElement(
+	          'div',
+	          { className: "product" },
+	          _react2['default'].createElement('img', { alt: "", src: productData.img }),
+	          _react2['default'].createElement(
+	            'h2',
+	            { className: "seller" },
+	            productData.seller.name.en
+	          ),
+	          _react2['default'].createElement(
+	            'p',
+	            { className: "description" },
+	            productData.description.en
+	          )
+	        ),
+	        _react2['default'].createElement(
+	          'div',
+	          { className: "price" },
+	          _react2['default'].createElement(
+	            'div',
+	            null,
+	            productData.price.en
+	          ),
+	          _react2['default'].createElement(
+	            'div',
+	            null,
+	            '/ ',
+	            (0, _utils.gettext)('month')
+	          )
+	        ),
+	        _react2['default'].createElement(
+	          'nav',
+	          null,
+	          _react2['default'].createElement(
+	            'div',
+	            { className: "change-pay-account" },
+	            _react2['default'].createElement(
+	              'a',
+	              { href: "#" },
+	              (0, _utils.gettext)('Change payment account')
+	            )
+	          ),
+	          _react2['default'].createElement(
+	            'div',
+	            { className: "cancel" },
+	            _react2['default'].createElement(
+	              'a',
+	              { href: "#" },
+	              (0, _utils.gettext)('Cancel subscription')
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: {
+	      seller_product: _react.PropTypes.shape({
+	        public_id: _react.PropTypes.string
+	      }).isRequired
+	    },
+	    enumerable: true
+	  }]);
+	
+	  return Subscription;
+	})(_react.Component);
+	
+	exports['default'] = Subscription;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 216:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(14);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _componentsModal = __webpack_require__(205);
 	
 	var _componentsModal2 = _interopRequireDefault(_componentsModal);
 	
-	var _componentsCardList = __webpack_require__(210);
+	var _componentsCardList = __webpack_require__(217);
 	
 	var _componentsCardList2 = _interopRequireDefault(_componentsCardList);
 	
-	var _utils = __webpack_require__(202);
+	var _utils = __webpack_require__(203);
 	
 	var PayMethods = (function (_Component) {
 	  _inherits(PayMethods, _Component);

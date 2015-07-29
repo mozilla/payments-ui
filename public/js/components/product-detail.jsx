@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import products from 'products';
+import * as products from 'products';
 import { gettext } from 'utils';
 
 export default class ProductDetail extends Component {
@@ -10,12 +10,7 @@ export default class ProductDetail extends Component {
 
   render() {
 
-    var productId = this.props.productId;
-    var productData = products[productId];
-
-    if (!productData) {
-      throw new Error('Invalid product: ' + productId);
-    }
+    var productData = products.get(this.props.productId);
 
     return (
       <div className="product">
