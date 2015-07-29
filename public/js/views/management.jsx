@@ -4,6 +4,7 @@ import {
   Accordion,
   AccordionContent,
   AccordionSection } from 'components/accordion';
+import SubscriptionList from 'components/subscription-list';
 
 import { gettext } from 'utils';
 
@@ -13,10 +14,12 @@ export default class Management extends Component {
   static propTypes = {
     accessToken: PropTypes.string,
     getPayMethods: PropTypes.func.isRequired,
+    getUserSubscriptions: PropTypes.func.isRequired,
     tokenSignIn: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
     userSignIn: PropTypes.func.isRequired,
     userSignOut: PropTypes.func.isRequired,
+    userSubscriptions: PropTypes.array,
   }
 
   componentDidMount() {
@@ -26,13 +29,18 @@ export default class Management extends Component {
     }
   }
 
-  userSignIn = click => {
-    click.preventDefault();
+  showSubscriptions = event => {
+    event.preventDefault();
+    this.props.getUserSubscriptions();
+  }
+
+  userSignIn = event => {
+    event.preventDefault();
     this.props.userSignIn();
   }
 
-  userSignOut = click => {
-    click.preventDefault();
+  userSignOut = event => {
+    event.preventDefault();
     this.props.userSignOut();
   }
 
@@ -78,11 +86,26 @@ export default class Management extends Component {
 
               <AccordionSection>
                 <header>
-                  <h2>{gettext('Receipts and Subscriptions')}</h2>
-                  <button data-activate>{gettext('View/Change')}</button>
+                  <h2>{gettext('Receipts and History')}</h2>
+                  <button data-activate>{gettext('View')}</button>
                 </header>
                 <AccordionContent>
                   <p>Placeholder</p>
+                </AccordionContent>
+              </AccordionSection>
+
+              <AccordionSection>
+                <header>
+                  <h2>{gettext('Subscriptions')}</h2>
+                  <button
+                    onClick={this.showSubscriptions}
+                    id="show-subscriptions"
+                    data-activate>{gettext('View/Change')}</button>
+                </header>
+                <AccordionContent>
+                  <SubscriptionList
+                    subscriptions={this.props.userSubscriptions}
+                  />
                 </AccordionContent>
               </AccordionSection>
 

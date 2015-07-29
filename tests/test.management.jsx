@@ -7,12 +7,14 @@ import * as helpers from './helpers';
 
 
 describe('Management', function() {
+  var fakeSubscriptionGetter;
   var fakeTokenSignIn;
   var fakeUser;
   var fakeUserSignIn;
   var fakeUserSignOut;
 
   beforeEach(function() {
+    fakeSubscriptionGetter = sinon.stub();
     fakeTokenSignIn = sinon.stub();
     fakeUser = {signedIn: false};
     fakeUserSignIn = sinon.stub();
@@ -22,6 +24,7 @@ describe('Management', function() {
   function mountView({accessToken = null, user = fakeUser } = {}) {
     return TestUtils.renderIntoDocument(
       <Management
+        getUserSubscriptions={fakeSubscriptionGetter}
         accessToken={accessToken}
         tokenSignIn={fakeTokenSignIn}
         user={user}
@@ -56,6 +59,14 @@ describe('Management', function() {
 
     TestUtils.Simulate.click(button);
     assert.equal(fakeUserSignOut.called, true);
+  });
+
+  it('should show subscriptions on click', function() {
+    var view = mountView();
+    var button = helpers.findById(view, 'show-subscriptions');
+
+    TestUtils.Simulate.click(button);
+    assert.equal(fakeSubscriptionGetter.called, true);
   });
 
 });

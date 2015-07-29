@@ -1,0 +1,59 @@
+.subscription-list {
+    margin: 0;
+    padding: 0;
+
+    li {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+.subscription {
+    padding-bottom: 2em;
+
+    .product {
+        float: left;
+
+        img {
+            display: block;
+            width: 50px;
+            float: left;
+            margin-right: 10px;
+        }
+
+        .seller {
+            padding: 0;
+            margin: 0 0 0.1em 0;
+            font-weight: normal;
+            float: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .description {
+            text-align: left;
+        }
+    }
+
+    .price {
+        float: right;
+    }
+
+    nav {
+        clear: both;
+        .cancel {
+            float: left;
+        }
+        .change-pay-account {
+            float: right;
+        }
+    }
+
+    &:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+}

@@ -4,7 +4,7 @@ import TestUtils from 'react/lib/ReactTestUtils';
 import * as helpers from './helpers';
 
 import { createReduxStore } from 'data-store';
-import { defaults as defaultUser } from 'reducers/user';
+import { initialUserState } from 'reducers/user';
 import * as actionTypes from 'constants/action-types';
 import * as appActions from 'actions/app';
 import PaymentApp from 'apps/payment/app';
@@ -48,9 +48,9 @@ describe('Payment App', function() {
     );
   }
 
-  it('should have a defaultUser imported correctly', function() {
-    assert.equal(defaultUser.braintreeToken, null);
-    assert.equal(defaultUser.signedIn, false);
+  it('should have an initial user imported correctly', function() {
+    assert.equal(initialUserState.braintreeToken, null);
+    assert.equal(initialUserState.signedIn, false);
   });
 
   it('should render an error', function() {
@@ -72,7 +72,7 @@ describe('Payment App', function() {
   });
 
   it('should render a purchase page', function() {
-    var user = Object.assign({}, defaultUser, {
+    var user = Object.assign({}, initialUserState, {
       email: 'f@f.com',
       signedIn: true,
     });
