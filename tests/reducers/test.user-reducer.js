@@ -1,52 +1,10 @@
 import * as actionTypes from 'constants/action-types';
-import * as appActions from 'actions/app';
-import * as purchaseActions from 'actions/purchase';
 import * as reducers from 'reducers';
 
 import { defaults as defaultUser } from 'reducers/user';
 
 
-describe('app', function() {
-
-  function appWithError() {
-    return {
-      error: {
-        debugMessage: 'some informative message',
-      },
-    };
-  }
-
-  it('should initialize an app', function() {
-    var app = reducers.app(undefined, {});
-    assert.deepEqual(app, {});
-  });
-
-  it('should set an app error', function() {
-    var dispatchedApp = appWithError();
-
-    var app = reducers.app(
-      {}, appActions.error(dispatchedApp.error.debugMessage));
-
-    assert.deepEqual(app, dispatchedApp);
-  });
-
-  it('should preserve app state', function() {
-    var dispatchedApp = appWithError();
-    var state = {};
-
-    // Receive an error action:
-    state.app = reducers.app(
-      state, appActions.error(dispatchedApp.error.debugMessage));
-    // Receive and ignore some other action:
-    state.app = reducers.app(state.app, {});
-
-    assert.deepEqual(state.app, dispatchedApp);
-  });
-
-});
-
-
-describe('user', function() {
+describe('User Reducer', function() {
 
   function userData() {
     return Object.assign({}, defaultUser, {
@@ -121,42 +79,6 @@ describe('user', function() {
     // Receive and ignore another action:
     state.user = reducers.user(state.user, {});
     assert.deepEqual(state.user, dispatchedUser);
-  });
-
-});
-
-
-describe('purchase', function() {
-
-  it('should initialize a purchase', function() {
-    var purchase = reducers.purchase(undefined, {});
-    assert.deepEqual(purchase, {
-      completed: false,
-      payment_methods: [],
-    });
-  });
-
-  it('should handle completed purchases', function() {
-    var purchase = reducers.purchase(undefined, purchaseActions.complete());
-    assert.deepEqual(purchase, {
-      completed: true,
-    });
-  });
-
-  it('should infer saved payment methods when user signs in', function() {
-    var paymentMethods = [{type: 'Visa'}];
-
-    var purchase = reducers.purchase(undefined, {
-      type: actionTypes.USER_SIGNED_IN,
-      user: {
-        payment_methods: paymentMethods,
-      },
-    });
-
-    assert.deepEqual(purchase, {
-      completed: false,
-      payment_methods: paymentMethods,
-    });
   });
 
 });
