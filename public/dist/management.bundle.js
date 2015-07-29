@@ -148,7 +148,7 @@ webpackJsonp([0],{
 	  }], [{
 	    key: 'propTypes',
 	    value: {
-	      Management: _react.PropTypes.func.iRequired,
+	      Management: _react.PropTypes.func.isRequired,
 	      PayMethods: _react.PropTypes.func.isRequired,
 	      window: _react.PropTypes.object.isRequired
 	    },

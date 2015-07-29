@@ -17,7 +17,7 @@ import { default as DefaultPayMethods } from 'views/pay-methods';
 export default class ManagementApp extends Component {
 
   static propTypes = {
-    Management: PropTypes.func.iRequired,
+    Management: PropTypes.func.isRequired,
     PayMethods: PropTypes.func.isRequired,
     window: PropTypes.object.isRequired,
   }
