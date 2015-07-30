@@ -62,9 +62,16 @@ describe('Pay Method Actions', function() {
       }
     }
 
-    function addCreditCard(jquery) {
+    class FakeBraintreeClientError {
+      tokenizeCard(config, callback) {
+        console.log('resolving braintree tokenization with error');
+        callback("I'm some error");
+      }
+    }
+
+    function addCreditCard(jquery, client=FakeBraintreeClient) {
       payMethodActions.addCreditCard('braintree-token', fakeCard,
-                                    jquery, FakeBraintreeClient)(dispatchSpy);
+                                    jquery, client)(dispatchSpy);
     }
 
     it('should dispatch a GOT_PAY_METHODS action', function() {
@@ -86,6 +93,14 @@ describe('Pay Method Actions', function() {
         type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
         apiErrorResult: apiError,
       });
+    });
+
+    it('should dispatch an error on tokenization failure', function() {
+      var jquery = helpers.fakeJquery();
+      addCreditCard(jquery.stub, FakeBraintreeClientError);
+      var action = dispatchSpy.firstCall.args[0];
+      assert.deepEqual(action,
+                       appActions.error('Braintree tokenization error'));
     });
 
   });
