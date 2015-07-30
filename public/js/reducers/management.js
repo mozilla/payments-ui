@@ -1,31 +1,47 @@
 import * as actionTypes from 'constants/action-types';
 
 
-export default function management(state, action) {
-  console.log('management store: got action', action);
+export const initialMgmtState = {
+  error: null,
+  tab: null,
+};
 
-  var defaults = {
-    error: null,
-    paymentMethods: null,
-  };
+export default function management(state, action) {
 
   if (action.type === actionTypes.APP_ERROR) {
-    return Object.assign({}, defaults, {
+    console.log('management store: got action', action);
+    return Object.assign({}, initialMgmtState, {
       error: {
         debugMessage: action.error.debugMessage,
       },
     });
   }
 
-  if (action.type === actionTypes.GET_PAY_METHODS) {
-    return Object.assign({}, defaults, {
-      paymentMethods: action.management.paymentMethods,
+  if (action.type === actionTypes.SHOW_PAY_METHODS) {
+    console.log('management store: got action', action);
+    return Object.assign({}, initialMgmtState, {
+      tab: action.type,
+    });
+  }
+
+  if (action.type === actionTypes.SHOW_ADD_PAY_METHOD) {
+    console.log('management store: got action', action);
+    return Object.assign({}, initialMgmtState, {
+      tab: action.type,
+    });
+  }
+
+  if (action.type === actionTypes.CREDIT_CARD_SUBMISSION_ERRORS) {
+    console.log('managment: setting submission errors from', action);
+    return Object.assign({}, initialMgmtState, {
+      cardSubmissionErrors: action.apiErrorResult,
     });
   }
 
   if (action.type === actionTypes.CLOSE_MODAL) {
-    return defaults;
+    console.log('management store: got action', action);
+    return initialMgmtState;
   }
 
-  return state || defaults;
+  return state || initialMgmtState;
 }

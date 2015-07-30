@@ -15,6 +15,7 @@ export default class Management extends Component {
     accessToken: PropTypes.string,
     getPayMethods: PropTypes.func.isRequired,
     getUserSubscriptions: PropTypes.func.isRequired,
+    showPayMethods: PropTypes.func.isRequired,
     tokenSignIn: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
     userSignIn: PropTypes.func.isRequired,
@@ -23,7 +24,7 @@ export default class Management extends Component {
   }
 
   componentDidMount() {
-    if (this.props.accessToken) {
+    if (this.props.accessToken && !this.props.user.signedIn) {
       console.log('page loaded with access token; signing in');
       this.props.tokenSignIn(this.props.accessToken);
     }
@@ -42,6 +43,12 @@ export default class Management extends Component {
   userSignOut = event => {
     event.preventDefault();
     this.props.userSignOut();
+  }
+
+  handleShowPayMethods = e => {
+    e.preventDefault();
+    e.stopPropagation();
+    this.props.showPayMethods();
   }
 
   render() {
@@ -79,7 +86,7 @@ export default class Management extends Component {
                 <header>
                   <h2>{gettext('Payment Accounts')}</h2>
                   <button
-                    onClick={this.props.getPayMethods}>{gettext('Change')}
+                    onClick={this.handleShowPayMethods}>{gettext('Change')}
                   </button>
                 </header>
               </AccordionSection>

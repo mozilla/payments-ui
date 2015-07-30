@@ -9,6 +9,7 @@ import * as purchaseActions from './purchase';
 
 export function getUserSubscriptions(jquery=$) {
   return dispatch => {
+
     dispatch({
       type: actionTypes.LOADING_USER_SUBSCRIPTIONS,
     });
@@ -18,19 +19,16 @@ export function getUserSubscriptions(jquery=$) {
       url: '/api/braintree/subscriptions/',
       context: this,
     }).then(data => {
-
       console.log('got subscriptions from API:', data);
       dispatch({
         type: actionTypes.GOT_USER_SUBSCRIPTIONS,
         subscriptions: data.subscriptions,
       });
-
     }).fail(apiError => {
-
       console.log('error getting subscriptions:', apiError.responseJSON);
       dispatch(appActions.error('failed to get subscriptions'));
-
     });
+
   };
 }
 
@@ -38,18 +36,20 @@ export function getUserSubscriptions(jquery=$) {
 export function createSubscription(braintreeToken, productId,
                                    creditCard, jquery=$,
                                    BraintreeClient=braintree.api.Client) {
-  return (dispatch) => {
+  return dispatch => {
+
     var client = new BraintreeClient({
       clientToken: braintreeToken,
     });
+
     client.tokenizeCard({
       number: creditCard.number,
       expirationDate: creditCard.expiration,
       cvv: creditCard.cvv,
-    }, function(err, nonce) {
+    }, (err, nonce) => {
       if (err) {
-        // TODO: error handling
-        console.error('Uncaught braintree tokenization error:', err);
+        console.error('Braintree tokenization error:', err);
+        dispatch(appActions.error('Braintree tokenization error'));
       } else {
         jquery.ajax({
           data: {
@@ -59,20 +59,17 @@ export function createSubscription(braintreeToken, productId,
           url: '/api/braintree/subscriptions/',
           method: 'post',
           dataType: 'json',
-        }).then(function() {
+        }).then(() => {
           console.log('Successfully subscribed + completed payment');
-
           dispatch(purchaseActions.complete());
-
-        }).fail(function($xhr) {
-
+        }).fail($xhr => {
           dispatch({
             type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
             apiErrorResult: $xhr.responseJSON,
           });
-
         });
       }
     });
+
   };
 }

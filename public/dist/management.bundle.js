@@ -47,43 +47,59 @@ webpackJsonp([0],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	__webpack_require__(7);
+	__webpack_require__(8);
 	
-	var _react = __webpack_require__(14);
+	var _react = __webpack_require__(15);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRedux = __webpack_require__(170);
+	var _reactRedux = __webpack_require__(171);
 	
-	var _redux = __webpack_require__(182);
+	var _redux = __webpack_require__(183);
 	
-	var _dataStore = __webpack_require__(194);
+	var _dataStore = __webpack_require__(195);
 	
 	var _dataStore2 = _interopRequireDefault(_dataStore);
 	
-	var _actionsManagement = __webpack_require__(201);
+	var _actionsManagement = __webpack_require__(202);
 	
-	var managementActions = _interopRequireWildcard(_actionsManagement);
+	var mgmtActions = _interopRequireWildcard(_actionsManagement);
 	
-	var _actionsUser = __webpack_require__(3);
+	var _actionsPayMethods = __webpack_require__(203);
+	
+	var payMethodActions = _interopRequireWildcard(_actionsPayMethods);
+	
+	var _actionsUser = __webpack_require__(204);
 	
 	var userActions = _interopRequireWildcard(_actionsUser);
 	
-	var _actionsSubscriptions = __webpack_require__(202);
+	var _actionsSubscriptions = __webpack_require__(3);
 	
 	var subscriptionActions = _interopRequireWildcard(_actionsSubscriptions);
 	
-	var _utils = __webpack_require__(205);
+	var _utils = __webpack_require__(206);
 	
-	var _viewsModalError = __webpack_require__(206);
+	var _componentsModal = __webpack_require__(207);
+	
+	var _componentsModal2 = _interopRequireDefault(_componentsModal);
+	
+	var _viewsAddPayMethod = __webpack_require__(209);
+	
+	var _viewsAddPayMethod2 = _interopRequireDefault(_viewsAddPayMethod);
+	
+	var _viewsBraintreeToken = __webpack_require__(253);
+	
+	var _viewsBraintreeToken2 = _interopRequireDefault(_viewsBraintreeToken);
+	
+	var _viewsModalError = __webpack_require__(255);
 	
 	var _viewsModalError2 = _interopRequireDefault(_viewsModalError);
 	
-	var _viewsManagement = __webpack_require__(210);
+	var _viewsManagement = __webpack_require__(257);
 	
 	var _viewsManagement2 = _interopRequireDefault(_viewsManagement);
 	
-	var _viewsPayMethods = __webpack_require__(218);
+	var _viewsPayMethods = __webpack_require__(264);
 	
 	var _viewsPayMethods2 = _interopRequireDefault(_viewsPayMethods);
 	
@@ -109,24 +125,39 @@ webpackJsonp([0],{
 	    value: function renderChild(connector) {
 	      var qs = (0, _utils.parseQuery)(this.props.window.location.href);
 	      var accessToken = qs.access_token;
-	      var boundMgmtActions = (0, _redux.bindActionCreators)(managementActions, connector.dispatch);
+	      var boundMgmtActions = (0, _redux.bindActionCreators)(mgmtActions, connector.dispatch);
 	      var boundUserActions = (0, _redux.bindActionCreators)(userActions, connector.dispatch);
 	      var boundSubscriptionActions = (0, _redux.bindActionCreators)(subscriptionActions, connector.dispatch);
+	      var boundPayMethodActions = (0, _redux.bindActionCreators)(payMethodActions, connector.dispatch);
 	      var children = [];
 	      var Management = this.props.Management;
 	      var PayMethods = this.props.PayMethods;
 	
 	      if (connector.management.error) {
 	        children.push(_react2['default'].createElement(_viewsModalError2['default'], _extends({}, boundMgmtActions, { error: connector.management.error })));
-	      } else if (connector.management.paymentMethods) {
+	      } else if (connector.management.tab === 'SHOW_PAY_METHODS') {
+	        console.log('Showing pay methods');
 	        children.push(_react2['default'].createElement(PayMethods, _extends({}, boundMgmtActions, {
-	          paymentMethods: connector.management.paymentMethods })));
+	          payMethods: connector.user.payMethods })));
+	      } else if (connector.management.tab === 'SHOW_ADD_PAY_METHOD') {
+	        if (!connector.user.braintreeToken) {
+	          children.push(_react2['default'].createElement(
+	            _componentsModal2['default'],
+	            boundMgmtActions,
+	            _react2['default'].createElement(_viewsBraintreeToken2['default'], boundUserActions)
+	          ));
+	        } else {
+	          children.push(_react2['default'].createElement(_viewsAddPayMethod2['default'], _extends({}, boundMgmtActions, boundPayMethodActions, boundUserActions, {
+	            braintreeToken: connector.user.braintreeToken
+	          })));
+	        }
 	      }
 	
-	      children.push(_react2['default'].createElement(Management, _extends({}, boundMgmtActions, boundUserActions, boundSubscriptionActions, {
-	        userSubscriptions: connector.user.subscriptions,
+	      children.push(_react2['default'].createElement(Management, _extends({}, boundMgmtActions, boundPayMethodActions, boundSubscriptionActions, boundUserActions, {
 	        accessToken: accessToken,
-	        user: connector.user })));
+	        user: connector.user,
+	        userSubscriptions: connector.user.subscriptions
+	      })));
 	
 	      return _react2['default'].createElement(
 	        'div',
@@ -186,7 +217,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 201:
+/***/ 202:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -195,18 +226,14 @@ webpackJsonp([0],{
 	  value: true
 	});
 	exports.error = error;
-	exports.getPayMethods = getPayMethods;
+	exports.showPayMethods = showPayMethods;
+	exports.showAddPayMethod = showAddPayMethod;
+	exports.showDelPayMethod = showDelPayMethod;
 	exports.closeModal = closeModal;
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _jquery = __webpack_require__(1);
-	
-	var _jquery2 = _interopRequireDefault(_jquery);
-	
-	var _constantsActionTypes = __webpack_require__(4);
+	var _constantsActionTypes = __webpack_require__(5);
 	
 	var actionTypes = _interopRequireWildcard(_constantsActionTypes);
 	
@@ -217,28 +244,25 @@ webpackJsonp([0],{
 	  };
 	}
 	
-	function getPayMethods() {
-	  return function (dispatch) {
-	    _jquery2['default'].ajax({
-	      method: 'get',
-	      url: '/api/braintree/mozilla/paymethod/',
-	      context: this
-	    }).then(function (data) {
-	      dispatch({
-	        type: actionTypes.GET_PAY_METHODS,
-	        management: {
-	          paymentMethods: data
-	        }
-	      });
-	    }).fail(function () {
-	      console.log('Retrieving cards failed');
-	      dispatch(error('Retrieving cards failed'));
-	    });
+	function showPayMethods() {
+	  return {
+	    type: actionTypes.SHOW_PAY_METHODS
+	  };
+	}
+	
+	function showAddPayMethod() {
+	  return {
+	    type: actionTypes.SHOW_ADD_PAY_METHOD
+	  };
+	}
+	
+	function showDelPayMethod() {
+	  return {
+	    type: actionTypes.SHOW_DEL_PAY_METHOD
 	  };
 	}
 	
 	function closeModal() {
-	  console.log('closeModal');
 	  return {
 	    type: actionTypes.CLOSE_MODAL
 	  };
@@ -246,7 +270,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 206:
+/***/ 203:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -254,61 +278,93 @@ webpackJsonp([0],{
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
+	exports.getPayMethods = getPayMethods;
+	exports.addCreditCard = addCreditCard;
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	var _jquery = __webpack_require__(1);
 	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	var _jquery2 = _interopRequireDefault(_jquery);
 	
-	var _react = __webpack_require__(14);
+	var _braintreeWeb = __webpack_require__(4);
 	
-	var _react2 = _interopRequireDefault(_react);
+	var _braintreeWeb2 = _interopRequireDefault(_braintreeWeb);
 	
-	var _componentsModal = __webpack_require__(207);
+	var _constantsActionTypes = __webpack_require__(5);
 	
-	var _componentsModal2 = _interopRequireDefault(_componentsModal);
+	var actionTypes = _interopRequireWildcard(_constantsActionTypes);
 	
-	var _componentsError = __webpack_require__(209);
+	var _app = __webpack_require__(6);
 	
-	var _componentsError2 = _interopRequireDefault(_componentsError);
+	var appActions = _interopRequireWildcard(_app);
 	
-	var ModalError = (function (_Component) {
-	  _inherits(ModalError, _Component);
+	function getPayMethods() {
+	  var _this = this;
 	
-	  function ModalError() {
-	    _classCallCheck(this, ModalError);
+	  var jquery = arguments.length <= 0 || arguments[0] === undefined ? _jquery2['default'] : arguments[0];
 	
-	    _get(Object.getPrototypeOf(ModalError.prototype), 'constructor', this).apply(this, arguments);
-	  }
+	  // Note: not currently used as payMethods
+	  // are added to user state upon login.
+	  return function (dispatch) {
+	    jquery.ajax({
+	      method: 'get',
+	      url: '/api/braintree/mozilla/paymethod/',
+	      context: _this
+	    }).then(function (data) {
+	      dispatch({
+	        type: actionTypes.GOT_PAY_METHODS,
+	        payMethods: data
+	      });
+	    }).fail(function () {
+	      console.log('Retrieving cards failed');
+	      dispatch(appActions.error('Retrieving cards failed'));
+	    });
+	  };
+	}
 	
-	  _createClass(ModalError, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2['default'].createElement(
-	        _componentsModal2['default'],
-	        { handleClose: this.props.closeModal },
-	        _react2['default'].createElement(_componentsError2['default'], { error: this.props.error })
-	      );
-	    }
-	  }], [{
-	    key: 'propTypes',
-	    value: {
-	      closeModal: _react.PropTypes.func.isRequired,
-	      error: _react.PropTypes.object.isRequired
-	    },
-	    enumerable: true
-	  }]);
+	function addCreditCard(braintreeToken, creditCard) {
+	  var jquery = arguments.length <= 2 || arguments[2] === undefined ? _jquery2['default'] : arguments[2];
+	  var BraintreeClient = arguments.length <= 3 || arguments[3] === undefined ? _braintreeWeb2['default'].api.Client : arguments[3];
 	
-	  return ModalError;
-	})(_react.Component);
-	
-	exports['default'] = ModalError;
-	module.exports = exports['default'];
+	  return function (dispatch) {
+	    var client = new BraintreeClient({
+	      clientToken: braintreeToken
+	    });
+	    client.tokenizeCard({
+	      number: creditCard.number,
+	      expirationDate: creditCard.expiration,
+	      cvv: creditCard.cvv
+	    }, function (err, nonce) {
+	      if (err) {
+	        console.error('Braintree tokenization error:', err);
+	        dispatch(appActions.error('Braintree tokenization error'));
+	      } else {
+	        jquery.ajax({
+	          data: {
+	            pay_method_nonce: nonce
+	          },
+	          url: '/api/braintree/mozilla/paymethod/',
+	          method: 'post',
+	          dataType: 'json'
+	        }).then(function (data) {
+	          console.log('Successfully added a card');
+	          dispatch({
+	            type: actionTypes.GOT_PAY_METHODS,
+	            payMethods: data
+	          });
+	        }).fail(function ($xhr) {
+	          dispatch({
+	            type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
+	            apiErrorResult: $xhr.responseJSON
+	          });
+	        });
+	      }
+	    });
+	  };
+	}
 
 /***/ },
 
@@ -331,11 +387,11 @@ webpackJsonp([0],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(14);
+	var _react = __webpack_require__(15);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _utils = __webpack_require__(205);
+	var _utils = __webpack_require__(206);
 	
 	var _classnames = __webpack_require__(208);
 	
@@ -419,7 +475,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 210:
+/***/ 209:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -438,17 +494,184 @@ webpackJsonp([0],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(14);
+	var _react = __webpack_require__(15);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsAccordion = __webpack_require__(211);
+	var _componentsCardForm = __webpack_require__(210);
 	
-	var _componentsSubscriptionList = __webpack_require__(212);
+	var _componentsCardForm2 = _interopRequireDefault(_componentsCardForm);
+	
+	var _componentsModal = __webpack_require__(207);
+	
+	var _componentsModal2 = _interopRequireDefault(_componentsModal);
+	
+	var _tracking = __webpack_require__(252);
+	
+	var _tracking2 = _interopRequireDefault(_tracking);
+	
+	var _utils = __webpack_require__(206);
+	
+	var AddPayMethod = (function (_Component) {
+	  _inherits(AddPayMethod, _Component);
+	
+	  function AddPayMethod() {
+	    _classCallCheck(this, AddPayMethod);
+	
+	    _get(Object.getPrototypeOf(AddPayMethod.prototype), 'constructor', this).apply(this, arguments);
+	  }
+	
+	  _createClass(AddPayMethod, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      _tracking2['default'].setPage('/add-pay-method');
+	    }
+	  }, {
+	    key: 'handleCardSubmit',
+	    value: function handleCardSubmit(creditCard) {
+	      console.log('submitting credit card as new pay method', this.props.productId);
+	      this.props.addCreditCard(this.props.braintreeToken, creditCard);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this = this;
+	
+	      return _react2['default'].createElement(
+	        _componentsModal2['default'],
+	        { handleClose: this.props.closeModal,
+	          title: (0, _utils.gettext)('Add Card') },
+	        _react2['default'].createElement(
+	          'div',
+	          { className: "card-details" },
+	          _react2['default'].createElement(_componentsCardForm2['default'], {
+	            submissionErrors: this.props.cardSubmissionErrors,
+	            submitPrompt: (0, _utils.gettext)('Add'),
+	            handleCardSubmit: function (card) {
+	              return _this.handleCardSubmit(card);
+	            },
+	            id: "braintree-form",
+	            method: "post"
+	          })
+	        )
+	      );
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: {
+	      addCreditCard: _react.PropTypes.func.isRequired,
+	      braintreeToken: _react.PropTypes.string.isRequired,
+	      cardSubmissionErrors: _react.PropTypes.object,
+	      closeModal: _react.PropTypes.func.isRequired,
+	      productId: _react.PropTypes.string.isRequired
+	    },
+	    enumerable: true
+	  }]);
+	
+	  return AddPayMethod;
+	})(_react.Component);
+	
+	exports['default'] = AddPayMethod;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 255:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(15);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _componentsModal = __webpack_require__(207);
+	
+	var _componentsModal2 = _interopRequireDefault(_componentsModal);
+	
+	var _componentsError = __webpack_require__(256);
+	
+	var _componentsError2 = _interopRequireDefault(_componentsError);
+	
+	var ModalError = (function (_Component) {
+	  _inherits(ModalError, _Component);
+	
+	  function ModalError() {
+	    _classCallCheck(this, ModalError);
+	
+	    _get(Object.getPrototypeOf(ModalError.prototype), 'constructor', this).apply(this, arguments);
+	  }
+	
+	  _createClass(ModalError, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2['default'].createElement(
+	        _componentsModal2['default'],
+	        { handleClose: this.props.closeModal },
+	        _react2['default'].createElement(_componentsError2['default'], { error: this.props.error })
+	      );
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: {
+	      closeModal: _react.PropTypes.func.isRequired,
+	      error: _react.PropTypes.object.isRequired
+	    },
+	    enumerable: true
+	  }]);
+	
+	  return ModalError;
+	})(_react.Component);
+	
+	exports['default'] = ModalError;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 257:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(15);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _componentsAccordion = __webpack_require__(258);
+	
+	var _componentsSubscriptionList = __webpack_require__(259);
 	
 	var _componentsSubscriptionList2 = _interopRequireDefault(_componentsSubscriptionList);
 	
-	var _utils = __webpack_require__(205);
+	var _utils = __webpack_require__(206);
 	
 	var Management = (function (_Component) {
 	  _inherits(Management, _Component);
@@ -474,12 +697,18 @@ webpackJsonp([0],{
 	      event.preventDefault();
 	      _this.props.userSignOut();
 	    };
+	
+	    this.handleShowPayMethods = function (e) {
+	      e.preventDefault();
+	      e.stopPropagation();
+	      _this.props.showPayMethods();
+	    };
 	  }
 	
 	  _createClass(Management, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      if (this.props.accessToken) {
+	      if (this.props.accessToken && !this.props.user.signedIn) {
 	        console.log('page loaded with access token; signing in');
 	        this.props.tokenSignIn(this.props.accessToken);
 	      }
@@ -549,7 +778,7 @@ webpackJsonp([0],{
 	                _react2['default'].createElement(
 	                  'button',
 	                  {
-	                    onClick: this.props.getPayMethods },
+	                    onClick: this.handleShowPayMethods },
 	                  (0, _utils.gettext)('Change')
 	                )
 	              )
@@ -671,6 +900,7 @@ webpackJsonp([0],{
 	      accessToken: _react.PropTypes.string,
 	      getPayMethods: _react.PropTypes.func.isRequired,
 	      getUserSubscriptions: _react.PropTypes.func.isRequired,
+	      showPayMethods: _react.PropTypes.func.isRequired,
 	      tokenSignIn: _react.PropTypes.func.isRequired,
 	      user: _react.PropTypes.object.isRequired,
 	      userSignIn: _react.PropTypes.func.isRequired,
@@ -688,7 +918,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 211:
+/***/ 258:
 /***/ function(module, exports, __webpack_require__) {
 
 	/*eslint react/no-multi-comp: 0 */
@@ -708,7 +938,7 @@ webpackJsonp([0],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(14);
+	var _react = __webpack_require__(15);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -846,7 +1076,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 212:
+/***/ 259:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -865,17 +1095,17 @@ webpackJsonp([0],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(14);
+	var _react = __webpack_require__(15);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _utils = __webpack_require__(205);
+	var _utils = __webpack_require__(206);
 	
-	var _componentsSpinner = __webpack_require__(213);
+	var _componentsSpinner = __webpack_require__(254);
 	
 	var _componentsSpinner2 = _interopRequireDefault(_componentsSpinner);
 	
-	var _componentsSubscription = __webpack_require__(214);
+	var _componentsSubscription = __webpack_require__(260);
 	
 	var _componentsSubscription2 = _interopRequireDefault(_componentsSubscription);
 	
@@ -943,7 +1173,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 214:
+/***/ 260:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -964,13 +1194,13 @@ webpackJsonp([0],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(14);
+	var _react = __webpack_require__(15);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _utils = __webpack_require__(205);
+	var _utils = __webpack_require__(206);
 	
-	var _products = __webpack_require__(215);
+	var _products = __webpack_require__(261);
 	
 	var products = _interopRequireWildcard(_products);
 	
@@ -1063,7 +1293,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 218:
+/***/ 264:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1082,7 +1312,7 @@ webpackJsonp([0],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(14);
+	var _react = __webpack_require__(15);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -1090,26 +1320,38 @@ webpackJsonp([0],{
 	
 	var _componentsModal2 = _interopRequireDefault(_componentsModal);
 	
-	var _componentsCardList = __webpack_require__(219);
+	var _componentsCardList = __webpack_require__(265);
 	
 	var _componentsCardList2 = _interopRequireDefault(_componentsCardList);
 	
-	var _utils = __webpack_require__(205);
+	var _utils = __webpack_require__(206);
 	
 	var PayMethods = (function (_Component) {
 	  _inherits(PayMethods, _Component);
 	
 	  function PayMethods() {
+	    var _this = this;
+	
 	    _classCallCheck(this, PayMethods);
 	
 	    _get(Object.getPrototypeOf(PayMethods.prototype), 'constructor', this).apply(this, arguments);
+	
+	    this.handleAddPayMethod = function (e) {
+	      e.preventDefault();
+	      _this.props.showAddPayMethod();
+	    };
+	
+	    this.handleDelPayMethod = function (e) {
+	      e.preventDefault();
+	      _this.props.showDelPayMethod();
+	    };
 	  }
 	
 	  _createClass(PayMethods, [{
 	    key: 'renderChild',
 	    value: function renderChild() {
-	      if (this.props.paymentMethods && this.props.paymentMethods.length) {
-	        return _react2['default'].createElement(_componentsCardList2['default'], { cards: this.props.paymentMethods });
+	      if (this.props.payMethods && this.props.payMethods.length) {
+	        return _react2['default'].createElement(_componentsCardList2['default'], { cards: this.props.payMethods });
 	      }
 	      return _react2['default'].createElement(
 	        'p',
@@ -1128,7 +1370,19 @@ webpackJsonp([0],{
 	        _react2['default'].createElement(
 	          'div',
 	          null,
-	          this.renderChild()
+	          this.renderChild(),
+	          _react2['default'].createElement(
+	            'a',
+	            { className: "add-pay-method", href: "#",
+	              onClick: this.handleAddPayMethod },
+	            (0, _utils.gettext)('Add a new card')
+	          ),
+	          _react2['default'].createElement(
+	            'a',
+	            { className: "delete-pay-method", href: "#",
+	              onClick: this.handleDelPayMethod },
+	            (0, _utils.gettext)('Delete')
+	          )
 	        )
 	      );
 	    }
@@ -1136,7 +1390,9 @@ webpackJsonp([0],{
 	    key: 'propTypes',
 	    value: {
 	      closeModal: _react.PropTypes.func.isRequired,
-	      paymentMethods: _react.PropTypes.array.isRequired
+	      payMethods: _react.PropTypes.array.isRequired,
+	      showAddPayMethod: _react.PropTypes.func.isRequired,
+	      showDelPayMethod: _react.PropTypes.func.isRequired
 	    },
 	    enumerable: true
 	  }]);
