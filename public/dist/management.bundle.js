@@ -529,7 +529,7 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'handleCardSubmit',
 	    value: function handleCardSubmit(creditCard) {
-	      console.log('submitting credit card as new pay method', this.props.productId);
+	      console.log('submitting credit card as new pay method');
 	      this.props.addCreditCard(this.props.braintreeToken, creditCard);
 	    }
 	  }, {
@@ -562,8 +562,7 @@ webpackJsonp([0],{
 	      addCreditCard: _react.PropTypes.func.isRequired,
 	      braintreeToken: _react.PropTypes.string.isRequired,
 	      cardSubmissionErrors: _react.PropTypes.object,
-	      closeModal: _react.PropTypes.func.isRequired,
-	      productId: _react.PropTypes.string.isRequired
+	      closeModal: _react.PropTypes.func.isRequired
 	    },
 	    enumerable: true
 	  }]);
