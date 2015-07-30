@@ -108,4 +108,3 @@ describe('User Reducer', function() {
   });
 
 });
-

@@ -32,7 +32,7 @@ export default function management(state, action) {
   }
 
   if (action.type === actionTypes.CREDIT_CARD_SUBMISSION_ERRORS) {
-    console.log('purchase: setting submission errors from', action);
+    console.log('managment: setting submission errors from', action);
     return Object.assign({}, initialMgmtState, {
       cardSubmissionErrors: action.apiErrorResult,
     });

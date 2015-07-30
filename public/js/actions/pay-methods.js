@@ -16,9 +16,7 @@ export function getPayMethods(jquery=$) {
     }).then(function(data) {
       dispatch({
         type: actionTypes.GOT_PAY_METHODS,
-        user: {
-          payMethods: data,
-        },
+        payMethods: data,
       });
     }).fail(function() {
       console.log('Retrieving cards failed');
@@ -54,12 +52,7 @@ export function addCreditCard(braintreeToken, creditCard, jquery=$,
           console.log('Successfully added a card');
           dispatch({
             type: actionTypes.GOT_PAY_METHODS,
-            management: {
-              tab: actionTypes.SHOW_ADD_PAY_METHOD,
-            },
-            user: {
-              payMethods: data,
-            },
+            payMethods: data,
           });
         }).fail($xhr => {
           dispatch({

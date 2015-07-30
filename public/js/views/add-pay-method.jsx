@@ -22,7 +22,7 @@ export default class AddPayMethod extends Component {
   }
 
   handleCardSubmit(creditCard) {
-    console.log('submitting credit card to sign up for subscription',
+    console.log('submitting credit card as new pay method',
                 this.props.productId);
     this.props.addCreditCard(this.props.braintreeToken, creditCard);
   }

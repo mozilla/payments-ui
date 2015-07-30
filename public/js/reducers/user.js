@@ -52,21 +52,21 @@ export default function user(state, action) {
   if (action.type === actionTypes.GOT_PAY_METHODS) {
     console.log('user store: got action', action);
     return Object.assign({}, initialUserState, state, {
-      payMethods: action.user.payMethods,
+      payMethods: action.payMethods,
     });
   }
 
   if (action.type === actionTypes.ADD_PAY_METHOD) {
     console.log('user store: got action', action);
     return Object.assign({}, initialUserState, state, {
-      payMethods: action.user.payMethods,
+      payMethods: action.payMethods,
     });
   }
 
   if (action.type === actionTypes.DEL_PAY_METHOD) {
     console.log('user store: got action', action);
     return Object.assign({}, initialUserState, state, {
-      payMethods: action.user.payMethods,
+      payMethods: action.payMethods,
     });
   }
 

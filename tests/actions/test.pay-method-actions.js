@@ -37,7 +37,7 @@ describe('Pay Method Actions', function() {
       var { jquery, data } = setApiResult();
       payMethodActions.getPayMethods(jquery)(dispatchSpy);
       var action = dispatchSpy.firstCall.args[0];
-      assert.equal(action.user.payMethods, data);
+      assert.equal(action.payMethods, data);
     });
 
     it('should dispatch app error on failure', function() {
