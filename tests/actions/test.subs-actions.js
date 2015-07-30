@@ -3,7 +3,7 @@ import * as appActions from 'actions/app';
 import * as purchaseActions from 'actions/purchase';
 import * as subActions from 'actions/subscriptions';
 
-import * as helpers from './helpers';
+import * as helpers from '../helpers';
 
 
 describe('subscription actions', function() {
@@ -76,12 +76,19 @@ describe('subscription actions', function() {
       }
     }
 
-    function createSubscription(jquery) {
+    class FakeBraintreeClientError {
+      tokenizeCard(config, callback) {
+        console.log('resolving braintree tokenization with error');
+        callback("I'm some error");
+      }
+    }
+
+    function createSubscription(jquery, client=FakeBraintreeClient) {
       subActions.createSubscription('braintree-token',
                                     'product-id',
                                     fakeCard,
                                     jquery,
-                                    FakeBraintreeClient)(dispatchSpy);
+                                    client)(dispatchSpy);
     }
 
     it('should dispatch a purchase complete action', function() {
@@ -105,6 +112,14 @@ describe('subscription actions', function() {
         type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
         apiErrorResult: apiError,
       });
+    });
+
+    it('should dispatch an error on tokenization failure', function() {
+      var jquery = helpers.fakeJquery();
+      createSubscription(jquery.stub, FakeBraintreeClientError);
+      var action = dispatchSpy.firstCall.args[0];
+      assert.deepEqual(action,
+                       appActions.error('Braintree tokenization error'));
     });
 
   });

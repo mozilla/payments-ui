@@ -24,7 +24,7 @@ describe('PayMethods', function() {
     ];
 
     this.PayMethods = TestUtils.renderIntoDocument(
-      <PayMethods paymentMethods={fakeCards} />
+      <PayMethods payMethods={fakeCards} />
     );
   });
 
@@ -40,7 +40,7 @@ describe('PayMethods', function() {
 
   it('should show no-results message', function() {
     var noPayMethods = TestUtils.renderIntoDocument(
-      <PayMethods paymentMethods={[]} />
+      <PayMethods payMethods={[]} />
     );
     var content = helpers.findByClass(noPayMethods, 'no-results');
     assert.ok(TestUtils.isDOMComponent(content));

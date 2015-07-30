@@ -53,16 +53,16 @@ export default class PaymentApp extends Component {
     return (
       <main>
         <Connector select={this.selectData}>
-          {function(result) {
-            if (result.app.error) {
+          {connector => {
+            if (connector.app.error) {
               console.log('rendering app error');
-              return <ErrorMessage error={result.app.error} />;
-            } else if (!result.user.signedIn) {
+              return <ErrorMessage error={connector.app.error} />;
+            } else if (!connector.user.signedIn) {
               console.log('rendering login');
               return (
                 <Login
                   accessToken={state.accessToken}
-                  {...bindActionCreators(userActions, result.dispatch) }
+                  {...bindActionCreators(userActions, connector.dispatch) }
                 />
               );
             } else {
@@ -70,7 +70,7 @@ export default class PaymentApp extends Component {
               return (
                 <Purchase
                   productId={state.productId}
-                  user={result.user}
+                  user={connector.user}
                 />
               );
             }

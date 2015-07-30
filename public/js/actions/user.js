@@ -34,7 +34,7 @@ export function tokenSignIn(accessToken, jquery=$) {
         type: actionTypes.USER_SIGNED_IN,
         user: {
           email: data.buyer_email,
-          payment_methods: data.payment_methods,
+          payMethods: data.payment_methods,
         },
       });
 
@@ -88,7 +88,7 @@ export function userSignIn(FxaClient=window.FxaRelierClient, jquery=$) {
           type: actionTypes.USER_SIGNED_IN,
           user: {
             email: apiResult.buyer_email,
-            payment_methods: apiResult.payment_methods,
+            payMethods: apiResult.payment_methods,
           },
         });
 

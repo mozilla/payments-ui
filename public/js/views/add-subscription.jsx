@@ -6,7 +6,7 @@ import { default as tracking } from 'tracking';
 import { gettext } from 'utils';
 
 
-export default class CardDetails extends Component {
+export default class AddSubscription extends Component {
 
   static propTypes = {
     braintreeToken: PropTypes.string.isRequired,
@@ -16,7 +16,7 @@ export default class CardDetails extends Component {
   }
 
   componentDidMount() {
-    tracking.setPage('/card-details');
+    tracking.setPage('/add-subscription');
   }
 
   handleCardSubmit(creditCard) {

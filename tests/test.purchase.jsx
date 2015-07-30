@@ -6,7 +6,7 @@ import * as helpers from './helpers';
 import * as actionTypes from 'constants/action-types';
 import * as purchaseActions from 'actions/purchase';
 import { createReduxStore } from 'data-store';
-import { defaults as defaultUser } from 'reducers/user';
+import { defaultState as defaultUser } from 'reducers/user';
 
 import Purchase from 'views/purchase';
 
@@ -18,7 +18,7 @@ describe('Purchase', function() {
   var FakeBraintreeToken = helpers.stubComponent();
   var FakeCompletePayment = helpers.stubComponent();
   var FakeCardListing = helpers.stubComponent();
-  var FakeCardDetails = helpers.stubComponent();
+  var FakeAddSubscription = helpers.stubComponent();
   var store;
 
   beforeEach(function() {
@@ -38,7 +38,7 @@ describe('Purchase', function() {
           return (
             <Purchase
               BraintreeToken={FakeBraintreeToken}
-              CardDetails={FakeCardDetails}
+              AddSubscription={FakeAddSubscription}
               CardListing={FakeCardListing}
               CompletePayment={FakeCompletePayment}
               user={testUser} productId={productId} />
@@ -52,13 +52,13 @@ describe('Purchase', function() {
   }
 
   it('should render a card listing', function() {
-    var paymentMethods = [{type: 'Visa'}];
+    var payMethods = [{type: 'Visa'}];
     var View = mountView();
 
     store.dispatch({
       type: actionTypes.USER_SIGNED_IN,
       user: Object.assign({}, testUser, {
-        payment_methods: paymentMethods,
+        payMethods: payMethods,
       }),
     });
 
@@ -73,7 +73,7 @@ describe('Purchase', function() {
       View, FakeCardListing
     );
     assert.equal(child.props.productId, productId);
-    assert.equal(child.props.paymentMethods, paymentMethods);
+    assert.equal(child.props.payMethods, payMethods);
   });
 
   it('should render a card entry form', function() {
@@ -87,7 +87,7 @@ describe('Purchase', function() {
     });
 
     var child = TestUtils.findRenderedComponentWithType(
-      View, FakeCardDetails
+      View, FakeAddSubscription
     );
     assert.equal(child.props.productId, productId);
   });
@@ -104,14 +104,14 @@ describe('Purchase', function() {
   });
 
   it('should render new card entry on explicit request', function() {
-    var paymentMethods = [{type: 'Visa'}];
+    var payMethods = [{type: 'Visa'}];
     var View = mountView();
 
     // Dispatch a user that would normally trigger a card listing.
     store.dispatch({
       type: actionTypes.USER_SIGNED_IN,
       user: Object.assign({}, testUser, {
-        payment_methods: paymentMethods,
+        payMethods: payMethods,
       }),
     });
 
@@ -126,7 +126,7 @@ describe('Purchase', function() {
 
     // Instead make sure a new card entry form was rendered.
     TestUtils.findRenderedComponentWithType(
-      View, FakeCardDetails
+      View, FakeAddSubscription
     );
   });
 
