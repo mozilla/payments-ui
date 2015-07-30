@@ -5,17 +5,17 @@ import * as actionTypes from 'constants/action-types';
 import * as appActions from './app';
 
 
-export function getPayMethods() {
+export function getPayMethods(jquery=$) {
   // Note: not currently used as payMethods
   // are added to user state upon login.
   return dispatch => {
-    $.ajax({
+    jquery.ajax({
       method: 'get',
       url: '/api/braintree/mozilla/paymethod/',
       context: this,
     }).then(function(data) {
       dispatch({
-        type: actionTypes.GET_PAY_METHODS,
+        type: actionTypes.GOT_PAY_METHODS,
         user: {
           payMethods: data,
         },
@@ -53,7 +53,7 @@ export function addCreditCard(braintreeToken, creditCard, jquery=$,
         }).then(data => {
           console.log('Successfully added a card');
           dispatch({
-            type: actionTypes.GET_PAY_METHODS,
+            type: actionTypes.GOT_PAY_METHODS,
             management: {
               tab: actionTypes.SHOW_ADD_PAY_METHOD,
             },

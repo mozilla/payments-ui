@@ -49,7 +49,7 @@ export default function user(state, action) {
     });
   }
 
-  if (action.type === actionTypes.GET_PAY_METHODS) {
+  if (action.type === actionTypes.GOT_PAY_METHODS) {
     console.log('user store: got action', action);
     return Object.assign({}, initialUserState, state, {
       payMethods: action.user.payMethods,
