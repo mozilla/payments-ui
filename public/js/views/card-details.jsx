@@ -2,14 +2,16 @@ import React, { Component, PropTypes } from 'react';
 
 import CardForm from 'components/card-form';
 import ProductDetail from 'components/product-detail';
-
 import { default as tracking } from 'tracking';
+import { gettext } from 'utils';
 
 
 export default class CardDetails extends Component {
 
   static propTypes = {
     braintreeToken: PropTypes.string.isRequired,
+    cardSubmissionErrors: PropTypes.object,
+    createSubscription: PropTypes.func.isRequired,
     productId: PropTypes.string.isRequired,
   }
 
@@ -17,15 +19,24 @@ export default class CardDetails extends Component {
     tracking.setPage('/card-details');
   }
 
+  handleCardSubmit(creditCard) {
+    console.log('submitting credit card to sign up for subscription',
+                this.props.productId);
+    this.props.createSubscription(this.props.braintreeToken,
+                                  this.props.productId,
+                                  creditCard);
+  }
+
   render() {
     return (
       <div className="card-details">
         <ProductDetail productId={this.props.productId} />
         <CardForm
-          braintreeToken={this.props.braintreeToken}
+          submissionErrors={this.props.cardSubmissionErrors}
+          submitPrompt={gettext('Subscribe')}
+          handleCardSubmit={(card) => this.handleCardSubmit(card)}
           id="braintree-form"
           method="post"
-          productId={this.props.productId}
         />
       </div>
     );

@@ -73,17 +73,17 @@ webpackJsonp([0],{
 	
 	var subscriptionActions = _interopRequireWildcard(_actionsSubscriptions);
 	
-	var _utils = __webpack_require__(203);
+	var _utils = __webpack_require__(205);
 	
-	var _viewsModalError = __webpack_require__(204);
+	var _viewsModalError = __webpack_require__(206);
 	
 	var _viewsModalError2 = _interopRequireDefault(_viewsModalError);
 	
-	var _viewsManagement = __webpack_require__(208);
+	var _viewsManagement = __webpack_require__(210);
 	
 	var _viewsManagement2 = _interopRequireDefault(_viewsManagement);
 	
-	var _viewsPayMethods = __webpack_require__(216);
+	var _viewsPayMethods = __webpack_require__(218);
 	
 	var _viewsPayMethods2 = _interopRequireDefault(_viewsPayMethods);
 	
@@ -246,64 +246,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 202:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	exports.getUserSubscriptions = getUserSubscriptions;
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _jquery = __webpack_require__(1);
-	
-	var _jquery2 = _interopRequireDefault(_jquery);
-	
-	var _constantsActionTypes = __webpack_require__(4);
-	
-	var actionTypes = _interopRequireWildcard(_constantsActionTypes);
-	
-	var _app = __webpack_require__(6);
-	
-	var appActions = _interopRequireWildcard(_app);
-	
-	function getUserSubscriptions() {
-	  var _this = this;
-	
-	  var jquery = arguments.length <= 0 || arguments[0] === undefined ? _jquery2['default'] : arguments[0];
-	
-	  return function (dispatch) {
-	    dispatch({
-	      type: actionTypes.LOADING_USER_SUBSCRIPTIONS
-	    });
-	
-	    jquery.ajax({
-	      method: 'get',
-	      url: '/api/braintree/subscriptions/',
-	      context: _this
-	    }).then(function (data) {
-	
-	      console.log('got subscriptions from API:', data);
-	      dispatch({
-	        type: actionTypes.GOT_USER_SUBSCRIPTIONS,
-	        subscriptions: data.subscriptions
-	      });
-	    }).fail(function (apiError) {
-	
-	      console.log('error getting subscriptions:', apiError.responseJSON);
-	      dispatch(appActions.error('failed to get subscriptions'));
-	    });
-	  };
-	}
-
-/***/ },
-
-/***/ 204:
+/***/ 206:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -326,11 +269,11 @@ webpackJsonp([0],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsModal = __webpack_require__(205);
+	var _componentsModal = __webpack_require__(207);
 	
 	var _componentsModal2 = _interopRequireDefault(_componentsModal);
 	
-	var _componentsError = __webpack_require__(207);
+	var _componentsError = __webpack_require__(209);
 	
 	var _componentsError2 = _interopRequireDefault(_componentsError);
 	
@@ -369,7 +312,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 205:
+/***/ 207:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -392,9 +335,9 @@ webpackJsonp([0],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _utils = __webpack_require__(203);
+	var _utils = __webpack_require__(205);
 	
-	var _classnames = __webpack_require__(206);
+	var _classnames = __webpack_require__(208);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
@@ -476,7 +419,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 208:
+/***/ 210:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -499,13 +442,13 @@ webpackJsonp([0],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsAccordion = __webpack_require__(209);
+	var _componentsAccordion = __webpack_require__(211);
 	
-	var _componentsSubscriptionList = __webpack_require__(210);
+	var _componentsSubscriptionList = __webpack_require__(212);
 	
 	var _componentsSubscriptionList2 = _interopRequireDefault(_componentsSubscriptionList);
 	
-	var _utils = __webpack_require__(203);
+	var _utils = __webpack_require__(205);
 	
 	var Management = (function (_Component) {
 	  _inherits(Management, _Component);
@@ -745,7 +688,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 209:
+/***/ 211:
 /***/ function(module, exports, __webpack_require__) {
 
 	/*eslint react/no-multi-comp: 0 */
@@ -769,7 +712,7 @@ webpackJsonp([0],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _classnames = __webpack_require__(206);
+	var _classnames = __webpack_require__(208);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
@@ -903,7 +846,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 210:
+/***/ 212:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -926,13 +869,13 @@ webpackJsonp([0],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _utils = __webpack_require__(203);
+	var _utils = __webpack_require__(205);
 	
-	var _componentsSpinner = __webpack_require__(211);
+	var _componentsSpinner = __webpack_require__(213);
 	
 	var _componentsSpinner2 = _interopRequireDefault(_componentsSpinner);
 	
-	var _componentsSubscription = __webpack_require__(212);
+	var _componentsSubscription = __webpack_require__(214);
 	
 	var _componentsSubscription2 = _interopRequireDefault(_componentsSubscription);
 	
@@ -1000,7 +943,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 212:
+/***/ 214:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1025,9 +968,9 @@ webpackJsonp([0],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _utils = __webpack_require__(203);
+	var _utils = __webpack_require__(205);
 	
-	var _products = __webpack_require__(213);
+	var _products = __webpack_require__(215);
 	
 	var products = _interopRequireWildcard(_products);
 	
@@ -1120,7 +1063,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 216:
+/***/ 218:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1143,15 +1086,15 @@ webpackJsonp([0],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsModal = __webpack_require__(205);
+	var _componentsModal = __webpack_require__(207);
 	
 	var _componentsModal2 = _interopRequireDefault(_componentsModal);
 	
-	var _componentsCardList = __webpack_require__(217);
+	var _componentsCardList = __webpack_require__(219);
 	
 	var _componentsCardList2 = _interopRequireDefault(_componentsCardList);
 	
-	var _utils = __webpack_require__(203);
+	var _utils = __webpack_require__(205);
 	
 	var PayMethods = (function (_Component) {
 	  _inherits(PayMethods, _Component);
