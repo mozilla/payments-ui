@@ -2,7 +2,7 @@ import * as actionTypes from 'constants/action-types';
 import * as appActions from 'actions/app';
 import * as userActions from 'actions/user';
 
-import * as helpers from './helpers';
+import * as helpers from '../helpers';
 
 
 describe('userActions', function() {

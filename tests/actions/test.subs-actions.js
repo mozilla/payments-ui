@@ -3,7 +3,7 @@ import * as appActions from 'actions/app';
 import * as purchaseActions from 'actions/purchase';
 import * as subActions from 'actions/subscriptions';
 
-import * as helpers from './helpers';
+import * as helpers from '../helpers';
 
 
 describe('subscription actions', function() {
