@@ -278,9 +278,9 @@ webpackJsonp([1],{
 	
 	var _reactRedux = __webpack_require__(171);
 	
-	var _actionsPurchase = __webpack_require__(7);
+	var _actionsTransaction = __webpack_require__(7);
 	
-	var purchaseActions = _interopRequireWildcard(_actionsPurchase);
+	var transactionActions = _interopRequireWildcard(_actionsTransaction);
 	
 	var _actionsUser = __webpack_require__(204);
 	
@@ -319,42 +319,42 @@ webpackJsonp([1],{
 	    key: 'selectData',
 	    value: function selectData(state) {
 	      return {
-	        purchase: state.purchase,
+	        transaction: state.transaction,
 	        user: state.user
 	      };
 	    }
 	  }, {
 	    key: 'renderChild',
-	    value: function renderChild(result) {
+	    value: function renderChild(connector) {
 	      var props = this.props;
 	      var BraintreeToken = props.BraintreeToken;
 	      var CompletePayment = props.CompletePayment;
 	      var CardListing = props.CardListing;
 	      var AddSubscription = props.AddSubscription;
 	
-	      if (result.purchase.completed) {
+	      if (connector.transaction.completed) {
 	        return _react2['default'].createElement(CompletePayment, {
 	          productId: props.productId,
 	          userEmail: props.user.email });
-	      } else if (result.purchase.payMethods && result.purchase.payMethods.length > 0) {
+	      } else if (connector.transaction.availablePayMethods.length > 0) {
 	        console.log('rendering card listing');
 	        return _react2['default'].createElement(CardListing, _extends({
 	          productId: props.productId,
-	          payMethods: result.user.payMethods
-	        }, (0, _redux.bindActionCreators)(purchaseActions, result.dispatch)));
-	      } else if (!result.user.braintreeToken) {
+	          payMethods: connector.transaction.availablePayMethods
+	        }, (0, _redux.bindActionCreators)(transactionActions, connector.dispatch)));
+	      } else if (!connector.user.braintreeToken) {
 	        console.log('Retreiving Braintree Token');
-	        return _react2['default'].createElement(BraintreeToken, (0, _redux.bindActionCreators)(userActions, result.dispatch));
+	        return _react2['default'].createElement(BraintreeToken, (0, _redux.bindActionCreators)(userActions, connector.dispatch));
 	      } else {
 	        console.log('rendering card entry');
 	
-	        var _bindActionCreators = (0, _redux.bindActionCreators)(subscriptionActions, result.dispatch);
+	        var _bindActionCreators = (0, _redux.bindActionCreators)(subscriptionActions, connector.dispatch);
 	
 	        var createSubscription = _bindActionCreators.createSubscription;
 	
 	        return _react2['default'].createElement(AddSubscription, {
-	          cardSubmissionErrors: result.purchase.cardSubmissionErrors,
-	          braintreeToken: result.user.braintreeToken,
+	          cardSubmissionErrors: connector.transaction.cardSubmissionErrors,
+	          braintreeToken: connector.user.braintreeToken,
 	          createSubscription: createSubscription,
 	          productId: props.productId
 	        });
@@ -368,8 +368,8 @@ webpackJsonp([1],{
 	      return _react2['default'].createElement(
 	        _reactRedux.Connector,
 	        { select: this.selectData },
-	        function (result) {
-	          return _this.renderChild(result);
+	        function (connector) {
+	          return _this.renderChild(connector);
 	        }
 	      );
 	    }
@@ -713,9 +713,9 @@ webpackJsonp([1],{
 	
 	var _utils = __webpack_require__(206);
 	
-	var _actionsPurchase = __webpack_require__(7);
+	var _actionsTransaction = __webpack_require__(7);
 	
-	var purchaseActions = _interopRequireWildcard(_actionsPurchase);
+	var transactionActions = _interopRequireWildcard(_actionsTransaction);
 	
 	var _dataStore = __webpack_require__(195);
 	
@@ -762,7 +762,7 @@ webpackJsonp([1],{
 	      }).done(function () {
 	        console.log('Successfully subscribed with existing card');
 	
-	        _dataStore2['default'].dispatch(purchaseActions.complete());
+	        _dataStore2['default'].dispatch(transactionActions.complete());
 	      }).fail(function () {
 	        // TODO: handler errors.
 	      });

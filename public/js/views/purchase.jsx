@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { Connector } from 'react-redux';
 
-import * as purchaseActions from 'actions/purchase';
+import * as transactionActions from 'actions/transaction';
 import * as userActions from 'actions/user';
 import * as subscriptionActions from 'actions/subscriptions';
 
@@ -33,49 +33,48 @@ export default class Purchase extends Component {
 
   selectData(state) {
     return {
-      purchase: state.purchase,
+      transaction: state.transaction,
       user: state.user,
     };
   }
 
-  renderChild(result) {
+  renderChild(connector) {
     var props = this.props;
     var BraintreeToken = props.BraintreeToken;
     var CompletePayment = props.CompletePayment;
     var CardListing = props.CardListing;
     var AddSubscription = props.AddSubscription;
 
-    if (result.purchase.completed) {
+    if (connector.transaction.completed) {
       return (
         <CompletePayment
           productId={props.productId}
           userEmail={props.user.email} />
       );
-    } else if (result.purchase.payMethods &&
-               result.purchase.payMethods.length > 0) {
+    } else if (connector.transaction.availablePayMethods.length > 0) {
       console.log('rendering card listing');
       return (
         <CardListing
           productId={props.productId}
-          payMethods={result.user.payMethods}
-          {...bindActionCreators(purchaseActions, result.dispatch)}
+          payMethods={connector.transaction.availablePayMethods}
+          {...bindActionCreators(transactionActions, connector.dispatch)}
         />
       );
-    } else if (!result.user.braintreeToken) {
+    } else if (!connector.user.braintreeToken) {
       console.log('Retreiving Braintree Token');
       return (
         <BraintreeToken
-          {...bindActionCreators(userActions, result.dispatch) }
+          {...bindActionCreators(userActions, connector.dispatch) }
         />
       );
     } else {
       console.log('rendering card entry');
       var { createSubscription } = bindActionCreators(subscriptionActions,
-                                                      result.dispatch);
+                                                      connector.dispatch);
       return (
         <AddSubscription
-          cardSubmissionErrors={result.purchase.cardSubmissionErrors}
-          braintreeToken={result.user.braintreeToken}
+          cardSubmissionErrors={connector.transaction.cardSubmissionErrors}
+          braintreeToken={connector.user.braintreeToken}
           createSubscription={createSubscription}
           productId={props.productId}
         />
@@ -86,7 +85,7 @@ export default class Purchase extends Component {
   render () {
     return (
       <Connector select={this.selectData}>
-        {(result) => this.renderChild(result)}
+        {(connector) => this.renderChild(connector)}
       </Connector>
     );
   }

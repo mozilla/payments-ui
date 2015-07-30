@@ -4,7 +4,7 @@ import braintree from 'braintree-web';
 import * as actionTypes from 'constants/action-types';
 
 import * as appActions from './app';
-import * as purchaseActions from './purchase';
+import * as transactionActions from './transaction';
 
 
 export function getUserSubscriptions(jquery=$) {
@@ -61,7 +61,7 @@ export function createSubscription(braintreeToken, productId,
           dataType: 'json',
         }).then(() => {
           console.log('Successfully subscribed + completed payment');
-          dispatch(purchaseActions.complete());
+          dispatch(transactionActions.complete());
         }).fail($xhr => {
           dispatch({
             type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
