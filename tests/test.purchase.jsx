@@ -4,7 +4,7 @@ import TestUtils from 'react/lib/ReactTestUtils';
 import * as helpers from './helpers';
 
 import * as actionTypes from 'constants/action-types';
-import * as purchaseActions from 'actions/purchase';
+import * as transactionActions from 'actions/transaction';
 import { createReduxStore } from 'data-store';
 import { defaultState as defaultUser } from 'reducers/user';
 
@@ -95,7 +95,7 @@ describe('Purchase', function() {
   it('should render a payment completed page', function() {
     var View = mountView();
 
-    store.dispatch(purchaseActions.complete());
+    store.dispatch(transactionActions.complete());
 
     var child = TestUtils.findRenderedComponentWithType(
       View, FakeCompletePayment
@@ -122,7 +122,7 @@ describe('Purchase', function() {
       },
     });
 
-    store.dispatch(purchaseActions.payWithNewCard());
+    store.dispatch(transactionActions.payWithNewCard());
 
     // Instead make sure a new card entry form was rendered.
     TestUtils.findRenderedComponentWithType(

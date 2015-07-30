@@ -1,6 +1,6 @@
 import * as actionTypes from 'constants/action-types';
 import * as appActions from 'actions/app';
-import * as purchaseActions from 'actions/purchase';
+import * as transactionActions from 'actions/transaction';
 import * as subActions from 'actions/subscriptions';
 
 import * as helpers from '../helpers';
@@ -91,12 +91,12 @@ describe('subscription actions', function() {
                                     client)(dispatchSpy);
     }
 
-    it('should dispatch a purchase complete action', function() {
+    it('should dispatch a completion action', function() {
       var jquery = helpers.fakeJquery();
       createSubscription(jquery.stub);
 
       var action = dispatchSpy.firstCall.args[0];
-      assert.deepEqual(action, purchaseActions.complete());
+      assert.deepEqual(action, transactionActions.complete());
     });
 
     it('should dispatch an error action', function() {

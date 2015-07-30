@@ -5,7 +5,7 @@ import CardList from 'components/card-list';
 import SubmitButton from 'components/submit-button';
 
 import { gettext } from 'utils';
-import * as purchaseActions from 'actions/purchase';
+import * as transactionActions from 'actions/transaction';
 
 import dataStore from 'data-store';
 
@@ -51,7 +51,7 @@ export default class CardChoice extends Component {
       console.log('Successfully subscribed with existing card');
 
       dataStore.dispatch(
-        purchaseActions.complete()
+        transactionActions.complete()
       );
 
     }).fail(function() {
