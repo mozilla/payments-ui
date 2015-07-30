@@ -14,7 +14,6 @@ export default class AddPayMethod extends Component {
     braintreeToken: PropTypes.string.isRequired,
     cardSubmissionErrors: PropTypes.object,
     closeModal: PropTypes.func.isRequired,
-    productId: PropTypes.string.isRequired,
   }
 
   componentDidMount() {
@@ -22,8 +21,7 @@ export default class AddPayMethod extends Component {
   }
 
   handleCardSubmit(creditCard) {
-    console.log('submitting credit card as new pay method',
-                this.props.productId);
+    console.log('submitting credit card as new pay method');
     this.props.addCreditCard(this.props.braintreeToken, creditCard);
   }
 
