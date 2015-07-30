@@ -16,9 +16,10 @@ describe('CardListingView', function() {
     payWithNewCardSpy = sinon.spy();
 
     View = TestUtils.renderIntoDocument(
-      <CardListing payWithNewCard={payWithNewCardSpy}
-                   paymentMethods={[savedVisa]}
-                   productId='mozilla-concrete-brick' />
+      <CardListing
+        payMethods={[savedVisa]}
+        payWithNewCard={payWithNewCardSpy}
+        productId='mozilla-concrete-brick' />
     );
   });
 

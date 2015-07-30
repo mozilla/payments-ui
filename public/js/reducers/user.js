@@ -1,9 +1,10 @@
 import * as actionTypes from 'constants/action-types';
 
+
 export const initialUserState = {
   signedIn: false,
   email: null,
-  payment_methods: [],
+  payMethods: [],
   braintreeToken: null,
   subscriptions: null,
 };
@@ -19,11 +20,10 @@ export default function user(state, action) {
   }
 
   if (action.type === actionTypes.USER_SIGNED_IN) {
-    console.log('user store: got action', action);
     return Object.assign({}, initialUserState, {
       signedIn: true,
       email: action.user.email,
-      payment_methods: action.user.payment_methods,
+      payMethods: action.user.payMethods,
     });
   }
 
@@ -46,6 +46,27 @@ export default function user(state, action) {
     console.log('user: storing subscriptions from', action);
     return Object.assign({}, initialUserState, state, {
       subscriptions: action.subscriptions,
+    });
+  }
+
+  if (action.type === actionTypes.GET_PAY_METHODS) {
+    console.log('user store: got action', action);
+    return Object.assign({}, initialUserState, state, {
+      payMethods: action.user.payMethods,
+    });
+  }
+
+  if (action.type === actionTypes.ADD_PAY_METHOD) {
+    console.log('user store: got action', action);
+    return Object.assign({}, initialUserState, state, {
+      payMethods: action.user.payMethods,
+    });
+  }
+
+  if (action.type === actionTypes.DEL_PAY_METHOD) {
+    console.log('user store: got action', action);
+    return Object.assign({}, initialUserState, state, {
+      payMethods: action.user.payMethods,
     });
   }
 

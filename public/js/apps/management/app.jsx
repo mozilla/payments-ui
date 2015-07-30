@@ -5,12 +5,18 @@ import { Provider, Connector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import dataStore from 'data-store';
-import * as managementActions from 'actions/management';
+import * as mgmtActions from 'actions/management';
+import * as payMethodActions from 'actions/pay-methods';
 import * as userActions from 'actions/user';
 import * as subscriptionActions from 'actions/subscriptions';
 import { parseQuery } from 'utils';
 
+import Modal from 'components/modal';
+
+import AddPayMethod from 'views/add-pay-method';
+import BraintreeToken from 'views/braintree-token';
 import ModalError from 'views/modal-error';
+
 import { default as DefaultManagement } from 'views/management';
 import { default as DefaultPayMethods } from 'views/pay-methods';
 
@@ -39,11 +45,13 @@ export default class ManagementApp extends Component {
   renderChild(connector) {
     var qs = parseQuery(this.props.window.location.href);
     var accessToken = qs.access_token;
-    var boundMgmtActions = bindActionCreators(managementActions,
+    var boundMgmtActions = bindActionCreators(mgmtActions,
                                               connector.dispatch);
     var boundUserActions = bindActionCreators(userActions, connector.dispatch);
     var boundSubscriptionActions = bindActionCreators(subscriptionActions,
                                                       connector.dispatch);
+    var boundPayMethodActions = bindActionCreators(payMethodActions,
+                                                   connector.dispatch);
     var children = [];
     var Management = this.props.Management;
     var PayMethods = this.props.PayMethods;
@@ -52,19 +60,40 @@ export default class ManagementApp extends Component {
       children.push(
         <ModalError {...boundMgmtActions} error={connector.management.error} />
       );
-    } else if (connector.management.paymentMethods) {
+    } else if (connector.management.tab === 'SHOW_PAY_METHODS') {
+      console.log('Showing pay methods');
       children.push((
         <PayMethods {...boundMgmtActions}
-          paymentMethods={connector.management.paymentMethods} />
+          payMethods={connector.user.payMethods} />
       ));
+    } else if (connector.management.tab === 'SHOW_ADD_PAY_METHOD') {
+      if (!connector.user.braintreeToken) {
+        children.push((
+          <Modal {...boundMgmtActions}>
+            <BraintreeToken {...boundUserActions} />
+          </Modal>
+        ));
+      } else {
+        children.push((
+          <AddPayMethod
+            {...boundMgmtActions}
+            {...boundPayMethodActions}
+            {...boundUserActions}
+            braintreeToken={connector.user.braintreeToken}
+          />
+        ));
+      }
     }
 
-    children.push(<Management {...boundMgmtActions}
-                              {...boundUserActions}
-                              {...boundSubscriptionActions}
-                              userSubscriptions={connector.user.subscriptions}
-                              accessToken={accessToken}
-                              user={connector.user} />);
+    children.push(<Management
+                    {...boundMgmtActions}
+                    {...boundPayMethodActions}
+                    {...boundSubscriptionActions}
+                    {...boundUserActions}
+                    accessToken={accessToken}
+                    user={connector.user}
+                    userSubscriptions={connector.user.subscriptions}
+                  />);
 
     return <div>{children}</div>;
   }

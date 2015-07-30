@@ -10,7 +10,7 @@ describe('User Reducer', function() {
     return Object.assign({}, initialUserState, {
       signedIn: true,
       email: 'f@f.com',
-      payment_methods: [{provider_id: '1234'}],
+      payMethods: [{provider_id: '1234'}],
     });
   }
 
@@ -108,3 +108,4 @@ describe('User Reducer', function() {
   });
 
 });
+

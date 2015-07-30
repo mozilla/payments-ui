@@ -10,8 +10,8 @@ import tracking from 'tracking';
 export default class CardListing extends Component {
 
   static propTypes = {
+    payMethods: PropTypes.array.isRequired,
     payWithNewCard: PropTypes.func.isRequired,
-    paymentMethods: PropTypes.array.isRequired,
     productId: PropTypes.string.isRequired,
   }
 
@@ -24,7 +24,7 @@ export default class CardListing extends Component {
       <div className="card-listing">
         <ProductDetail productId={this.props.productId} />
         <CardChoice
-          cards={this.props.paymentMethods}
+          cards={this.props.payMethods}
           productId={this.props.productId}
         />
         <a className="card-add bottom-link" href="#"

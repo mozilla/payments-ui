@@ -82,6 +82,7 @@ export default class CardForm extends Component {
   static defaultProps = {
     // This should always be overidden with a localized value.
     submitPrompt: 'Submit',
+    productId: PropTypes.string,
   }
 
   constructor(props) {

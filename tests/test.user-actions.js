@@ -66,7 +66,7 @@ describe('userActions', function() {
       userActions.tokenSignIn('access-token', jquery)(dispatchSpy);
 
       var action = dispatchSpy.firstCall.args[0];
-      assert.equal(action.user.payment_methods, payMethods);
+      assert.equal(action.user.payMethods, payMethods);
     });
 
     it('should set empty payment methods', function() {
@@ -75,7 +75,7 @@ describe('userActions', function() {
       userActions.tokenSignIn('access-token', jquery)(dispatchSpy);
 
       var action = dispatchSpy.firstCall.args[0];
-      assert.deepEqual(action.user.payment_methods, []);
+      assert.deepEqual(action.user.payMethods, []);
     });
 
     it('should sign-in with access token', function() {
@@ -204,7 +204,7 @@ describe('userActions', function() {
       resolveSignIn();
 
       var action = dispatchSpy.firstCall.args[0];
-      assert.equal(action.user.payment_methods, payMethods);
+      assert.equal(action.user.payMethods, payMethods);
     });
 
   });

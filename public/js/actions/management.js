@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import * as actionTypes from 'constants/action-types';
 
 
@@ -9,30 +8,25 @@ export function error(debugMessage) {
   };
 }
 
-
-export function getPayMethods() {
-  return function(dispatch) {
-    $.ajax({
-      method: 'get',
-      url: '/api/braintree/mozilla/paymethod/',
-      context: this,
-    }).then(function(data) {
-      dispatch({
-        type: actionTypes.GET_PAY_METHODS,
-        management: {
-          paymentMethods: data,
-        },
-      });
-    }).fail(function() {
-      console.log('Retrieving cards failed');
-      dispatch(error('Retrieving cards failed'));
-    });
+export function showPayMethods() {
+  return {
+    type: actionTypes.SHOW_PAY_METHODS,
   };
 }
 
+export function showAddPayMethod() {
+  return {
+    type: actionTypes.SHOW_ADD_PAY_METHOD,
+  };
+}
+
+export function showDelPayMethod() {
+  return {
+    type: actionTypes.SHOW_DEL_PAY_METHOD,
+  };
+}
 
 export function closeModal() {
-  console.log('closeModal');
   return {
     type: actionTypes.CLOSE_MODAL,
   };
