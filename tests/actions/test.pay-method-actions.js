@@ -14,34 +14,33 @@ describe('Pay Method Actions', function() {
 
   describe('getPayMethods', function() {
 
-    function setApiResult({jqueryOpt={}} = {}) {
-      var data = [{type: 'visa'}];
+    function setApiGetResult({jqueryOpt={}} = {}) {
       Object.assign(jqueryOpt, {
-        returnedData: data,
+        returnedData: [{type: 'visa'}],
       });
       var jquery = helpers.fakeJquery(jqueryOpt);
       return {
         jquery: jquery.stub,
-        data: data,
+        data: jqueryOpt.returnedData,
       };
     }
 
     it('should dispatch user pay_methods action', function() {
-      var { jquery } = setApiResult();
+      var { jquery } = setApiGetResult();
       payMethodActions.getPayMethods(jquery)(dispatchSpy);
       var action = dispatchSpy.firstCall.args[0];
       assert.equal(action.type, actionTypes.GOT_PAY_METHODS);
     });
 
     it('should dispatch payMethod data', function() {
-      var { jquery, data } = setApiResult();
+      var { jquery, data } = setApiGetResult();
       payMethodActions.getPayMethods(jquery)(dispatchSpy);
       var action = dispatchSpy.firstCall.args[0];
       assert.equal(action.payMethods, data);
     });
 
     it('should dispatch app error on failure', function() {
-      var { jquery } = setApiResult({jqueryOpt: {result: 'fail'}});
+      var { jquery } = setApiGetResult({jqueryOpt: {result: 'fail'}});
       payMethodActions.getPayMethods(jquery)(dispatchSpy);
       var action = dispatchSpy.firstCall.args[0];
       assert.deepEqual(action,
@@ -74,20 +73,38 @@ describe('Pay Method Actions', function() {
                                     jquery, client)(dispatchSpy);
     }
 
+    function setApiPostResult({jqueryOpt={}} = {}) {
+      Object.assign(jqueryOpt, {
+        returnedData: {payment_methods: [{type: 'visa'}]},
+      });
+      var jquery = helpers.fakeJquery(jqueryOpt);
+      return {
+        jquery: jquery.stub,
+        data: jqueryOpt.returnedData,
+      };
+    }
+
     it('should dispatch a GOT_PAY_METHODS action', function() {
-      var jquery = helpers.fakeJquery();
-      addCreditCard(jquery.stub);
+      var { jquery } = setApiPostResult();
+      addCreditCard(jquery);
       var action = dispatchSpy.firstCall.args[0];
       assert.equal(action.type, actionTypes.GOT_PAY_METHODS);
     });
 
+    it('should dispatch payment methods', function() {
+      var { jquery, data } = setApiPostResult();
+      addCreditCard(jquery);
+      var action = dispatchSpy.firstCall.args[0];
+      assert.equal(action.payMethods, data.payment_methods);
+    });
+
     it('should dispatch an error action', function() {
       var apiError = {error_response: 'some error'};
-      var jquery = helpers.fakeJquery({
+      var { jquery } = setApiPostResult({jqueryOpt: {
         result: 'fail',
         xhrError: {responseJSON: apiError},
-      });
-      addCreditCard(jquery.stub);
+      }});
+      addCreditCard(jquery);
       var action = dispatchSpy.firstCall.args[0];
       assert.deepEqual(action, {
         type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
@@ -96,8 +113,8 @@ describe('Pay Method Actions', function() {
     });
 
     it('should dispatch an error on tokenization failure', function() {
-      var jquery = helpers.fakeJquery();
-      addCreditCard(jquery.stub, FakeBraintreeClientError);
+      var { jquery } = setApiPostResult();
+      addCreditCard(jquery, FakeBraintreeClientError);
       var action = dispatchSpy.firstCall.args[0];
       assert.deepEqual(action,
                        appActions.error('Braintree tokenization error'));
