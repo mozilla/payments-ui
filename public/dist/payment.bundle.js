@@ -338,7 +338,13 @@ webpackJsonp([1],{
 	          userEmail: props.user.email });
 	      } else if (connector.transaction.availablePayMethods.length > 0) {
 	        console.log('rendering card listing');
+	
+	        var _bindActionCreators = (0, _redux.bindActionCreators)(subscriptionActions, connector.dispatch);
+	
+	        var createSubscription = _bindActionCreators.createSubscription;
+	
 	        return _react2['default'].createElement(CardListing, _extends({
+	          createSubscription: createSubscription,
 	          productId: props.productId,
 	          payMethods: connector.transaction.availablePayMethods
 	        }, (0, _redux.bindActionCreators)(transactionActions, connector.dispatch)));
@@ -348,9 +354,9 @@ webpackJsonp([1],{
 	      } else {
 	        console.log('rendering card entry');
 	
-	        var _bindActionCreators = (0, _redux.bindActionCreators)(subscriptionActions, connector.dispatch);
+	        var _bindActionCreators2 = (0, _redux.bindActionCreators)(subscriptionActions, connector.dispatch);
 	
-	        var createSubscription = _bindActionCreators.createSubscription;
+	        var createSubscription = _bindActionCreators2.createSubscription;
 	
 	        return _react2['default'].createElement(AddSubscription, {
 	          cardSubmissionErrors: connector.transaction.cardSubmissionErrors,
@@ -458,7 +464,7 @@ webpackJsonp([1],{
 	    key: 'handleCardSubmit',
 	    value: function handleCardSubmit(creditCard) {
 	      console.log('submitting credit card to sign up for subscription', this.props.productId);
-	      this.props.createSubscription(this.props.braintreeToken, this.props.productId, creditCard);
+	      this.props.createSubscription(this.props.productId, creditCard, this.props.braintreeToken);
 	    }
 	  }, {
 	    key: 'render',
@@ -645,6 +651,7 @@ webpackJsonp([1],{
 	        { className: "card-listing" },
 	        _react2['default'].createElement(_componentsProductDetail2['default'], { productId: this.props.productId }),
 	        _react2['default'].createElement(_componentsCardChoice2['default'], {
+	          createSubscription: this.props.createSubscription,
 	          cards: this.props.payMethods,
 	          productId: this.props.productId
 	        }),
@@ -659,6 +666,7 @@ webpackJsonp([1],{
 	  }], [{
 	    key: 'propTypes',
 	    value: {
+	      createSubscription: _react.PropTypes.func.isRequired,
 	      payMethods: _react.PropTypes.array.isRequired,
 	      payWithNewCard: _react.PropTypes.func.isRequired,
 	      productId: _react.PropTypes.string.isRequired
@@ -687,17 +695,11 @@ webpackJsonp([1],{
 	
 	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-	
-	var _jquery = __webpack_require__(1);
-	
-	var _jquery2 = _interopRequireDefault(_jquery);
 	
 	var _react = __webpack_require__(15);
 	
@@ -713,14 +715,6 @@ webpackJsonp([1],{
 	
 	var _utils = __webpack_require__(206);
 	
-	var _actionsTransaction = __webpack_require__(7);
-	
-	var transactionActions = _interopRequireWildcard(_actionsTransaction);
-	
-	var _dataStore = __webpack_require__(195);
-	
-	var _dataStore2 = _interopRequireDefault(_dataStore);
-	
 	var CardChoice = (function (_Component) {
 	  _inherits(CardChoice, _Component);
 	
@@ -733,6 +727,7 @@ webpackJsonp([1],{
 	        truncated_id: _react.PropTypes.string,
 	        type_name: _react.PropTypes.string
 	      })).isRequired,
+	      createSubscription: _react.PropTypes.func.isRequired,
 	      productId: _react.PropTypes.string.isRequired
 	    },
 	    enumerable: true
@@ -747,25 +742,8 @@ webpackJsonp([1],{
 	
 	    this.handleSubmit = function (e) {
 	      e.preventDefault();
-	
 	      _this.setState({ isSubmitting: true });
-	
-	      _jquery2['default'].ajax({
-	        data: {
-	          pay_method_uri: _this.state.card,
-	          plan_id: _this.props.productId
-	        },
-	        url: '/api/braintree/subscriptions/',
-	        method: 'post',
-	        dataType: 'json',
-	        context: _this
-	      }).done(function () {
-	        console.log('Successfully subscribed with existing card');
-	
-	        _dataStore2['default'].dispatch(transactionActions.complete());
-	      }).fail(function () {
-	        // TODO: handler errors.
-	      });
+	      _this.props.createSubscription(_this.props.productId, _this.state.card);
 	    };
 	
 	    this.handleCardChange = function (e) {

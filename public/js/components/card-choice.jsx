@@ -1,13 +1,9 @@
-import $ from 'jquery';
 import React, { Component, PropTypes } from 'react';
 
 import CardList from 'components/card-list';
 import SubmitButton from 'components/submit-button';
 
 import { gettext } from 'utils';
-import * as transactionActions from 'actions/transaction';
-
-import dataStore from 'data-store';
 
 
 export default class CardChoice extends Component {
@@ -21,6 +17,7 @@ export default class CardChoice extends Component {
         type_name: PropTypes.string,
       }
     )).isRequired,
+    createSubscription: PropTypes.func.isRequired,
     productId: PropTypes.string.isRequired,
   }
 
@@ -35,28 +32,8 @@ export default class CardChoice extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-
     this.setState({isSubmitting: true});
-
-    $.ajax({
-      data: {
-        pay_method_uri: this.state.card,
-        plan_id: this.props.productId,
-      },
-      url: '/api/braintree/subscriptions/',
-      method: 'post',
-      dataType: 'json',
-      context: this,
-    }).done(function() {
-      console.log('Successfully subscribed with existing card');
-
-      dataStore.dispatch(
-        transactionActions.complete()
-      );
-
-    }).fail(function() {
-      // TODO: handler errors.
-    });
+    this.props.createSubscription(this.props.productId, this.state.card);
   }
 
   handleCardChange = (e) => {

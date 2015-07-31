@@ -53,8 +53,11 @@ export default class Purchase extends Component {
       );
     } else if (connector.transaction.availablePayMethods.length > 0) {
       console.log('rendering card listing');
+      var { createSubscription } = bindActionCreators(subscriptionActions,
+                                                      connector.dispatch);
       return (
         <CardListing
+          createSubscription={createSubscription}
           productId={props.productId}
           payMethods={connector.transaction.availablePayMethods}
           {...bindActionCreators(transactionActions, connector.dispatch)}
