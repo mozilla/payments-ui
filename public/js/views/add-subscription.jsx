@@ -22,9 +22,9 @@ export default class AddSubscription extends Component {
   handleCardSubmit(creditCard) {
     console.log('submitting credit card to sign up for subscription',
                 this.props.productId);
-    this.props.createSubscription(this.props.braintreeToken,
-                                  this.props.productId,
-                                  creditCard);
+    this.props.createSubscription(this.props.productId,
+                                  creditCard,
+                                  this.props.braintreeToken);
   }
 
   render() {

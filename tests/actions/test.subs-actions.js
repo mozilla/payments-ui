@@ -67,7 +67,17 @@ describe('subscription actions', function() {
 
   describe('createSubscription', function() {
 
-    var fakeCard = {number: '411111111111', cvv: '222', expiration: '06/16'};
+    var fakeCard = {
+      number: '411111111111',
+      cvv: '222',
+      expiration: '06/16',
+    };
+
+    // Bad card with missing cvv
+    // and expiration.
+    var fakeBadCard = {
+      number: '411111111111',
+    };
 
     class FakeBraintreeClient {
       tokenizeCard(config, callback) {
@@ -83,10 +93,11 @@ describe('subscription actions', function() {
       }
     }
 
-    function createSubscription(jquery, client=FakeBraintreeClient) {
-      subActions.createSubscription('braintree-token',
-                                    'product-id',
-                                    fakeCard,
+    function createSubscription(jquery, client=FakeBraintreeClient,
+                                payMethod=fakeCard) {
+      subActions.createSubscription('product-id',
+                                    payMethod,
+                                    'braintree-token',
                                     jquery,
                                     client)(dispatchSpy);
     }
@@ -114,12 +125,38 @@ describe('subscription actions', function() {
       });
     });
 
+    it('should dispatch an error action with payMethodUri', function() {
+      var apiError = {error_response: 'some error'};
+      var jquery = helpers.fakeJquery({
+        result: 'fail',
+        xhrError: {responseJSON: apiError},
+      });
+      createSubscription(jquery.stub, FakeBraintreeClient,
+                         'fake-pay-method-uri');
+      var action = dispatchSpy.firstCall.args[0];
+      assert.equal(action.type, actionTypes.APP_ERROR);
+    });
+
     it('should dispatch an error on tokenization failure', function() {
       var jquery = helpers.fakeJquery();
       createSubscription(jquery.stub, FakeBraintreeClientError);
       var action = dispatchSpy.firstCall.args[0];
       assert.deepEqual(action,
                        appActions.error('Braintree tokenization error'));
+    });
+
+    it('should throw with a bad card', function() {
+      assert.throws(() => {
+        var jquery = helpers.fakeJquery();
+        createSubscription(jquery.stub, FakeBraintreeClient, fakeBadCard);
+      }, Error, /Invalid card object/);
+    });
+
+    it('should throw with unrecognized pay method', function() {
+      assert.throws(() => {
+        var jquery = helpers.fakeJquery();
+        createSubscription(jquery.stub, FakeBraintreeClient, () => {});
+      }, Error, /Unrecognized payMethod/);
     });
 
   });
