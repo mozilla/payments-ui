@@ -123,6 +123,7 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'renderChild',
 	    value: function renderChild(connector) {
+	      console.log('rendering management app at tab:', connector.management.tab);
 	      var qs = (0, _utils.parseQuery)(this.props.window.location.href);
 	      var accessToken = qs.access_token;
 	      var boundMgmtActions = (0, _redux.bindActionCreators)(mgmtActions, connector.dispatch);
@@ -344,16 +345,16 @@ webpackJsonp([0],{
 	      } else {
 	        jquery.ajax({
 	          data: {
-	            pay_method_nonce: nonce
+	            nonce: nonce
 	          },
-	          url: '/api/braintree/mozilla/paymethod/',
+	          url: '/api/braintree/paymethod/',
 	          method: 'post',
 	          dataType: 'json'
 	        }).then(function (data) {
-	          console.log('Successfully added a card');
+	          console.log('Successfully added a pay method. API Result:', data);
 	          dispatch({
 	            type: actionTypes.GOT_PAY_METHODS,
-	            payMethods: data
+	            payMethods: data.payment_methods
 	          });
 	        }).fail(function ($xhr) {
 	          dispatch({

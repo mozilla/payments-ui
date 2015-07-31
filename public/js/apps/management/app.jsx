@@ -43,6 +43,7 @@ export default class ManagementApp extends Component {
   }
 
   renderChild(connector) {
+    console.log('rendering management app at tab:', connector.management.tab);
     var qs = parseQuery(this.props.window.location.href);
     var accessToken = qs.access_token;
     var boundMgmtActions = bindActionCreators(mgmtActions,
