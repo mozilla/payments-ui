@@ -10,6 +10,7 @@ import tracking from 'tracking';
 export default class CardListing extends Component {
 
   static propTypes = {
+    createSubscription: PropTypes.func.isRequired,
     payMethods: PropTypes.array.isRequired,
     payWithNewCard: PropTypes.func.isRequired,
     productId: PropTypes.string.isRequired,
@@ -24,6 +25,7 @@ export default class CardListing extends Component {
       <div className="card-listing">
         <ProductDetail productId={this.props.productId} />
         <CardChoice
+          createSubscription={this.props.createSubscription}
           cards={this.props.payMethods}
           productId={this.props.productId}
         />
