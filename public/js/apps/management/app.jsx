@@ -14,6 +14,7 @@ import { parseQuery } from 'utils';
 import Modal from 'components/modal';
 
 import AddPayMethod from 'views/add-pay-method';
+import DelPayMethod from 'views/del-pay-method';
 import BraintreeToken from 'views/braintree-token';
 import ModalError from 'views/modal-error';
 
@@ -84,6 +85,15 @@ export default class ManagementApp extends Component {
           />
         ));
       }
+    } else if (connector.management.tab === 'SHOW_DEL_PAY_METHOD') {
+      children.push((
+        <DelPayMethod
+          payMethods={connector.user.payMethods}
+          {...boundMgmtActions}
+          {...boundPayMethodActions}
+          {...boundUserActions}
+        />
+      ));
     }
 
     children.push(<Management

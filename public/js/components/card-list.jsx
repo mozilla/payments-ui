@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import CardItem from 'components/card-item';
 
+import cx from 'classnames';
+
 
 export default class CardList extends Component {
 
@@ -13,6 +15,7 @@ export default class CardList extends Component {
         type_name: PropTypes.string,
       })
     ).isRequired,
+    modifier: PropTypes.string,
     onCardChange: PropTypes.func.isRequired,
   }
 
@@ -25,8 +28,11 @@ export default class CardList extends Component {
                      onChangeHandler={this.props.onCardChange}
                      checked={checked} />);
     }
+
+    var classes = cx('card-listing', this.props.modifier);
+
     return (
-      <ul className="card-listing">
+      <ul className={classes}>
         {cardList}
       </ul>
     );
