@@ -43,16 +43,16 @@ export function addCreditCard(braintreeToken, creditCard, jquery=$,
       } else {
         jquery.ajax({
           data: {
-            pay_method_nonce: nonce,
+            nonce: nonce,
           },
-          url: '/api/braintree/mozilla/paymethod/',
+          url: '/api/braintree/paymethod/',
           method: 'post',
           dataType: 'json',
         }).then(data => {
-          console.log('Successfully added a card');
+          console.log('Successfully added a pay method. API Result:', data);
           dispatch({
             type: actionTypes.GOT_PAY_METHODS,
-            payMethods: data,
+            payMethods: data.payment_methods,
           });
         }).fail($xhr => {
           dispatch({
