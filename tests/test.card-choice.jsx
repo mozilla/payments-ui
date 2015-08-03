@@ -52,7 +52,8 @@ describe('Card Choice', function() {
 
   beforeEach(function() {
     this.CardChoice = TestUtils.renderIntoDocument(
-      <CardChoice cards={cardListData} />
+      <CardChoice cards={cardListData}
+        cssModifier='whatevar-modifier' />
     );
     sinon.spy(this.CardChoice, 'setState');
   });
@@ -110,6 +111,12 @@ describe('Card Choice', function() {
     };
     this.CardChoice.handleCardChange(event);
     assert.equal(submitButton.getDOMNode().getAttribute('disabled'), null);
+  });
+
+  it('has a modifer classname passed to card-list', function() {
+    var cardList = helpers.findByClass(this.CardChoice, 'card-list');
+    assert.include(React.findDOMNode(cardList).className.split(' '),
+                   'whatevar-modifier');
   });
 
 });

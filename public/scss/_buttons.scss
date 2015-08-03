@@ -37,10 +37,14 @@ button {
     cursor: auto;
   }
 
+  &.warning {
+    background: $awooga-red;
+  }
 }
-
 
 button::-moz-focus-inner {
   border: 0;
   padding: 0;
 }
+
+

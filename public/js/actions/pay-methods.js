@@ -5,6 +5,33 @@ import * as actionTypes from 'constants/action-types';
 import * as appActions from './app';
 
 
+export function delPayMethod(payMethodUri, jquery=$) {
+
+  if (typeof payMethodUri === 'undefined') {
+    throw new Error('payMethodUri is undefined');
+  }
+
+  return dispatch => {
+    jquery.ajax({
+      method: 'post',
+      url: '/api/braintree/paymethod/delete/',
+      data: {
+        pay_method_uri: payMethodUri,
+      },
+      context: this,
+    }).then(function(data) {
+      dispatch({
+        type: actionTypes.GOT_PAY_METHODS,
+        payMethods: data.payment_methods,
+      });
+    }).fail(function() {
+      console.log('Deleting pay method failed');
+      dispatch(appActions.error('Deleting pay method failed'));
+    });
+  };
+}
+
+
 export function getPayMethods(jquery=$) {
   // Note: not currently used as payMethods
   // are added to user state upon login.
@@ -64,3 +91,4 @@ export function addCreditCard(braintreeToken, creditCard, jquery=$,
     });
   };
 }
+
