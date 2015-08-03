@@ -26,7 +26,7 @@ export default class DelPayMethod extends Component {
     tracking.setPage('/del-pay-method');
   }
 
-  handleSubmit = (e, card) => {
+  handleSubmit = (card) => {
     this.props.delCreditCard(card);
   }
 
@@ -36,9 +36,9 @@ export default class DelPayMethod extends Component {
         title={gettext('Delete Card')}>
         <div>
           <CardChoice
-            modifier='delete'
+            cssModifier='delete'
             submitButtonText={gettext('Delete')}
-            submitButtonModifier='warning'
+            submitButtonCSSModifier='warning'
             submitHandler={this.handleSubmit}
             cards={this.props.payMethods}
           />

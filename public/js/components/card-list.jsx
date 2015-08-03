@@ -15,7 +15,7 @@ export default class CardList extends Component {
         type_name: PropTypes.string,
       })
     ).isRequired,
-    modifier: PropTypes.string,
+    cssModifier: PropTypes.string,
     onCardChange: PropTypes.func.isRequired,
   }
 
@@ -29,7 +29,7 @@ export default class CardList extends Component {
                      checked={checked} />);
     }
 
-    var classes = cx('card-listing', this.props.modifier);
+    var classes = cx('card-list', this.props.cssModifier);
 
     return (
       <ul className={classes}>

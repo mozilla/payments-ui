@@ -20,7 +20,7 @@ export default class CardListing extends Component {
     tracking.setPage('/card-listing');
   }
 
-  handleSubmit = (e, card) => {
+  handleSubmit = (card) => {
     this.props.createSubscription(this.props.productId, card);
   }
 

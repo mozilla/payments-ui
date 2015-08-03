@@ -17,15 +17,15 @@ export default class CardChoice extends Component {
         type_name: PropTypes.string,
       }
     )).isRequired,
-    modifier: PropTypes.string,
+    cssModifier: PropTypes.string,
     productId: PropTypes.string.isRequired,
-    submitButtonModifier: PropTypes.string.isRequired,
+    submitButtonCSSModifier: PropTypes.string.isRequired,
     submitButtonText: PropTypes.string.isRequired,
     submitHandler: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
-    modifier: null,
+    cssModifier: null,
     submitButtonText: gettext('Submit'),
     submitButtonModifier: null,
   }
@@ -42,7 +42,7 @@ export default class CardChoice extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.setState({isSubmitting: true});
-    this.props.submitHandler(e, this.state.card);
+    this.props.submitHandler(this.state.card);
   }
 
   handleCardChange = (e) => {
@@ -59,13 +59,13 @@ export default class CardChoice extends Component {
     var formIsValid = this.state.card !== null;
 
     return (
-      <form id="card-listing" onSubmit={this.handleSubmit}>
+      <form id="card-choice" onSubmit={this.handleSubmit}>
         <CardList
-          modifier={this.props.modifier}
+          cssModifier={this.props.cssModifier}
           cards={cardData}
           onCardChange={this.handleCardChange} />
         <SubmitButton isDisabled={!formIsValid}
-          modifier={this.props.submitButtonModifier}
+          cssModifier={this.props.submitButtonCSSModifier}
           showSpinner={this.state.isSubmitting}
           text={this.props.submitButtonText}
         />
