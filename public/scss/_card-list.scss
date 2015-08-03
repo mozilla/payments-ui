@@ -1,4 +1,4 @@
-.card-listing {
+.card-list {
   margin: 0;
   padding: 0;
 
@@ -44,3 +44,11 @@
   }
 }
 
+.delete .card-item input[type=radio] {
+   &:checked + label,
+   &:hover + label,
+   &:focus + label {
+     border: 1px solid $awooga-red;
+     background: #fff;
+   }
+}

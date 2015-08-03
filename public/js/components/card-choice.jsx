@@ -9,16 +9,18 @@ import { gettext } from 'utils';
 export default class CardChoice extends Component {
 
   static propTypes = {
-    cards: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.number,
-        resource_uri: PropTypes.string,
-        truncated_id: PropTypes.string,
-        type_name: PropTypes.string,
-      }
-    )).isRequired,
-    createSubscription: PropTypes.func.isRequired,
+    cards: PropTypes.array.isRequired,
+    cssModifier: PropTypes.string,
     productId: PropTypes.string.isRequired,
+    submitButtonCSSModifier: PropTypes.string.isRequired,
+    submitButtonText: PropTypes.string.isRequired,
+    submitHandler: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    cssModifier: null,
+    submitButtonText: gettext('Submit'),
+    submitButtonModifier: null,
   }
 
   constructor(props) {
@@ -33,7 +35,7 @@ export default class CardChoice extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.setState({isSubmitting: true});
-    this.props.createSubscription(this.props.productId, this.state.card);
+    this.props.submitHandler(this.state.card);
   }
 
   handleCardChange = (e) => {
@@ -50,13 +52,15 @@ export default class CardChoice extends Component {
     var formIsValid = this.state.card !== null;
 
     return (
-      <form id="card-listing" onSubmit={this.handleSubmit}>
+      <form id="card-choice" onSubmit={this.handleSubmit}>
         <CardList
+          cssModifier={this.props.cssModifier}
           cards={cardData}
           onCardChange={this.handleCardChange} />
         <SubmitButton isDisabled={!formIsValid}
+          cssModifier={this.props.submitButtonCSSModifier}
           showSpinner={this.state.isSubmitting}
-          text={gettext('Subscribe')}
+          text={this.props.submitButtonText}
         />
       </form>
     );

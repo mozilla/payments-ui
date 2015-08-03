@@ -221,6 +221,12 @@ button.disabled {
   cursor: auto;
 }
 
+.button.warning,
+a.button.warning,
+button.warning {
+  background: #d63920;
+}
+
 button::-moz-focus-inner {
   border: 0;
   padding: 0;

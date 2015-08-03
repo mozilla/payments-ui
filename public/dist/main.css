@@ -662,6 +662,12 @@ button.disabled {
   cursor: auto;
 }
 
+.button.warning,
+a.button.warning,
+button.warning {
+  background: #d63920;
+}
+
 button::-moz-focus-inner {
   border: 0;
   padding: 0;
@@ -1215,29 +1221,33 @@ button.spinner:after {
 }
 
 .modal header h2 {
-  margin: 1.5em;
+  margin: 1em;
   font-weight: 400;
 }
 
-.card-listing {
+.modal form {
+  padding-top: 0;
+}
+
+.card-list {
   margin: 0;
   padding: 0;
 }
 
-.card-listing .card-item {
+.card-list .card-item {
   list-style-type: none;
   margin: 10px 0;
   position: relative;
 }
 
-.card-listing .card-item input[type=radio] {
+.card-list .card-item input[type=radio] {
   opacity: 0;
   position: absolute;
 }
 
-.card-listing .card-item input[type=radio]:checked + label,
-.card-listing .card-item input[type=radio]:hover + label,
-.card-listing .card-item input[type=radio]:focus + label {
+.card-list .card-item input[type=radio]:checked + label,
+.card-list .card-item input[type=radio]:hover + label,
+.card-list .card-item input[type=radio]:focus + label {
   cursor: pointer;
   border: 1px solid #0080D8;
   border-radius: 5px;
@@ -1245,7 +1255,7 @@ button.spinner:after {
   transition: all 450ms;
 }
 
-.card-listing .card-item label {
+.card-list .card-item label {
   border: 1px solid transparent;
   display: block;
   font-size: 18px;
@@ -1256,13 +1266,20 @@ button.spinner:after {
   width: 100%;
 }
 
-.card-listing .card-item .card-icon {
+.card-list .card-item .card-icon {
   left: 15px;
 }
 
-.card-listing .card-add {
+.card-list .card-add {
   display: block;
   text-align: right;
+}
+
+.delete .card-item input[type=radio]:checked + label,
+.delete .card-item input[type=radio]:hover + label,
+.delete .card-item input[type=radio]:focus + label {
+  border: 1px solid #d63920;
+  background: #fff;
 }
 
 .no-results {

@@ -15,7 +15,7 @@ webpackJsonp([1],{
 	
 	var _tracking2 = _interopRequireDefault(_tracking);
 	
-	var _app = __webpack_require__(267);
+	var _app = __webpack_require__(269);
 	
 	// Common ajax settings.
 	_jquery2['default'].ajaxSetup({
@@ -27,7 +27,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 267:
+/***/ 269:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52,33 +52,33 @@ webpackJsonp([1],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	__webpack_require__(8);
+	__webpack_require__(3);
 	
-	var _react = __webpack_require__(15);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRedux = __webpack_require__(171);
+	var _reactRedux = __webpack_require__(166);
 	
-	var _redux = __webpack_require__(183);
+	var _redux = __webpack_require__(178);
 	
-	var _dataStore = __webpack_require__(195);
+	var _dataStore = __webpack_require__(190);
 	
 	var _dataStore2 = _interopRequireDefault(_dataStore);
 	
-	var _componentsError = __webpack_require__(256);
+	var _componentsError = __webpack_require__(260);
 	
 	var _componentsError2 = _interopRequireDefault(_componentsError);
 	
-	var _viewsLogin = __webpack_require__(268);
+	var _viewsLogin = __webpack_require__(270);
 	
 	var _viewsLogin2 = _interopRequireDefault(_viewsLogin);
 	
-	var _viewsPurchase = __webpack_require__(269);
+	var _viewsPurchase = __webpack_require__(271);
 	
 	var _viewsPurchase2 = _interopRequireDefault(_viewsPurchase);
 	
-	var _actionsUser = __webpack_require__(204);
+	var _actionsUser = __webpack_require__(202);
 	
 	var userActions = _interopRequireWildcard(_actionsUser);
 	
@@ -177,7 +177,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 268:
+/***/ 270:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -196,11 +196,11 @@ webpackJsonp([1],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(15);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsSpinner = __webpack_require__(254);
+	var _componentsSpinner = __webpack_require__(258);
 	
 	var _componentsSpinner2 = _interopRequireDefault(_componentsSpinner);
 	
@@ -247,7 +247,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 269:
+/***/ 271:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -270,39 +270,39 @@ webpackJsonp([1],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(15);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _redux = __webpack_require__(183);
+	var _redux = __webpack_require__(178);
 	
-	var _reactRedux = __webpack_require__(171);
+	var _reactRedux = __webpack_require__(166);
 	
-	var _actionsTransaction = __webpack_require__(7);
+	var _actionsTransaction = __webpack_require__(205);
 	
 	var transactionActions = _interopRequireWildcard(_actionsTransaction);
 	
-	var _actionsUser = __webpack_require__(204);
+	var _actionsUser = __webpack_require__(202);
 	
 	var userActions = _interopRequireWildcard(_actionsUser);
 	
-	var _actionsSubscriptions = __webpack_require__(3);
+	var _actionsSubscriptions = __webpack_require__(204);
 	
 	var subscriptionActions = _interopRequireWildcard(_actionsSubscriptions);
 	
-	var _viewsAddSubscription = __webpack_require__(270);
+	var _viewsAddSubscription = __webpack_require__(272);
 	
 	var _viewsAddSubscription2 = _interopRequireDefault(_viewsAddSubscription);
 	
-	var _viewsCardListing = __webpack_require__(272);
+	var _viewsCardListing = __webpack_require__(274);
 	
 	var _viewsCardListing2 = _interopRequireDefault(_viewsCardListing);
 	
-	var _viewsCompletePayment = __webpack_require__(274);
+	var _viewsCompletePayment = __webpack_require__(275);
 	
 	var _viewsCompletePayment2 = _interopRequireDefault(_viewsCompletePayment);
 	
-	var _viewsBraintreeToken = __webpack_require__(253);
+	var _viewsBraintreeToken = __webpack_require__(257);
 	
 	var _viewsBraintreeToken2 = _interopRequireDefault(_viewsBraintreeToken);
 	
@@ -409,7 +409,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 270:
+/***/ 272:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -428,7 +428,7 @@ webpackJsonp([1],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(15);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -436,7 +436,7 @@ webpackJsonp([1],{
 	
 	var _componentsCardForm2 = _interopRequireDefault(_componentsCardForm);
 	
-	var _componentsProductDetail = __webpack_require__(271);
+	var _componentsProductDetail = __webpack_require__(273);
 	
 	var _componentsProductDetail2 = _interopRequireDefault(_componentsProductDetail);
 	
@@ -473,7 +473,7 @@ webpackJsonp([1],{
 	
 	      return _react2['default'].createElement(
 	        'div',
-	        { className: "card-details" },
+	        { className: 'card-details' },
 	        _react2['default'].createElement(_componentsProductDetail2['default'], { productId: this.props.productId }),
 	        _react2['default'].createElement(_componentsCardForm2['default'], {
 	          submissionErrors: this.props.cardSubmissionErrors,
@@ -481,8 +481,8 @@ webpackJsonp([1],{
 	          handleCardSubmit: function (card) {
 	            return _this.handleCardSubmit(card);
 	          },
-	          id: "braintree-form",
-	          method: "post"
+	          id: 'braintree-form',
+	          method: 'post'
 	        })
 	      );
 	    }
@@ -505,7 +505,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 271:
+/***/ 273:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -526,11 +526,11 @@ webpackJsonp([1],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(15);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _products = __webpack_require__(261);
+	var _products = __webpack_require__(265);
 	
 	var products = _interopRequireWildcard(_products);
 	
@@ -553,10 +553,10 @@ webpackJsonp([1],{
 	
 	      return _react2['default'].createElement(
 	        'div',
-	        { className: "product" },
+	        { className: 'product' },
 	        _react2['default'].createElement(
 	          'h1',
-	          { className: "title" },
+	          { className: 'title' },
 	          productData.seller.name.en
 	        ),
 	        _react2['default'].createElement(
@@ -566,7 +566,7 @@ webpackJsonp([1],{
 	        ),
 	        _react2['default'].createElement(
 	          'div',
-	          { className: "price" },
+	          { className: 'price' },
 	          productData.price.en
 	        ),
 	        _react2['default'].createElement(
@@ -592,7 +592,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 272:
+/***/ 274:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -611,15 +611,15 @@ webpackJsonp([1],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(15);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsCardChoice = __webpack_require__(273);
+	var _componentsCardChoice = __webpack_require__(254);
 	
 	var _componentsCardChoice2 = _interopRequireDefault(_componentsCardChoice);
 	
-	var _componentsProductDetail = __webpack_require__(271);
+	var _componentsProductDetail = __webpack_require__(273);
 	
 	var _componentsProductDetail2 = _interopRequireDefault(_componentsProductDetail);
 	
@@ -633,9 +633,15 @@ webpackJsonp([1],{
 	  _inherits(CardListing, _Component);
 	
 	  function CardListing() {
+	    var _this = this;
+	
 	    _classCallCheck(this, CardListing);
 	
 	    _get(Object.getPrototypeOf(CardListing.prototype), 'constructor', this).apply(this, arguments);
+	
+	    this.handleSubmit = function (card) {
+	      _this.props.createSubscription(_this.props.productId, card);
+	    };
 	  }
 	
 	  _createClass(CardListing, [{
@@ -648,16 +654,17 @@ webpackJsonp([1],{
 	    value: function render() {
 	      return _react2['default'].createElement(
 	        'div',
-	        { className: "card-listing" },
+	        null,
 	        _react2['default'].createElement(_componentsProductDetail2['default'], { productId: this.props.productId }),
 	        _react2['default'].createElement(_componentsCardChoice2['default'], {
-	          createSubscription: this.props.createSubscription,
 	          cards: this.props.payMethods,
-	          productId: this.props.productId
+	          productId: this.props.productId,
+	          submitButtonText: (0, _utils.gettext)('Subscribe'),
+	          submitHandler: this.handleSubmit
 	        }),
 	        _react2['default'].createElement(
 	          'a',
-	          { className: "card-add bottom-link", href: "#",
+	          { className: 'card-add bottom-link', href: '#',
 	            onClick: this.props.payWithNewCard },
 	          (0, _utils.gettext)('Add new credit card')
 	        )
@@ -682,7 +689,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 273:
+/***/ 275:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -701,118 +708,11 @@ webpackJsonp([1],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _react = __webpack_require__(15);
+	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsCardList = __webpack_require__(265);
-	
-	var _componentsCardList2 = _interopRequireDefault(_componentsCardList);
-	
-	var _componentsSubmitButton = __webpack_require__(251);
-	
-	var _componentsSubmitButton2 = _interopRequireDefault(_componentsSubmitButton);
-	
-	var _utils = __webpack_require__(206);
-	
-	var CardChoice = (function (_Component) {
-	  _inherits(CardChoice, _Component);
-	
-	  _createClass(CardChoice, null, [{
-	    key: 'propTypes',
-	    value: {
-	      cards: _react.PropTypes.arrayOf(_react.PropTypes.shape({
-	        id: _react.PropTypes.number,
-	        resource_uri: _react.PropTypes.string,
-	        truncated_id: _react.PropTypes.string,
-	        type_name: _react.PropTypes.string
-	      })).isRequired,
-	      createSubscription: _react.PropTypes.func.isRequired,
-	      productId: _react.PropTypes.string.isRequired
-	    },
-	    enumerable: true
-	  }]);
-	
-	  function CardChoice(props) {
-	    var _this = this;
-	
-	    _classCallCheck(this, CardChoice);
-	
-	    _get(Object.getPrototypeOf(CardChoice.prototype), 'constructor', this).call(this, props);
-	
-	    this.handleSubmit = function (e) {
-	      e.preventDefault();
-	      _this.setState({ isSubmitting: true });
-	      _this.props.createSubscription(_this.props.productId, _this.state.card);
-	    };
-	
-	    this.handleCardChange = function (e) {
-	      _this.setState({ card: e.target.value });
-	    };
-	
-	    this.state = {
-	      isSubmitting: false,
-	      card: this.props.cards.length === 1 ? this.props.cards[0].resource_uri : null
-	    };
-	  }
-	
-	  _createClass(CardChoice, [{
-	    key: 'render',
-	    value: function render() {
-	      var cardData = this.props.cards;
-	      for (var i = 0; i < cardData.length; i += 1) {
-	        var card = cardData[i];
-	        card.checked = this.state.card === card.resource_uri;
-	      }
-	
-	      var formIsValid = this.state.card !== null;
-	
-	      return _react2['default'].createElement(
-	        'form',
-	        { id: "card-listing", onSubmit: this.handleSubmit },
-	        _react2['default'].createElement(_componentsCardList2['default'], {
-	          cards: cardData,
-	          onCardChange: this.handleCardChange }),
-	        _react2['default'].createElement(_componentsSubmitButton2['default'], { isDisabled: !formIsValid,
-	          showSpinner: this.state.isSubmitting,
-	          text: (0, _utils.gettext)('Subscribe')
-	        })
-	      );
-	    }
-	  }]);
-	
-	  return CardChoice;
-	})(_react.Component);
-	
-	exports['default'] = CardChoice;
-	module.exports = exports['default'];
-
-/***/ },
-
-/***/ 274:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-	
-	var _react = __webpack_require__(15);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _componentsProductDetail = __webpack_require__(271);
+	var _componentsProductDetail = __webpack_require__(273);
 	
 	var _componentsProductDetail2 = _interopRequireDefault(_componentsProductDetail);
 	
@@ -865,20 +765,20 @@ webpackJsonp([1],{
 	    value: function render() {
 	      return _react2['default'].createElement(
 	        'div',
-	        { className: "complete" },
+	        { className: 'complete' },
 	        _react2['default'].createElement(_componentsProductDetail2['default'], { productId: this.props.productId }),
 	        _react2['default'].createElement(
 	          'p',
-	          { className: "accepted" },
+	          { className: 'accepted' },
 	          (0, _utils.gettext)('Payment Accepted')
 	        ),
 	        _react2['default'].createElement(
 	          'p',
-	          { className: "receipt" },
+	          { className: 'receipt' },
 	          (0, _utils.gettext)('Your receipt has been sent to'),
 	          _react2['default'].createElement(
 	            'span',
-	            { className: "email" },
+	            { className: 'email' },
 	            this.props.userEmail
 	          )
 	        ),

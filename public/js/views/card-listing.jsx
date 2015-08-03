@@ -20,17 +20,22 @@ export default class CardListing extends Component {
     tracking.setPage('/card-listing');
   }
 
+  handleSubmit = (card) => {
+    this.props.createSubscription(this.props.productId, card);
+  }
+
   render() {
     return (
-      <div className="card-listing">
+      <div>
         <ProductDetail productId={this.props.productId} />
         <CardChoice
-          createSubscription={this.props.createSubscription}
           cards={this.props.payMethods}
           productId={this.props.productId}
+          submitButtonText={gettext('Subscribe')}
+          submitHandler={this.handleSubmit}
         />
         <a className="card-add bottom-link" href="#"
-           onClick={this.props.payWithNewCard}>
+          onClick={this.props.payWithNewCard}>
           {gettext('Add new credit card')}
         </a>
       </div>
