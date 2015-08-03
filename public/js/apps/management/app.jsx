@@ -91,7 +91,6 @@ export default class ManagementApp extends Component {
           payMethods={connector.user.payMethods}
           {...boundMgmtActions}
           {...boundPayMethodActions}
-          {...boundUserActions}
         />
       ));
     }

@@ -11,15 +11,8 @@ export default class DelPayMethod extends Component {
 
   static propTypes = {
     closeModal: PropTypes.func.isRequired,
-    delCreditCard: PropTypes.func.isRequired,
-    payMethods: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.number,
-        resource_uri: PropTypes.string,
-        truncated_id: PropTypes.string,
-        type_name: PropTypes.string,
-      })
-    ).isRequired,
+    delPayMethod: PropTypes.func.isRequired,
+    payMethods: PropTypes.array.isRequired,
   }
 
   componentDidMount() {
@@ -27,7 +20,7 @@ export default class DelPayMethod extends Component {
   }
 
   handleSubmit = (card) => {
-    this.props.delCreditCard(card);
+    this.props.delPayMethod(card);
   }
 
   render() {

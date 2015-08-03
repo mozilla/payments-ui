@@ -122,4 +122,47 @@ describe('Pay Method Actions', function() {
 
   });
 
+  describe('delPayMethod', function() {
+
+    function delPayMethod(payMethodUri, jquery) {
+      payMethodActions.delPayMethod(payMethodUri, jquery)(dispatchSpy);
+    }
+
+    function setApiPostResult({jqueryOpt={}} = {}) {
+      Object.assign(jqueryOpt, {
+        returnedData: {payment_methods: [{type: 'visa'}]},
+      });
+      var jquery = helpers.fakeJquery(jqueryOpt);
+      return {
+        jquery: jquery.stub,
+        data: jqueryOpt.returnedData,
+      };
+    }
+
+    it('should dispatch a GOT_PAY_METHODS action', function() {
+      var { jquery } = setApiPostResult();
+      delPayMethod('whatever-uri', jquery);
+      var action = dispatchSpy.firstCall.args[0];
+      assert.equal(action.type, actionTypes.GOT_PAY_METHODS);
+    });
+
+    it('should dispatch an error action on api error', function() {
+      var apiError = {error_response: 'some error'};
+      var { jquery } = setApiPostResult({jqueryOpt: {
+        result: 'fail',
+        xhrError: {responseJSON: apiError},
+      }});
+      delPayMethod('whatever-uri', jquery);
+      var action = dispatchSpy.firstCall.args[0];
+      assert.deepEqual(action,
+                       appActions.error('Deleting pay method failed'));
+
+    });
+
+    it('should throw if empty payMethodUri supplied', function() {
+      assert.throws(function() {
+        delPayMethod(undefined);
+      }, Error, /payMethodUri is undefined/);
+    });
+  });
 });

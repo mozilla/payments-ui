@@ -9,14 +9,7 @@ import { gettext } from 'utils';
 export default class CardChoice extends Component {
 
   static propTypes = {
-    cards: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.number,
-        resource_uri: PropTypes.string,
-        truncated_id: PropTypes.string,
-        type_name: PropTypes.string,
-      }
-    )).isRequired,
+    cards: PropTypes.array.isRequired,
     cssModifier: PropTypes.string,
     productId: PropTypes.string.isRequired,
     submitButtonCSSModifier: PropTypes.string.isRequired,
