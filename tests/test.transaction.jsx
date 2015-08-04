@@ -64,9 +64,7 @@ describe('Transaction', function() {
 
     store.dispatch({
       type: actionTypes.GOT_BRAINTREE_TOKEN,
-      user: {
-        braintreeToken: 'braintree-token',
-      },
+      braintreeToken: 'braintree-token',
     });
 
     var child = TestUtils.findRenderedComponentWithType(
@@ -81,9 +79,7 @@ describe('Transaction', function() {
 
     store.dispatch({
       type: actionTypes.GOT_BRAINTREE_TOKEN,
-      user: {
-        braintreeToken: 'braintree-token',
-      },
+      braintreeToken: 'braintree-token',
     });
 
     var child = TestUtils.findRenderedComponentWithType(
@@ -117,9 +113,7 @@ describe('Transaction', function() {
 
     store.dispatch({
       type: actionTypes.GOT_BRAINTREE_TOKEN,
-      user: {
-        braintreeToken: 'braintree-token',
-      },
+      braintreeToken: 'braintree-token',
     });
 
     store.dispatch(transactionActions.payWithNewCard());

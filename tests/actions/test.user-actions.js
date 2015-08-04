@@ -15,7 +15,6 @@ describe('userActions', function() {
 
   function fakeSignInResult() {
     return {
-      braintreeToken: null,
       buyer_email: 'person@somehwere.com',
       csrf_token: 'some-csrf-token',
       payment_methods: [],
@@ -242,6 +241,34 @@ describe('userActions', function() {
 
       var action = dispatchSpy.firstCall.args[0];
       assert.deepEqual(action, appActions.error('API user sign-out failed'));
+    });
+
+  });
+
+  describe('getBraintreeToken', function() {
+
+    it('should dispatch GOT_BRAINTREE_TOKEN', function() {
+      var fetch = helpers.fakeFetch({
+        returnedData: {token: 'braintree-token'}
+      });
+
+      userActions.getBraintreeToken(fetch)(dispatchSpy);
+
+      assert.deepEqual(dispatchSpy.firstCall.args[0], {
+        type: actionTypes.GOT_BRAINTREE_TOKEN,
+        braintreeToken: 'braintree-token',
+      });
+    });
+
+    it('should dispatch an app error', function() {
+      var fetch = helpers.fakeFetch({result: 'fail'});
+
+      userActions.getBraintreeToken(fetch)(dispatchSpy);
+
+      assert.deepEqual(
+        dispatchSpy.firstCall.args[0],
+        appActions.error('Failed to get a braintree token')
+      );
     });
 
   });

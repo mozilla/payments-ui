@@ -125,9 +125,7 @@ export function getBraintreeToken(fetch=defaultApi.fetch) {
     }).then(data => {
       dispatch({
         type: actionTypes.GOT_BRAINTREE_TOKEN,
-        user: {
-          braintreeToken: data.token,
-        },
+        braintreeToken: data.token,
       });
     }).fail(apiError => {
       console.log('failed to get braintree token', apiError.responseJSON);
