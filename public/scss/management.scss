@@ -3,22 +3,21 @@
 @import 'inc/vars';
 @import 'inc/mixins';
 
-@import '_typography';
-@import '_accordion';
-@import '_global';
 @import '_base';
+@import '_global';
+@import '_utils';
+
+@import '_typography';
 @import '_buttons';
 @import '_cardicons-sprite';
 @import '_forms';
 @import '_product';
-@import '_utils';
 @import '_spinner';
 @import '_subscriptions';
-@import '_tooltip';
 @import '_app-error';
-@import '_management';
 @import '_modal';
-
+@import '_mgmt-nav-sprite.scss';
 @import '_card-list';
 @import '_pay-methods';
-@import '_complete-payment';
+
+@import '_management';

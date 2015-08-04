@@ -1,21 +1,38 @@
 import React, { Component, PropTypes } from 'react';
-
-import {
-  Accordion,
-  AccordionContent,
-  AccordionSection } from 'components/accordion';
-import SubscriptionList from 'components/subscription-list';
+import cx from 'classnames';
 
 import { gettext } from 'utils';
 
+const navData = [
+  {
+    className: 'profile',
+    action: 'showMyAccount',
+    text: gettext('My Account'),
+  }, {
+    className: 'pay-methods',
+    action: 'showPayMethods',
+    text: gettext('Payment methods'),
+  }, {
+    className: 'history',
+    action: 'showHistory',
+    text: gettext('Receipts and history'),
+  }, {
+    className: 'subs',
+    action: 'showSubscriptions',
+    text: gettext('Subscriptions'),
+  },
+];
+
 
 export default class Management extends Component {
+
 
   static propTypes = {
     accessToken: PropTypes.string,
     getPayMethods: PropTypes.func.isRequired,
     getUserSubscriptions: PropTypes.func.isRequired,
     showPayMethods: PropTypes.func.isRequired,
+    tab: PropTypes.string.isRequired,
     tokenSignIn: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
     userSignIn: PropTypes.func.isRequired,
@@ -30,114 +47,61 @@ export default class Management extends Component {
     }
   }
 
-  showSubscriptions = event => {
-    event.preventDefault();
-    this.props.getUserSubscriptions();
-  }
-
-  userSignIn = event => {
-    event.preventDefault();
-    this.props.userSignIn();
-  }
-
-  userSignOut = event => {
-    event.preventDefault();
-    this.props.userSignOut();
-  }
-
-  handleShowPayMethods = e => {
+  showMyAccount = e => {
     e.preventDefault();
-    e.stopPropagation();
+  }
+
+  showPayMethods = e => {
+    e.preventDefault();
     this.props.showPayMethods();
   }
 
-  render() {
-    var greeting;
-    var headerOnClick;
-    var headerText;
+  showReceipts = e => {
+    e.preventDefault();
+    e.stopPropagation();
+  }
 
-    if (this.props.user.signedIn) {
-      headerText = gettext('Sign Out');
-      headerOnClick = this.userSignOut;
-      // TODO: fix this when gettext() has formatters.
-      greeting = 'Hello, ' + this.props.user.email;
-    } else {
-      headerText = gettext('Sign In');
-      headerOnClick = this.userSignIn;
-      greeting = gettext('Not signed in');
-    }
+  showSubscriptions = e => {
+    e.preventDefault();
+    this.props.getUserSubscriptions();
+  }
+
+  userSignIn = e => {
+    e.preventDefault();
+    this.props.userSignIn();
+  }
+
+  userSignOut = e => {
+    e.preventDefault();
+    this.props.userSignOut();
+  }
+
+  renderNav = () => {
+     var nav = [];
+     for (var i = 0; i < navData.length; i += 1) {
+       var navItem = navData[i];
+       var isActive = this.props.tab === navItem.className;
+       var classes = cx('nav', navItem.className, {'active': isActive});
+       nav.push((
+         <li className={classes} key={navItem.className}>
+           <a href="#" onClick={this.props[navItem.action]}>
+             {navItem.text}</a>
+         </li>
+       ));
+     }
+     return <ul>{nav}</ul>;
+  }
+
+  render() {
+    var props = this.props;
 
     return (
-
-        <div>
-          <header className="top-nav">
-            <h1 className="logo">Firefox Payments</h1>
-            <button id="sign-in-toggle"
-                    onClick={headerOnClick}>{headerText}</button>
-          </header>
-
-          <div className="content">
-            <div className="user">
-              <p>{greeting}</p>
-            </div>
-
-            <Accordion>
-              <AccordionSection>
-                <header>
-                  <h2>{gettext('Payment Accounts')}</h2>
-                  <button
-                    onClick={this.handleShowPayMethods}>{gettext('Change')}
-                  </button>
-                </header>
-              </AccordionSection>
-
-              <AccordionSection>
-                <header>
-                  <h2>{gettext('Receipts and History')}</h2>
-                  <button data-activate>{gettext('View')}</button>
-                </header>
-                <AccordionContent>
-                  <p>Placeholder</p>
-                </AccordionContent>
-              </AccordionSection>
-
-              <AccordionSection>
-                <header>
-                  <h2>{gettext('Subscriptions')}</h2>
-                  <button
-                    onClick={this.showSubscriptions}
-                    id="show-subscriptions"
-                    data-activate>{gettext('View/Change')}</button>
-                </header>
-                <AccordionContent>
-                  <SubscriptionList
-                    subscriptions={this.props.userSubscriptions}
-                  />
-                </AccordionContent>
-              </AccordionSection>
-
-              <AccordionSection>
-                <header>
-                  <h2>{gettext('Email Address and Password')}</h2>
-                  <a className="button"
-                     href="https://mozilla.org/"
-                     target="_blank">{gettext('Change')}</a>
-                  {this.props.user ? <p>{this.props.user.email}</p> : null}
-                </header>
-              </AccordionSection>
-
-              <AccordionSection>
-                <header>
-                  <h2>{gettext('Delete Account')}</h2>
-                  <button data-activate>{gettext('Delete')}</button>
-                </header>
-                <AccordionContent>
-                  <p>Placeholder content</p>
-                </AccordionContent>
-              </AccordionSection>
-            </Accordion>
-          </div>
-        </div>
+      <div>
+        <nav className="sidebar">
+          {this.renderNav()}
+        </nav>
+        <main className="content">{props.children}</main>
+      </div>
     );
   }
 }

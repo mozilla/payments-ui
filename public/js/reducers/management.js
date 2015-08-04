@@ -17,24 +17,51 @@ export default function management(state, action) {
     });
   }
 
+  if (action.type === actionTypes.SHOW_MY_ACCOUNT) {
+    console.log('management: got action', action);
+    return Object.assign({}, initialMgmtState, {
+      tab: 'profile',
+      view: action.type,
+    });
+  }
+
   if (action.type === actionTypes.SHOW_PAY_METHODS) {
     console.log('management: got action', action);
     return Object.assign({}, initialMgmtState, {
-      tab: action.type,
+      tab: 'pay-methods',
+      view: action.type,
     });
   }
 
   if (action.type === actionTypes.SHOW_ADD_PAY_METHOD) {
     console.log('management: got action', action);
     return Object.assign({}, initialMgmtState, {
-      tab: action.type,
+      tab: 'pay-methods',
+      view: action.type,
     });
   }
 
   if (action.type === actionTypes.SHOW_DEL_PAY_METHOD) {
     console.log('management: got action', action);
     return Object.assign({}, initialMgmtState, {
-      tab: action.type,
+      tab: 'pay-methods',
+      view: action.type,
+    });
+  }
+
+  if (action.type === actionTypes.SHOW_HISTORY) {
+    console.log('management: got action', action);
+    return Object.assign({}, initialMgmtState, {
+      tab: 'history',
+      view: action.type,
+    });
+  }
+
+  if (action.type === actionTypes.SHOW_SUBSCRIPTIONS) {
+    console.log('management: got action', action);
+    return Object.assign({}, initialMgmtState, {
+      tab: 'subs',
+      view: action.type,
     });
   }
 

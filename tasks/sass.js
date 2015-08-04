@@ -19,7 +19,8 @@ module.exports = {
       outputStyle: 'expanded'
     },
     files: {
-      'public/dist/main.css': 'public/scss/main.scss',
+      'public/dist/transaction.css': 'public/scss/transaction.scss',
+      'public/dist/management.css': 'public/scss/management.scss',
     },
   },
   min: {
@@ -27,7 +28,8 @@ module.exports = {
       outputStyle: 'compressed'
     },
     files: {
-      'public/dist/main.min.css': 'public/scss/main.scss',
+      'public/dist/transaction.min.css': 'public/scss/transaction.scss',
+      'public/dist/management.min.css': 'public/scss/management.scss',
     },
   },
   email: {

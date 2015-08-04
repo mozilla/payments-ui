@@ -34,7 +34,7 @@ export default class CardListing extends Component {
           submitButtonText={gettext('Subscribe')}
           submitHandler={this.handleSubmit}
         />
-        <a className="card-add bottom-link" href="#"
+        <a className="add-card" href="#"
           onClick={this.props.payWithNewCard}>
           {gettext('Add new credit card')}
         </a>

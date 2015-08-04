@@ -3,7 +3,7 @@ import TestUtils from 'react/lib/ReactTestUtils';
 
 import * as helpers from './helpers';
 
-import CompletePayment from 'views/complete-payment';
+import CompletePayment from 'views/transaction/complete-payment';
 
 
 describe('CompletePayment', function() {

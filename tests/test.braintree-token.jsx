@@ -1,7 +1,7 @@
 import React from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
 
-import BraintreeToken from 'views/braintree-token';
+import BraintreeToken from 'views/shared/braintree-token';
 
 
 describe('BraintreeToken', function() {
