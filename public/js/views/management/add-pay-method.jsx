@@ -10,7 +10,6 @@ export default class AddPayMethod extends Component {
 
   static propTypes = {
     addCreditCard: PropTypes.func.isRequired,
-    addPayMethod: PropTypes.func.isRequired,
     braintreeToken: PropTypes.string.isRequired,
     cardSubmissionErrors: PropTypes.object,
     closeModal: PropTypes.func.isRequired,

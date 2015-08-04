@@ -18,7 +18,8 @@ export default class MyAccount extends Component {
           <p className="col email">{this.props.user.email}</p>
           <a
             className="manage-account button quiet"
-            href="https://accounts.firefox.com/">
+            href="https://accounts.firefox.com/"
+            target="_blank">
             {gettext('Change email address and password')}
           </a>
         </div>

@@ -48,31 +48,31 @@ export default class Management extends Component {
   }
 
   showMyAccount = e => {
-    e.preDefault();
+    e.preventDefault();
   }
 
   showPayMethods = e => {
-    e.preDefault();
+    e.preventDefault();
     this.props.showPayMethods();
   }
 
   showReceipts = e => {
-    e.preDefault();
+    e.preventDefault();
     e.stopPropagation();
   }
 
   showSubscriptions = e => {
-    e.preDefault();
+    e.preventDefault();
     this.props.getUserSubscriptions();
   }
 
   userSignIn = e => {
-    e.preDefault();
+    e.preventDefault();
     this.props.userSignIn();
   }
 
   userSignOut = e => {
-    e.preDefault();
+    e.preventDefault();
     this.props.userSignOut();
   }
 
