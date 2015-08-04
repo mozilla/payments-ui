@@ -32,7 +32,7 @@ describe('userActions', function() {
   function tokenSignIn({accessToken='some-access-token', api=null,
                         fetch=null}) {
     if (!api) {
-      api= {
+      api = {
         fetch: fetch,
         setCSRFToken: sinon.stub(),
       };
