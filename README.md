@@ -53,7 +53,7 @@ cases will be rare.
 
 ### Watching for file changes in development.
 
-If you're using [payments-env](https://github.com/mozilla/payments-env/)
+If you're using [payments-env][payments-env]
 to run the complete payments system then you'll want to use
 `grunt start` on your host to watch for file changes.
 In other words, start docker to run all the things but keep a shell open
@@ -76,23 +76,14 @@ refresh. Read on if you want to also interact with the API server.
 
 #### Developing with webpack-dev-server + docker for hot reloading.
 
-To be able to use hot module reloading in conjunction with our docker environment
-you can use [Charles Proxy][charles] to rewrite API requests
-to pay.dev. This allows webpack-dev-server to be used to serve the front-end whilst
-continuing to allow API requests to be serviced via docker.
+If you are running the full stack with [payments-env][payments-env] then you'll also
+be able to interact with the API when using hot reloading.
 
-There are a couple steps to getting this working:
+First, create an `/etc/hosts` entry like `127.0.0.1  pay.webpack`
+so that you can access your webpack server on a predictable host.
 
-* Create an `/etc/hosts` entry like `127.0.0.1  pay.webpack`
-* Install [Charles Proxy][charles]
-* Open *Tools > Rewrite* and tick the box *Enable Rewrite*
-* Click the *Import* button and select the file `charles/payments-webpack.xml`
-  * You should see **Payments Webpack** appear in the Sets list
-  * Click OK
-
-[charles]: http://www.charlesproxy.com/
-
-To see the payment interface with hot module loading enabled visit:
+To see the purchase interface with hot module loading enabled visit
+the example site at:
 
 http://pay.dev?webpack
 
@@ -179,3 +170,5 @@ To run an extraction, checkout out the [payments-l10n repository](https://github
 npm install
 grunt webpack abideExtract
 ```
+
+[payments-env]: https://github.com/mozilla/payments-env/
