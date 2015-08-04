@@ -2,7 +2,7 @@ import React from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
 
 import CardChoice from 'components/card-choice';
-import CardListing from 'views/card-listing';
+import CardListing from 'views/transaction/card-listing';
 
 
 describe('CardListingView', function() {

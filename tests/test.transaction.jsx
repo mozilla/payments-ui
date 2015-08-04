@@ -8,10 +8,10 @@ import * as transactionActions from 'actions/transaction';
 import { createReduxStore } from 'data-store';
 import { defaultState as defaultUser } from 'reducers/user';
 
-import Purchase from 'views/purchase';
+import Transaction from 'views/transaction';
 
 
-describe('Purchase', function() {
+describe('Transaction', function() {
 
   var testUser;
   var productId = 'mozilla-concrete-brick';
@@ -36,7 +36,7 @@ describe('Purchase', function() {
       <FluxContainer>
         {function() {
           return (
-            <Purchase
+            <Transaction
               BraintreeToken={FakeBraintreeToken}
               AddSubscription={FakeAddSubscription}
               CardListing={FakeCardListing}
@@ -47,7 +47,7 @@ describe('Purchase', function() {
       </FluxContainer>
     );
     return TestUtils.findRenderedComponentWithType(
-      container, Purchase
+      container, Transaction
     );
   }
 

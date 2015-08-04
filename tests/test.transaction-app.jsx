@@ -7,16 +7,16 @@ import { createReduxStore } from 'data-store';
 import { initialUserState } from 'reducers/user';
 import * as actionTypes from 'constants/action-types';
 import * as appActions from 'actions/app';
-import PaymentApp from 'apps/payment/app';
+import TransactionApp from 'apps/transaction/app';
 import ErrorMessage from 'components/error';
 
 
-describe('Payment App', function() {
+describe('Transaction App', function() {
 
   var accessToken = 'some-oauth-token';
   var productId = 'mozilla-concrete-brick';
   var FakeLogin = helpers.stubComponent();
-  var FakePurchase = helpers.stubComponent();
+  var FakeTransaction = helpers.stubComponent();
   var store;
 
   beforeEach(function() {
@@ -37,14 +37,14 @@ describe('Payment App', function() {
       <FluxContainer>
         {function() {
           return (
-            <PaymentApp
-              Login={FakeLogin} Purchase={FakePurchase} win={fakeWin} />
+            <TransactionApp
+              Login={FakeLogin} Transaction={FakeTransaction} win={fakeWin} />
           );
         }}
       </FluxContainer>
     );
     return TestUtils.findRenderedComponentWithType(
-      container, PaymentApp
+      container, TransactionApp
     );
   }
 
@@ -84,7 +84,7 @@ describe('Payment App', function() {
     });
 
     var purchase = TestUtils.findRenderedComponentWithType(
-      View, FakePurchase
+      View, FakeTransaction
     );
     assert.deepEqual(purchase.props.user, user);
   });

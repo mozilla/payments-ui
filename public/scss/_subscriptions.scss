@@ -1,16 +1,19 @@
 .subscription-list {
     margin: 0;
+    max-width: 600px;
     padding: 0;
-
-    li {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
 }
 
 .subscription {
-    padding-bottom: 2em;
+
+    list-style-type: none;
+    padding: 2em 0 0;
+    margin: 2em 0 0;
+    border-top: 1px solid $heading-border;
+
+    &:first-child {
+        border-top: none;
+    }
 
     .product {
         float: left;

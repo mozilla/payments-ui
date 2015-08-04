@@ -1,43 +1,44 @@
 import React, { Component, PropTypes } from 'react';
 
 import CardForm from 'components/card-form';
-import ProductDetail from 'components/product-detail';
+
 import { default as tracking } from 'tracking';
 import { gettext } from 'utils';
 
 
-export default class AddSubscription extends Component {
+export default class AddPayMethod extends Component {
 
   static propTypes = {
+    addCreditCard: PropTypes.func.isRequired,
+    addPayMethod: PropTypes.func.isRequired,
     braintreeToken: PropTypes.string.isRequired,
     cardSubmissionErrors: PropTypes.object,
-    createSubscription: PropTypes.func.isRequired,
-    productId: PropTypes.string.isRequired,
+    closeModal: PropTypes.func.isRequired,
+    showPayMethods: PropTypes.func.isRequired,
   }
 
   componentDidMount() {
-    tracking.setPage('/add-subscription');
+    tracking.setPage('/add-pay-method');
   }
 
   handleCardSubmit(creditCard) {
-    console.log('submitting credit card to sign up for subscription',
-                this.props.productId);
-    this.props.createSubscription(this.props.productId,
-                                  creditCard,
-                                  this.props.braintreeToken);
+    console.log('submitting credit card as new pay method');
+    this.props.addCreditCard(this.props.braintreeToken, creditCard);
   }
 
   render() {
     return (
       <div className="card-details">
-        <ProductDetail productId={this.props.productId} />
+        <h1>{gettext('Add Card')}</h1>
         <CardForm
           submissionErrors={this.props.cardSubmissionErrors}
-          submitPrompt={gettext('Subscribe')}
+          submitPrompt={gettext('Add')}
           handleCardSubmit={(card) => this.handleCardSubmit(card)}
           id="braintree-form"
           method="post"
         />
+        <a href="#" className="back" onClick={this.props.showPayMethods}>
+          {gettext('Back')}</a>
       </div>
     );
   }

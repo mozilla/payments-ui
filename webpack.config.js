@@ -7,7 +7,7 @@ module.exports = {
   devtool: 'source-map',
   entry: {
     'management': './public/js/apps/management/main.js',
-    'payment': './public/js/apps/payment/main.js',
+    'transaction': './public/js/apps/transaction/main.js',
   },
   failOnError: true,
   output: {

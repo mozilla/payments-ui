@@ -172,16 +172,21 @@ export default class CardForm extends Component {
     });
 
     return (
-      <form {...this.props} onSubmit={this.handleSubmit}>
-        <CardInput {...fieldProps.card}
-          cardType={this.state.cardType}
-          onChangeHandler={this.handleChange} />
-        <CardInput {...fieldProps.expiration}
-          cardType={this.state.cardType}
-          onChangeHandler={this.handleChange} />
-        <CardInput {...fieldProps.cvv}
-          cardType={this.state.cardType}
-          onChangeHandler={this.handleChange} />
+      <form
+        {...this.props}
+        className="card-form"
+        onSubmit={this.handleSubmit}>
+        <div className="wrapper">
+          <CardInput {...fieldProps.card}
+            cardType={this.state.cardType}
+            onChangeHandler={this.handleChange} />
+          <CardInput {...fieldProps.expiration}
+            cardType={this.state.cardType}
+            onChangeHandler={this.handleChange} />
+          <CardInput {...fieldProps.cvv}
+            cardType={this.state.cardType}
+            onChangeHandler={this.handleChange} />
+        </div>
         <SubmitButton isDisabled={!formIsValid}
           showSpinner={this.state.isSubmitting}
           text={this.props.submitPrompt} />

@@ -11,15 +11,17 @@ import * as userActions from 'actions/user';
 import * as subscriptionActions from 'actions/subscriptions';
 import { parseQuery } from 'utils';
 
-import Modal from 'components/modal';
+import AddPayMethod from 'views/management/add-pay-method';
+import DelPayMethod from 'views/management/del-pay-method';
+import MyAccount from 'views/management/my-account';
+import Subscriptions from 'views/management/subscriptions';
+import History from 'views/management/history';
+import { default as DefaultPayMethods } from 'views/management/pay-methods';
 
-import AddPayMethod from 'views/add-pay-method';
-import DelPayMethod from 'views/del-pay-method';
-import BraintreeToken from 'views/braintree-token';
-import ModalError from 'views/modal-error';
+import BraintreeToken from 'views/shared/braintree-token';
+import ModalError from 'views/shared/modal-error';
 
 import { default as DefaultManagement } from 'views/management';
-import { default as DefaultPayMethods } from 'views/pay-methods';
 
 
 export default class ManagementApp extends Component {
@@ -62,18 +64,24 @@ export default class ManagementApp extends Component {
       children.push(
         <ModalError {...boundMgmtActions} error={connector.management.error} />
       );
-    } else if (connector.management.tab === 'SHOW_PAY_METHODS') {
+    } else if (connector.management.view === 'SHOW_MY_ACCOUNT') {
+      console.log('Showing pay methods');
+      children.push((
+        <MyAccount
+          {...boundUserActions}
+          user={connector.user}
+        />
+      ));
+    } else if (connector.management.view === 'SHOW_PAY_METHODS') {
       console.log('Showing pay methods');
       children.push((
         <PayMethods {...boundMgmtActions}
           payMethods={connector.user.payMethods} />
       ));
-    } else if (connector.management.tab === 'SHOW_ADD_PAY_METHOD') {
+    } else if (connector.management.view === 'SHOW_ADD_PAY_METHOD') {
       if (!connector.user.braintreeToken) {
         children.push((
-          <Modal {...boundMgmtActions}>
-            <BraintreeToken {...boundUserActions} />
-          </Modal>
+          <BraintreeToken {...boundUserActions} />
         ));
       } else {
         children.push((
@@ -85,7 +93,7 @@ export default class ManagementApp extends Component {
           />
         ));
       }
-    } else if (connector.management.tab === 'SHOW_DEL_PAY_METHOD') {
+    } else if (connector.management.view === 'SHOW_DEL_PAY_METHOD') {
       children.push((
         <DelPayMethod
           payMethods={connector.user.payMethods}
@@ -93,28 +101,35 @@ export default class ManagementApp extends Component {
           {...boundPayMethodActions}
         />
       ));
+    } else if (connector.management.view === 'SHOW_SUBSCRIPTIONS') {
+      children.push((
+        <Subscriptions
+          {...boundSubscriptionActions}
+          userSubscriptions={connector.user.subscriptions}
+        />
+      ));
+    } else if (connector.management.view === 'SHOW_HISTORY') {
+      children.push((
+        <History />
+      ));
     }
 
-    children.push(<Management
-                    {...boundMgmtActions}
-                    {...boundPayMethodActions}
-                    {...boundSubscriptionActions}
-                    {...boundUserActions}
-                    accessToken={accessToken}
-                    user={connector.user}
-                    userSubscriptions={connector.user.subscriptions}
-                  />);
 
-    return <div>{children}</div>;
+    return (<Management
+              {...boundMgmtActions}
+              {...boundUserActions}
+              accessToken={accessToken}
+              tab={connector.management.tab}
+              view={connector.management.view}
+              user={connector.user}
+            >{children}</Management>);
   }
 
   render() {
     return (
-      <main>
-        <Connector select={this.selectData}>
-          {(connector) => this.renderChild(connector)}
-        </Connector>
-      </main>
+      <Connector select={this.selectData}>
+        {(connector) => this.renderChild(connector)}
+      </Connector>
     );
   }
 }

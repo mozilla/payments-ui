@@ -1,7 +1,7 @@
 import React from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
 
-import Login from 'views/login';
+import Login from 'views/shared/login';
 
 
 describe('Login', function() {
