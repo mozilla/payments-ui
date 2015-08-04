@@ -1,4 +1,46 @@
-webpackJsonp([0,2],[
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/dist/";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -10,13 +52,18 @@ webpackJsonp([0,2],[
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
-	var _app = __webpack_require__(2);
+	var _tracking = __webpack_require__(251);
+	
+	var _tracking2 = _interopRequireDefault(_tracking);
+	
+	var _app = __webpack_require__(271);
 	
 	// Common ajax settings.
 	_jquery2['default'].ajaxSetup({
 	  dataType: 'json'
 	});
 	
+	_tracking2['default'].init();
 	(0, _app.init)();
 
 /***/ },
@@ -9236,219 +9283,7 @@ webpackJsonp([0,2],[
 
 
 /***/ },
-/* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	exports.init = init;
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-	
-	__webpack_require__(3);
-	
-	var _react = __webpack_require__(10);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactRedux = __webpack_require__(166);
-	
-	var _redux = __webpack_require__(178);
-	
-	var _dataStore = __webpack_require__(190);
-	
-	var _dataStore2 = _interopRequireDefault(_dataStore);
-	
-	var _actionsManagement = __webpack_require__(198);
-	
-	var mgmtActions = _interopRequireWildcard(_actionsManagement);
-	
-	var _actionsPayMethods = __webpack_require__(199);
-	
-	var payMethodActions = _interopRequireWildcard(_actionsPayMethods);
-	
-	var _actionsUser = __webpack_require__(202);
-	
-	var userActions = _interopRequireWildcard(_actionsUser);
-	
-	var _actionsSubscriptions = __webpack_require__(204);
-	
-	var subscriptionActions = _interopRequireWildcard(_actionsSubscriptions);
-	
-	var _utils = __webpack_require__(206);
-	
-	var _viewsManagementAddPayMethod = __webpack_require__(207);
-	
-	var _viewsManagementAddPayMethod2 = _interopRequireDefault(_viewsManagementAddPayMethod);
-	
-	var _viewsManagementDelPayMethod = __webpack_require__(252);
-	
-	var _viewsManagementDelPayMethod2 = _interopRequireDefault(_viewsManagementDelPayMethod);
-	
-	var _viewsManagementMyAccount = __webpack_require__(256);
-	
-	var _viewsManagementMyAccount2 = _interopRequireDefault(_viewsManagementMyAccount);
-	
-	var _viewsManagementSubscriptions = __webpack_require__(257);
-	
-	var _viewsManagementSubscriptions2 = _interopRequireDefault(_viewsManagementSubscriptions);
-	
-	var _viewsManagementHistory = __webpack_require__(264);
-	
-	var _viewsManagementHistory2 = _interopRequireDefault(_viewsManagementHistory);
-	
-	var _viewsManagementPayMethods = __webpack_require__(265);
-	
-	var _viewsManagementPayMethods2 = _interopRequireDefault(_viewsManagementPayMethods);
-	
-	var _viewsSharedBraintreeToken = __webpack_require__(266);
-	
-	var _viewsSharedBraintreeToken2 = _interopRequireDefault(_viewsSharedBraintreeToken);
-	
-	var _viewsSharedModalError = __webpack_require__(267);
-	
-	var _viewsSharedModalError2 = _interopRequireDefault(_viewsSharedModalError);
-	
-	var _viewsManagement = __webpack_require__(270);
-	
-	var _viewsManagement2 = _interopRequireDefault(_viewsManagement);
-	
-	var ManagementApp = (function (_Component) {
-	  _inherits(ManagementApp, _Component);
-	
-	  function ManagementApp() {
-	    _classCallCheck(this, ManagementApp);
-	
-	    _get(Object.getPrototypeOf(ManagementApp.prototype), 'constructor', this).apply(this, arguments);
-	  }
-	
-	  _createClass(ManagementApp, [{
-	    key: 'selectData',
-	    value: function selectData(state) {
-	      return {
-	        management: state.management,
-	        user: state.user
-	      };
-	    }
-	  }, {
-	    key: 'renderChild',
-	    value: function renderChild(connector) {
-	      console.log('rendering management app at tab:', connector.management.tab);
-	      var qs = (0, _utils.parseQuery)(this.props.window.location.href);
-	      var accessToken = qs.access_token;
-	      var boundMgmtActions = (0, _redux.bindActionCreators)(mgmtActions, connector.dispatch);
-	      var boundUserActions = (0, _redux.bindActionCreators)(userActions, connector.dispatch);
-	      var boundSubscriptionActions = (0, _redux.bindActionCreators)(subscriptionActions, connector.dispatch);
-	      var boundPayMethodActions = (0, _redux.bindActionCreators)(payMethodActions, connector.dispatch);
-	      var children = [];
-	      var Management = this.props.Management;
-	      var PayMethods = this.props.PayMethods;
-	
-	      if (connector.management.error) {
-	        children.push(_react2['default'].createElement(_viewsSharedModalError2['default'], _extends({}, boundMgmtActions, { error: connector.management.error })));
-	      } else if (connector.management.view === 'SHOW_MY_ACCOUNT') {
-	        console.log('Showing pay methods');
-	        children.push(_react2['default'].createElement(_viewsManagementMyAccount2['default'], _extends({}, boundUserActions, {
-	          user: connector.user
-	        })));
-	      } else if (connector.management.view === 'SHOW_PAY_METHODS') {
-	        console.log('Showing pay methods');
-	        children.push(_react2['default'].createElement(PayMethods, _extends({}, boundMgmtActions, {
-	          payMethods: connector.user.payMethods })));
-	      } else if (connector.management.view === 'SHOW_ADD_PAY_METHOD') {
-	        if (!connector.user.braintreeToken) {
-	          children.push(_react2['default'].createElement(_viewsSharedBraintreeToken2['default'], boundUserActions));
-	        } else {
-	          children.push(_react2['default'].createElement(_viewsManagementAddPayMethod2['default'], _extends({}, boundMgmtActions, boundPayMethodActions, boundUserActions, {
-	            braintreeToken: connector.user.braintreeToken
-	          })));
-	        }
-	      } else if (connector.management.view === 'SHOW_DEL_PAY_METHOD') {
-	        children.push(_react2['default'].createElement(_viewsManagementDelPayMethod2['default'], _extends({
-	          payMethods: connector.user.payMethods
-	        }, boundMgmtActions, boundPayMethodActions)));
-	      } else if (connector.management.view === 'SHOW_SUBSCRIPTIONS') {
-	        children.push(_react2['default'].createElement(_viewsManagementSubscriptions2['default'], _extends({}, boundSubscriptionActions, {
-	          userSubscriptions: connector.user.subscriptions
-	        })));
-	      } else if (connector.management.view === 'SHOW_HISTORY') {
-	        children.push(_react2['default'].createElement(_viewsManagementHistory2['default'], null));
-	      }
-	
-	      return _react2['default'].createElement(
-	        Management,
-	        _extends({}, boundMgmtActions, boundUserActions, {
-	          accessToken: accessToken,
-	          tab: connector.management.tab,
-	          view: connector.management.view,
-	          user: connector.user
-	        }),
-	        children
-	      );
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this = this;
-	
-	      return _react2['default'].createElement(
-	        _reactRedux.Connector,
-	        { select: this.selectData },
-	        function (connector) {
-	          return _this.renderChild(connector);
-	        }
-	      );
-	    }
-	  }], [{
-	    key: 'propTypes',
-	    value: {
-	      Management: _react.PropTypes.func.isRequired,
-	      PayMethods: _react.PropTypes.func.isRequired,
-	      window: _react.PropTypes.object.isRequired
-	    },
-	    enumerable: true
-	  }, {
-	    key: 'defaultProps',
-	    value: {
-	      Management: _viewsManagement2['default'],
-	      PayMethods: _viewsManagementPayMethods2['default'],
-	      window: window
-	    },
-	    enumerable: true
-	  }]);
-	
-	  return ManagementApp;
-	})(_react.Component);
-	
-	exports['default'] = ManagementApp;
-	
-	function init() {
-	  _react2['default'].render(_react2['default'].createElement(
-	    _reactRedux.Provider,
-	    { store: _dataStore2['default'] },
-	    function () {
-	      return _react2['default'].createElement(ManagementApp, null);
-	    }
-	  ), document.body);
-	}
-
-/***/ },
+/* 2 */,
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -31683,206 +31518,8 @@ webpackJsonp([0,2],[
 	}
 
 /***/ },
-/* 198 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	exports.error = error;
-	exports.showMyAccount = showMyAccount;
-	exports.showPayMethods = showPayMethods;
-	exports.showAddPayMethod = showAddPayMethod;
-	exports.showDelPayMethod = showDelPayMethod;
-	exports.showHistory = showHistory;
-	exports.showSubscriptions = showSubscriptions;
-	exports.closeModal = closeModal;
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
-	
-	var _constantsActionTypes = __webpack_require__(194);
-	
-	var actionTypes = _interopRequireWildcard(_constantsActionTypes);
-	
-	function error(debugMessage) {
-	  return {
-	    type: actionTypes.APP_ERROR,
-	    error: { debugMessage: debugMessage }
-	  };
-	}
-	
-	function showMyAccount() {
-	  return {
-	    type: actionTypes.SHOW_MY_ACCOUNT
-	  };
-	}
-	
-	function showPayMethods() {
-	  return {
-	    type: actionTypes.SHOW_PAY_METHODS
-	  };
-	}
-	
-	function showAddPayMethod() {
-	  return {
-	    type: actionTypes.SHOW_ADD_PAY_METHOD
-	  };
-	}
-	
-	function showDelPayMethod() {
-	  return {
-	    type: actionTypes.SHOW_DEL_PAY_METHOD
-	  };
-	}
-	
-	function showHistory() {
-	  return {
-	    type: actionTypes.SHOW_HISTORY
-	  };
-	}
-	
-	function showSubscriptions() {
-	  return {
-	    type: actionTypes.SHOW_SUBSCRIPTIONS
-	  };
-	}
-	
-	function closeModal() {
-	  return {
-	    type: actionTypes.CLOSE_MODAL
-	  };
-	}
-
-/***/ },
-/* 199 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	exports.delPayMethod = delPayMethod;
-	exports.getPayMethods = getPayMethods;
-	exports.addCreditCard = addCreditCard;
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _jquery = __webpack_require__(1);
-	
-	var _jquery2 = _interopRequireDefault(_jquery);
-	
-	var _braintreeWeb = __webpack_require__(200);
-	
-	var _braintreeWeb2 = _interopRequireDefault(_braintreeWeb);
-	
-	var _constantsActionTypes = __webpack_require__(194);
-	
-	var actionTypes = _interopRequireWildcard(_constantsActionTypes);
-	
-	var _app = __webpack_require__(201);
-	
-	var appActions = _interopRequireWildcard(_app);
-	
-	function delPayMethod(payMethodUri) {
-	  var _this = this;
-	
-	  var jquery = arguments.length <= 1 || arguments[1] === undefined ? _jquery2['default'] : arguments[1];
-	
-	  if (typeof payMethodUri === 'undefined') {
-	    throw new Error('payMethodUri is undefined');
-	  }
-	
-	  return function (dispatch) {
-	    jquery.ajax({
-	      method: 'post',
-	      url: '/api/braintree/paymethod/delete/',
-	      data: {
-	        pay_method_uri: payMethodUri
-	      },
-	      context: _this
-	    }).then(function (data) {
-	      dispatch({
-	        type: actionTypes.GOT_PAY_METHODS,
-	        payMethods: data.payment_methods
-	      });
-	    }).fail(function () {
-	      console.log('Deleting pay method failed');
-	      dispatch(appActions.error('Deleting pay method failed'));
-	    });
-	  };
-	}
-	
-	function getPayMethods() {
-	  var _this2 = this;
-	
-	  var jquery = arguments.length <= 0 || arguments[0] === undefined ? _jquery2['default'] : arguments[0];
-	
-	  // Note: not currently used as payMethods
-	  // are added to user state upon login.
-	  return function (dispatch) {
-	    jquery.ajax({
-	      method: 'get',
-	      url: '/api/braintree/mozilla/paymethod/',
-	      context: _this2
-	    }).then(function (data) {
-	      dispatch({
-	        type: actionTypes.GOT_PAY_METHODS,
-	        payMethods: data
-	      });
-	    }).fail(function () {
-	      console.log('Retrieving cards failed');
-	      dispatch(appActions.error('Retrieving cards failed'));
-	    });
-	  };
-	}
-	
-	function addCreditCard(braintreeToken, creditCard) {
-	  var jquery = arguments.length <= 2 || arguments[2] === undefined ? _jquery2['default'] : arguments[2];
-	  var BraintreeClient = arguments.length <= 3 || arguments[3] === undefined ? _braintreeWeb2['default'].api.Client : arguments[3];
-	
-	  return function (dispatch) {
-	    var client = new BraintreeClient({
-	      clientToken: braintreeToken
-	    });
-	    client.tokenizeCard({
-	      number: creditCard.number,
-	      expirationDate: creditCard.expiration,
-	      cvv: creditCard.cvv
-	    }, function (err, nonce) {
-	      if (err) {
-	        console.error('Braintree tokenization error:', err);
-	        dispatch(appActions.error('Braintree tokenization error'));
-	      } else {
-	        jquery.ajax({
-	          data: {
-	            nonce: nonce
-	          },
-	          url: '/api/braintree/paymethod/',
-	          method: 'post',
-	          dataType: 'json'
-	        }).then(function (data) {
-	          console.log('Successfully added a pay method. API Result:', data);
-	          dispatch({
-	            type: actionTypes.GOT_PAY_METHODS,
-	            payMethods: data.payment_methods
-	          });
-	        }).fail(function ($xhr) {
-	          dispatch({
-	            type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
-	            apiErrorResult: $xhr.responseJSON
-	          });
-	        });
-	      }
-	    });
-	  };
-	}
-
-/***/ },
+/* 198 */,
+/* 199 */,
 /* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -32340,107 +31977,7 @@ webpackJsonp([0,2],[
 	}
 
 /***/ },
-/* 207 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-	
-	var _react = __webpack_require__(10);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _componentsCardForm = __webpack_require__(208);
-	
-	var _componentsCardForm2 = _interopRequireDefault(_componentsCardForm);
-	
-	var _tracking = __webpack_require__(251);
-	
-	var _tracking2 = _interopRequireDefault(_tracking);
-	
-	var _utils = __webpack_require__(206);
-	
-	var AddPayMethod = (function (_Component) {
-	  _inherits(AddPayMethod, _Component);
-	
-	  function AddPayMethod() {
-	    _classCallCheck(this, AddPayMethod);
-	
-	    _get(Object.getPrototypeOf(AddPayMethod.prototype), 'constructor', this).apply(this, arguments);
-	  }
-	
-	  _createClass(AddPayMethod, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      _tracking2['default'].setPage('/add-pay-method');
-	    }
-	  }, {
-	    key: 'handleCardSubmit',
-	    value: function handleCardSubmit(creditCard) {
-	      console.log('submitting credit card as new pay method');
-	      this.props.addCreditCard(this.props.braintreeToken, creditCard);
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this = this;
-	
-	      return _react2['default'].createElement(
-	        'div',
-	        { className: 'card-details' },
-	        _react2['default'].createElement(
-	          'h1',
-	          null,
-	          (0, _utils.gettext)('Add Card')
-	        ),
-	        _react2['default'].createElement(_componentsCardForm2['default'], {
-	          submissionErrors: this.props.cardSubmissionErrors,
-	          submitPrompt: (0, _utils.gettext)('Add'),
-	          handleCardSubmit: function (card) {
-	            return _this.handleCardSubmit(card);
-	          },
-	          id: 'braintree-form',
-	          method: 'post'
-	        }),
-	        _react2['default'].createElement(
-	          'a',
-	          { href: '#', className: 'back', onClick: this.props.showPayMethods },
-	          (0, _utils.gettext)('Back')
-	        )
-	      );
-	    }
-	  }], [{
-	    key: 'propTypes',
-	    value: {
-	      addCreditCard: _react.PropTypes.func.isRequired,
-	      braintreeToken: _react.PropTypes.string.isRequired,
-	      cardSubmissionErrors: _react.PropTypes.object,
-	      closeModal: _react.PropTypes.func.isRequired,
-	      showPayMethods: _react.PropTypes.func.isRequired
-	    },
-	    enumerable: true
-	  }]);
-	
-	  return AddPayMethod;
-	})(_react.Component);
-	
-	exports['default'] = AddPayMethod;
-	module.exports = exports['default'];
-
-/***/ },
+/* 207 */,
 /* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -37029,106 +36566,7 @@ webpackJsonp([0,2],[
 	});
 
 /***/ },
-/* 252 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-	
-	var _react = __webpack_require__(10);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _componentsCardChoice = __webpack_require__(253);
-	
-	var _componentsCardChoice2 = _interopRequireDefault(_componentsCardChoice);
-	
-	var _tracking = __webpack_require__(251);
-	
-	var _tracking2 = _interopRequireDefault(_tracking);
-	
-	var _utils = __webpack_require__(206);
-	
-	var DelPayMethod = (function (_Component) {
-	  _inherits(DelPayMethod, _Component);
-	
-	  function DelPayMethod() {
-	    var _this = this;
-	
-	    _classCallCheck(this, DelPayMethod);
-	
-	    _get(Object.getPrototypeOf(DelPayMethod.prototype), 'constructor', this).apply(this, arguments);
-	
-	    this.handleSubmit = function (card) {
-	      _this.props.delPayMethod(card);
-	    };
-	  }
-	
-	  _createClass(DelPayMethod, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      _tracking2['default'].setPage('/del-pay-method');
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2['default'].createElement(
-	        'div',
-	        null,
-	        _react2['default'].createElement(
-	          'h1',
-	          null,
-	          (0, _utils.gettext)('Delete Card')
-	        ),
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'small-form' },
-	          _react2['default'].createElement(_componentsCardChoice2['default'], {
-	            cssModifier: 'delete',
-	            submitButtonText: (0, _utils.gettext)('Delete'),
-	            submitButtonCSSModifier: 'warning',
-	            submitHandler: this.handleSubmit,
-	            cards: this.props.payMethods
-	          })
-	        ),
-	        _react2['default'].createElement(
-	          'a',
-	          { href: '#', className: 'back', onClick: this.props.showPayMethods },
-	          (0, _utils.gettext)('Back')
-	        )
-	      );
-	    }
-	  }], [{
-	    key: 'propTypes',
-	    value: {
-	      closeModal: _react.PropTypes.func.isRequired,
-	      delPayMethod: _react.PropTypes.func.isRequired,
-	      payMethods: _react.PropTypes.array.isRequired,
-	      showPayMethods: _react.PropTypes.func.isRequired
-	    },
-	    enumerable: true
-	  }]);
-	
-	  return DelPayMethod;
-	})(_react.Component);
-	
-	exports['default'] = DelPayMethod;
-	module.exports = exports['default'];
-
-/***/ },
+/* 252 */,
 /* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -37412,284 +36850,9 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 256 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-	
-	var _react = __webpack_require__(10);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _utils = __webpack_require__(206);
-	
-	var MyAccount = (function (_Component) {
-	  _inherits(MyAccount, _Component);
-	
-	  function MyAccount() {
-	    _classCallCheck(this, MyAccount);
-	
-	    _get(Object.getPrototypeOf(MyAccount.prototype), 'constructor', this).apply(this, arguments);
-	  }
-	
-	  _createClass(MyAccount, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2['default'].createElement(
-	        'div',
-	        null,
-	        _react2['default'].createElement(
-	          'h1',
-	          null,
-	          (0, _utils.gettext)('My account')
-	        ),
-	        _react2['default'].createElement(
-	          'h2',
-	          null,
-	          (0, _utils.gettext)('Edit my account')
-	        ),
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'row' },
-	          _react2['default'].createElement(
-	            'p',
-	            { className: 'col email' },
-	            this.props.user.email
-	          ),
-	          _react2['default'].createElement(
-	            'a',
-	            {
-	              className: 'manage-account button quiet',
-	              href: 'https://accounts.firefox.com/',
-	              target: '_blank' },
-	            (0, _utils.gettext)('Change email address and password')
-	          )
-	        ),
-	        _react2['default'].createElement(
-	          'h2',
-	          null,
-	          (0, _utils.gettext)('Delete account')
-	        ),
-	        _react2['default'].createElement(
-	          'p',
-	          null,
-	          (0, _utils.gettext)('When you delete your account, all of your ' + 'subscriptions will be cancelled. This action cannot ' + 'be undone. Are you sure you want to delete your account?')
-	        ),
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'row' },
-	          _react2['default'].createElement('div', { className: 'col' }),
-	          _react2['default'].createElement(
-	            'button',
-	            { className: 'quiet' },
-	            (0, _utils.gettext)('Delete account')
-	          )
-	        )
-	      );
-	    }
-	  }], [{
-	    key: 'propTypes',
-	    value: {
-	      user: _react.PropTypes.object.isRequired
-	    },
-	    enumerable: true
-	  }]);
-	
-	  return MyAccount;
-	})(_react.Component);
-	
-	exports['default'] = MyAccount;
-	module.exports = exports['default'];
-
-/***/ },
-/* 257 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-	
-	var _react = __webpack_require__(10);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _componentsSubscriptionList = __webpack_require__(258);
-	
-	var _componentsSubscriptionList2 = _interopRequireDefault(_componentsSubscriptionList);
-	
-	var _utils = __webpack_require__(206);
-	
-	var Subscriptions = (function (_Component) {
-	  _inherits(Subscriptions, _Component);
-	
-	  function Subscriptions() {
-	    _classCallCheck(this, Subscriptions);
-	
-	    _get(Object.getPrototypeOf(Subscriptions.prototype), 'constructor', this).apply(this, arguments);
-	  }
-	
-	  _createClass(Subscriptions, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      if (this.props.userSubscriptions === null) {
-	        this.props.getUserSubscriptions();
-	      }
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	
-	      return _react2['default'].createElement(
-	        'div',
-	        { className: 'subscriptions' },
-	        _react2['default'].createElement(
-	          'h1',
-	          null,
-	          (0, _utils.gettext)('Subscriptions')
-	        ),
-	        _react2['default'].createElement(_componentsSubscriptionList2['default'], {
-	          subscriptions: this.props.userSubscriptions
-	        })
-	      );
-	    }
-	  }], [{
-	    key: 'propTypes',
-	    value: {
-	      getUserSubscriptions: _react.PropTypes.func.isRequired,
-	      userSubscriptions: _react.PropTypes.array.isRequired
-	    },
-	    enumerable: true
-	  }]);
-	
-	  return Subscriptions;
-	})(_react.Component);
-	
-	exports['default'] = Subscriptions;
-	module.exports = exports['default'];
-
-/***/ },
-/* 258 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-	
-	var _react = __webpack_require__(10);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _utils = __webpack_require__(206);
-	
-	var _componentsSpinner = __webpack_require__(259);
-	
-	var _componentsSpinner2 = _interopRequireDefault(_componentsSpinner);
-	
-	var _componentsSubscription = __webpack_require__(260);
-	
-	var _componentsSubscription2 = _interopRequireDefault(_componentsSubscription);
-	
-	var SubscriptionList = (function (_Component) {
-	  _inherits(SubscriptionList, _Component);
-	
-	  function SubscriptionList() {
-	    _classCallCheck(this, SubscriptionList);
-	
-	    _get(Object.getPrototypeOf(SubscriptionList.prototype), 'constructor', this).apply(this, arguments);
-	  }
-	
-	  _createClass(SubscriptionList, [{
-	    key: 'render',
-	    value: function render() {
-	      console.log('subscriptions:', this.props.subscriptions);
-	
-	      if (this.props.subscriptions === null) {
-	        return _react2['default'].createElement(_componentsSpinner2['default'], null);
-	      } else {
-	
-	        var subs = [];
-	        this.props.subscriptions.forEach(function (data) {
-	          subs.push(_react2['default'].createElement(
-	            'li',
-	            { key: data.id, className: 'subscription' },
-	            _react2['default'].createElement(_componentsSubscription2['default'], data)
-	          ));
-	        });
-	
-	        if (subs.length) {
-	          return _react2['default'].createElement(
-	            'ul',
-	            { className: 'subscription-list' },
-	            subs
-	          );
-	        } else {
-	          return _react2['default'].createElement(
-	            'p',
-	            null,
-	            (0, _utils.gettext)("You haven't subscribed to anything yet.")
-	          );
-	        }
-	      }
-	    }
-	  }], [{
-	    key: 'propTypes',
-	    value: {
-	      subscriptions: _react.PropTypes.array
-	    },
-	    enumerable: true
-	  }, {
-	    key: 'defaultProps',
-	    value: {
-	      subscriptions: null
-	    },
-	    enumerable: true
-	  }]);
-	
-	  return SubscriptionList;
-	})(_react.Component);
-	
-	exports['default'] = SubscriptionList;
-	module.exports = exports['default'];
-
-/***/ },
+/* 256 */,
+/* 257 */,
+/* 258 */,
 /* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -37759,125 +36922,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 260 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-	
-	var _react = __webpack_require__(10);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _utils = __webpack_require__(206);
-	
-	var _products = __webpack_require__(261);
-	
-	var products = _interopRequireWildcard(_products);
-	
-	var Subscription = (function (_Component) {
-	  _inherits(Subscription, _Component);
-	
-	  function Subscription() {
-	    _classCallCheck(this, Subscription);
-	
-	    _get(Object.getPrototypeOf(Subscription.prototype), 'constructor', this).apply(this, arguments);
-	  }
-	
-	  _createClass(Subscription, [{
-	    key: 'render',
-	    value: function render() {
-	      var productData = products.get(this.props.seller_product.public_id);
-	
-	      return _react2['default'].createElement(
-	        'div',
-	        null,
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'product' },
-	          _react2['default'].createElement('img', { alt: '', src: productData.img }),
-	          _react2['default'].createElement(
-	            'h2',
-	            { className: 'seller' },
-	            productData.seller.name.en
-	          ),
-	          _react2['default'].createElement(
-	            'p',
-	            { className: 'description' },
-	            productData.description.en
-	          )
-	        ),
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'price' },
-	          _react2['default'].createElement(
-	            'div',
-	            null,
-	            productData.price.en
-	          ),
-	          _react2['default'].createElement(
-	            'div',
-	            null,
-	            '/ ',
-	            (0, _utils.gettext)('month')
-	          )
-	        ),
-	        _react2['default'].createElement(
-	          'nav',
-	          null,
-	          _react2['default'].createElement(
-	            'div',
-	            { className: 'change-pay-account' },
-	            _react2['default'].createElement(
-	              'a',
-	              { href: '#' },
-	              (0, _utils.gettext)('Change payment account')
-	            )
-	          ),
-	          _react2['default'].createElement(
-	            'div',
-	            { className: 'cancel' },
-	            _react2['default'].createElement(
-	              'a',
-	              { href: '#' },
-	              (0, _utils.gettext)('Cancel subscription')
-	            )
-	          )
-	        )
-	      );
-	    }
-	  }], [{
-	    key: 'propTypes',
-	    value: {
-	      seller_product: _react.PropTypes.shape({
-	        public_id: _react.PropTypes.string
-	      }).isRequired
-	    },
-	    enumerable: true
-	  }]);
-	
-	  return Subscription;
-	})(_react.Component);
-	
-	exports['default'] = Subscription;
-	module.exports = exports['default'];
-
-/***/ },
+/* 260 */,
 /* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -37954,171 +36999,8 @@ webpackJsonp([0,2],[
 	}
 
 /***/ },
-/* 264 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-	
-	var _react = __webpack_require__(10);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _utils = __webpack_require__(206);
-	
-	var History = (function (_Component) {
-	  _inherits(History, _Component);
-	
-	  function History() {
-	    _classCallCheck(this, History);
-	
-	    _get(Object.getPrototypeOf(History.prototype), 'constructor', this).apply(this, arguments);
-	  }
-	
-	  _createClass(History, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2['default'].createElement(
-	        'div',
-	        null,
-	        _react2['default'].createElement(
-	          'h1',
-	          null,
-	          (0, _utils.gettext)('Receipts and history')
-	        )
-	      );
-	    }
-	  }]);
-	
-	  return History;
-	})(_react.Component);
-	
-	exports['default'] = History;
-	module.exports = exports['default'];
-
-/***/ },
-/* 265 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-	
-	var _react = __webpack_require__(10);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _componentsCardList = __webpack_require__(254);
-	
-	var _componentsCardList2 = _interopRequireDefault(_componentsCardList);
-	
-	var _utils = __webpack_require__(206);
-	
-	var PayMethods = (function (_Component) {
-	  _inherits(PayMethods, _Component);
-	
-	  function PayMethods() {
-	    var _this = this;
-	
-	    _classCallCheck(this, PayMethods);
-	
-	    _get(Object.getPrototypeOf(PayMethods.prototype), 'constructor', this).apply(this, arguments);
-	
-	    this.handleAddPayMethod = function (e) {
-	      e.preventDefault();
-	      _this.props.showAddPayMethod();
-	    };
-	
-	    this.handleDelPayMethod = function (e) {
-	      e.preventDefault();
-	      _this.props.showDelPayMethod();
-	    };
-	  }
-	
-	  _createClass(PayMethods, [{
-	    key: 'renderChild',
-	    value: function renderChild() {
-	      if (this.props.payMethods && this.props.payMethods.length) {
-	        return _react2['default'].createElement(_componentsCardList2['default'], { cards: this.props.payMethods });
-	      }
-	      return _react2['default'].createElement(
-	        'p',
-	        { className: 'no-results' },
-	        (0, _utils.gettext)("You haven't added any credit cards yet")
-	      );
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2['default'].createElement(
-	        'div',
-	        null,
-	        _react2['default'].createElement(
-	          'h1',
-	          null,
-	          (0, _utils.gettext)('Payment Methods')
-	        ),
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'small-form' },
-	          this.renderChild(),
-	          _react2['default'].createElement(
-	            'a',
-	            { className: 'button quiet add-pay-method', href: '#',
-	              onClick: this.handleAddPayMethod },
-	            (0, _utils.gettext)('Add a new card')
-	          ),
-	          _react2['default'].createElement(
-	            'a',
-	            { className: 'button quiet delete', href: '#',
-	              onClick: this.handleDelPayMethod },
-	            (0, _utils.gettext)('Delete')
-	          )
-	        )
-	      );
-	    }
-	  }], [{
-	    key: 'propTypes',
-	    value: {
-	      payMethods: _react.PropTypes.array.isRequired,
-	      showAddPayMethod: _react.PropTypes.func.isRequired,
-	      showDelPayMethod: _react.PropTypes.func.isRequired
-	    },
-	    enumerable: true
-	  }]);
-	
-	  return PayMethods;
-	})(_react.Component);
-	
-	exports['default'] = PayMethods;
-	module.exports = exports['default'];
-
-/***/ },
+/* 264 */,
+/* 265 */,
 /* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -38187,177 +37069,8 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 267 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-	
-	var _react = __webpack_require__(10);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _componentsModal = __webpack_require__(268);
-	
-	var _componentsModal2 = _interopRequireDefault(_componentsModal);
-	
-	var _componentsError = __webpack_require__(269);
-	
-	var _componentsError2 = _interopRequireDefault(_componentsError);
-	
-	var ModalError = (function (_Component) {
-	  _inherits(ModalError, _Component);
-	
-	  function ModalError() {
-	    _classCallCheck(this, ModalError);
-	
-	    _get(Object.getPrototypeOf(ModalError.prototype), 'constructor', this).apply(this, arguments);
-	  }
-	
-	  _createClass(ModalError, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2['default'].createElement(
-	        _componentsModal2['default'],
-	        { handleClose: this.props.closeModal },
-	        _react2['default'].createElement(_componentsError2['default'], { error: this.props.error })
-	      );
-	    }
-	  }], [{
-	    key: 'propTypes',
-	    value: {
-	      closeModal: _react.PropTypes.func.isRequired,
-	      error: _react.PropTypes.object.isRequired
-	    },
-	    enumerable: true
-	  }]);
-	
-	  return ModalError;
-	})(_react.Component);
-	
-	exports['default'] = ModalError;
-	module.exports = exports['default'];
-
-/***/ },
-/* 268 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-	
-	var _react = __webpack_require__(10);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _utils = __webpack_require__(206);
-	
-	var _classnames = __webpack_require__(246);
-	
-	var _classnames2 = _interopRequireDefault(_classnames);
-	
-	var Modal = (function (_Component) {
-	  _inherits(Modal, _Component);
-	
-	  function Modal() {
-	    var _this = this;
-	
-	    _classCallCheck(this, Modal);
-	
-	    _get(Object.getPrototypeOf(Modal.prototype), 'constructor', this).apply(this, arguments);
-	
-	    this.onClose = function (e) {
-	      var targetClassName = e.target.getAttribute('class') || '';
-	      var classes = targetClassName.split(' ');
-	      // Only deal with closing the window if the event
-	      // came from the backdrop or the close link.
-	      if (classes.length > 0 && (classes.indexOf('modal') > -1 || classes.indexOf('close') > -1)) {
-	        e.preventDefault();
-	        e.stopPropagation();
-	        _this.props.handleClose();
-	      }
-	    };
-	  }
-	
-	  _createClass(Modal, [{
-	    key: 'render',
-	    value: function render() {
-	      var classes = (0, _classnames2['default'])(['modal', { 'active': true }]);
-	
-	      return _react2['default'].createElement(
-	        'div',
-	        { className: classes, onClick: this.onClose },
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'inner' },
-	          _react2['default'].createElement(
-	            'header',
-	            null,
-	            this.props.title ? _react2['default'].createElement(
-	              'h2',
-	              null,
-	              this.props.title
-	            ) : null,
-	            _react2['default'].createElement(
-	              'a',
-	              { href: '#', onClick: this.onClose, className: 'close' },
-	              _react2['default'].createElement(
-	                'span',
-	                { className: 'vh' },
-	                (0, _utils.gettext)('Close')
-	              )
-	            )
-	          ),
-	          _react2['default'].createElement(
-	            'div',
-	            { className: 'content' },
-	            this.props.children
-	          )
-	        )
-	      );
-	    }
-	  }], [{
-	    key: 'propTypes',
-	    value: {
-	      children: _react.PropTypes.object.isRequired,
-	      handleClose: _react.PropTypes.func.isRequired,
-	      title: _react.PropTypes.string
-	    },
-	    enumerable: true
-	  }]);
-	
-	  return Modal;
-	})(_react.Component);
-	
-	exports['default'] = Modal;
-	module.exports = exports['default'];
-
-/***/ },
+/* 267 */,
+/* 268 */,
 /* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -38421,7 +37134,157 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 270 */
+/* 270 */,
+/* 271 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	exports.init = init;
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	__webpack_require__(3);
+	
+	var _react = __webpack_require__(10);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(166);
+	
+	var _redux = __webpack_require__(178);
+	
+	var _dataStore = __webpack_require__(190);
+	
+	var _dataStore2 = _interopRequireDefault(_dataStore);
+	
+	var _componentsError = __webpack_require__(269);
+	
+	var _componentsError2 = _interopRequireDefault(_componentsError);
+	
+	var _viewsSharedLogin = __webpack_require__(272);
+	
+	var _viewsSharedLogin2 = _interopRequireDefault(_viewsSharedLogin);
+	
+	var _viewsTransaction = __webpack_require__(273);
+	
+	var _viewsTransaction2 = _interopRequireDefault(_viewsTransaction);
+	
+	var _actionsUser = __webpack_require__(202);
+	
+	var userActions = _interopRequireWildcard(_actionsUser);
+	
+	var _utils = __webpack_require__(206);
+	
+	var TransactionApp = (function (_Component) {
+	  _inherits(TransactionApp, _Component);
+	
+	  _createClass(TransactionApp, null, [{
+	    key: 'propTypes',
+	    value: {
+	      Login: _react.PropTypes.func.isRequired,
+	      Transaction: _react.PropTypes.func.isRequired,
+	      win: _react.PropTypes.object
+	    },
+	    enumerable: true
+	  }, {
+	    key: 'defaultProps',
+	    value: {
+	      Login: _viewsSharedLogin2['default'],
+	      Transaction: _viewsTransaction2['default'],
+	      win: window
+	    },
+	    enumerable: true
+	  }]);
+	
+	  function TransactionApp(props) {
+	    _classCallCheck(this, TransactionApp);
+	
+	    _get(Object.getPrototypeOf(TransactionApp.prototype), 'constructor', this).call(this, props);
+	    var qs = (0, _utils.parseQuery)(props.win.location.href);
+	    // TODO: we should validate/clean this input to raise early errors.
+	    this.state = {
+	      accessToken: qs.access_token,
+	      productId: qs.product
+	    };
+	  }
+	
+	  _createClass(TransactionApp, [{
+	    key: 'selectData',
+	    value: function selectData(state) {
+	      return {
+	        app: state.app,
+	        user: state.user
+	      };
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var state = this.state;
+	      var Login = this.props.Login;
+	      var Transaction = this.props.Transaction;
+	
+	      return _react2['default'].createElement(
+	        'main',
+	        null,
+	        _react2['default'].createElement(
+	          _reactRedux.Connector,
+	          { select: this.selectData },
+	          function (connector) {
+	            if (connector.app.error) {
+	              console.log('rendering app error');
+	              return _react2['default'].createElement(_componentsError2['default'], { error: connector.app.error });
+	            } else if (!connector.user.signedIn) {
+	              console.log('rendering login');
+	              return _react2['default'].createElement(Login, _extends({
+	                accessToken: state.accessToken
+	              }, (0, _redux.bindActionCreators)(userActions, connector.dispatch)));
+	            } else {
+	              console.log('rendering purchase flow');
+	              return _react2['default'].createElement(Transaction, {
+	                productId: state.productId,
+	                user: connector.user
+	              });
+	            }
+	          }
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return TransactionApp;
+	})(_react.Component);
+	
+	exports['default'] = TransactionApp;
+	
+	function init() {
+	  _react2['default'].render(_react2['default'].createElement(
+	    _reactRedux.Provider,
+	    { store: _dataStore2['default'] },
+	    function () {
+	      return _react2['default'].createElement(TransactionApp, null);
+	    }
+	  ), document.body);
+	}
+
+/***/ },
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38444,144 +37307,609 @@ webpackJsonp([0,2],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _classnames = __webpack_require__(246);
+	var _componentsSpinner = __webpack_require__(259);
 	
-	var _classnames2 = _interopRequireDefault(_classnames);
+	var _componentsSpinner2 = _interopRequireDefault(_componentsSpinner);
 	
 	var _utils = __webpack_require__(206);
 	
-	var navData = [{
-	  className: 'profile',
-	  action: 'showMyAccount',
-	  text: (0, _utils.gettext)('My Account')
-	}, {
-	  className: 'pay-methods',
-	  action: 'showPayMethods',
-	  text: (0, _utils.gettext)('Payment methods')
-	}, {
-	  className: 'history',
-	  action: 'showHistory',
-	  text: (0, _utils.gettext)('Receipts and history')
-	}, {
-	  className: 'subs',
-	  action: 'showSubscriptions',
-	  text: (0, _utils.gettext)('Subscriptions')
-	}];
+	var _tracking = __webpack_require__(251);
 	
-	var Management = (function (_Component) {
-	  _inherits(Management, _Component);
+	var _tracking2 = _interopRequireDefault(_tracking);
 	
-	  function Management() {
-	    var _this = this;
+	var Login = (function (_Component) {
+	  _inherits(Login, _Component);
 	
-	    _classCallCheck(this, Management);
+	  function Login() {
+	    _classCallCheck(this, Login);
 	
-	    _get(Object.getPrototypeOf(Management.prototype), 'constructor', this).apply(this, arguments);
-	
-	    this.showMyAccount = function (e) {
-	      e.preventDefault();
-	    };
-	
-	    this.showPayMethods = function (e) {
-	      e.preventDefault();
-	      _this.props.showPayMethods();
-	    };
-	
-	    this.showReceipts = function (e) {
-	      e.preventDefault();
-	      e.stopPropagation();
-	    };
-	
-	    this.showSubscriptions = function (e) {
-	      e.preventDefault();
-	      _this.props.getUserSubscriptions();
-	    };
-	
-	    this.userSignIn = function (e) {
-	      e.preventDefault();
-	      _this.props.userSignIn();
-	    };
-	
-	    this.userSignOut = function (e) {
-	      e.preventDefault();
-	      _this.props.userSignOut();
-	    };
-	
-	    this.renderNav = function () {
-	      var nav = [];
-	      for (var i = 0; i < navData.length; i += 1) {
-	        var navItem = navData[i];
-	        var isActive = _this.props.tab === navItem.className;
-	        var classes = (0, _classnames2['default'])('nav', navItem.className, { 'active': isActive });
-	        nav.push(_react2['default'].createElement(
-	          'li',
-	          { className: classes, key: navItem.className },
-	          _react2['default'].createElement(
-	            'a',
-	            { href: '#', onClick: _this.props[navItem.action] },
-	            navItem.text
-	          )
-	        ));
-	      }
-	      return _react2['default'].createElement(
-	        'ul',
-	        null,
-	        nav
-	      );
-	    };
+	    _get(Object.getPrototypeOf(Login.prototype), 'constructor', this).apply(this, arguments);
 	  }
 	
-	  _createClass(Management, [{
+	  _createClass(Login, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      if (this.props.accessToken && !this.props.user.signedIn) {
-	        console.log('page loaded with access token; signing in');
-	        this.props.tokenSignIn(this.props.accessToken);
+	      _tracking2['default'].setPage('/login');
+	      this.props.tokenSignIn(this.props.accessToken);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2['default'].createElement(_componentsSpinner2['default'], { text: (0, _utils.gettext)('Signing in') });
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: {
+	      accessToken: _react.PropTypes.string.isRequired,
+	      tokenSignIn: _react.PropTypes.func.isRequired
+	    },
+	    enumerable: true
+	  }]);
+	
+	  return Login;
+	})(_react.Component);
+	
+	exports['default'] = Login;
+	module.exports = exports['default'];
+
+/***/ },
+/* 273 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(10);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _redux = __webpack_require__(178);
+	
+	var _reactRedux = __webpack_require__(166);
+	
+	var _actionsTransaction = __webpack_require__(205);
+	
+	var transactionActions = _interopRequireWildcard(_actionsTransaction);
+	
+	var _actionsUser = __webpack_require__(202);
+	
+	var userActions = _interopRequireWildcard(_actionsUser);
+	
+	var _actionsSubscriptions = __webpack_require__(204);
+	
+	var subscriptionActions = _interopRequireWildcard(_actionsSubscriptions);
+	
+	var _viewsSharedBraintreeToken = __webpack_require__(266);
+	
+	var _viewsSharedBraintreeToken2 = _interopRequireDefault(_viewsSharedBraintreeToken);
+	
+	var _viewsTransactionAddSubscription = __webpack_require__(274);
+	
+	var _viewsTransactionAddSubscription2 = _interopRequireDefault(_viewsTransactionAddSubscription);
+	
+	var _viewsTransactionCardListing = __webpack_require__(276);
+	
+	var _viewsTransactionCardListing2 = _interopRequireDefault(_viewsTransactionCardListing);
+	
+	var _viewsTransactionCompletePayment = __webpack_require__(277);
+	
+	var _viewsTransactionCompletePayment2 = _interopRequireDefault(_viewsTransactionCompletePayment);
+	
+	var Transaction = (function (_Component) {
+	  _inherits(Transaction, _Component);
+	
+	  function Transaction() {
+	    _classCallCheck(this, Transaction);
+	
+	    _get(Object.getPrototypeOf(Transaction.prototype), 'constructor', this).apply(this, arguments);
+	  }
+	
+	  _createClass(Transaction, [{
+	    key: 'selectData',
+	    value: function selectData(state) {
+	      return {
+	        transaction: state.transaction,
+	        user: state.user
+	      };
+	    }
+	  }, {
+	    key: 'renderChild',
+	    value: function renderChild(connector) {
+	      var props = this.props;
+	      var BraintreeToken = props.BraintreeToken;
+	      var CompletePayment = props.CompletePayment;
+	      var CardListing = props.CardListing;
+	      var AddSubscription = props.AddSubscription;
+	
+	      if (connector.transaction.completed) {
+	        return _react2['default'].createElement(CompletePayment, {
+	          productId: props.productId,
+	          userEmail: props.user.email });
+	      } else if (connector.transaction.availablePayMethods.length > 0) {
+	        console.log('rendering card listing');
+	
+	        var _bindActionCreators = (0, _redux.bindActionCreators)(subscriptionActions, connector.dispatch);
+	
+	        var createSubscription = _bindActionCreators.createSubscription;
+	
+	        return _react2['default'].createElement(CardListing, _extends({
+	          createSubscription: createSubscription,
+	          productId: props.productId,
+	          payMethods: connector.transaction.availablePayMethods
+	        }, (0, _redux.bindActionCreators)(transactionActions, connector.dispatch)));
+	      } else if (!connector.user.braintreeToken) {
+	        console.log('Retreiving Braintree Token');
+	        return _react2['default'].createElement(BraintreeToken, (0, _redux.bindActionCreators)(userActions, connector.dispatch));
+	      } else {
+	        console.log('rendering card entry');
+	
+	        var _bindActionCreators2 = (0, _redux.bindActionCreators)(subscriptionActions, connector.dispatch);
+	
+	        var createSubscription = _bindActionCreators2.createSubscription;
+	
+	        return _react2['default'].createElement(AddSubscription, {
+	          cardSubmissionErrors: connector.transaction.cardSubmissionErrors,
+	          braintreeToken: connector.user.braintreeToken,
+	          createSubscription: createSubscription,
+	          productId: props.productId
+	        });
 	      }
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var props = this.props;
+	      var _this = this;
+	
+	      return _react2['default'].createElement(
+	        _reactRedux.Connector,
+	        { select: this.selectData },
+	        function (connector) {
+	          return _this.renderChild(connector);
+	        }
+	      );
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: {
+	      AddSubscription: _react.PropTypes.func.isRequired,
+	      BraintreeToken: _react.PropTypes.func.isRequired,
+	      CardListing: _react.PropTypes.func.isRequired,
+	      CompletePayment: _react.PropTypes.func.isRequired,
+	      productId: _react.PropTypes.string.isRequired,
+	      user: _react.PropTypes.object.isRequired
+	    },
+	    enumerable: true
+	  }, {
+	    key: 'defaultProps',
+	    value: {
+	      AddSubscription: _viewsTransactionAddSubscription2['default'],
+	      CardListing: _viewsTransactionCardListing2['default'],
+	      CompletePayment: _viewsTransactionCompletePayment2['default'],
+	      BraintreeToken: _viewsSharedBraintreeToken2['default']
+	    },
+	    enumerable: true
+	  }]);
+	
+	  return Transaction;
+	})(_react.Component);
+	
+	exports['default'] = Transaction;
+	module.exports = exports['default'];
+
+/***/ },
+/* 274 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(10);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _componentsCardForm = __webpack_require__(208);
+	
+	var _componentsCardForm2 = _interopRequireDefault(_componentsCardForm);
+	
+	var _componentsProductDetail = __webpack_require__(275);
+	
+	var _componentsProductDetail2 = _interopRequireDefault(_componentsProductDetail);
+	
+	var _tracking = __webpack_require__(251);
+	
+	var _tracking2 = _interopRequireDefault(_tracking);
+	
+	var _utils = __webpack_require__(206);
+	
+	var AddSubscription = (function (_Component) {
+	  _inherits(AddSubscription, _Component);
+	
+	  function AddSubscription() {
+	    _classCallCheck(this, AddSubscription);
+	
+	    _get(Object.getPrototypeOf(AddSubscription.prototype), 'constructor', this).apply(this, arguments);
+	  }
+	
+	  _createClass(AddSubscription, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      _tracking2['default'].setPage('/add-subscription');
+	    }
+	  }, {
+	    key: 'handleCardSubmit',
+	    value: function handleCardSubmit(creditCard) {
+	      console.log('submitting credit card to sign up for subscription', this.props.productId);
+	      this.props.createSubscription(this.props.productId, creditCard, this.props.braintreeToken);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this = this;
 	
 	      return _react2['default'].createElement(
 	        'div',
-	        null,
+	        { className: 'card-details' },
+	        _react2['default'].createElement(_componentsProductDetail2['default'], { productId: this.props.productId }),
+	        _react2['default'].createElement(_componentsCardForm2['default'], {
+	          submissionErrors: this.props.cardSubmissionErrors,
+	          submitPrompt: (0, _utils.gettext)('Subscribe'),
+	          handleCardSubmit: function (card) {
+	            return _this.handleCardSubmit(card);
+	          },
+	          id: 'braintree-form',
+	          method: 'post'
+	        })
+	      );
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: {
+	      braintreeToken: _react.PropTypes.string.isRequired,
+	      cardSubmissionErrors: _react.PropTypes.object,
+	      createSubscription: _react.PropTypes.func.isRequired,
+	      productId: _react.PropTypes.string.isRequired
+	    },
+	    enumerable: true
+	  }]);
+	
+	  return AddSubscription;
+	})(_react.Component);
+	
+	exports['default'] = AddSubscription;
+	module.exports = exports['default'];
+
+/***/ },
+/* 275 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(10);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _products = __webpack_require__(261);
+	
+	var products = _interopRequireWildcard(_products);
+	
+	var _utils = __webpack_require__(206);
+	
+	var ProductDetail = (function (_Component) {
+	  _inherits(ProductDetail, _Component);
+	
+	  function ProductDetail() {
+	    _classCallCheck(this, ProductDetail);
+	
+	    _get(Object.getPrototypeOf(ProductDetail.prototype), 'constructor', this).apply(this, arguments);
+	  }
+	
+	  _createClass(ProductDetail, [{
+	    key: 'render',
+	    value: function render() {
+	
+	      var productData = products.get(this.props.productId);
+	
+	      return _react2['default'].createElement(
+	        'div',
+	        { className: 'product' },
 	        _react2['default'].createElement(
-	          'nav',
-	          { className: 'sidebar' },
-	          this.renderNav()
+	          'h1',
+	          { className: 'title' },
+	          productData.seller.name.en
 	        ),
 	        _react2['default'].createElement(
-	          'main',
-	          { className: 'content' },
-	          props.children
+	          'div',
+	          null,
+	          productData.description.en
+	        ),
+	        _react2['default'].createElement(
+	          'div',
+	          { className: 'price' },
+	          productData.price.en
+	        ),
+	        _react2['default'].createElement(
+	          'div',
+	          null,
+	          (0, _utils.gettext)('per month')
 	        )
 	      );
 	    }
 	  }], [{
 	    key: 'propTypes',
 	    value: {
-	      accessToken: _react.PropTypes.string,
-	      getPayMethods: _react.PropTypes.func.isRequired,
-	      getUserSubscriptions: _react.PropTypes.func.isRequired,
-	      showPayMethods: _react.PropTypes.func.isRequired,
-	      tab: _react.PropTypes.string.isRequired,
-	      tokenSignIn: _react.PropTypes.func.isRequired,
-	      user: _react.PropTypes.object.isRequired,
-	      userSignIn: _react.PropTypes.func.isRequired,
-	      userSignOut: _react.PropTypes.func.isRequired,
-	      userSubscriptions: _react.PropTypes.array
+	      productId: _react.PropTypes.string.isRequired
 	    },
 	    enumerable: true
 	  }]);
 	
-	  return Management;
+	  return ProductDetail;
 	})(_react.Component);
 	
-	exports['default'] = Management;
+	exports['default'] = ProductDetail;
+	module.exports = exports['default'];
+
+/***/ },
+/* 276 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(10);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _componentsCardChoice = __webpack_require__(253);
+	
+	var _componentsCardChoice2 = _interopRequireDefault(_componentsCardChoice);
+	
+	var _componentsProductDetail = __webpack_require__(275);
+	
+	var _componentsProductDetail2 = _interopRequireDefault(_componentsProductDetail);
+	
+	var _utils = __webpack_require__(206);
+	
+	var _tracking = __webpack_require__(251);
+	
+	var _tracking2 = _interopRequireDefault(_tracking);
+	
+	var CardListing = (function (_Component) {
+	  _inherits(CardListing, _Component);
+	
+	  function CardListing() {
+	    var _this = this;
+	
+	    _classCallCheck(this, CardListing);
+	
+	    _get(Object.getPrototypeOf(CardListing.prototype), 'constructor', this).apply(this, arguments);
+	
+	    this.handleSubmit = function (card) {
+	      _this.props.createSubscription(_this.props.productId, card);
+	    };
+	  }
+	
+	  _createClass(CardListing, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      _tracking2['default'].setPage('/card-listing');
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2['default'].createElement(
+	        'div',
+	        null,
+	        _react2['default'].createElement(_componentsProductDetail2['default'], { productId: this.props.productId }),
+	        _react2['default'].createElement(_componentsCardChoice2['default'], {
+	          cards: this.props.payMethods,
+	          productId: this.props.productId,
+	          submitButtonText: (0, _utils.gettext)('Subscribe'),
+	          submitHandler: this.handleSubmit
+	        }),
+	        _react2['default'].createElement(
+	          'a',
+	          { className: 'add-card', href: '#',
+	            onClick: this.props.payWithNewCard },
+	          (0, _utils.gettext)('Add new credit card')
+	        )
+	      );
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: {
+	      createSubscription: _react.PropTypes.func.isRequired,
+	      payMethods: _react.PropTypes.array.isRequired,
+	      payWithNewCard: _react.PropTypes.func.isRequired,
+	      productId: _react.PropTypes.string.isRequired
+	    },
+	    enumerable: true
+	  }]);
+	
+	  return CardListing;
+	})(_react.Component);
+	
+	exports['default'] = CardListing;
+	module.exports = exports['default'];
+
+/***/ },
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(10);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _componentsProductDetail = __webpack_require__(275);
+	
+	var _componentsProductDetail2 = _interopRequireDefault(_componentsProductDetail);
+	
+	var _componentsSubmitButton = __webpack_require__(250);
+	
+	var _componentsSubmitButton2 = _interopRequireDefault(_componentsSubmitButton);
+	
+	var _utils = __webpack_require__(206);
+	
+	var _tracking = __webpack_require__(251);
+	
+	var _tracking2 = _interopRequireDefault(_tracking);
+	
+	var CompletePayment = (function (_Component) {
+	  _inherits(CompletePayment, _Component);
+	
+	  function CompletePayment() {
+	    var _this = this;
+	
+	    _classCallCheck(this, CompletePayment);
+	
+	    _get(Object.getPrototypeOf(CompletePayment.prototype), 'constructor', this).apply(this, arguments);
+	
+	    this.handleClick = function (e) {
+	      e.preventDefault();
+	      var win = _this.props.win;
+	      if (win.parent !== window) {
+	        // Note: the targetOrigin is wide open.
+	        // Nothing sensitive should be sent whilst
+	        // that's the case.
+	        console.log('Telling parent to close modal.');
+	        // Stringifying the object is necessary for
+	        // IE9 support.
+	        win.parent.postMessage(JSON.stringify({
+	          event: 'purchase-completed'
+	        }), '*');
+	      } else {
+	        console.log('Not iframed. No-op');
+	      }
+	    };
+	  }
+	
+	  _createClass(CompletePayment, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      _tracking2['default'].setPage('/complete-payment');
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2['default'].createElement(
+	        'div',
+	        { className: 'complete' },
+	        _react2['default'].createElement(_componentsProductDetail2['default'], { productId: this.props.productId }),
+	        _react2['default'].createElement(
+	          'p',
+	          { className: 'accepted' },
+	          (0, _utils.gettext)('Payment Accepted')
+	        ),
+	        _react2['default'].createElement(
+	          'p',
+	          { className: 'receipt' },
+	          (0, _utils.gettext)('Your receipt has been sent to'),
+	          _react2['default'].createElement(
+	            'span',
+	            { className: 'email' },
+	            this.props.userEmail
+	          )
+	        ),
+	        _react2['default'].createElement(_componentsSubmitButton2['default'], { text: (0, _utils.gettext)('OK'),
+	          onClick: this.handleClick })
+	      );
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: {
+	      productId: _react2['default'].PropTypes.string.isRequired,
+	      userEmail: _react2['default'].PropTypes.string.isRequired,
+	      win: _react2['default'].PropTypes.object
+	    },
+	    enumerable: true
+	  }, {
+	    key: 'defaultProps',
+	    value: {
+	      win: window
+	    },
+	    enumerable: true
+	  }]);
+	
+	  return CompletePayment;
+	})(_react.Component);
+	
+	exports['default'] = CompletePayment;
 	module.exports = exports['default'];
 
 /***/ }
-]);
-//# sourceMappingURL=management.bundle.js.map
+/******/ ]);
+//# sourceMappingURL=transaction.bundle.js.map

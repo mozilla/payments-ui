@@ -7,13 +7,14 @@ import * as transactionActions from 'actions/transaction';
 import * as userActions from 'actions/user';
 import * as subscriptionActions from 'actions/subscriptions';
 
-import DefaultAddSubscription from 'views/add-subscription';
-import DefaultCardListing from 'views/card-listing';
-import DefaultCompletePayment from 'views/complete-payment';
-import DefaultBraintreeToken from 'views/braintree-token';
+import DefaultBraintreeToken from 'views/shared/braintree-token';
+
+import DefaultAddSubscription from 'views/transaction/add-subscription';
+import DefaultCardListing from 'views/transaction/card-listing';
+import DefaultCompletePayment from 'views/transaction/complete-payment';
 
 
-export default class Purchase extends Component {
+export default class Transaction extends Component {
 
   static propTypes = {
     AddSubscription: PropTypes.func.isRequired,

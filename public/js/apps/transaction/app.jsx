@@ -7,24 +7,24 @@ import { bindActionCreators } from 'redux';
 
 import dataStore from 'data-store';
 import ErrorMessage from 'components/error';
-import DefaultLogin from 'views/login';
-import DefaultPurchase from 'views/purchase';
+import DefaultLogin from 'views/shared/login';
+import DefaultTransaction from 'views/transaction';
 
 import * as userActions from 'actions/user';
 import { parseQuery } from 'utils';
 
 
-export default class PaymentApp extends Component {
+export default class TransactionApp extends Component {
 
   static propTypes = {
     Login: PropTypes.func.isRequired,
-    Purchase: PropTypes.func.isRequired,
+    Transaction: PropTypes.func.isRequired,
     win: PropTypes.object,
   }
 
   static defaultProps = {
     Login: DefaultLogin,
-    Purchase: DefaultPurchase,
+    Transaction: DefaultTransaction,
     win: window,
   }
 
@@ -48,7 +48,7 @@ export default class PaymentApp extends Component {
   render() {
     var state = this.state;
     var Login = this.props.Login;
-    var Purchase = this.props.Purchase;
+    var Transaction = this.props.Transaction;
 
     return (
       <main>
@@ -68,7 +68,7 @@ export default class PaymentApp extends Component {
             } else {
               console.log('rendering purchase flow');
               return (
-                <Purchase
+                <Transaction
                   productId={state.productId}
                   user={connector.user}
                 />
@@ -86,7 +86,7 @@ export function init() {
   React.render((
     <Provider store={dataStore}>
       {function() {
-        return <PaymentApp/>;
+        return <TransactionApp/>;
       }}
     </Provider>
   ), document.body);

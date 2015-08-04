@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 
-import Modal from 'components/modal';
 import CardChoice from 'components/card-choice';
 
 import { default as tracking } from 'tracking';
@@ -13,6 +12,7 @@ export default class DelPayMethod extends Component {
     closeModal: PropTypes.func.isRequired,
     delPayMethod: PropTypes.func.isRequired,
     payMethods: PropTypes.array.isRequired,
+    showPayMethods: PropTypes.func.isRequired,
   }
 
   componentDidMount() {
@@ -25,9 +25,9 @@ export default class DelPayMethod extends Component {
 
   render() {
     return (
-      <Modal handleClose={this.props.closeModal}
-        title={gettext('Delete Card')}>
-        <div>
+      <div>
+        <h1>{gettext('Delete Card')}</h1>
+        <div className="small-form">
           <CardChoice
             cssModifier='delete'
             submitButtonText={gettext('Delete')}
@@ -36,7 +36,9 @@ export default class DelPayMethod extends Component {
             cards={this.props.payMethods}
           />
         </div>
-      </Modal>
+        <a href="#" className="back" onClick={this.props.showPayMethods}>
+          {gettext('Back')}</a>
+      </div>
     );
   }
 }

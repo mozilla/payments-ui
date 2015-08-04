@@ -8,6 +8,12 @@ export function error(debugMessage) {
   };
 }
 
+export function showMyAccount() {
+  return {
+    type: actionTypes.SHOW_MY_ACCOUNT,
+  };
+}
+
 export function showPayMethods() {
   return {
     type: actionTypes.SHOW_PAY_METHODS,
@@ -23,6 +29,18 @@ export function showAddPayMethod() {
 export function showDelPayMethod() {
   return {
     type: actionTypes.SHOW_DEL_PAY_METHOD,
+  };
+}
+
+export function showHistory() {
+  return {
+    type: actionTypes.SHOW_HISTORY,
+  };
+}
+
+export function showSubscriptions() {
+  return {
+    type: actionTypes.SHOW_SUBSCRIPTIONS,
   };
 }
 

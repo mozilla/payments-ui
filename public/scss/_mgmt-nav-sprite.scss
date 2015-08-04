@@ -1,0 +1,28 @@
+.nav:after {
+	background: url(../img/mgmt-nav-sprite.svg) no-repeat;
+}
+
+.history:after {
+	background-position: 0 0;
+	width: 21.84px;
+	height: 28px;
+}
+
+.pay-methods:after {
+	background-position: 0 33.333333333333336%;
+	width: 28px;
+	height: 28px;
+}
+
+.profile:after {
+	background-position: 0 66.66666666666667%;
+	width: 28px;
+	height: 28px;
+}
+
+.subs:after {
+	background-position: 0 100%;
+	width: 24.29px;
+	height: 28px;
+}
+

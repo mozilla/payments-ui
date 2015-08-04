@@ -19,7 +19,7 @@ export default function transaction(state, action) {
 
   if (action.type === actionTypes.PAY_WITH_NEW_CARD) {
     console.log('transaction: resetting payment methods from', action);
-    // What this does is tell Purchase that there are no available
+    // What this does is tell Transaction that there are no available
     // payment methods for the transaction even though the user
     // itself may have some. This causes a 'pay with new card' form
     // to appear.

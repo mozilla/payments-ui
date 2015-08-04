@@ -1,53 +1,152 @@
 @import '_settings';
 
+
 .management {
 
-  background: $management-grey;
-  margin: 0;
-  padding: 0;
-
-  main {
-    margin: 0;
-    padding: 0;
-  }
-
-  .content {
-    margin: 0 auto;
-    max-width: 700px;
-    width: 100%;
-  }
-
-  .top-nav {
-    background: #fff;
-    border-bottom: 1px solid $stormy-grey;
-    overflow: hidden;
-    padding: 10px 20px;
-    width: 100%;
+    h1,h2,h3,h4 {
+      font-weight: 400;
+    }
 
     h1 {
-      background: url('#{$image-path}firefox.png') no-repeat 0 50%;
-      background-size: 40px;
-      float: left;
-      font-size: $extra-large-font;
-      font-weight: 400;
-      margin: 10px 0 0;
-      padding: 0 0 0 50px;
-    }
-
-    button {
-      float: right;
-      width: auto;
-    }
-  }
-
-  .user {
-    background: url('#{$image-path}profile.svg') no-repeat 0 50%;
-    background-size: 60px;
-    margin-top: 70px;
-    padding: 5px 0 5px 80px;
-
-    p {
+      border-bottom: 1px solid $heading-border;
       font-size: $large-font;
+      font-weight: 400;
+      margin-bottom: 1.53em;
+      padding-bottom: 0.53em;
     }
-  }
+
+    h2 {
+      font-size: $medium-font;
+      margin-bottom: 0;
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: nowrap;
+    }
+
+    .col {
+        flex-grow: 1;
+    }
+
+    .small-form,
+    .card-form {
+        max-width: 300px;
+    }
+
+    .card-list {
+        margin-bottom: 2em;
+    }
+
+    .back {
+        display: block;
+        margin-top: 1em;
+        padding-left: 1.5em;
+        position: relative;
+
+        &:before  {
+            content: '‹';
+            position: absolute;
+            width: 1em;
+            height: 1em;
+            font-size: $extra-large-font;
+            top: -0.5em;
+            left: 0;
+        }
+    }
+
+    button.quiet,
+    .button.quiet {
+        width: auto;
+        background: #fff;
+        border: 1px solid $ship-grey;
+        border-radius: 2px;
+        color: $dark-grey;
+        font-size: $base-font;
+
+        &:active,
+        &:hover {
+          background: $lightish-grey;
+        }
+    }
+
+    main {
+      margin: 0 0 0 200px;
+      width: auto;
+      max-width: 800px;
+    }
+
+    .sidebar {
+        background: $prefs-grey;
+        bottom: 0;
+        font-weight: 300;
+        left: 0;
+        position: fixed;
+        top: 0;
+        width: 200px;
+
+        .nav:after {
+            content: '';
+            display: block;
+            left: 15px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        ul {
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+        }
+
+        li {
+            position: relative;
+        }
+
+        .active {
+            background: $active-grey;
+            overflow: hidden;
+
+            &:before {
+                background: $active-orange;
+                content: '';
+                display: block;
+                height: 100%;
+                position: absolute;
+                width: 4px;
+            }
+
+            a:link,
+            a:visited,
+            a:hover,
+            a:active {
+                color: #fff;
+            }
+
+        }
+
+        a:link,
+        a:visited,
+        a:hover,
+        a:active {
+            color: $ship-grey;
+            display: block;
+            padding: 1.25em 0 1.25em 55px;
+            width: 100%;
+
+            .active & {
+                color: #fff;
+            }
+
+        }
+
+        a:focus,
+        a:hover {
+            background: $hover-grey;
+            color: #fff;
+
+        }
+
+    }
 }
