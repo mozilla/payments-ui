@@ -47,10 +47,27 @@ module.exports = {
     enabled: false,
     id: 'UA-35433268-60',
   },
-  // FxA relier client for user sign-in (not token sign in).
-  // This is the docker development client ID for pay.dev
-  fxaClientId: '8d7c6c8549cc6deb',
+  // FxA relier client IDs for user sign-in (not token sign in).
+  // These are docker development client IDs mapped by host.
+  fxaClientIdMap: {
+    'pay.dev:8000': '8d7c6c8549cc6deb',
+    'pay.webpack:8080': 'a63657a4c78dd650',
+  },
   fxaRedirectUri: 'http://pay.dev:8000',
   fxaContentHost: 'https://stable.dev.lcip.org',
   fxaOauthHost: 'https://oauth-stable.dev.lcip.org/v1',
+
+  apiPrefix: 'http://pay.dev:8000/api',
 };
+
+
+if (typeof window !== 'undefined') {
+  var host = window.location.host;
+  module.exports.fxaClientId = module.exports.fxaClientIdMap[host];
+
+  if (!module.exports.fxaClientId) {
+    console.warn('no FxA client ID has been configured for host ' + host);
+  }
+} else {
+  console.warn('probably not in a web browser; skipping some configuration');
+}

@@ -22,36 +22,40 @@ describe('userActions', function() {
     };
   }
 
-  function setApiSignInResult(opt) {
-    opt = opt || {};
-    opt.data = opt.data || fakeSignInResult();
-
-    opt.jqueryOpt = opt.jqueryOpt || {};
-    opt.jqueryOpt.returnedData = opt.data;
-
-    var jquery = helpers.fakeJquery(opt.jqueryOpt);
-
+  function setApiSignInResult({fetchOpt={}, data=fakeSignInResult()} = {}) {
+    fetchOpt.returnedData = data;
     return {
-      data: opt.data,
-      jquery: jquery.stub,
+      data: data,
+      fetch: helpers.fakeFetch(fetchOpt),
     };
+  }
+
+  function tokenSignIn({accessToken='some-access-token', api=null,
+                        fetch=null}) {
+    if (!api) {
+      api= {
+        fetch: fetch,
+        setCSRFToken: sinon.stub(),
+      };
+    }
+    userActions.tokenSignIn(accessToken, api)(dispatchSpy);
   }
 
   describe('tokenSignIn', function() {
 
     it('should dispatch sign-in action', function() {
-      var { jquery } = setApiSignInResult();
+      var { fetch } = setApiSignInResult();
 
-      userActions.tokenSignIn('access-token', jquery)(dispatchSpy);
+      tokenSignIn({fetch: fetch});
 
       var action = dispatchSpy.firstCall.args[0];
       assert.equal(action.type, actionTypes.USER_SIGNED_IN);
     });
 
     it('should set the email from sign-in', function() {
-      var { jquery, data } = setApiSignInResult();
+      var { fetch, data } = setApiSignInResult();
 
-      userActions.tokenSignIn('access-token', jquery)(dispatchSpy);
+      tokenSignIn({fetch: fetch});
 
       var action = dispatchSpy.firstCall.args[0];
       assert.equal(action.user.email, data.buyer_email);
@@ -61,44 +65,47 @@ describe('userActions', function() {
       var data = fakeSignInResult();
       var payMethods = [{'provider_id': '3vr3ym'}];
       data.payment_methods = payMethods;
-      var { jquery } = setApiSignInResult({data: data});
+      var { fetch } = setApiSignInResult({data: data});
 
-      userActions.tokenSignIn('access-token', jquery)(dispatchSpy);
+      tokenSignIn({fetch: fetch});
 
       var action = dispatchSpy.firstCall.args[0];
       assert.equal(action.user.payMethods, payMethods);
     });
 
     it('should set empty payment methods', function() {
-      var { jquery } = setApiSignInResult();
+      var { fetch } = setApiSignInResult();
 
-      userActions.tokenSignIn('access-token', jquery)(dispatchSpy);
+      tokenSignIn({fetch: fetch});
 
       var action = dispatchSpy.firstCall.args[0];
       assert.deepEqual(action.user.payMethods, []);
     });
 
     it('should sign-in with access token', function() {
-      var jquery = helpers.fakeJquery({returnedData: fakeSignInResult()});
-      userActions.tokenSignIn('access-token', jquery.stub)(dispatchSpy);
+      var fetch = helpers.fakeFetch({returnedData: fakeSignInResult()});
+      tokenSignIn({fetch: fetch, accessToken: 'this-access-token'});
 
-      assert.equal(jquery.ajaxSpy.firstCall.args[0].data.access_token,
-                   'access-token');
+      assert.equal(fetch.firstCall.args[0].data.access_token,
+                   'this-access-token');
     });
 
     it('should configure CSRF headers on sign-in', function() {
       var data = fakeSignInResult();
-      var jquery = helpers.fakeJquery({returnedData: data});
-      userActions.tokenSignIn('access-token', jquery.stub)(dispatchSpy);
+      var fetch = helpers.fakeFetch({returnedData: data});
+      var api = {
+        fetch: fetch,
+        setCSRFToken: sinon.stub(),
+      };
+      tokenSignIn({api: api});
 
-      assert.deepEqual(jquery.ajaxSetupSpy.firstCall.args[0].headers,
-                       {'X-CSRFToken': data.csrf_token});
+      assert.deepEqual(api.setCSRFToken.firstCall.args[0], data.csrf_token);
     });
 
     it('should set app error on failure', function() {
-      var { jquery } = setApiSignInResult({jqueryOpt: {result: 'fail'}});
+      var { fetch } = setApiSignInResult({fetchOpt: {result: 'fail'}});
 
-      userActions.tokenSignIn('access-token', jquery)(dispatchSpy);
+      tokenSignIn({fetch: fetch});
 
       var action = dispatchSpy.firstCall.args[0];
       assert.deepEqual(action, appActions.error('FxA token sign-in failed'));
@@ -114,8 +121,7 @@ describe('userActions', function() {
 
       var signInPromise = new helpers.FakeSyncPromise();
 
-      function FxaRelierClient() {
-      }
+      function FxaRelierClient() {}
 
       FxaRelierClient.prototype.auth = {
         signIn: function() {
@@ -129,8 +135,14 @@ describe('userActions', function() {
       };
     }
 
-    function signInAction(jquery) {
-      userActions.userSignIn(fxaSignIn.client, jquery)(dispatchSpy);
+    function signInAction({fetch=null, api=null}) {
+      if (!api) {
+        api = {
+          fetch: fetch,
+          setCSRFToken: sinon.stub(),
+        };
+      }
+      userActions.userSignIn(fxaSignIn.client, api)(dispatchSpy);
     }
 
     function resolveSignIn() {
@@ -142,9 +154,9 @@ describe('userActions', function() {
     });
 
     it('should dispatch a sign-in action', function() {
-      var { jquery } = setApiSignInResult();
+      var { fetch } = setApiSignInResult();
 
-      signInAction(jquery);
+      signInAction({fetch: fetch});
       resolveSignIn();
 
       var action = dispatchSpy.firstCall.args[0];
@@ -152,9 +164,9 @@ describe('userActions', function() {
     });
 
     it('should dispatch an FxA sign-in error', function() {
-      var { jquery } = setApiSignInResult();
+      var { fetch } = setApiSignInResult();
 
-      signInAction(jquery);
+      signInAction({fetch: fetch});
 
       var fxaError = new Error('some FxA error');
       fxaSignIn.promise.reject(fxaError);
@@ -164,9 +176,9 @@ describe('userActions', function() {
     });
 
     it('should dispatch an API sign-in error', function() {
-      var { jquery } = setApiSignInResult({jqueryOpt: {result: 'fail'}});
+      var { fetch } = setApiSignInResult({fetchOpt: {result: 'fail'}});
 
-      signInAction(jquery);
+      signInAction({fetch: fetch});
       resolveSignIn();
 
       var action = dispatchSpy.firstCall.args[0];
@@ -175,19 +187,22 @@ describe('userActions', function() {
 
     it('should configure CSRF headers on sign-in', function() {
       var data = fakeSignInResult();
-      var jquery = helpers.fakeJquery({returnedData: data});
-
-      signInAction(jquery.stub);
+      var fetch = helpers.fakeFetch({returnedData: data});
+      var api = {
+        fetch: fetch,
+        setCSRFToken: sinon.spy(),
+      };
+      signInAction({api: api});
       resolveSignIn();
 
-      assert.deepEqual(jquery.ajaxSetupSpy.firstCall.args[0].headers,
-                       {'X-CSRFToken': data.csrf_token});
+      assert.deepEqual(api.setCSRFToken.firstCall.args[0],
+                       data.csrf_token);
     });
 
     it('should set the email from sign-in', function() {
-      var { jquery, data } = setApiSignInResult();
+      var { fetch, data } = setApiSignInResult();
 
-      signInAction(jquery);
+      signInAction({fetch: fetch});
       resolveSignIn();
 
       var action = dispatchSpy.firstCall.args[0];
@@ -198,9 +213,9 @@ describe('userActions', function() {
       var data = fakeSignInResult();
       var payMethods = [{'provider_id': '3vr3ym'}];
       data.payment_methods = payMethods;
-      var { jquery } = setApiSignInResult({data: data});
+      var { fetch } = setApiSignInResult({data: data});
 
-      signInAction(jquery);
+      signInAction({fetch: fetch});
       resolveSignIn();
 
       var action = dispatchSpy.firstCall.args[0];
@@ -212,18 +227,18 @@ describe('userActions', function() {
   describe('userSignOut', function() {
 
     it('should dispatch a sign-out action', function() {
-      var jquery = helpers.fakeJquery();
+      var fetch = helpers.fakeFetch();
 
-      userActions.userSignOut(jquery.stub)(dispatchSpy);
+      userActions.userSignOut(fetch)(dispatchSpy);
 
       var action = dispatchSpy.firstCall.args[0];
       assert.equal(action.type, actionTypes.USER_SIGNED_OUT);
     });
 
     it('should dispatch a sign-out error', function() {
-      var jquery = helpers.fakeJquery({result: 'fail'});
+      var fetch = helpers.fakeFetch({result: 'fail'});
 
-      userActions.userSignOut(jquery.stub)(dispatchSpy);
+      userActions.userSignOut(fetch)(dispatchSpy);
 
       var action = dispatchSpy.firstCall.args[0];
       assert.deepEqual(action, appActions.error('API user sign-out failed'));

@@ -132,16 +132,14 @@ export function getFluxContainer(store) {
 }
 
 
-export function fakeJquery({xhrError={}, returnedData={},
-                            result='success'} = {}) {
+export function fakeFetch({xhrError={}, returnedData={},
+                           result='success'} = {}) {
   //
-  // Return a context to work with a fake jquery object in a test.
+  // Return a context to work with a fake api.fetch() function in a test.
   //
   // result must be one of 'success', 'fail'
   //
-  var componentContext;
-
-  var jqueryStubResponse = {
+  var stubResponse = {
     fail: function() {
       return this;
     },
@@ -151,34 +149,26 @@ export function fakeJquery({xhrError={}, returnedData={},
   };
 
   if (result === 'success') {
-    jqueryStubResponse.then = function(callback) {
-      console.log('jquery stub: executing success');
-      callback.call(componentContext, returnedData);
+    stubResponse.then = function(callback) {
+      console.log('fetch stub: executing success');
+      callback.call({}, returnedData);
       return this;
     };
   } else if (result === 'fail') {
-    jqueryStubResponse.fail = function(callback) {
-      callback.call(componentContext, xhrError);
+    stubResponse.fail = function(callback) {
+      callback.call({}, xhrError);
       return this;
     };
   } else {
-    throw new Error('unexpected jquery stub result: ' + result);
+    throw new Error('unexpected stub result: ' + result);
   }
 
-  var jqueryStub = {
-    ajax: function(ajaxOpt) {
-      console.log('jquery stub: executing ajax()', ajaxOpt);
-      componentContext = ajaxOpt.context;
-      return jqueryStubResponse;
-    },
-    ajaxSetup: function() {},
-  };
+  function fetchStub(config) {
+    console.log('fetch stub: executing', config);
+    return stubResponse;
+  }
 
-  return {
-    ajaxSpy: sinon.spy(jqueryStub, 'ajax'),
-    ajaxSetupSpy: sinon.spy(jqueryStub, 'ajaxSetup'),
-    stub: jqueryStub,
-  };
+  return sinon.spy(fetchStub);
 }
 
 

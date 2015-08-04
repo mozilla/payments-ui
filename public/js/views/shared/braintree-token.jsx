@@ -17,7 +17,7 @@ export default class BrainTree extends Component {
   }
 
   render() {
-    return <Spinner text={gettext('Setting up payment')}/>;
+    return <Spinner text={gettext('Initializing')}/>;
   }
 
 }
