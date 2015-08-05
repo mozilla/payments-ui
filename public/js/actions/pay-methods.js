@@ -3,6 +3,7 @@ import braintree from 'braintree-web';
 import * as actionTypes from 'constants/action-types';
 import * as api from './api';
 import * as appActions from './app';
+import * as mgmtActions from './management';
 
 
 export function delPayMethod(payMethodUri, fetch=api.fetch) {
@@ -24,6 +25,7 @@ export function delPayMethod(payMethodUri, fetch=api.fetch) {
         type: actionTypes.GOT_PAY_METHODS,
         payMethods: data.payment_methods,
       });
+      dispatch(mgmtActions.showPayMethods());
     }).fail(function() {
       console.log('Deleting pay method failed');
       dispatch(appActions.error('Deleting pay method failed'));
@@ -79,6 +81,7 @@ export function addCreditCard(braintreeToken, creditCard, fetch=api.fetch,
             type: actionTypes.GOT_PAY_METHODS,
             payMethods: data.payment_methods,
           });
+          dispatch(mgmtActions.showPayMethods());
         }).fail($xhr => {
           dispatch({
             type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,

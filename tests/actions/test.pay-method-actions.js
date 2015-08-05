@@ -87,6 +87,13 @@ describe('Pay Method Actions', function() {
       assert.equal(action.type, actionTypes.GOT_PAY_METHODS);
     });
 
+    it('should dispatch a SHOW_PAY_METHODS action on success', function() {
+      var { fetch } = setApiPostResult();
+      addCreditCard(fetch);
+      var action = dispatchSpy.secondCall.args[0];
+      assert.equal(action.type, actionTypes.SHOW_PAY_METHODS);
+    });
+
     it('should dispatch payment methods', function() {
       var { fetch, data } = setApiPostResult();
       addCreditCard(fetch);
@@ -138,6 +145,13 @@ describe('Pay Method Actions', function() {
       delPayMethod('whatever-uri', fetch);
       var action = dispatchSpy.firstCall.args[0];
       assert.equal(action.type, actionTypes.GOT_PAY_METHODS);
+    });
+
+    it('should dispatch a SHOW_PAY_METHODS action on success', function() {
+      var { fetch } = setApiPostResult();
+      delPayMethod('whatever-uri', fetch);
+      var action = dispatchSpy.secondCall.args[0];
+      assert.equal(action.type, actionTypes.SHOW_PAY_METHODS);
     });
 
     it('should dispatch an error action on api error', function() {
