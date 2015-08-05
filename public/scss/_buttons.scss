@@ -34,7 +34,7 @@ button {
   &:disabled,
   &.disabled {
     background: $button-background-disabled-color;
-    cursor: auto;
+    cursor: not-allowed;
   }
 
   &.warning {
@@ -46,5 +46,3 @@ button::-moz-focus-inner {
   border: 0;
   padding: 0;
 }
-
-

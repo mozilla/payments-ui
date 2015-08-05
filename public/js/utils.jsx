@@ -18,6 +18,16 @@ export function defaults(object, opt) {
 }
 
 
+export function isDisabled(domNode) {
+  if (domNode.className.split(' ').indexOf('disabled') > -1) {
+    return true;
+  }
+  // The presence of the attribute 'disabled'
+  // means it's disabled. Even disabled="false".
+  return domNode.hasAttribute('disabled');
+}
+
+
 export function getMountNode(node){
   return node || document.getElementById('view');
 }

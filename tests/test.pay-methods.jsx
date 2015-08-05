@@ -46,4 +46,12 @@ describe('PayMethods', function() {
     assert.ok(TestUtils.isDOMComponent(content));
   });
 
+  it('should have disabled class on delete link if no cards', function() {
+    var noPayMethods = TestUtils.renderIntoDocument(
+      <PayMethods payMethods={[]} />
+    );
+    var delButton = helpers.findByClass(noPayMethods, 'delete').getDOMNode();
+    assert.ok(delButton.className.split(' ').indexOf('disabled') > -1);
+  });
+
 });

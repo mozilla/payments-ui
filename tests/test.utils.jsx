@@ -22,3 +22,39 @@ describe('utils.parseQuery', function() {
   });
 
 });
+
+
+describe('utils.isDisabled', function() {
+
+  it('should be disabled if disabled attr present', function() {
+    var lnk = document.createElement('a');
+    var disabledAttr = document.createAttribute('disabled');
+    lnk.setAttributeNode(disabledAttr);
+    assert.equal(utils.isDisabled(lnk), true);
+  });
+
+  it('should be disabled if disabled="1"', function() {
+    var lnk = document.createElement('a');
+    lnk.setAttribute('disabled', 1);
+    assert.equal(utils.isDisabled(lnk), true);
+  });
+
+  it('should be disabled if disabled="true"', function() {
+    var lnk = document.createElement('a');
+    lnk.setAttribute('disabled', true);
+    assert.equal(utils.isDisabled(lnk), true);
+  });
+
+  it('should still be disabled if disabled="false"', function() {
+    var lnk = document.createElement('a');
+    lnk.setAttribute('disabled', false);
+    assert.equal(utils.isDisabled(lnk), true);
+  });
+
+  it('should be disabled if has disabled className', function() {
+    var lnk = document.createElement('a');
+    lnk.className = 'disabled something';
+    assert.equal(utils.isDisabled(lnk), true);
+  });
+
+});
