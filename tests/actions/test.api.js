@@ -4,20 +4,45 @@ import * as api from 'actions/api';
 describe('api', () => {
   describe('fetch', () => {
 
-    it('prefixes URLs with the API host', () => {
-      var opt = {
-        settings: {apiPrefix: 'http://not-a-real-api.com/api'},
-        jquery: {ajax: sinon.stub()},
-      };
-      var request = {
-        url: '/some/service',
-      };
+    var fakeSettings;
+    var fakeJquery;
 
-      api.fetch(request, opt);
-
-      assert.equal(opt.jquery.ajax.firstCall.args[0].url,
-                   opt.settings.apiPrefix + request.url);
+    beforeEach(() => {
+      fakeSettings = {apiPrefix: 'http://not-a-real-api.com/api'};
+      fakeJquery = {ajax: sinon.stub()};
     });
+
+    function fetch(request={url: '/any/path/'}, opt=null) {
+      if (!opt) {
+        opt = {
+          settings: fakeSettings,
+          jquery: fakeJquery,
+        };
+      }
+      return api.fetch(request, opt);
+    }
+
+    it('prefixes URLs with the API host', () => {
+      var request = {url: '/some/service'};
+      fetch(request);
+
+      assert.equal(fakeJquery.ajax.firstCall.args[0].url,
+                   fakeSettings.apiPrefix + request.url);
+    });
+
+    it('does not send credentials when CORS is not allowed', () => {
+      fakeSettings.allowCORSRequests = false;
+      fetch();
+      assert.equal(fakeJquery.ajax.firstCall.args[0].xhrFields.withCredentials,
+                   undefined);
+    })
+
+    it('sends credentials when CORS is allowed', () => {
+      fakeSettings.allowCORSRequests = true;
+      fetch();
+      assert.equal(fakeJquery.ajax.firstCall.args[0].xhrFields.withCredentials,
+                   true);
+    })
 
   });
 });
