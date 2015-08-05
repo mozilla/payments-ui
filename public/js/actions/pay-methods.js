@@ -1,20 +1,20 @@
-import $ from 'jquery';
 import braintree from 'braintree-web';
 
 import * as actionTypes from 'constants/action-types';
+import * as api from './api';
 import * as appActions from './app';
 
 
-export function delPayMethod(payMethodUri, jquery=$) {
+export function delPayMethod(payMethodUri, fetch=api.fetch) {
 
   if (typeof payMethodUri === 'undefined') {
     throw new Error('payMethodUri is undefined');
   }
 
   return dispatch => {
-    jquery.ajax({
+    fetch({
       method: 'post',
-      url: '/api/braintree/paymethod/delete/',
+      url: '/braintree/paymethod/delete/',
       data: {
         pay_method_uri: payMethodUri,
       },
@@ -32,14 +32,13 @@ export function delPayMethod(payMethodUri, jquery=$) {
 }
 
 
-export function getPayMethods(jquery=$) {
+export function getPayMethods(fetch=api.fetch) {
   // Note: not currently used as payMethods
   // are added to user state upon login.
   return dispatch => {
-    jquery.ajax({
+    fetch({
       method: 'get',
-      url: '/api/braintree/mozilla/paymethod/',
-      context: this,
+      url: '/braintree/mozilla/paymethod/',
     }).then(function(data) {
       dispatch({
         type: actionTypes.GOT_PAY_METHODS,
@@ -53,7 +52,7 @@ export function getPayMethods(jquery=$) {
 }
 
 
-export function addCreditCard(braintreeToken, creditCard, jquery=$,
+export function addCreditCard(braintreeToken, creditCard, fetch=api.fetch,
                               BraintreeClient=braintree.api.Client) {
   return (dispatch) => {
     var client = new BraintreeClient({
@@ -68,13 +67,12 @@ export function addCreditCard(braintreeToken, creditCard, jquery=$,
         console.error('Braintree tokenization error:', err);
         dispatch(appActions.error('Braintree tokenization error'));
       } else {
-        jquery.ajax({
+        fetch({
           data: {
             nonce: nonce,
           },
-          url: '/api/braintree/paymethod/',
+          url: '/braintree/paymethod/',
           method: 'post',
-          dataType: 'json',
         }).then(data => {
           console.log('Successfully added a pay method. API Result:', data);
           dispatch({

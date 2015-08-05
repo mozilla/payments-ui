@@ -28,10 +28,9 @@ export default function user(state, action) {
   }
 
   if (action.type === actionTypes.GOT_BRAINTREE_TOKEN) {
-    console.log('user store: got action', action);
-    // Inherits existing state.
+    console.log('user: got action', action);
     return Object.assign({}, initialUserState, state, {
-      braintreeToken: action.user.braintreeToken,
+      braintreeToken: action.braintreeToken,
     });
   }
 
