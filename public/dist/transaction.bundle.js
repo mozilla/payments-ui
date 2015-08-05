@@ -22035,9 +22035,22 @@
 	
 	var reducers = _interopRequireWildcard(_reducers);
 	
+	function logger(_ref) {
+	  var getState = _ref.getState;
+	
+	  return function (next) {
+	    return function (action) {
+	      console.info('redux: dispatching', action);
+	      var result = next(action);
+	      console.log('redux: state after', getState());
+	      return result;
+	    };
+	  };
+	}
+	
 	function createReduxStore() {
 	  var reducer = (0, _redux.combineReducers)(reducers);
-	  var finalCreateStore = (0, _redux.applyMiddleware)(_reduxThunk2['default'])(_redux.createStore);
+	  var finalCreateStore = (0, _redux.applyMiddleware)(_reduxThunk2['default'], logger)(_redux.createStore);
 	  return finalCreateStore(reducer);
 	}
 	
@@ -22113,7 +22126,6 @@
 	function app(state, action) {
 	
 	  if (action.type === actionTypes.APP_ERROR) {
-	    console.log('app store: got action', action);
 	    return {
 	      error: {
 	        debugMessage: action.error.debugMessage
@@ -22201,75 +22213,61 @@
 	
 	function management(state, action) {
 	  state = state || initialMgmtState;
-	  var newState;
 	
 	  switch (action.type) {
 	    case actionTypes.USER_SIGNED_IN:
 	      if (!state.tab) {
-	        newState = Object.assign({}, initialMgmtState, {
+	        return Object.assign({}, initialMgmtState, {
 	          tab: 'profile',
 	          view: actionTypes.SHOW_MY_ACCOUNT
 	        });
 	      }
-	      break;
+	      return state;
 	    case actionTypes.APP_ERROR:
-	      newState = Object.assign({}, initialMgmtState, {
+	      return Object.assign({}, initialMgmtState, {
 	        error: {
 	          debugMessage: action.error.debugMessage
 	        }
 	      });
-	      break;
 	    case actionTypes.SHOW_MY_ACCOUNT:
-	      newState = Object.assign({}, initialMgmtState, {
+	      return Object.assign({}, initialMgmtState, {
 	        tab: 'profile',
 	        view: action.type
 	      });
-	      break;
 	    case actionTypes.SHOW_PAY_METHODS:
-	      newState = Object.assign({}, initialMgmtState, {
+	      return Object.assign({}, initialMgmtState, {
 	        tab: 'pay-methods',
 	        view: action.type
 	      });
-	      break;
 	    case actionTypes.SHOW_ADD_PAY_METHOD:
-	      newState = Object.assign({}, initialMgmtState, {
+	      return Object.assign({}, initialMgmtState, {
 	        tab: 'pay-methods',
 	        view: action.type
 	      });
-	      break;
 	    case actionTypes.SHOW_DEL_PAY_METHOD:
-	      newState = Object.assign({}, initialMgmtState, {
+	      return Object.assign({}, initialMgmtState, {
 	        tab: 'pay-methods',
 	        view: action.type
 	      });
-	      break;
 	    case actionTypes.SHOW_HISTORY:
-	      newState = Object.assign({}, initialMgmtState, {
+	      return Object.assign({}, initialMgmtState, {
 	        tab: 'history',
 	        view: action.type
 	      });
-	      break;
 	    case actionTypes.SHOW_SUBSCRIPTIONS:
-	      newState = Object.assign({}, initialMgmtState, {
+	      return Object.assign({}, initialMgmtState, {
 	        tab: 'subs',
 	        view: action.type
 	      });
-	      break;
 	    case actionTypes.CREDIT_CARD_SUBMISSION_ERRORS:
-	      newState = Object.assign({}, initialMgmtState, {
+	      return Object.assign({}, initialMgmtState, {
 	        cardSubmissionErrors: action.apiErrorResult
 	      });
-	      break;
 	    case actionTypes.CLOSE_MODAL:
-	      newState = initialMgmtState;
-	      break;
+	      return initialMgmtState;
+	    default:
+	      return state;
 	  }
-	
-	  if (newState) {
-	    console.log('management: new state for action', action);
-	  }
-	
-	  return newState || state;
 	}
 
 /***/ },
@@ -22300,14 +22298,12 @@
 	function transaction(state, action) {
 	
 	  if (action.type === actionTypes.COMPLETE_TRANSACTION) {
-	    console.log('transaction: completing transaction from', action);
 	    return Object.assign({}, initialTransState, {
 	      completed: true
 	    });
 	  }
 	
 	  if (action.type === actionTypes.PAY_WITH_NEW_CARD) {
-	    console.log('transaction: resetting payment methods from', action);
 	    // What this does is tell Transaction that there are no available
 	    // payment methods for the transaction even though the user
 	    // itself may have some. This causes a 'pay with new card' form
@@ -22318,7 +22314,6 @@
 	  }
 	
 	  if (action.type === actionTypes.USER_SIGNED_IN) {
-	    console.log('transaction: setting default available pay methods from', action);
 	    // By default, assume the user wants to pay with their saved pay methods.
 	    return Object.assign({}, initialTransState, {
 	      availablePayMethods: action.user.payMethods
@@ -22326,7 +22321,6 @@
 	  }
 	
 	  if (action.type === actionTypes.CREDIT_CARD_SUBMISSION_ERRORS) {
-	    console.log('transaction: setting submission errors from', action);
 	    return Object.assign({}, initialTransState, {
 	      cardSubmissionErrors: action.apiErrorResult
 	    });
@@ -22365,7 +22359,6 @@
 	function user(state, action) {
 	
 	  if (action.type === actionTypes.USER_SIGNED_OUT) {
-	    console.log('user store: got action', action);
 	    return Object.assign({}, initialUserState, {
 	      signedIn: false
 	    });
@@ -22380,42 +22373,36 @@
 	  }
 	
 	  if (action.type === actionTypes.GOT_BRAINTREE_TOKEN) {
-	    console.log('user: got action', action);
 	    return Object.assign({}, initialUserState, state, {
 	      braintreeToken: action.braintreeToken
 	    });
 	  }
 	
 	  if (action.type === actionTypes.LOADING_USER_SUBSCRIPTIONS) {
-	    console.log('user: initializing from', action);
 	    return Object.assign({}, initialUserState, state, {
 	      subscriptions: initialUserState.subscriptions
 	    });
 	  }
 	
 	  if (action.type === actionTypes.GOT_USER_SUBSCRIPTIONS) {
-	    console.log('user: storing subscriptions from', action);
 	    return Object.assign({}, initialUserState, state, {
 	      subscriptions: action.subscriptions
 	    });
 	  }
 	
 	  if (action.type === actionTypes.GOT_PAY_METHODS) {
-	    console.log('user store: got action', action);
 	    return Object.assign({}, initialUserState, state, {
 	      payMethods: action.payMethods
 	    });
 	  }
 	
 	  if (action.type === actionTypes.ADD_PAY_METHOD) {
-	    console.log('user store: got action', action);
 	    return Object.assign({}, initialUserState, state, {
 	      payMethods: action.payMethods
 	    });
 	  }
 	
 	  if (action.type === actionTypes.DEL_PAY_METHOD) {
-	    console.log('user store: got action', action);
 	    return Object.assign({}, initialUserState, state, {
 	      payMethods: action.payMethods
 	    });
