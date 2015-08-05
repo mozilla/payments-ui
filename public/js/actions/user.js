@@ -1,33 +1,21 @@
-import $ from 'jquery';
-
 import * as actionTypes from 'constants/action-types';
 import * as settings from 'settings';
 
+import * as defaultApi from './api';
 import * as appActions from './app';
 
 
-function setUpCSRF(csrfToken, jquery) {
-  console.log('setting CSRF token for subsequent requests:', csrfToken);
-  jquery.ajaxSetup({
-    headers: {
-      'X-CSRFToken': csrfToken,
-    },
-  });
-}
-
-
-export function tokenSignIn(accessToken, jquery=$) {
+export function tokenSignIn(accessToken, api=defaultApi) {
   return dispatch => {
-    jquery.ajax({
+    api.fetch({
       data: {
         access_token: accessToken,
       },
       method: 'post',
-      url: '/api/auth/sign-in/',
-      context: this,
+      url: '/auth/sign-in/',
     }).then(data => {
 
-      setUpCSRF(data.csrf_token, jquery);
+      api.setCSRFToken(data.csrf_token);
 
       console.log('login succeeded, setting user');
       dispatch({
@@ -48,7 +36,7 @@ export function tokenSignIn(accessToken, jquery=$) {
 }
 
 
-export function userSignIn(FxaClient=window.FxaRelierClient, jquery=$) {
+export function userSignIn(FxaClient=window.FxaRelierClient, api=defaultApi) {
   return dispatch => {
     console.log('signing in FxA user');
 
@@ -71,18 +59,18 @@ export function userSignIn(FxaClient=window.FxaRelierClient, jquery=$) {
       console.log('FxA sign-in succeeded:', fxaResult);
       console.log('requesting token for code', fxaResult.code);
 
-      jquery.ajax({
+      api.fetch({
         type: 'post',
-        url: '/api/auth/sign-in/',
-        dataType: 'json',
+        url: '/auth/sign-in/',
         data: {
           authorization_code: fxaResult.code,
+          client_id: settings.fxaClientId,
         },
       })
       .then(apiResult => {
         console.log('API sign-in suceeded; result:', apiResult);
 
-        setUpCSRF(apiResult.csrf_token, jquery);
+        api.setCSRFToken(apiResult.csrf_token);
 
         dispatch({
           type: actionTypes.USER_SIGNED_IN,
@@ -106,12 +94,11 @@ export function userSignIn(FxaClient=window.FxaRelierClient, jquery=$) {
 }
 
 
-export function userSignOut(jquery=$) {
+export function userSignOut(fetch=defaultApi.fetch) {
   return dispatch => {
-    jquery.ajax({
+    fetch({
       method: 'post',
-      url: '/api/auth/sign-out/',
-      context: this,
+      url: '/auth/sign-out/',
     }).then(() => {
       console.log('API user sign-out succeeded');
 
@@ -129,19 +116,16 @@ export function userSignOut(jquery=$) {
 }
 
 
-export function getBraintreeToken() {
+export function getBraintreeToken(fetch=defaultApi.fetch) {
   console.log('Requesting braintree token');
   return dispatch => {
-    $.ajax({
+    fetch({
       method: 'post',
-      url: '/api/braintree/token/generate/',
-      context: this,
+      url: '/braintree/token/generate/',
     }).then(data => {
       dispatch({
         type: actionTypes.GOT_BRAINTREE_TOKEN,
-        user: {
-          braintreeToken: data.token,
-        },
+        braintreeToken: data.token,
       });
     }).fail(apiError => {
       console.log('failed to get braintree token', apiError.responseJSON);

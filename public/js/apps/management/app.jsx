@@ -11,6 +11,7 @@ import * as userActions from 'actions/user';
 import * as subscriptionActions from 'actions/subscriptions';
 import { parseQuery } from 'utils';
 
+import Spinner from 'components/spinner';
 import AddPayMethod from 'views/management/add-pay-method';
 import DelPayMethod from 'views/management/del-pay-method';
 import MyAccount from 'views/management/my-account';
@@ -112,6 +113,8 @@ export default class ManagementApp extends Component {
       children.push((
         <History />
       ));
+    } else {
+      children.push(<Spinner/>);
     }
 
 

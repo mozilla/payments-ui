@@ -21,7 +21,7 @@ describe('Management', function() {
     fakeUserSignOut = sinon.stub();
   });
 
-  function mountView({accessToken = null, user = fakeUser } = {}) {
+  function mountView({accessToken=null, user=fakeUser} = {}) {
     return TestUtils.renderIntoDocument(
       <Management
         getUserSubscriptions={fakeSubscriptionGetter}
@@ -34,14 +34,21 @@ describe('Management', function() {
     );
   }
 
-  it('should sign in with access token', function() {
+  it('should do a token sign-in with access token', function() {
     var token = 'some-fxa-token';
     mountView({accessToken: token});
     assert.equal(fakeTokenSignIn.firstCall.args[0], token);
   });
 
-  it('should skip token sign in without a value', function() {
-    mountView({accessToken: null});
+  it('should do a user sign-in without access token', function() {
+    mountView();
+    assert.equal(fakeUserSignIn.called, true);
+  });
+
+  it('should not sign in when user is already signed in', function() {
+    fakeUser.signedIn = true;
+    mountView();
+    assert.equal(fakeUserSignIn.called, false);
     assert.equal(fakeTokenSignIn.called, false);
   });
 
@@ -59,14 +66,6 @@ describe('Management', function() {
 
     TestUtils.Simulate.click(button);
     assert.equal(fakeUserSignOut.called, true);
-  });
-
-  it.skip('should show subscriptions on click', function() {
-    var view = mountView();
-    var button = helpers.findByClass(view, 'subs');
-
-    TestUtils.Simulate.click(button);
-    assert.equal(fakeSubscriptionGetter.called, true);
   });
 
 });

@@ -36,9 +36,7 @@ describe('User Reducer', function() {
   it('should add a braintreeToken', function() {
     var user = reducers.user({}, {
       type: actionTypes.GOT_BRAINTREE_TOKEN,
-      user: {
-        braintreeToken: 'bt-token',
-      },
+      braintreeToken: 'bt-token',
     });
     assert.deepEqual(user,
       Object.assign({}, initialUserState, { braintreeToken: 'bt-token'}));
@@ -49,9 +47,7 @@ describe('User Reducer', function() {
     state.user = reducers.user(state.user, userSignedIn());
     var user = reducers.user(state.user, {
       type: actionTypes.GOT_BRAINTREE_TOKEN,
-      user: {
-        braintreeToken: 'bt-token',
-      },
+      braintreeToken: 'bt-token',
     });
     assert.deepEqual(user,
       Object.assign({}, userData(), { braintreeToken: 'bt-token'}));

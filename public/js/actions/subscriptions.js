@@ -1,22 +1,22 @@
-import $ from 'jquery';
 import braintree from 'braintree-web';
 
 import * as actionTypes from 'constants/action-types';
 
+import * as api from './api';
 import * as appActions from './app';
 import * as transactionActions from './transaction';
 
 
-export function getUserSubscriptions(jquery=$) {
+export function getUserSubscriptions(fetch=api.fetch) {
   return dispatch => {
 
     dispatch({
       type: actionTypes.LOADING_USER_SUBSCRIPTIONS,
     });
 
-    jquery.ajax({
+    fetch({
       method: 'get',
-      url: '/api/braintree/subscriptions/',
+      url: '/braintree/subscriptions/',
       context: this,
     }).then(data => {
       console.log('got subscriptions from API:', data);
@@ -34,7 +34,7 @@ export function getUserSubscriptions(jquery=$) {
 
 
 export function createSubscription(productId, payMethod,
-                                   braintreeToken, jquery=$,
+                                   braintreeToken, fetch=api.fetch,
                                    BraintreeClient=braintree.api.Client) {
   return dispatch => {
 
@@ -45,11 +45,10 @@ export function createSubscription(productId, payMethod,
       data.pay_method_uri = opts.payMethodUri;
       data.pay_method_nonce = opts.nonce;
 
-      return jquery.ajax({
+      return fetch({
         data: data,
-        url: '/api/braintree/subscriptions/',
+        url: '/braintree/subscriptions/',
         method: 'post',
-        dataType: 'json',
       }).then(() => {
         console.log('Successfully subscribed + completed payment');
         dispatch(transactionActions.complete());

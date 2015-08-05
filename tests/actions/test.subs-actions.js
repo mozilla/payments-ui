@@ -16,47 +16,45 @@ describe('subscription actions', function() {
 
   describe('getUserSubscriptions', function() {
 
-    function setApiResult({jqueryOpt={}} = {}) {
+    function setApiResult({fetchOpt={}} = {}) {
       var data = {
         subscriptions: [{}],
       };
-      Object.assign(jqueryOpt, {
-        returnedData: data,
-      });
-      var jquery = helpers.fakeJquery(jqueryOpt);
+      fetchOpt.returnedData = data;
+      var fetch = helpers.fakeFetch(fetchOpt);
       return {
-        jquery: jquery.stub,
+        fetch: fetch,
         data: data,
       };
     }
 
     it('should dispatch a loading action', function() {
-      var { jquery } = setApiResult();
-      subActions.getUserSubscriptions(jquery)(dispatchSpy);
+      var { fetch } = setApiResult();
+      subActions.getUserSubscriptions(fetch)(dispatchSpy);
 
       var action = dispatchSpy.firstCall.args[0];
       assert.equal(action.type, actionTypes.LOADING_USER_SUBSCRIPTIONS);
     });
 
     it('should dispatch user subscription action', function() {
-      var { jquery } = setApiResult();
-      subActions.getUserSubscriptions(jquery)(dispatchSpy);
+      var { fetch } = setApiResult();
+      subActions.getUserSubscriptions(fetch)(dispatchSpy);
 
       var action = dispatchSpy.secondCall.args[0];
       assert.equal(action.type, actionTypes.GOT_USER_SUBSCRIPTIONS);
     });
 
     it('should dispatch subscription data', function() {
-      var { jquery, data } = setApiResult();
-      subActions.getUserSubscriptions(jquery)(dispatchSpy);
+      var { fetch, data } = setApiResult();
+      subActions.getUserSubscriptions(fetch)(dispatchSpy);
 
       var action = dispatchSpy.secondCall.args[0];
       assert.equal(action.subscriptions, data.subscriptions);
     });
 
     it('should dispatch app error on failure', function() {
-      var { jquery } = setApiResult({jqueryOpt: {result: 'fail'}});
-      subActions.getUserSubscriptions(jquery)(dispatchSpy);
+      var { fetch } = setApiResult({fetchOpt: {result: 'fail'}});
+      subActions.getUserSubscriptions(fetch)(dispatchSpy);
 
       var action = dispatchSpy.secondCall.args[0];
       assert.deepEqual(action,
@@ -93,18 +91,18 @@ describe('subscription actions', function() {
       }
     }
 
-    function createSubscription(jquery, client=FakeBraintreeClient,
+    function createSubscription(fetch, client=FakeBraintreeClient,
                                 payMethod=fakeCard) {
       subActions.createSubscription('product-id',
                                     payMethod,
                                     'braintree-token',
-                                    jquery,
+                                    fetch,
                                     client)(dispatchSpy);
     }
 
     it('should dispatch a completion action', function() {
-      var jquery = helpers.fakeJquery();
-      createSubscription(jquery.stub);
+      var fetch = helpers.fakeFetch();
+      createSubscription(fetch);
 
       var action = dispatchSpy.firstCall.args[0];
       assert.deepEqual(action, transactionActions.complete());
@@ -112,11 +110,11 @@ describe('subscription actions', function() {
 
     it('should dispatch an error action', function() {
       var apiError = {error_response: 'some error'};
-      var jquery = helpers.fakeJquery({
+      var fetch = helpers.fakeFetch({
         result: 'fail',
         xhrError: {responseJSON: apiError},
       });
-      createSubscription(jquery.stub);
+      createSubscription(fetch);
 
       var action = dispatchSpy.firstCall.args[0];
       assert.deepEqual(action, {
@@ -127,19 +125,19 @@ describe('subscription actions', function() {
 
     it('should dispatch an error action with payMethodUri', function() {
       var apiError = {error_response: 'some error'};
-      var jquery = helpers.fakeJquery({
+      var fetch = helpers.fakeFetch({
         result: 'fail',
         xhrError: {responseJSON: apiError},
       });
-      createSubscription(jquery.stub, FakeBraintreeClient,
+      createSubscription(fetch, FakeBraintreeClient,
                          'fake-pay-method-uri');
       var action = dispatchSpy.firstCall.args[0];
       assert.equal(action.type, actionTypes.APP_ERROR);
     });
 
     it('should dispatch an error on tokenization failure', function() {
-      var jquery = helpers.fakeJquery();
-      createSubscription(jquery.stub, FakeBraintreeClientError);
+      var fetch = helpers.fakeFetch();
+      createSubscription(fetch, FakeBraintreeClientError);
       var action = dispatchSpy.firstCall.args[0];
       assert.deepEqual(action,
                        appActions.error('Braintree tokenization error'));
@@ -147,15 +145,15 @@ describe('subscription actions', function() {
 
     it('should throw with a bad card', function() {
       assert.throws(() => {
-        var jquery = helpers.fakeJquery();
-        createSubscription(jquery.stub, FakeBraintreeClient, fakeBadCard);
+        var fetch = helpers.fakeFetch();
+        createSubscription(fetch, FakeBraintreeClient, fakeBadCard);
       }, Error, /Invalid card object/);
     });
 
     it('should throw with unrecognized pay method', function() {
       assert.throws(() => {
-        var jquery = helpers.fakeJquery();
-        createSubscription(jquery.stub, FakeBraintreeClient, () => {});
+        var fetch = helpers.fakeFetch();
+        createSubscription(fetch, FakeBraintreeClient, () => {});
       }, Error, /Unrecognized payMethod/);
     });
 

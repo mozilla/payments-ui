@@ -26,7 +26,6 @@ const navData = [
 
 export default class Management extends Component {
 
-
   static propTypes = {
     accessToken: PropTypes.string,
     getPayMethods: PropTypes.func.isRequired,
@@ -41,9 +40,14 @@ export default class Management extends Component {
   }
 
   componentDidMount() {
-    if (this.props.accessToken && !this.props.user.signedIn) {
-      console.log('page loaded with access token; signing in');
-      this.props.tokenSignIn(this.props.accessToken);
+    if (!this.props.user.signedIn) {
+      if (this.props.accessToken) {
+        console.log('page loaded with access token; signing in');
+        this.props.tokenSignIn(this.props.accessToken);
+      } else {
+        console.log('prompting user to sign in');
+        this.props.userSignIn();
+      }
     }
   }
 
