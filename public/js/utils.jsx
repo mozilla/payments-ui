@@ -41,6 +41,11 @@ export function gettext(string){
 }
 
 
+export function setTitle(string, doc=document) {
+  doc.title = string;
+}
+
+
 export function parseQuery(url){
   //
   // Given a complete URL, parse the query string and return an

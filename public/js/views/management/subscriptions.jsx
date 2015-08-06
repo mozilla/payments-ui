@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import SubscriptionList from 'components/subscription-list';
 
-import { gettext } from 'utils';
+import { gettext, setTitle } from 'utils';
 
 
 export default class Subscriptions extends Component {
@@ -13,6 +13,7 @@ export default class Subscriptions extends Component {
 
   componentDidMount() {
     this.props.getUserSubscriptions();
+    setTitle(gettext('Subscriptions'));
   }
 
   render() {
