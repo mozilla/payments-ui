@@ -16,7 +16,7 @@ export default class Subscription extends Component {
     var productData = products.get(this.props.seller_product.public_id);
 
     return (
-      <div>
+      <div className="subscription">
         <div className="product">
           <img alt="" src={productData.img}/>
           <h2 className="seller">{productData.seller.name.en}</h2>
