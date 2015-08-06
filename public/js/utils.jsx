@@ -18,6 +18,18 @@ export function defaults(object, opt) {
 }
 
 
+export function isDisabled(domNode) {
+  // Links dont' have disabled attrs so here we're checking
+  // for a disabled classname instead.
+  if (domNode.nodeName.toLowerCase() === 'a') {
+    return domNode.className.split(' ').indexOf('disabled') > -1;
+  }
+  // The presence of the attribute 'disabled'
+  // means it's disabled. Even disabled="false".
+  return domNode.hasAttribute('disabled');
+}
+
+
 export function getMountNode(node){
   return node || document.getElementById('view');
 }

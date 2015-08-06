@@ -64,9 +64,20 @@
         color: $dark-grey;
         font-size: $base-font;
 
+        &:focus,
         &:active,
         &:hover {
           background: $lightish-grey;
+        }
+
+        &:disabled,
+        &.disabled {
+            opacity: 0.5;
+            background: inherit;
+
+            &:focus {
+                box-shadow: none;
+            }
         }
     }
 
