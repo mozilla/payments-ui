@@ -19,8 +19,10 @@ export function defaults(object, opt) {
 
 
 export function isDisabled(domNode) {
-  if (domNode.className.split(' ').indexOf('disabled') > -1) {
-    return true;
+  // Links dont' have disabled attrs so here we're checking
+  // for a disabled classname instead.
+  if (domNode.nodeName.toLowerCase() === 'a') {
+    return domNode.className.split(' ').indexOf('disabled') > -1;
   }
   // The presence of the attribute 'disabled'
   // means it's disabled. Even disabled="false".
