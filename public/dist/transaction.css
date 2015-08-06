@@ -612,7 +612,7 @@ a.button.disabled,
 button:disabled,
 button.disabled {
   background: #8a9ba8;
-  cursor: auto;
+  cursor: not-allowed;
 }
 
 .button.warning,

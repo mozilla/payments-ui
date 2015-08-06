@@ -629,7 +629,7 @@ a.button.disabled,
 button:disabled,
 button.disabled {
   background: #8a9ba8;
-  cursor: auto;
+  cursor: not-allowed;
 }
 
 .button.warning,
@@ -1234,11 +1234,28 @@ button.spinner:after {
   font-size: 14px;
 }
 
+.management button.quiet:focus,
 .management button.quiet:active,
 .management button.quiet:hover,
+.management .button.quiet:focus,
 .management .button.quiet:active,
 .management .button.quiet:hover {
   background: #EBEBEB;
+}
+
+.management button.quiet:disabled,
+.management button.quiet.disabled,
+.management .button.quiet:disabled,
+.management .button.quiet.disabled {
+  opacity: 0.5;
+  background: inherit;
+}
+
+.management button.quiet:disabled:focus,
+.management button.quiet.disabled:focus,
+.management .button.quiet:disabled:focus,
+.management .button.quiet.disabled:focus {
+  box-shadow: none;
 }
 
 .management main {

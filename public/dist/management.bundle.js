@@ -20689,6 +20689,7 @@ webpackJsonp([0,2],[
 	  value: true
 	});
 	exports.defaults = defaults;
+	exports.isDisabled = isDisabled;
 	exports.getMountNode = getMountNode;
 	exports.gettext = gettext;
 	exports.parseQuery = parseQuery;
@@ -20702,6 +20703,17 @@ webpackJsonp([0,2],[
 	    }
 	  });
 	  return object;
+	}
+	
+	function isDisabled(domNode) {
+	  // Links dont' have disabled attrs so here we're checking
+	  // for a disabled classname instead.
+	  if (domNode.nodeName.toLowerCase() === 'a') {
+	    return domNode.className.split(' ').indexOf('disabled') > -1;
+	  }
+	  // The presence of the attribute 'disabled'
+	  // means it's disabled. Even disabled="false".
+	  return domNode.hasAttribute('disabled');
 	}
 	
 	function getMountNode(node) {
@@ -38081,6 +38093,10 @@ webpackJsonp([0,2],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _classnames = __webpack_require__(248);
+	
+	var _classnames2 = _interopRequireDefault(_classnames);
+	
 	var _componentsCardList = __webpack_require__(256);
 	
 	var _componentsCardList2 = _interopRequireDefault(_componentsCardList);
@@ -38104,6 +38120,10 @@ webpackJsonp([0,2],[
 	
 	    this.handleDelPayMethod = function (e) {
 	      e.preventDefault();
+	      if ((0, _utils.isDisabled)(e.target)) {
+	        console.log('Delete link is disabled. no-op');
+	        return;
+	      }
 	      _this.props.showDelPayMethod();
 	    };
 	  }
@@ -38123,6 +38143,10 @@ webpackJsonp([0,2],[
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	
+	      var isDeleteDisabled = !this.props.payMethods || !this.props.payMethods.length;
+	      var deleteClasses = (0, _classnames2['default'])('button', 'quiet', 'delete', { 'disabled': isDeleteDisabled });
+	
 	      return _react2['default'].createElement(
 	        'div',
 	        null,
@@ -38143,7 +38167,7 @@ webpackJsonp([0,2],[
 	          ),
 	          _react2['default'].createElement(
 	            'a',
-	            { className: 'button quiet delete', href: '#',
+	            { className: deleteClasses, href: '#',
 	              onClick: this.handleDelPayMethod },
 	            (0, _utils.gettext)('Delete')
 	          )

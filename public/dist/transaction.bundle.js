@@ -20520,6 +20520,7 @@
 	  value: true
 	});
 	exports.defaults = defaults;
+	exports.isDisabled = isDisabled;
 	exports.getMountNode = getMountNode;
 	exports.gettext = gettext;
 	exports.parseQuery = parseQuery;
@@ -20533,6 +20534,17 @@
 	    }
 	  });
 	  return object;
+	}
+	
+	function isDisabled(domNode) {
+	  // Links dont' have disabled attrs so here we're checking
+	  // for a disabled classname instead.
+	  if (domNode.nodeName.toLowerCase() === 'a') {
+	    return domNode.className.split(' ').indexOf('disabled') > -1;
+	  }
+	  // The presence of the attribute 'disabled'
+	  // means it's disabled. Even disabled="false".
+	  return domNode.hasAttribute('disabled');
 	}
 	
 	function getMountNode(node) {

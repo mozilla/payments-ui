@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react';
+import cx from 'classnames';
 
 import CardList from 'components/card-list';
 
-import { gettext } from 'utils';
+import { gettext, isDisabled } from 'utils';
 
 
 export default class PayMethods extends Component {
@@ -20,6 +21,10 @@ export default class PayMethods extends Component {
 
   handleDelPayMethod = e => {
     e.preventDefault();
+    if (isDisabled(e.target)) {
+      console.log('Delete link is disabled. no-op');
+      return;
+    }
     this.props.showDelPayMethod();
   }
 
@@ -35,6 +40,12 @@ export default class PayMethods extends Component {
   }
 
   render() {
+
+    var isDeleteDisabled = !this.props.payMethods ||
+      !this.props.payMethods.length;
+    var deleteClasses = cx('button', 'quiet', 'delete',
+                           {'disabled': isDeleteDisabled});
+
     return (
       <div>
         <h1>{gettext('Payment Methods')}</h1>
@@ -42,7 +53,7 @@ export default class PayMethods extends Component {
           {this.renderChild()}
           <a className="button quiet add-pay-method" href="#"
             onClick={this.handleAddPayMethod}>{gettext('Add a new card')}</a>
-          <a className="button quiet delete" href="#"
+          <a className={deleteClasses} href="#"
             onClick={this.handleDelPayMethod}>{gettext('Delete')}</a>
         </div>
       </div>
