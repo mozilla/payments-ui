@@ -22686,6 +22686,10 @@ webpackJsonp([0,2],[
 	
 	var appActions = _interopRequireWildcard(_app);
 	
+	var _management = __webpack_require__(199);
+	
+	var mgmtActions = _interopRequireWildcard(_management);
+	
 	function delPayMethod(payMethodUri) {
 	  var _this = this;
 	
@@ -22708,6 +22712,7 @@ webpackJsonp([0,2],[
 	        type: actionTypes.GOT_PAY_METHODS,
 	        payMethods: data.payment_methods
 	      });
+	      dispatch(mgmtActions.showPayMethods());
 	    }).fail(function () {
 	      console.log('Deleting pay method failed');
 	      dispatch(appActions.error('Deleting pay method failed'));
@@ -22765,6 +22770,7 @@ webpackJsonp([0,2],[
 	            type: actionTypes.GOT_PAY_METHODS,
 	            payMethods: data.payment_methods
 	          });
+	          dispatch(mgmtActions.showPayMethods());
 	        }).fail(function ($xhr) {
 	          dispatch({
 	            type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
