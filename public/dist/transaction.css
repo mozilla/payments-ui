@@ -408,6 +408,27 @@ main {
   box-sizing: border-box;
 }
 
+.app-error {
+  background: rgba(255, 255, 255, 0.8);
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 10;
+}
+
+.app-error .msg {
+  font-family: "Fira Sans", Helvetica, Arial, sans-serif;
+  color: #d63920;
+  margin: 0;
+  position: relative;
+  text-align: center;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 @font-face {
   font-family: "Fira Sans";
   src: url("../fonts/firasans/firasans-light.eot");
