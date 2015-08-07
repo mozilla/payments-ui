@@ -37893,8 +37893,7 @@ webpackJsonp([0,2],[
 	          _react2['default'].createElement(
 	            'div',
 	            null,
-	            'per ',
-	            (0, _utils.gettext)('month')
+	            (0, _utils.gettext)('per month')
 	          )
 	        ),
 	        _react2['default'].createElement(
