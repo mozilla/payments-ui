@@ -94,15 +94,15 @@ webpackJsonp([0,2],[
 	
 	var _viewsManagementPayMethods2 = _interopRequireDefault(_viewsManagementPayMethods);
 	
-	var _viewsSharedBraintreeToken = __webpack_require__(267);
+	var _viewsSharedBraintreeToken = __webpack_require__(268);
 	
 	var _viewsSharedBraintreeToken2 = _interopRequireDefault(_viewsSharedBraintreeToken);
 	
-	var _viewsSharedModalError = __webpack_require__(268);
+	var _viewsSharedModalError = __webpack_require__(269);
 	
 	var _viewsSharedModalError2 = _interopRequireDefault(_viewsSharedModalError);
 	
-	var _viewsManagement = __webpack_require__(271);
+	var _viewsManagement = __webpack_require__(272);
 	
 	var _viewsManagement2 = _interopRequireDefault(_viewsManagement);
 	
@@ -38094,9 +38094,9 @@ webpackJsonp([0,2],[
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var _componentsCardList = __webpack_require__(256);
+	var _componentsCardDropDown = __webpack_require__(267);
 	
-	var _componentsCardList2 = _interopRequireDefault(_componentsCardList);
+	var _componentsCardDropDown2 = _interopRequireDefault(_componentsCardDropDown);
 	
 	var _utils = __webpack_require__(159);
 	
@@ -38129,7 +38129,7 @@ webpackJsonp([0,2],[
 	    key: 'renderChild',
 	    value: function renderChild() {
 	      if (this.props.payMethods && this.props.payMethods.length) {
-	        return _react2['default'].createElement(_componentsCardList2['default'], { cards: this.props.payMethods });
+	        return _react2['default'].createElement(_componentsCardDropDown2['default'], { cards: this.props.payMethods });
 	      }
 	      return _react2['default'].createElement(
 	        'p',
@@ -38203,6 +38203,176 @@ webpackJsonp([0,2],[
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _classnames = __webpack_require__(248);
+	
+	var _classnames2 = _interopRequireDefault(_classnames);
+	
+	var _componentsCardIcon = __webpack_require__(249);
+	
+	var _componentsCardIcon2 = _interopRequireDefault(_componentsCardIcon);
+	
+	var _utils = __webpack_require__(159);
+	
+	var defaultSelectText = (0, _utils.gettext)('Please select');
+	
+	var CardDropDown = (function (_Component) {
+	  _inherits(CardDropDown, _Component);
+	
+	  _createClass(CardDropDown, null, [{
+	    key: 'propTypes',
+	    value: {
+	      cards: _react.PropTypes.arrayOf(_react.PropTypes.shape({
+	        id: _react.PropTypes.number,
+	        resource_uri: _react.PropTypes.string,
+	        truncated_id: _react.PropTypes.string,
+	        type_name: _react.PropTypes.string
+	      })).isRequired,
+	      cssModifier: _react.PropTypes.string,
+	      onCardChange: _react.PropTypes.func.isRequired
+	    },
+	    enumerable: true
+	  }]);
+	
+	  function CardDropDown(props) {
+	    var _this = this;
+	
+	    _classCallCheck(this, CardDropDown);
+	
+	    _get(Object.getPrototypeOf(CardDropDown.prototype), 'constructor', this).call(this, props);
+	
+	    this.handleFocus = function () {
+	      _this.setState({ isFocused: true });
+	    };
+	
+	    this.handleBlur = function () {
+	      _this.setState({ isFocused: false });
+	    };
+	
+	    this.handleChange = function (e) {
+	      if (_this.props.onCardChange) {
+	        _this.props.onCardChange(e);
+	      }
+	      var selectedText;
+	      var selectedNode = e.target.options[e.target.selectedIndex];
+	      if (selectedNode) {
+	
+	        var selectedCardType = selectedNode.getAttribute('data-type');
+	        if (selectedCardType) {
+	          selectedText = selectedNode.firstChild.nodeValue.replace(selectedCardType.toUpperCase(), '');
+	        }
+	      }
+	      _this.setState({
+	        selectedText: selectedText || defaultSelectText,
+	        selectedCardType: selectedCardType
+	      });
+	    };
+	
+	    this.state = {
+	      selectedText: defaultSelectText,
+	      selectedCardType: null,
+	      isFocused: false
+	    };
+	  }
+	
+	  _createClass(CardDropDown, [{
+	    key: 'render',
+	    value: function render() {
+	      var cardData = this.props.cards;
+	      var cardOptions = [];
+	
+	      cardOptions.push(_react2['default'].createElement(
+	        'option',
+	        { value: '' },
+	        defaultSelectText
+	      ));
+	
+	      for (var i = 0; i < cardData.length; i += 1) {
+	        var _cardData$i = cardData[i];
+	        var selected = _cardData$i.selected;
+	
+	        var card = _objectWithoutProperties(_cardData$i, ['selected']);
+	
+	        var optionText = card.type_name.toUpperCase() + ' ●●●● ●●●● ●●●● ' + card.truncated_id;
+	
+	        cardOptions.push(_react2['default'].createElement(
+	          'option',
+	          {
+	            'data-type': card.type_name.toLowerCase(),
+	            key: card.id,
+	            selected: selected,
+	            value: card.resource_uri
+	          },
+	          optionText
+	        ));
+	      }
+	
+	      var contentClasses = (0, _classnames2['default'])('content', {
+	        'has-card': this.state.selectedCardType
+	      });
+	
+	      var proxySelectClasses = (0, _classnames2['default'])('proxy-select', {
+	        'active': this.state.isFocused
+	      });
+	
+	      return _react2['default'].createElement(
+	        'div',
+	        { className: proxySelectClasses },
+	        this.state.selectedCardType ? _react2['default'].createElement(_componentsCardIcon2['default'], { cardType: this.state.selectedCardType }) : null,
+	        _react2['default'].createElement(
+	          'span',
+	          { className: contentClasses, ariaHidden: 'true' },
+	          _react2['default'].createElement(
+	            'span',
+	            { className: 'vh' },
+	            this.state.selectedCardType
+	          ),
+	          this.state.selectedText
+	        ),
+	        _react2['default'].createElement(
+	          'select',
+	          {
+	            onBlur: this.handleBlur,
+	            onChange: this.handleChange,
+	            onFocus: this.handleFocus,
+	            onKeyUp: this.handleChange },
+	          cardOptions
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return CardDropDown;
+	})(_react.Component);
+	
+	exports['default'] = CardDropDown;
+	module.exports = exports['default'];
+
+/***/ },
+/* 268 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
@@ -38256,7 +38426,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 268 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38279,11 +38449,11 @@ webpackJsonp([0,2],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsModal = __webpack_require__(269);
+	var _componentsModal = __webpack_require__(270);
 	
 	var _componentsModal2 = _interopRequireDefault(_componentsModal);
 	
-	var _componentsError = __webpack_require__(270);
+	var _componentsError = __webpack_require__(271);
 	
 	var _componentsError2 = _interopRequireDefault(_componentsError);
 	
@@ -38321,7 +38491,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 269 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38427,7 +38597,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 270 */
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38490,7 +38660,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 271 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

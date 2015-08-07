@@ -25,7 +25,6 @@ export default class CardIcon extends Component {
     ]),
   }
 
-
   render() {
     // This is only displayed if a cardType is passed-in.
     var cardType = this.props.cardType;
