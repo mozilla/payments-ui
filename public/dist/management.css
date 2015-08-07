@@ -949,14 +949,14 @@ button.spinner:after {
   padding: 0;
 }
 
-.subscription {
+.subscription-list li {
   list-style-type: none;
   padding: 2em 0 0;
   margin: 2em 0 0;
   border-top: 1px solid #C8C8C8;
 }
 
-.subscription:first-child {
+.subscription-list li:first-child {
   border-top: none;
 }
 

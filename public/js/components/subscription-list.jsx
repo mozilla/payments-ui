@@ -25,7 +25,7 @@ export default class SubscriptionList extends Component {
       var subs = [];
       this.props.subscriptions.forEach((data) => {
         subs.push(
-          <li key={data.id} className="subscription">
+          <li key={data.id}>
             <Subscription {...data}/>
           </li>
         );

@@ -37778,7 +37778,7 @@ webpackJsonp([0,2],[
 	        this.props.subscriptions.forEach(function (data) {
 	          subs.push(_react2['default'].createElement(
 	            'li',
-	            { key: data.id, className: 'subscription' },
+	            { key: data.id },
 	            _react2['default'].createElement(_componentsSubscription2['default'], data)
 	          ));
 	        });
@@ -37866,7 +37866,7 @@ webpackJsonp([0,2],[
 	
 	      return _react2['default'].createElement(
 	        'div',
-	        null,
+	        { className: 'subscription' },
 	        _react2['default'].createElement(
 	          'div',
 	          { className: 'product' },
