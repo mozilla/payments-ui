@@ -1,0 +1,23 @@
+.complete {
+  text-align: center;
+
+  .accepted {
+    @include header-font();
+    font-size: $large-font;
+    font-weight: 200;
+    padding: 20px 0;
+  }
+
+  .receipt {
+    padding-bottom: 1em;
+
+    span {
+      display: block;
+    }
+  }
+
+  button {
+    max-width: calc(100% - 40px);
+  }
+}
+

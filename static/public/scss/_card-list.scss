@@ -1,0 +1,49 @@
+.card-list {
+  margin: 0;
+  padding: 0;
+
+  .card-item {
+    list-style-type: none;
+    margin: 10px 0;
+    position: relative;
+
+    input[type=radio] {
+      opacity: 0;
+      position: absolute;
+
+      &:checked + label,
+      &:hover + label,
+      &:focus + label {
+        cursor: pointer;
+        border: 1px solid $radio-selected-border;
+        border-radius: 5px;
+        background: $radio-selected-background;
+        transition: all $medium-transition;
+      }
+    }
+
+    & label {
+      border: 1px solid transparent;
+      display: block;
+      font-size: $medium-font;
+      font-weight: 700;
+      padding: 1em 15px 1em 60px;
+      position: relative;
+      text-align: right;
+      width: 100%;
+    }
+
+    .card-icon {
+      left: 15px;
+    }
+  }
+}
+
+.delete .card-item input[type=radio] {
+   &:checked + label,
+   &:hover + label,
+   &:focus + label {
+     border: 1px solid $awooga-red;
+     background: #fff;
+   }
+}

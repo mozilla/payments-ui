@@ -29,6 +29,21 @@ h1,h2,h3,h4,h5,h6 {
   margin: .75em 0;
 }
 
+body {
+  @include font();
+  color: $text-color;
+  font-size: $base-font;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  @include header-font();
+}
+
+a {
+  text-decoration: none;
+  color: $the-real-blue;
+}
+
 h1 { font-size: 150%; }
 h2 { font-size: 140%; }
 h3 { font-size: 130%; }

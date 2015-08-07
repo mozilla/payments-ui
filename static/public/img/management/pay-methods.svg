@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+<svg version="1.1"
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="32"
+     height="32"
+     viewBox="0 0 32 32">
+
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M0,7.50226064 C0,6.12030025 1.1201337,5 2.49765754,5 L29.5023425,5 C30.8817606,5 32,6.12122893 32,7.50226064 L32,24.4977394 C32,25.8796998 30.8798663,27 29.5023425,27 L2.49765754,27 C1.11823937,27 0,25.8787711 0,24.4977394 L0,7.50226064 Z M0,10 L32,10 L32,13 L0,13 L0,10 Z" id="credit-card" fill="#fff" stroke-width="1"></path>
+    </g>
+
+</svg>

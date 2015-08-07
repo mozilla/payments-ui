@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Payments UI Styleguide | Modal Dialogue</title>
+  <link rel="stylesheet" href="cog/lib/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="cog/css/styleguide.css">
+  <link rel="stylesheet" href="cog/lib/css/solarized_light.css">
+  <script src="cog/lib/js-beautify/beautify.js"></script>
+  <script src="cog/lib/js-beautify/beautify-css.js"></script>
+  <script src="cog/lib/js-beautify/beautify-html.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js"></script>
+</head>
+
+<body class="styleguide">
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header"> <a class="navbar-brand" href="index.html">Payments UI Styleguide</a> </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3 col-md-2 sidebar">
+        <ul class="nav nav-sidebar">
+          <li><a href="index.html">Index</a></li>
+          <li><a href="./app-error.html">App Error</a></li>
+          <li><a href="./buttons.html">Buttons</a></li>
+          <li><a href="./card-form.html">Card Form</a></li>
+          <li class="active"><a href="./modal.html">Modal Dialogue</a></li>
+          <li><a href="./spinner.html">Spinner</a></li>
+          <li><a href="./typography.html">Typography</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h1>Modal Dialogue</h1>
+        <p>This is the modal dialogue component.</p>
+        <div class="panel panel-default">
+          <div class="panel-heading clearfix">
+            <h3 class="panel-title pull-left">Modal Dialogue <span class="size"></span></h3>
+            <div class="resize-buttons btn-group pull-right">
+              <button type="button" class="btn btn-default btn-xs" data-vp="350:598"> Phone </button>
+              <button type="button" class="btn btn-default btn-xs" data-vp="600:887"> Tablet </button>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="iframe-wrapper resizable">
+              <iframe id="modal1" src="iframe/modal1.html"></iframe>
+            </div>
+          </div> <pre class="panel-footer"><code class="language-markup" data-iframe-id="modal1"></code></pre>
+          <script>
+            (function() {
+              var iframe_ = document.querySelector('#modal1');
+              iframe_.onload = function() {
+                hljs.configure({
+                  tabReplace: '    ',
+                  useBR: true,
+                });
+                var codeViewer = document.querySelector('code[data-iframe-id="modal1"]');
+                var source = iframe_.contentWindow.document.querySelector('#modal');
+                codeViewer.innerHTML = hljs.highlight('html', html_beautify(source.innerHTML.trim())).value;
+                var observer = new window.MutationObserver(function(mutations) {
+                  mutations.forEach(function() {
+                    codeViewer.innerHTML = hljs.highlight('html', html_beautify(source.innerHTML.trim())).value;
+                  });
+                });
+                observer.observe(source, {
+                  attributes: true,
+                  characterData: true,
+                  childList: true,
+                  subtree: true,
+                });
+              }
+            })();
+          </script>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="cog/lib/jquery/js/jquery.min.js"></script>
+  <script src="cog/lib/bootstrap/js/bootstrap.min.js"></script>
+  <script src="cog/js/resize.js"></script>
+</body>
+
+</html>
