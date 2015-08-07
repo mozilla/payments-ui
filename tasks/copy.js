@@ -16,6 +16,19 @@ module.exports = {
       expand: true,
       src: '*',
       dest: 'public/fonts/firasans/',
+    }, {
+      cwd: 'node_modules/mozilla-tabzilla/',
+      expand: true,
+      src: ['**/*.png'],
+      dest: 'public/',
+    }, {
+      cwd: 'node_modules/mozilla-tabzilla/css/',
+      expand: true,
+      ext: '.scss',
+      src: ['**/*.css'],
+      dest: 'public/scss/lib/',
     }],
+
   },
+
 };
