@@ -28,13 +28,8 @@ describe('PayMethods', function() {
     );
   });
 
-  it('should have a visa card present', function() {
-    var content = helpers.findByClass(this.PayMethods, 'cctype-visa');
-    assert.ok(TestUtils.isDOMComponent(content));
-  });
-
-  it('should have an amex card present', function() {
-    var content = helpers.findByClass(this.PayMethods, 'cctype-amex');
+  it('should have a card dropdown', function() {
+    var content = helpers.findByClass(this.PayMethods, 'proxy-select');
     assert.ok(TestUtils.isDOMComponent(content));
   });
 

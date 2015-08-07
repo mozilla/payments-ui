@@ -98,6 +98,13 @@ export function findAllByTag(component, tag){
 }
 
 
+export function findAllNodesByTag(component, tag){
+  return findAllByTag(component, tag).map((item) => {
+    return React.findDOMNode(item);
+  });
+}
+
+
 export function getFluxContainer(store) {
   //
   // Get a container component to set context stubs so you can use it
