@@ -7,7 +7,7 @@ const navData = [
   {
     className: 'profile',
     action: 'showMyAccount',
-    text: gettext('My Account'),
+    text: gettext('My account'),
   }, {
     className: 'pay-methods',
     action: 'showPayMethods',

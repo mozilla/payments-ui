@@ -37893,7 +37893,7 @@ webpackJsonp([0,2],[
 	          _react2['default'].createElement(
 	            'div',
 	            null,
-	            '/ ',
+	            'per ',
 	            (0, _utils.gettext)('month')
 	          )
 	        ),
@@ -38525,7 +38525,7 @@ webpackJsonp([0,2],[
 	var navData = [{
 	  className: 'profile',
 	  action: 'showMyAccount',
-	  text: (0, _utils.gettext)('My Account')
+	  text: (0, _utils.gettext)('My account')
 	}, {
 	  className: 'pay-methods',
 	  action: 'showPayMethods',

@@ -24,7 +24,7 @@ export default class Subscription extends Component {
         </div>
         <div className="price">
           <div>{productData.price.en}</div>
-          <div>/ {gettext('month')}</div>
+          <div>per {gettext('month')}</div>
         </div>
         <nav>
           <div className="change-pay-account">
