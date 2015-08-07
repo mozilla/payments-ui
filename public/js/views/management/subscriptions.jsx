@@ -12,9 +12,7 @@ export default class Subscriptions extends Component {
   };
 
   componentDidMount() {
-    if (this.props.userSubscriptions === null) {
-      this.props.getUserSubscriptions();
-    }
+    this.props.getUserSubscriptions();
   }
 
   render() {

@@ -37686,9 +37686,7 @@ webpackJsonp([0,2],[
 	  _createClass(Subscriptions, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      if (this.props.userSubscriptions === null) {
-	        this.props.getUserSubscriptions();
-	      }
+	      this.props.getUserSubscriptions();
 	    }
 	  }, {
 	    key: 'render',
