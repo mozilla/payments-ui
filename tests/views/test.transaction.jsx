@@ -1,7 +1,7 @@
 import React from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
 
-import * as helpers from './helpers';
+import * as helpers from '../helpers';
 
 import * as actionTypes from 'constants/action-types';
 import * as transactionActions from 'actions/transaction';

@@ -3,7 +3,7 @@ import TestUtils from 'react/lib/ReactTestUtils';
 
 import CardChoice from 'components/card-choice';
 
-import * as helpers from './helpers';
+import * as helpers from '../helpers';
 
 
 describe('Card Choice', function() {

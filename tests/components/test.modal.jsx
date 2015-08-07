@@ -3,7 +3,7 @@ import TestUtils from 'react/lib/ReactTestUtils';
 
 import Modal from 'components/modal';
 
-import * as helpers from './helpers';
+import * as helpers from '../helpers';
 
 
 describe('Modal', function() {

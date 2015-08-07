@@ -5,7 +5,7 @@ import { createReduxStore } from 'data-store';
 
 import ManagementApp from 'apps/management/app';
 
-import * as helpers from './helpers';
+import * as helpers from '../helpers';
 
 
 describe('management/app', function() {

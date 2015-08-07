@@ -3,7 +3,7 @@ import TestUtils from 'react/lib/ReactTestUtils';
 
 import PayMethods from 'views/management/pay-methods';
 
-import * as helpers from './helpers';
+import * as helpers from '../helpers';
 
 
 describe('PayMethods', function() {

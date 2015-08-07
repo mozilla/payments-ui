@@ -1,7 +1,7 @@
 import React from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
 
-import * as helpers from './helpers';
+import * as helpers from '../helpers';
 
 import { createReduxStore } from 'data-store';
 import { initialUserState } from 'reducers/user';
