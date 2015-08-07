@@ -224,7 +224,7 @@ webpackJsonp([0,2],[
 	    function () {
 	      return _react2['default'].createElement(ManagementApp, null);
 	    }
-	  ), document.body);
+	  ), document.getElementById('placeholder'));
 	}
 
 /***/ },

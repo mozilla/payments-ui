@@ -143,5 +143,5 @@ export function init() {
     <Provider store={dataStore}>
       {() => <ManagementApp/>}
     </Provider>
-  ), document.body);
+  ), document.getElementById('placeholder'));
 }

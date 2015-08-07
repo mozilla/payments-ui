@@ -393,6 +393,44 @@ th {
   padding: 0;
 }
 
+#tabzilla {
+  float: right;
+  position: relative;
+}
+
+#tabzilla a {
+  text-indent: 120%;
+  white-space: nowrap;
+  overflow: hidden;
+  background-image: url("../media/img/tabzilla-static.png");
+  background-repeat: no-repeat;
+  display: block;
+  height: 37px;
+  position: relative;
+  width: 147px;
+  z-index: 2;
+}
+
+@media (-webkit-min-device-pixel-ratio: 1.5), (min--moz-device-pixel-ratio: 1.5), (-o-min-device-pixel-ratio: 3/2), (min-resolution: 1.5dppx) {
+  #tabzilla a {
+    background-image: url("../media/img/tabzilla-static-high-res.png");
+    -webkit-background-size: 147px 37px;
+    background-size: 147px 37px;
+  }
+}
+
+#tabzilla:before {
+  background-color: transparent;
+  content: '';
+  display: block;
+  height: 26px;
+  left: 28px;
+  position: absolute;
+  top: 0;
+  width: 88px;
+  z-index: 1;
+}
+
 html,
 body {
   margin: 0;
@@ -1170,6 +1208,18 @@ button.spinner:after {
 
 .button.add-pay-method {
   margin-right: 1em;
+}
+
+.management {
+  background: #F2F2F2;
+}
+
+.management #tabzilla {
+  margin-right: 30px;
+}
+
+.management #tabzilla:before {
+  background-color: #A5B1B6;
 }
 
 .management h1, .management h2, .management h3, .management h4 {
