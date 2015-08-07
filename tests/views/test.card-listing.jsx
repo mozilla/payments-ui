@@ -5,7 +5,7 @@ import CardChoice from 'components/card-choice';
 import CardListing from 'views/transaction/card-listing';
 
 
-describe('CardListingView', function() {
+describe('Card Listing', function() {
 
   var payWithNewCardSpy;
   var View;

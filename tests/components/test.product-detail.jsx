@@ -2,7 +2,7 @@ import React from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
 
 import ProductDetail from 'components/product-detail';
-import * as helpers from './helpers';
+import * as helpers from '../helpers';
 
 
 describe('ProductDetail', function() {

@@ -1,7 +1,7 @@
 import React, { findDOMNode } from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
 
-import * as helpers from './helpers';
+import * as helpers from '../helpers';
 
 import CardForm from 'components/card-form';
 

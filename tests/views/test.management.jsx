@@ -3,7 +3,7 @@ import TestUtils from 'react/lib/ReactTestUtils';
 
 import Management from 'views/management';
 
-import * as helpers from './helpers';
+import * as helpers from '../helpers';
 
 
 describe('Management', function() {
