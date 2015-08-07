@@ -12,6 +12,7 @@
     "events": "1.0.2",
     "jquery": "2.1.4",
     "mozilla-payments-config": "0.0.8",
+    "mozilla-tabzilla": "0.4.0",
     "normalize.css": "3.0.3",
     "object.assign": "3.0.1",
     "react": "0.13.3",

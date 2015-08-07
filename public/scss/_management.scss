@@ -3,6 +3,16 @@
 
 .management {
 
+    background: $management-grey;
+
+    #tabzilla {
+        margin-right: 30px;
+    }
+
+    #tabzilla:before {
+        background-color: $mozlogo;
+    }
+
     h1,h2,h3,h4 {
       font-weight: 400;
     }
