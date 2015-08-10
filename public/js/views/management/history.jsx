@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 
-import { gettext } from 'utils';
+import { gettext, setTitle } from 'utils';
 
 
 export default class History extends Component {
+
+  componentDidMount() {
+    setTitle(gettext('Receipts and history'));
+  }
 
   render() {
     return (

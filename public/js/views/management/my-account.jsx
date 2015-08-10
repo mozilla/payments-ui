@@ -1,11 +1,15 @@
 import React, { Component, PropTypes } from 'react';
-import { gettext } from 'utils';
+import { gettext, setTitle } from 'utils';
 
 
 export default class MyAccount extends Component {
 
   static propTypes = {
     user: PropTypes.object.isRequired,
+  }
+
+  componentDidMount() {
+    setTitle(gettext('My account'));
   }
 
   render() {

@@ -71,3 +71,14 @@ describe('utils.isDisabled', function() {
   });
 
 });
+
+
+describe('utils.setTitle', function() {
+
+    it('should set the title', function() {
+        var dummy = {};
+        utils.setTitle('Pay', dummy);
+        assert.equal(dummy.title, 'Pay');
+    });
+
+});
