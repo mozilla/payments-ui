@@ -20,11 +20,13 @@ export default class History extends Component {
 
   showReceipt(e, transactionId) {
     e.preventDefault();
+    // https://github.com/mozilla/payments-ui/issues/304
     console.log('TODO: show receipt for transaction', transactionId);
   }
 
   selectSeller(e) {
     e.preventDefault();
+    // https://github.com/mozilla/payments-ui/issues/305
     console.log('TODO: filter transactions by seller', e.target);
   }
 
@@ -37,6 +39,7 @@ export default class History extends Component {
         cell: (item, columnKey) => (
             // TODO: parse and format date like:
             // "2015-08-07T14:53:23.966" : 'Aug 7, 2015'
+            // https://github.com/mozilla/payments-ui/issues/306
             item[columnKey]
         ),
       },
@@ -52,6 +55,7 @@ export default class History extends Component {
         ),
         cell: (item) => (
           // TODO: get localized seller name, not just English.
+          // https://github.com/mozilla/payments-ui/issues/307
           products.get(item.transaction.seller_product.public_id).seller.name.en
         ),
       },
@@ -60,6 +64,7 @@ export default class History extends Component {
         label: gettext('Amount'),
         cell: (item) => (
           // TODO: display currency with symbol (when possible)
+          // https://github.com/mozilla/payments-ui/issues/308
           <a onClick={(e) => this.showReceipt(e, item.resource_pk)}
              href="#">{item.transaction.currency} {item.transaction.amount}</a>
         ),
