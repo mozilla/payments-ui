@@ -20523,6 +20523,7 @@
 	exports.isDisabled = isDisabled;
 	exports.getMountNode = getMountNode;
 	exports.gettext = gettext;
+	exports.setTitle = setTitle;
 	exports.parseQuery = parseQuery;
 	
 	function defaults(object, opt) {
@@ -20554,6 +20555,12 @@
 	function gettext(string) {
 	  // Initial no-op gettext stand-in.
 	  return string;
+	}
+	
+	function setTitle(string) {
+	  var doc = arguments.length <= 1 || arguments[1] === undefined ? document : arguments[1];
+	
+	  doc.title = string;
 	}
 	
 	function parseQuery(url) {

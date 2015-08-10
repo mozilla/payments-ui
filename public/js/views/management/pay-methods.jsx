@@ -3,7 +3,7 @@ import cx from 'classnames';
 
 import CardDropdown from 'components/card-drop-down';
 
-import { gettext, isDisabled } from 'utils';
+import { gettext, isDisabled, setTitle } from 'utils';
 
 
 export default class PayMethods extends Component {
@@ -13,6 +13,10 @@ export default class PayMethods extends Component {
     showAddPayMethod: PropTypes.func.isRequired,
     showDelPayMethod: PropTypes.func.isRequired,
   };
+
+  componentDidMount() {
+    setTitle(gettext('Payment methods'));
+  }
 
   handleAddPayMethod = e => {
     e.preventDefault();

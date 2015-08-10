@@ -20692,6 +20692,7 @@ webpackJsonp([0,2],[
 	exports.isDisabled = isDisabled;
 	exports.getMountNode = getMountNode;
 	exports.gettext = gettext;
+	exports.setTitle = setTitle;
 	exports.parseQuery = parseQuery;
 	
 	function defaults(object, opt) {
@@ -20723,6 +20724,12 @@ webpackJsonp([0,2],[
 	function gettext(string) {
 	  // Initial no-op gettext stand-in.
 	  return string;
+	}
+	
+	function setTitle(string) {
+	  var doc = arguments.length <= 1 || arguments[1] === undefined ? document : arguments[1];
+	
+	  doc.title = string;
 	}
 	
 	function parseQuery(url) {
@@ -37576,6 +37583,11 @@ webpackJsonp([0,2],[
 	  }
 	
 	  _createClass(MyAccount, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      (0, _utils.setTitle)((0, _utils.gettext)('My account'));
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2['default'].createElement(
@@ -37687,6 +37699,7 @@ webpackJsonp([0,2],[
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.props.getUserSubscriptions();
+	      (0, _utils.setTitle)((0, _utils.gettext)('Subscriptions'));
 	    }
 	  }, {
 	    key: 'render',
@@ -38046,6 +38059,11 @@ webpackJsonp([0,2],[
 	  }
 	
 	  _createClass(History, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      (0, _utils.setTitle)((0, _utils.gettext)('Receipts and history'));
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2['default'].createElement(
@@ -38126,6 +38144,11 @@ webpackJsonp([0,2],[
 	  }
 	
 	  _createClass(PayMethods, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      (0, _utils.setTitle)((0, _utils.gettext)('Payment methods'));
+	    }
+	  }, {
 	    key: 'renderChild',
 	    value: function renderChild() {
 	      if (this.props.payMethods && this.props.payMethods.length) {
