@@ -14,7 +14,7 @@ export default class History extends Component {
   };
 
   componentDidMount() {
-    setTitle(gettext('Receipts and history'));
+    setTitle(gettext('Transaction Receipts & History'));
     this.props.getUserTransactions();
   }
 
