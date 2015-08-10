@@ -1262,6 +1262,46 @@ button.spinner:after {
   z-index: 10;
 }
 
+.jsonTable {
+  width: 100%;
+}
+
+.jsonTable td, .jsonTable th {
+  text-align: left;
+  padding: 0.35em;
+}
+
+.jsonTable thead {
+  border: 1px solid #c1c1c1;
+}
+
+.jsonTable th {
+  font-weight: normal;
+  background-color: #EBEBEB;
+  color: #8A8A8A;
+}
+
+.jsonTable th select {
+  background-color: #EBEBEB;
+  border-radius: 2px;
+  border: 1px solid #c1c1c1;
+  color: #8A8A8A;
+  padding: 0.3em;
+}
+
+.jsonTable tr {
+  border-left: 1px solid #c1c1c1;
+  border-right: 1px solid #c1c1c1;
+}
+
+.jsonTable tr.jsonEven {
+  background-color: #F2F2F2;
+}
+
+.jsonTable tr:last-child {
+  border-bottom: 1px solid #c1c1c1;
+}
+
 .management {
   background: #F2F2F2;
 }

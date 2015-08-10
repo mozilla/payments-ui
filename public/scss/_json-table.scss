@@ -1,0 +1,39 @@
+.jsonTable {
+    width: 100%;
+
+    td, th {
+        text-align: left;
+        padding: 0.35em;
+    }
+
+    thead {
+        border: 1px solid $ship-grey;
+    }
+
+    th {
+        font-weight: normal;
+        background-color: $lightish-grey;
+        color: $moody-grey;
+
+        select {
+            background-color: $lightish-grey;
+            border-radius: 2px;
+            border: 1px solid $ship-grey;
+            color: $moody-grey;
+            padding: 0.3em;
+        }
+    }
+
+    tr {
+        border-left: 1px solid $ship-grey;
+        border-right: 1px solid $ship-grey;
+
+        &.jsonEven {
+            background-color: $management-grey;
+        }
+
+        &:last-child {
+            border-bottom: 1px solid $ship-grey;
+        }
+    }
+}
