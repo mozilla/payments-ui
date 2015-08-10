@@ -9,6 +9,7 @@ import * as mgmtActions from 'actions/management';
 import * as payMethodActions from 'actions/pay-methods';
 import * as userActions from 'actions/user';
 import * as subscriptionActions from 'actions/subscriptions';
+import * as transactionActions from 'actions/transaction';
 import { parseQuery } from 'utils';
 
 import Spinner from 'components/spinner';
@@ -57,6 +58,8 @@ export default class ManagementApp extends Component {
                                                       connector.dispatch);
     var boundPayMethodActions = bindActionCreators(payMethodActions,
                                                    connector.dispatch);
+    var boundTransactionActions = bindActionCreators(transactionActions,
+                                                     connector.dispatch);
     var children = [];
     var Management = this.props.Management;
     var PayMethods = this.props.PayMethods;
@@ -111,7 +114,10 @@ export default class ManagementApp extends Component {
       ));
     } else if (connector.management.view === 'SHOW_HISTORY') {
       children.push((
-        <History />
+        <History
+          transactions={connector.user.transactions}
+          {...boundTransactionActions}
+        />
       ));
     } else {
       children.push(<Spinner/>);

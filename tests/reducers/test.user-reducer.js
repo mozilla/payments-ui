@@ -103,4 +103,30 @@ describe('User Reducer', function() {
     assert.equal(user.email, existingUser.email);
   });
 
+  it('should merge in transaction data', function() {
+    var existingUser = userData();
+    var data = [{id: 123}];
+
+    var user = reducers.user(existingUser, {
+      type: actionTypes.GOT_USER_TRANSACTIONS,
+      transactions: data,
+    });
+
+    assert.equal(user.transactions, data);
+    // Check that the existing data was preserved too.
+    assert.equal(user.email, existingUser.email);
+  });
+
+  it('should reset transactions when loading', function() {
+    var existingUser = userData();
+    existingUser.transactions = [{}];
+
+    var user = reducers.user(existingUser, {
+      type: actionTypes.LOADING_USER_TRANSACTIONS,
+    });
+    assert.equal(user.transactions, null);
+    // Check that the existing data was preserved too.
+    assert.equal(user.email, existingUser.email);
+  });
+
 });
