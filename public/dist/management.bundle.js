@@ -32579,6 +32579,7 @@ webpackJsonp([0,2],[
 	  _createClass(AddPayMethod, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      (0, _utils.setTitle)((0, _utils.gettext)('Add Payment Method'));
 	      _tracking2['default'].setPage('/add-pay-method');
 	    }
 	  }, {
@@ -32598,7 +32599,7 @@ webpackJsonp([0,2],[
 	        _react2['default'].createElement(
 	          'h1',
 	          null,
-	          (0, _utils.gettext)('Add Card')
+	          (0, _utils.gettext)('Add Payment Method')
 	        ),
 	        _react2['default'].createElement(_componentsCardForm2['default'], {
 	          submissionErrors: this.props.cardSubmissionErrors,
@@ -37274,6 +37275,7 @@ webpackJsonp([0,2],[
 	  _createClass(DelPayMethod, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      (0, _utils.setTitle)((0, _utils.gettext)('Delete Payment Method'));
 	      _tracking2['default'].setPage('/del-pay-method');
 	    }
 	  }, {
@@ -37285,7 +37287,7 @@ webpackJsonp([0,2],[
 	        _react2['default'].createElement(
 	          'h1',
 	          null,
-	          (0, _utils.gettext)('Delete Card')
+	          (0, _utils.gettext)('Delete Payment Method')
 	        ),
 	        _react2['default'].createElement(
 	          'div',
@@ -37643,7 +37645,7 @@ webpackJsonp([0,2],[
 	  _createClass(MyAccount, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      (0, _utils.setTitle)((0, _utils.gettext)('My account'));
+	      (0, _utils.setTitle)((0, _utils.gettext)('My Account'));
 	    }
 	  }, {
 	    key: 'render',
@@ -37654,12 +37656,12 @@ webpackJsonp([0,2],[
 	        _react2['default'].createElement(
 	          'h1',
 	          null,
-	          (0, _utils.gettext)('My account')
+	          (0, _utils.gettext)('My Account')
 	        ),
 	        _react2['default'].createElement(
 	          'h2',
 	          null,
-	          (0, _utils.gettext)('Edit my account')
+	          (0, _utils.gettext)('Edit My Account')
 	        ),
 	        _react2['default'].createElement(
 	          'div',
@@ -37681,7 +37683,7 @@ webpackJsonp([0,2],[
 	        _react2['default'].createElement(
 	          'h2',
 	          null,
-	          (0, _utils.gettext)('Delete account')
+	          (0, _utils.gettext)('Delete Account')
 	        ),
 	        _react2['default'].createElement(
 	          'p',
@@ -38548,7 +38550,7 @@ webpackJsonp([0,2],[
 	  _createClass(PayMethods, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      (0, _utils.setTitle)((0, _utils.gettext)('Payment methods'));
+	      (0, _utils.setTitle)((0, _utils.gettext)('Payment Methods'));
 	    }
 	  }, {
 	    key: 'renderChild',
@@ -39168,15 +39170,15 @@ webpackJsonp([0,2],[
 	var navData = [{
 	  className: 'profile',
 	  action: 'showMyAccount',
-	  text: (0, _utils.gettext)('My account')
+	  text: (0, _utils.gettext)('My Account')
 	}, {
 	  className: 'pay-methods',
 	  action: 'showPayMethods',
-	  text: (0, _utils.gettext)('Payment methods')
+	  text: (0, _utils.gettext)('Payment Methods')
 	}, {
 	  className: 'history',
 	  action: 'showHistory',
-	  text: (0, _utils.gettext)('Receipts and history')
+	  text: (0, _utils.gettext)('Receipts & History')
 	}, {
 	  className: 'subs',
 	  action: 'showSubscriptions',
