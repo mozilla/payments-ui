@@ -77,14 +77,21 @@ export default class PayMethodDropDown extends Component {
 
   // Returns an object with the necessary data
   // to use in setState.
-  getDisplayData(payMethodData) {
-    return {
-      selectedPayMethodType: payMethodData.type_name.toLowerCase(),
-      selectedText: '●●●● ●●●● ●●●● ' + payMethodData.truncated_id,
-    };
+  getDisplayData(payMethod) {
+    if (payMethod.type_name && payMethod.truncated_id) {
+      return {
+        selectedPayMethodType: payMethod.type_name.toLowerCase(),
+        selectedText: '●●●● ●●●● ●●●● ' + payMethod.truncated_id,
+      };
+    } else {
+      return {
+        selectedPayMethodType: null,
+        selectedText: defaultSelectText,
+      };
+    }
   }
 
-  updatePayMethodSelection (selectedPayMethodResource) {
+  updatePayMethodSelection(selectedPayMethodResource) {
     var payMethodData = this.getSelectedPayMethod(selectedPayMethodResource);
     this.setState(this.getDisplayData(payMethodData));
   }

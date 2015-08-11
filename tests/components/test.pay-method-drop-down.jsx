@@ -169,4 +169,10 @@ describe('Pay Method Dropdown', function() {
     assert.deepEqual(selectedPayMethod, payMethods[1]);
   });
 
+  it('should return the default text if passed empty object', function() {
+    var newState = this.PayMethodDropDown.getDisplayData({});
+    assert.equal(newState.selectedPayMethodType, null);
+    assert.equal(newState.selectedText, 'Please select');
+  });
+
 });
