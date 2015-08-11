@@ -64,7 +64,7 @@ module.exports = {
   hostSettings: {
     'pay.dev.mozaws.net': {
       fxaClientId: '90f432a069a26c77',
-      fxaRedirectUri: 'http://pay.dev.mozaws.net/',
+      fxaRedirectUri: 'http://pay.dev.mozaws.net:8000',
     },
     // These are only used locally for docker.
     'pay.dev:8000': {
