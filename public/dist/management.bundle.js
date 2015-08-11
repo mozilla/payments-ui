@@ -38514,9 +38514,9 @@ webpackJsonp([0,2],[
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var _componentsCardDropDown = __webpack_require__(268);
+	var _componentsPayMethodDropDown = __webpack_require__(268);
 	
-	var _componentsCardDropDown2 = _interopRequireDefault(_componentsCardDropDown);
+	var _componentsPayMethodDropDown2 = _interopRequireDefault(_componentsPayMethodDropDown);
 	
 	var _utils = __webpack_require__(207);
 	
@@ -38554,7 +38554,7 @@ webpackJsonp([0,2],[
 	    key: 'renderChild',
 	    value: function renderChild() {
 	      if (this.props.payMethods && this.props.payMethods.length) {
-	        return _react2['default'].createElement(_componentsCardDropDown2['default'], { cards: this.props.payMethods });
+	        return _react2['default'].createElement(_componentsPayMethodDropDown2['default'], { payMethods: this.props.payMethods });
 	      }
 	      return _react2['default'].createElement(
 	        'p',
@@ -38628,8 +38628,6 @@ webpackJsonp([0,2],[
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
@@ -38650,30 +38648,38 @@ webpackJsonp([0,2],[
 	
 	var defaultSelectText = (0, _utils.gettext)('Please select');
 	
-	var CardDropDown = (function (_Component) {
-	  _inherits(CardDropDown, _Component);
+	var PayMethodDropDown = (function (_Component) {
+	  _inherits(PayMethodDropDown, _Component);
 	
-	  _createClass(CardDropDown, null, [{
+	  _createClass(PayMethodDropDown, null, [{
 	    key: 'propTypes',
 	    value: {
-	      cards: _react.PropTypes.arrayOf(_react.PropTypes.shape({
+	      cssModifier: _react.PropTypes.string,
+	      onPayMethodChange: _react.PropTypes.func.isRequired,
+	      payMethods: _react.PropTypes.arrayOf(_react.PropTypes.shape({
 	        id: _react.PropTypes.number,
 	        resource_uri: _react.PropTypes.string,
 	        truncated_id: _react.PropTypes.string,
 	        type_name: _react.PropTypes.string
 	      })).isRequired,
-	      cssModifier: _react.PropTypes.string,
-	      onCardChange: _react.PropTypes.func.isRequired
+	      selectedPayMethodResource: _react.PropTypes.string,
+	      showDefaultOption: _react.PropTypes.bool
+	    },
+	    enumerable: true
+	  }, {
+	    key: 'defaultProps',
+	    value: {
+	      showDefaultOption: true
 	    },
 	    enumerable: true
 	  }]);
 	
-	  function CardDropDown(props) {
+	  function PayMethodDropDown(props) {
 	    var _this = this;
 	
-	    _classCallCheck(this, CardDropDown);
+	    _classCallCheck(this, PayMethodDropDown);
 	
-	    _get(Object.getPrototypeOf(CardDropDown.prototype), 'constructor', this).call(this, props);
+	    _get(Object.getPrototypeOf(PayMethodDropDown.prototype), 'constructor', this).call(this, props);
 	
 	    this.handleFocus = function () {
 	      _this.setState({ isFocused: true });
@@ -38684,65 +38690,110 @@ webpackJsonp([0,2],[
 	    };
 	
 	    this.handleChange = function (e) {
-	      if (_this.props.onCardChange) {
-	        _this.props.onCardChange(e);
+	      if (_this.props.onPayMethodChange) {
+	        _this.props.onPayMethodChange(e);
 	      }
-	      var selectedText;
-	      var selectedNode = e.target.options[e.target.selectedIndex];
-	      if (selectedNode) {
-	
-	        var selectedCardType = selectedNode.getAttribute('data-type');
-	        if (selectedCardType) {
-	          selectedText = selectedNode.firstChild.nodeValue.replace(selectedCardType.toUpperCase(), '');
-	        }
-	      }
-	      _this.setState({
-	        selectedText: selectedText || defaultSelectText,
-	        selectedCardType: selectedCardType
-	      });
+	      _this.updatePayMethodSelection(e.target.value);
 	    };
 	
-	    this.state = {
+	    var payMethodData;
+	    // Get the data for the default selected pay method.
+	    if (props.selectedPayMethodResource) {
+	      payMethodData = this.getSelectedPayMethod(props.selectedPayMethodResource);
+	    }
+	
+	    // If there's default selected option and showDefaultOption is false
+	    // we set the "fake select" to the first option.
+	    if (!payMethodData && !props.showDefaultOption) {
+	      payMethodData = props.payMethods[0];
+	    }
+	
+	    var initialState = {
 	      selectedText: defaultSelectText,
-	      selectedCardType: null,
+	      selectedPayMethodType: null,
 	      isFocused: false
 	    };
+	
+	    var displayData = {};
+	    if (payMethodData) {
+	      displayData = this.getDisplayData(payMethodData);
+	    }
+	
+	    this.state = Object.assign({}, initialState, displayData);
 	  }
 	
-	  _createClass(CardDropDown, [{
+	  _createClass(PayMethodDropDown, [{
+	    key: 'getSelectedPayMethod',
+	    value: function getSelectedPayMethod(selectedPayMethodResource) {
+	      var selectedPayMethod = this.props.payMethods.filter(function (item) {
+	        return item.resource_uri === selectedPayMethodResource;
+	      });
+	      if (selectedPayMethod.length) {
+	        return selectedPayMethod[0];
+	      } else {
+	        return {};
+	      }
+	    }
+	  }, {
+	    key: 'getDisplayData',
+	
+	    // Returns an object with the necessary data
+	    // to use in setState.
+	    value: function getDisplayData(payMethod) {
+	      if (payMethod.type_name && payMethod.truncated_id) {
+	        return {
+	          selectedPayMethodType: payMethod.type_name.toLowerCase(),
+	          selectedText: '●●●● ●●●● ●●●● ' + payMethod.truncated_id
+	        };
+	      } else {
+	        return {
+	          selectedPayMethodType: null,
+	          selectedText: defaultSelectText
+	        };
+	      }
+	    }
+	  }, {
+	    key: 'updatePayMethodSelection',
+	    value: function updatePayMethodSelection(selectedPayMethodResource) {
+	      var payMethodData = this.getSelectedPayMethod(selectedPayMethodResource);
+	      this.setState(this.getDisplayData(payMethodData));
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var cardData = this.props.cards;
-	      var cardOptions = [];
+	      var payMethods = this.props.payMethods;
+	      var payMethodOptions = [];
 	
-	      cardOptions.push(_react2['default'].createElement(
-	        'option',
-	        { value: '' },
-	        defaultSelectText
-	      ));
-	
-	      for (var i = 0; i < cardData.length; i += 1) {
-	        var _cardData$i = cardData[i];
-	        var selected = _cardData$i.selected;
-	
-	        var card = _objectWithoutProperties(_cardData$i, ['selected']);
-	
-	        var optionText = card.type_name.toUpperCase() + ' ●●●● ●●●● ●●●● ' + card.truncated_id;
-	
-	        cardOptions.push(_react2['default'].createElement(
+	      if (this.props.showDefaultOption === true) {
+	        payMethodOptions.push(_react2['default'].createElement(
 	          'option',
 	          {
-	            'data-type': card.type_name.toLowerCase(),
-	            key: card.id,
+	            value: '',
+	            key: '_default',
+	            ref: '_default' },
+	          defaultSelectText
+	        ));
+	      }
+	
+	      for (var i = 0; i < payMethods.length; i += 1) {
+	        var payMethod = payMethods[i];
+	        var optionText = payMethod.type_name.toUpperCase() + ' ●●●● ●●●● ●●●● ' + payMethod.truncated_id;
+	
+	        var selected = payMethod.resource_uri === this.props.selectedPayMethodResource ? 'selected' : null;
+	
+	        payMethodOptions.push(_react2['default'].createElement(
+	          'option',
+	          {
+	            key: payMethod.id,
 	            selected: selected,
-	            value: card.resource_uri
+	            value: payMethod.resource_uri
 	          },
 	          optionText
 	        ));
 	      }
 	
 	      var contentClasses = (0, _classnames2['default'])('content', {
-	        'has-card': this.state.selectedCardType
+	        'has-pay-method': this.state.selectedPayMethodType
 	      });
 	
 	      var proxySelectClasses = (0, _classnames2['default'])('proxy-select', {
@@ -38752,14 +38803,14 @@ webpackJsonp([0,2],[
 	      return _react2['default'].createElement(
 	        'div',
 	        { className: proxySelectClasses },
-	        this.state.selectedCardType ? _react2['default'].createElement(_componentsCardIcon2['default'], { cardType: this.state.selectedCardType }) : null,
+	        this.state.selectedPayMethodType ? _react2['default'].createElement(_componentsCardIcon2['default'], { cardType: this.state.selectedPayMethodType }) : null,
 	        _react2['default'].createElement(
 	          'span',
 	          { className: contentClasses, ariaHidden: 'true' },
 	          _react2['default'].createElement(
 	            'span',
 	            { className: 'vh' },
-	            this.state.selectedCardType
+	            this.state.selectedPayMethodType
 	          ),
 	          this.state.selectedText
 	        ),
@@ -38770,16 +38821,16 @@ webpackJsonp([0,2],[
 	            onChange: this.handleChange,
 	            onFocus: this.handleFocus,
 	            onKeyUp: this.handleChange },
-	          cardOptions
+	          payMethodOptions
 	        )
 	      );
 	    }
 	  }]);
 	
-	  return CardDropDown;
+	  return PayMethodDropDown;
 	})(_react.Component);
 	
-	exports['default'] = CardDropDown;
+	exports['default'] = PayMethodDropDown;
 	module.exports = exports['default'];
 
 /***/ },

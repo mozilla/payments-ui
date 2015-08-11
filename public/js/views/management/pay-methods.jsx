@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import cx from 'classnames';
 
-import CardDropdown from 'components/card-drop-down';
+import PayMethodDropdown from 'components/pay-method-drop-down';
 
 import { gettext, isDisabled, setTitle } from 'utils';
 
@@ -35,7 +35,7 @@ export default class PayMethods extends Component {
   renderChild() {
     if (this.props.payMethods && this.props.payMethods.length) {
       return (
-        <CardDropdown cards={this.props.payMethods} />
+        <PayMethodDropdown payMethods={this.props.payMethods} />
       );
     }
     return (<p className="no-results">

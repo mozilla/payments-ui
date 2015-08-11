@@ -1210,58 +1210,6 @@ button.spinner:after {
   margin-right: 1em;
 }
 
-.proxy-select {
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  display: inline-block;
-  font-size: 18px;
-  margin-bottom: 1em;
-  padding: 0.5em 2em 0.5em 0.5em;
-  position: relative;
-  width: 100%;
-  max-width: 300px;
-}
-
-.proxy-select.active {
-  border-color: #0096dc;
-  box-shadow: 0 0 1px 0 #0096dc;
-}
-
-.proxy-select .has-card {
-  padding-left: 50px;
-}
-
-.proxy-select .card-icon {
-  left: 8px;
-}
-
-.proxy-select:after {
-  font-size: 12px;
-  color: #666;
-  content: '\25BC';
-  display: block;
-  right: 0.5em;
-  top: 50%;
-  transform: translateY(-50%);
-  position: absolute;
-}
-
-.proxy-select select {
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  appearance: none;
-  opacity: 0;
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 10;
-}
-
 .jsonTable {
   width: 100%;
 }
@@ -1300,6 +1248,58 @@ button.spinner:after {
 
 .jsonTable tr:last-child {
   border-bottom: 1px solid #c1c1c1;
+}
+
+.proxy-select {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: inline-block;
+  font-size: 18px;
+  margin-bottom: 1em;
+  padding: 0.5em 2em 0.5em 0.5em;
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+}
+
+.proxy-select.active {
+  border-color: #0096dc;
+  box-shadow: 0 0 1px 0 #0096dc;
+}
+
+.proxy-select .has-pay-method {
+  padding-left: 50px;
+}
+
+.proxy-select .card-icon {
+  left: 8px;
+}
+
+.proxy-select:after {
+  font-size: 12px;
+  color: #666;
+  content: '\25BC';
+  display: block;
+  right: 0.5em;
+  top: 50%;
+  transform: translateY(-50%);
+  position: absolute;
+}
+
+.proxy-select select {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
 }
 
 .management {
