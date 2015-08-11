@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import CardChoice from 'components/card-choice';
 
 import { default as tracking } from 'tracking';
-import { gettext } from 'utils';
+import { gettext, setTitle } from 'utils';
 
 
 export default class DelPayMethod extends Component {
@@ -16,6 +16,7 @@ export default class DelPayMethod extends Component {
   }
 
   componentDidMount() {
+    setTitle(gettext('Delete Payment Method'));
     tracking.setPage('/del-pay-method');
   }
 
@@ -26,7 +27,7 @@ export default class DelPayMethod extends Component {
   render() {
     return (
       <div>
-        <h1>{gettext('Delete Card')}</h1>
+        <h1>{gettext('Delete Payment Method')}</h1>
         <div className="small-form">
           <CardChoice
             cssModifier='delete'

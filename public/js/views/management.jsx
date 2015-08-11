@@ -7,15 +7,15 @@ const navData = [
   {
     className: 'profile',
     action: 'showMyAccount',
-    text: gettext('My account'),
+    text: gettext('My Account'),
   }, {
     className: 'pay-methods',
     action: 'showPayMethods',
-    text: gettext('Payment methods'),
+    text: gettext('Payment Methods'),
   }, {
     className: 'history',
     action: 'showHistory',
-    text: gettext('Receipts and history'),
+    text: gettext('Receipts & History'),
   }, {
     className: 'subs',
     action: 'showSubscriptions',

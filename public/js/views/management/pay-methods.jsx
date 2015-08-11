@@ -15,7 +15,7 @@ export default class PayMethods extends Component {
   };
 
   componentDidMount() {
-    setTitle(gettext('Payment methods'));
+    setTitle(gettext('Payment Methods'));
   }
 
   handleAddPayMethod = e => {
