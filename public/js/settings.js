@@ -62,7 +62,7 @@ module.exports = {
   // This is a map of custom settings that will be defined
   // based on host.
   hostSettings: {
-    'pay.dev.mozaws.net': {
+    'pay.dev.mozaws.net:8000': {
       fxaClientId: '90f432a069a26c77',
       fxaRedirectUri: 'http://pay.dev.mozaws.net:8000',
     },
