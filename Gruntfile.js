@@ -36,6 +36,17 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.registerTask('build', ['clean:dist', 'sass', 'webpack']);
+
+  grunt.registerTask('serve',
+    ['clean:dist', 'sass:dev', 'webpack-dev-server:start', 'watch:sass']);
+  grunt.registerTask('start',
+    ['clean:dist', 'sass:dev', 'webpack:dev', 'watch:sass']);
+  grunt.registerTask('start-email',
+    ['clean:dist', 'sass:email', 'webpack:dev', 'watch:sassemail']);
+
+  grunt.registerTask('test', ['karma:run', 'eslint', 'csslint:lax']);
+
   // Conditionally run saucelabs tests if we have the
   // secure vars or a normal test run if not.
   grunt.registerTask('test-ci', function() {
@@ -48,12 +59,5 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('serve',
-                     ['sass:dev', 'webpack-dev-server:start', 'watch:sass']);
-  grunt.registerTask('start', ['sass:dev', 'webpack:dev', 'watch:sass']);
-  grunt.registerTask('start-email',
-                     ['sass:email', 'webpack:dev', 'watch:sassemail']);
-  grunt.registerTask('build', ['clean:dist', 'sass', 'webpack']);
-  grunt.registerTask('test', ['karma:run', 'eslint', 'csslint:lax']);
   grunt.registerTask('test-sauce', ['karma:sauce', 'eslint', 'csslint:lax']);
 };
