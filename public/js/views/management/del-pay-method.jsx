@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-import CardChoice from 'components/card-choice';
+import CardChoice from 'components/pay-method-choice';
 
 import { default as tracking } from 'tracking';
 import { gettext, setTitle } from 'utils';
@@ -34,7 +34,7 @@ export default class DelPayMethod extends Component {
             submitButtonText={gettext('Delete')}
             submitButtonCSSModifier='warning'
             submitHandler={this.handleSubmit}
-            cards={this.props.payMethods}
+            payMethods={this.props.payMethods}
           />
         </div>
         <a href="#" className="back" onClick={this.props.showPayMethods}>

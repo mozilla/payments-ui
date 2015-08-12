@@ -1,13 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 
-import CardChoice from 'components/card-choice';
+import PayMethodChoice from 'components/pay-method-choice';
 import ProductDetail from 'components/product-detail';
 
 import { gettext } from 'utils';
 import tracking from 'tracking';
 
 
-export default class CardListing extends Component {
+export default class PayMethodListing extends Component {
 
   static propTypes = {
     createSubscription: PropTypes.func.isRequired,
@@ -17,19 +17,19 @@ export default class CardListing extends Component {
   }
 
   componentDidMount() {
-    tracking.setPage('/card-listing');
+    tracking.setPage('/pay-method-listing');
   }
 
-  handleSubmit = (card) => {
-    this.props.createSubscription(this.props.productId, card);
+  handleSubmit = (payMethod) => {
+    this.props.createSubscription(this.props.productId, payMethod);
   }
 
   render() {
     return (
       <div>
         <ProductDetail productId={this.props.productId} />
-        <CardChoice
-          cards={this.props.payMethods}
+        <PayMethodChoice
+          payMethods={this.props.payMethods}
           productId={this.props.productId}
           submitButtonText={gettext('Subscribe')}
           submitHandler={this.handleSubmit}

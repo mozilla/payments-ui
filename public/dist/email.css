@@ -337,7 +337,7 @@ button::-moz-focus-inner {
   position: relative;
 }
 
-#email #wrapper .cc td .card-icon {
+#email #wrapper .cc td .pay-method-icon {
   width: 40px;
   height: 30px;
 }

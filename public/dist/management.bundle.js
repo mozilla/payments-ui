@@ -36052,9 +36052,9 @@ webpackJsonp([0,2],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsCardIcon = __webpack_require__(249);
+	var _componentsPayMethodIcon = __webpack_require__(249);
 	
-	var _componentsCardIcon2 = _interopRequireDefault(_componentsCardIcon);
+	var _componentsPayMethodIcon2 = _interopRequireDefault(_componentsPayMethodIcon);
 	
 	var _componentsInputError = __webpack_require__(247);
 	
@@ -36147,7 +36147,7 @@ webpackJsonp([0,2],[
 	        ),
 	        this.props.showError ? _react2['default'].createElement(_componentsInputError2['default'], { errorMessage: this.props.errorMessage,
 	          errorModifier: this.props.errorModifier }) : null,
-	        showCardIcon ? _react2['default'].createElement(_componentsCardIcon2['default'], { cardType: this.props.cardType }) : null,
+	        showCardIcon ? _react2['default'].createElement(_componentsPayMethodIcon2['default'], { payMethodType: this.props.cardType }) : null,
 	        _react2['default'].createElement(_reactMaskedinput2['default'], _extends({}, this.props.attrs, {
 	          id: this.props.id,
 	          className: this.props.id + '-input',
@@ -36336,46 +36336,46 @@ webpackJsonp([0,2],[
 	
 	var _react = __webpack_require__(9);
 	
-	// Just a convenience mapping for cards from card-validator
+	// Just a convenience mapping for payMethods from payMethod-validator
 	// to shorted classes used in CSS.
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var cardTypeMap = {
+	var payMethodTypeMap = {
 	  'american-express': 'amex',
 	  'diners-club': 'diners',
 	  'master-card': 'mastercard'
 	};
 	
-	var CardIcon = (function (_Component) {
-	  _inherits(CardIcon, _Component);
+	var PayMethodIcon = (function (_Component) {
+	  _inherits(PayMethodIcon, _Component);
 	
-	  function CardIcon() {
-	    _classCallCheck(this, CardIcon);
+	  function PayMethodIcon() {
+	    _classCallCheck(this, PayMethodIcon);
 	
-	    _get(Object.getPrototypeOf(CardIcon.prototype), 'constructor', this).apply(this, arguments);
+	    _get(Object.getPrototypeOf(PayMethodIcon.prototype), 'constructor', this).apply(this, arguments);
 	  }
 	
-	  _createClass(CardIcon, [{
+	  _createClass(PayMethodIcon, [{
 	    key: 'render',
 	    value: function render() {
-	      // This is only displayed if a cardType is passed-in.
-	      var cardType = this.props.cardType;
-	      var cardClassName = (0, _classnames2['default'])(['card-icon', 'cctype-' + (cardTypeMap[cardType] || cardType)]);
-	      return cardType ? _react2['default'].createElement('span', { className: cardClassName }) : null;
+	      // This is only displayed if a payMethodType is passed-in.
+	      var payMethodType = this.props.payMethodType;
+	      var payMethodClassName = (0, _classnames2['default'])(['pay-method-icon', 'pmtype-' + (payMethodTypeMap[payMethodType] || payMethodType)]);
+	      return payMethodType ? _react2['default'].createElement('span', { className: payMethodClassName }) : null;
 	    }
 	  }], [{
 	    key: 'propTypes',
 	    value: {
-	      cardType: _react.PropTypes.oneOf(['amex', 'american-express', 'diners-club', 'discover', 'jcb', 'maestro', 'mastercard', 'master-card', 'visa'])
+	      payMethodType: _react.PropTypes.oneOf(['amex', 'american-express', 'diners-club', 'discover', 'jcb', 'maestro', 'mastercard', 'master-card', 'visa'])
 	    },
 	    enumerable: true
 	  }]);
 	
-	  return CardIcon;
+	  return PayMethodIcon;
 	})(_react.Component);
 	
-	exports['default'] = CardIcon;
+	exports['default'] = PayMethodIcon;
 	module.exports = exports['default'];
 
 /***/ },
@@ -37103,16 +37103,16 @@ webpackJsonp([0,2],[
 	  }], [{
 	    key: 'propTypes',
 	    value: {
-	      cssModifier: _react.PropTypes.string.isRequired,
+	      cssModifier: _react.PropTypes.string,
 	      isDisabled: _react.PropTypes.bool,
 	      showSpinner: _react.PropTypes.bool,
-	      text: _react.PropTypes.string.isRequired
+	      text: _react.PropTypes.string
 	    },
 	    enumerable: true
 	  }, {
 	    key: 'defaultProps',
 	    value: {
-	      modifier: null,
+	      cssModifier: null,
 	      text: (0, _utils.gettext)('Submit')
 	    },
 	    enumerable: true
@@ -37268,9 +37268,9 @@ webpackJsonp([0,2],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsCardChoice = __webpack_require__(255);
+	var _componentsPayMethodChoice = __webpack_require__(255);
 	
-	var _componentsCardChoice2 = _interopRequireDefault(_componentsCardChoice);
+	var _componentsPayMethodChoice2 = _interopRequireDefault(_componentsPayMethodChoice);
 	
 	var _tracking = __webpack_require__(253);
 	
@@ -37313,12 +37313,12 @@ webpackJsonp([0,2],[
 	        _react2['default'].createElement(
 	          'div',
 	          { className: 'small-form' },
-	          _react2['default'].createElement(_componentsCardChoice2['default'], {
+	          _react2['default'].createElement(_componentsPayMethodChoice2['default'], {
 	            cssModifier: 'delete',
 	            submitButtonText: (0, _utils.gettext)('Delete'),
 	            submitButtonCSSModifier: 'warning',
 	            submitHandler: this.handleSubmit,
-	            cards: this.props.payMethods
+	            payMethods: this.props.payMethods
 	          })
 	        ),
 	        _react2['default'].createElement(
@@ -37369,9 +37369,9 @@ webpackJsonp([0,2],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsCardList = __webpack_require__(256);
+	var _componentsPayMethodList = __webpack_require__(256);
 	
-	var _componentsCardList2 = _interopRequireDefault(_componentsCardList);
+	var _componentsPayMethodList2 = _interopRequireDefault(_componentsPayMethodList);
 	
 	var _componentsSubmitButton = __webpack_require__(252);
 	
@@ -37379,14 +37379,14 @@ webpackJsonp([0,2],[
 	
 	var _utils = __webpack_require__(207);
 	
-	var CardChoice = (function (_Component) {
-	  _inherits(CardChoice, _Component);
+	var PayMethodChoice = (function (_Component) {
+	  _inherits(PayMethodChoice, _Component);
 	
-	  _createClass(CardChoice, null, [{
+	  _createClass(PayMethodChoice, null, [{
 	    key: 'propTypes',
 	    value: {
-	      cards: _react.PropTypes.array.isRequired,
 	      cssModifier: _react.PropTypes.string,
+	      payMethods: _react.PropTypes.array.isRequired,
 	      productId: _react.PropTypes.string.isRequired,
 	      submitButtonCSSModifier: _react.PropTypes.string.isRequired,
 	      submitButtonText: _react.PropTypes.string.isRequired,
@@ -37403,47 +37403,47 @@ webpackJsonp([0,2],[
 	    enumerable: true
 	  }]);
 	
-	  function CardChoice(props) {
+	  function PayMethodChoice(props) {
 	    var _this = this;
 	
-	    _classCallCheck(this, CardChoice);
+	    _classCallCheck(this, PayMethodChoice);
 	
-	    _get(Object.getPrototypeOf(CardChoice.prototype), 'constructor', this).call(this, props);
+	    _get(Object.getPrototypeOf(PayMethodChoice.prototype), 'constructor', this).call(this, props);
 	
 	    this.handleSubmit = function (e) {
 	      e.preventDefault();
 	      _this.setState({ isSubmitting: true });
-	      _this.props.submitHandler(_this.state.card);
+	      _this.props.submitHandler(_this.state.payMethod);
 	    };
 	
-	    this.handleCardChange = function (e) {
-	      _this.setState({ card: e.target.value });
+	    this.handlePayMethodChange = function (e) {
+	      _this.setState({ payMethod: e.target.value });
 	    };
 	
 	    this.state = {
 	      isSubmitting: false,
-	      card: this.props.cards.length === 1 ? this.props.cards[0].resource_uri : null
+	      payMethod: this.props.payMethods.length === 1 ? this.props.payMethods[0].resource_uri : null
 	    };
 	  }
 	
-	  _createClass(CardChoice, [{
+	  _createClass(PayMethodChoice, [{
 	    key: 'render',
 	    value: function render() {
-	      var cardData = this.props.cards;
-	      for (var i = 0; i < cardData.length; i += 1) {
-	        var card = cardData[i];
-	        card.checked = this.state.card === card.resource_uri;
+	      var payMethodData = this.props.payMethods;
+	      for (var i = 0; i < payMethodData.length; i += 1) {
+	        var payMethod = payMethodData[i];
+	        payMethod.checked = this.state.payMethod === payMethod.resource_uri;
 	      }
 	
-	      var formIsValid = this.state.card !== null;
+	      var formIsValid = this.state.payMethod !== null;
 	
 	      return _react2['default'].createElement(
 	        'form',
-	        { id: 'card-choice', onSubmit: this.handleSubmit },
-	        _react2['default'].createElement(_componentsCardList2['default'], {
+	        { id: 'pay-method-choice', onSubmit: this.handleSubmit },
+	        _react2['default'].createElement(_componentsPayMethodList2['default'], {
 	          cssModifier: this.props.cssModifier,
-	          cards: cardData,
-	          onCardChange: this.handleCardChange }),
+	          payMethods: payMethodData,
+	          onPayMethodChange: this.handlePayMethodChange }),
 	        _react2['default'].createElement(_componentsSubmitButton2['default'], { isDisabled: !formIsValid,
 	          cssModifier: this.props.submitButtonCSSModifier,
 	          showSpinner: this.state.isSubmitting,
@@ -37453,10 +37453,10 @@ webpackJsonp([0,2],[
 	    }
 	  }]);
 	
-	  return CardChoice;
+	  return PayMethodChoice;
 	})(_react.Component);
 	
-	exports['default'] = CardChoice;
+	exports['default'] = PayMethodChoice;
 	module.exports = exports['default'];
 
 /***/ },
@@ -37468,8 +37468,6 @@ webpackJsonp([0,2],[
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
-	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
@@ -37487,66 +37485,73 @@ webpackJsonp([0,2],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsCardItem = __webpack_require__(257);
+	var _componentsPayMethodItem = __webpack_require__(257);
 	
-	var _componentsCardItem2 = _interopRequireDefault(_componentsCardItem);
+	var _componentsPayMethodItem2 = _interopRequireDefault(_componentsPayMethodItem);
 	
 	var _classnames = __webpack_require__(248);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var CardList = (function (_Component) {
-	  _inherits(CardList, _Component);
+	var PayMethodList = (function (_Component) {
+	  _inherits(PayMethodList, _Component);
 	
-	  function CardList() {
-	    _classCallCheck(this, CardList);
+	  function PayMethodList() {
+	    _classCallCheck(this, PayMethodList);
 	
-	    _get(Object.getPrototypeOf(CardList.prototype), 'constructor', this).apply(this, arguments);
+	    _get(Object.getPrototypeOf(PayMethodList.prototype), 'constructor', this).apply(this, arguments);
 	  }
 	
-	  _createClass(CardList, [{
+	  _createClass(PayMethodList, [{
 	    key: 'render',
 	    value: function render() {
-	      var cardData = this.props.cards;
-	      var cardList = [];
-	      for (var i = 0; i < cardData.length; i += 1) {
-	        var _cardData$i = cardData[i];
-	        var checked = _cardData$i.checked;
+	      var payMethods = this.props.payMethods;
+	      var payMethodList = [];
+	      for (var i = 0; i < payMethods.length; i += 1) {
+	        var _payMethods$i = payMethods[i];
+	        var checked = _payMethods$i.checked;
 	
-	        var card = _objectWithoutProperties(_cardData$i, ['checked']);
+	        var payMethod = _objectWithoutProperties(_payMethods$i, ['checked']);
 	
-	        cardList.push(_react2['default'].createElement(_componentsCardItem2['default'], _extends({}, card, { key: 'ci-' + i,
-	          onChangeHandler: this.props.onCardChange,
-	          checked: checked })));
+	        payMethodList.push(_react2['default'].createElement(
+	          'li',
+	          null,
+	          _react2['default'].createElement(_componentsPayMethodItem2['default'], {
+	            checked: checked,
+	            key: 'ci-' + i,
+	            onChangeHandler: this.props.onPayMethodChange,
+	            payMethod: payMethod
+	          })
+	        ));
 	      }
 	
-	      var classes = (0, _classnames2['default'])('card-list', this.props.cssModifier);
+	      var classes = (0, _classnames2['default'])('pay-method-list', this.props.cssModifier);
 	
 	      return _react2['default'].createElement(
 	        'ul',
 	        { className: classes },
-	        cardList
+	        payMethodList
 	      );
 	    }
 	  }], [{
 	    key: 'propTypes',
 	    value: {
-	      cards: _react.PropTypes.arrayOf(_react.PropTypes.shape({
+	      cssModifier: _react.PropTypes.string,
+	      onPayMethodChange: _react.PropTypes.func.isRequired,
+	      payMethods: _react.PropTypes.arrayOf(_react.PropTypes.shape({
 	        id: _react.PropTypes.number,
 	        resource_uri: _react.PropTypes.string,
 	        truncated_id: _react.PropTypes.string,
 	        type_name: _react.PropTypes.string
-	      })).isRequired,
-	      cssModifier: _react.PropTypes.string,
-	      onCardChange: _react.PropTypes.func.isRequired
+	      })).isRequired
 	    },
 	    enumerable: true
 	  }]);
 	
-	  return CardList;
+	  return PayMethodList;
 	})(_react.Component);
 	
-	exports['default'] = CardList;
+	exports['default'] = PayMethodList;
 	module.exports = exports['default'];
 
 /***/ },
@@ -37573,39 +37578,43 @@ webpackJsonp([0,2],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsCardIcon = __webpack_require__(249);
+	var _componentsPayMethodIcon = __webpack_require__(249);
 	
-	var _componentsCardIcon2 = _interopRequireDefault(_componentsCardIcon);
+	var _componentsPayMethodIcon2 = _interopRequireDefault(_componentsPayMethodIcon);
 	
-	var CardItem = (function (_Component) {
-	  _inherits(CardItem, _Component);
+	var PayMethodItem = (function (_Component) {
+	  _inherits(PayMethodItem, _Component);
 	
-	  function CardItem() {
-	    _classCallCheck(this, CardItem);
+	  function PayMethodItem() {
+	    _classCallCheck(this, PayMethodItem);
 	
-	    _get(Object.getPrototypeOf(CardItem.prototype), 'constructor', this).apply(this, arguments);
+	    _get(Object.getPrototypeOf(PayMethodItem.prototype), 'constructor', this).apply(this, arguments);
 	  }
 	
-	  _createClass(CardItem, [{
+	  _createClass(PayMethodItem, [{
 	    key: 'render',
 	    value: function render() {
-	      var cardType = this.props.type_name.toLowerCase();
-	      var cardText = '●●●● ●●●● ●●●● ' + this.props.truncated_id;
-	      var inputId = 'card-' + this.props.id;
+	      var payMethod = this.props.payMethod;
+	      var payMethodType = payMethod.type_name.toLowerCase();
+	      var payMethodText = '●●●● ●●●● ●●●● ' + payMethod.truncated_id;
+	      var inputId = 'paymethod-' + payMethod.id;
 	
 	      return _react2['default'].createElement(
-	        'li',
-	        { className: 'card-item ci-' + this.props.id },
-	        _react2['default'].createElement(_componentsCardIcon2['default'], { cardType: cardType }),
-	        _react2['default'].createElement('input', { id: inputId, type: 'radio',
+	        'div',
+	        { className: 'pay-method-item' },
+	        _react2['default'].createElement(_componentsPayMethodIcon2['default'], { payMethodType: payMethodType }),
+	        _react2['default'].createElement('input', {
+	          checked: this.props.inputType === 'radio' ? this.props.checked : null,
+	          id: inputId,
+	          name: 'paymethod',
 	          onChange: this.props.onChangeHandler,
-	          value: this.props.resource_uri, name: 'card',
-	          checked: this.props.checked }),
+	          type: this.props.inputType,
+	          value: payMethod.resource_uri
+	        }),
 	        _react2['default'].createElement(
 	          'label',
-	          { htmlFor: inputId,
-	            className: 'text' },
-	          cardText
+	          { htmlFor: inputId, className: 'text' },
+	          payMethodText
 	        )
 	      );
 	    }
@@ -37613,19 +37622,28 @@ webpackJsonp([0,2],[
 	    key: 'propTypes',
 	    value: {
 	      checked: _react.PropTypes.bool.isRequired,
-	      id: _react.PropTypes.number.isRequired,
+	      inputType: _react.PropTypes.string.isRequired,
 	      onChangeHandler: _react.PropTypes.func.isRequired,
-	      resource_uri: _react.PropTypes.string.isRequired,
-	      truncated_id: _react.PropTypes.string.isRequired,
-	      type_name: _react.PropTypes.string.isRequired
+	      payMethod: _react.PropTypes.shape({
+	        id: _react.PropTypes.number,
+	        resource_uri: _react.PropTypes.string,
+	        truncated_id: _react.PropTypes.string,
+	        type_name: _react.PropTypes.string
+	      })
+	    },
+	    enumerable: true
+	  }, {
+	    key: 'defaultProps',
+	    value: {
+	      inputType: 'radio'
 	    },
 	    enumerable: true
 	  }]);
 	
-	  return CardItem;
+	  return PayMethodItem;
 	})(_react.Component);
 	
-	exports['default'] = CardItem;
+	exports['default'] = PayMethodItem;
 	module.exports = exports['default'];
 
 /***/ },
@@ -38663,9 +38681,9 @@ webpackJsonp([0,2],[
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var _componentsCardIcon = __webpack_require__(249);
+	var _componentsPayMethodIcon = __webpack_require__(249);
 	
-	var _componentsCardIcon2 = _interopRequireDefault(_componentsCardIcon);
+	var _componentsPayMethodIcon2 = _interopRequireDefault(_componentsPayMethodIcon);
 	
 	var _utils = __webpack_require__(207);
 	
@@ -38826,7 +38844,7 @@ webpackJsonp([0,2],[
 	      return _react2['default'].createElement(
 	        'div',
 	        { className: proxySelectClasses },
-	        this.state.selectedPayMethodType ? _react2['default'].createElement(_componentsCardIcon2['default'], { cardType: this.state.selectedPayMethodType }) : null,
+	        this.state.selectedPayMethodType ? _react2['default'].createElement(_componentsPayMethodIcon2['default'], { payMethodType: this.state.selectedPayMethodType }) : null,
 	        _react2['default'].createElement(
 	          'span',
 	          { className: contentClasses, ariaHidden: 'true' },

@@ -494,100 +494,6 @@ button::-moz-focus-inner {
   padding: 0;
 }
 
-.card-list {
-  margin: 0;
-  padding: 0;
-}
-
-.card-list .card-item {
-  list-style-type: none;
-  margin: 10px 0;
-  position: relative;
-}
-
-.card-list .card-item input[type=radio] {
-  opacity: 0;
-  position: absolute;
-}
-
-.card-list .card-item input[type=radio]:checked + label,
-.card-list .card-item input[type=radio]:hover + label,
-.card-list .card-item input[type=radio]:focus + label {
-  cursor: pointer;
-  border: 1px solid #0080D8;
-  border-radius: 5px;
-  background: #E0F1FA;
-  transition: all 450ms;
-}
-
-.card-list .card-item label {
-  border: 1px solid transparent;
-  display: block;
-  font-size: 18px;
-  font-weight: 700;
-  padding: 1em 15px 1em 60px;
-  position: relative;
-  text-align: right;
-  width: 100%;
-}
-
-.card-list .card-item .card-icon {
-  left: 15px;
-}
-
-.delete .card-item input[type=radio]:checked + label,
-.delete .card-item input[type=radio]:hover + label,
-.delete .card-item input[type=radio]:focus + label {
-  border: 1px solid #d63920;
-  background: #fff;
-}
-
-.card-icon {
-  background: url(../img/cardicons-sprite.svg) no-repeat;
-}
-
-.cctype-amex {
-  background-position: 0 0;
-  width: 40px;
-  height: 25.05px;
-}
-
-.cctype-diners {
-  background-position: 0 16.57317695053544%;
-  width: 40px;
-  height: 25.12px;
-}
-
-.cctype-discover {
-  background-position: 0 33.26722538545199%;
-  width: 40px;
-  height: 25.69px;
-}
-
-.cctype-jcb {
-  background-position: 0 49.71953085160632%;
-  width: 40px;
-  height: 25.12px;
-}
-
-.cctype-maestro {
-  background-position: 0 66.29270780214176%;
-  width: 40px;
-  height: 25.12px;
-}
-
-.cctype-mastercard {
-  background-position: 0 82.8658847526772%;
-  width: 40px;
-  height: 25.12px;
-}
-
-.cctype-visa {
-  background-position: 0 99.43906170321264%;
-  width: 40px;
-  height: 25.12px;
-}
-
 .card-form {
   margin-top: 1em;
 }
@@ -739,7 +645,7 @@ label:focus ~ .input-help-focused {
   opacity: 1;
 }
 
-.card-icon {
+.pay-method-icon {
   opacity: 0;
   position: absolute;
   right: 8px;
@@ -748,7 +654,7 @@ label:focus ~ .input-help-focused {
   z-index: 10;
 }
 
-.card-icon[class*="cctype-"] {
+.pay-method-icon[class*="pmtype-"] {
   opacity: 1;
   transition: opacity 450ms;
 }
@@ -759,6 +665,50 @@ label:focus ~ .input-help-focused {
 
 .button.add-pay-method {
   margin-right: 1em;
+}
+
+.pay-method-item {
+  position: relative;
+}
+
+.pay-method-item input[type=radio] {
+  opacity: 0;
+  position: absolute;
+}
+
+.pay-method-item input[type=radio]:checked + label,
+.pay-method-item input[type=radio]:hover + label,
+.pay-method-item input[type=radio]:focus + label {
+  cursor: pointer;
+  border: 1px solid #0080D8;
+  border-radius: 5px;
+  background: #E0F1FA;
+  transition: all 450ms;
+}
+
+.pay-method-item label {
+  border: 1px solid transparent;
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 1em 15px 1em 60px;
+  position: relative;
+  text-align: right;
+  width: 100%;
+}
+
+.pay-method-item .pay-method-icon {
+  left: 15px;
+}
+
+.pay-method-list {
+  margin: 0;
+  padding: 0;
+}
+
+.pay-method-list li {
+  list-style-type: none;
+  margin: 10px 0;
 }
 
 .proxy-select {
@@ -783,7 +733,7 @@ label:focus ~ .input-help-focused {
   padding-left: 50px;
 }
 
-.proxy-select .card-icon {
+.proxy-select .pay-method-icon {
   left: 8px;
 }
 
@@ -811,6 +761,52 @@ label:focus ~ .input-help-focused {
   width: 100%;
   height: 100%;
   z-index: 10;
+}
+
+.pay-method-icon {
+  background: url(../img/pay-method-sprite.svg) no-repeat;
+}
+
+.pmtype-amex {
+  background-position: 0 0;
+  width: 40px;
+  height: 25.05px;
+}
+
+.pmtype-diners {
+  background-position: 0 16.57317695053544%;
+  width: 40px;
+  height: 25.12px;
+}
+
+.pmtype-discover {
+  background-position: 0 33.26722538545199%;
+  width: 40px;
+  height: 25.69px;
+}
+
+.pmtype-jcb {
+  background-position: 0 49.71953085160632%;
+  width: 40px;
+  height: 25.12px;
+}
+
+.pmtype-maestro {
+  background-position: 0 66.29270780214176%;
+  width: 40px;
+  height: 25.12px;
+}
+
+.pmtype-mastercard {
+  background-position: 0 82.8658847526772%;
+  width: 40px;
+  height: 25.12px;
+}
+
+.pmtype-visa {
+  background-position: 0 99.43906170321264%;
+  width: 40px;
+  height: 25.12px;
 }
 
 .product {

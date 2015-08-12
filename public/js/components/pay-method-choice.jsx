@@ -1,16 +1,16 @@
 import React, { Component, PropTypes } from 'react';
 
-import CardList from 'components/card-list';
+import PayMethodList from 'components/pay-method-list';
 import SubmitButton from 'components/submit-button';
 
 import { gettext } from 'utils';
 
 
-export default class CardChoice extends Component {
+export default class PayMethodChoice extends Component {
 
   static propTypes = {
-    cards: PropTypes.array.isRequired,
     cssModifier: PropTypes.string,
+    payMethods: PropTypes.array.isRequired,
     productId: PropTypes.string.isRequired,
     submitButtonCSSModifier: PropTypes.string.isRequired,
     submitButtonText: PropTypes.string.isRequired,
@@ -27,36 +27,36 @@ export default class CardChoice extends Component {
     super(props);
     this.state = {
       isSubmitting: false,
-      card: (this.props.cards.length === 1 ?
-             this.props.cards[0].resource_uri : null),
+      payMethod: (this.props.payMethods.length === 1 ?
+                  this.props.payMethods[0].resource_uri : null),
     };
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
     this.setState({isSubmitting: true});
-    this.props.submitHandler(this.state.card);
+    this.props.submitHandler(this.state.payMethod);
   }
 
-  handleCardChange = (e) => {
-    this.setState({card: e.target.value});
+  handlePayMethodChange = (e) => {
+    this.setState({payMethod: e.target.value});
   }
 
   render() {
-    var cardData = this.props.cards;
-    for (var i = 0; i < cardData.length; i += 1) {
-      var card = cardData[i];
-      card.checked = this.state.card === card.resource_uri;
+    var payMethodData = this.props.payMethods;
+    for (var i = 0; i < payMethodData.length; i += 1) {
+      var payMethod = payMethodData[i];
+      payMethod.checked = this.state.payMethod === payMethod.resource_uri;
     }
 
-    var formIsValid = this.state.card !== null;
+    var formIsValid = this.state.payMethod !== null;
 
     return (
-      <form id="card-choice" onSubmit={this.handleSubmit}>
-        <CardList
+      <form id="pay-method-choice" onSubmit={this.handleSubmit}>
+        <PayMethodList
           cssModifier={this.props.cssModifier}
-          cards={cardData}
-          onCardChange={this.handleCardChange} />
+          payMethods={payMethodData}
+          onPayMethodChange={this.handlePayMethodChange} />
         <SubmitButton isDisabled={!formIsValid}
           cssModifier={this.props.submitButtonCSSModifier}
           showSpinner={this.state.isSubmitting}
