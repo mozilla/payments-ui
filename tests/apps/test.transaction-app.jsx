@@ -65,10 +65,11 @@ describe('Transaction App', function() {
 
   it('should render a sign-in page', function() {
     var View = mountView();
-    var login = TestUtils.findRenderedComponentWithType(
+    var signIn = TestUtils.findRenderedComponentWithType(
       View, FakeSignIn
     );
-    assert.equal(login.props.accessToken, accessToken);
+    assert.equal(signIn.props.accessToken, accessToken);
+    assert.equal(signIn.props.allowUserSignIn, false);
   });
 
   it('should render a purchase page', function() {

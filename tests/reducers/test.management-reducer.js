@@ -25,4 +25,15 @@ describe('management reducer', () => {
     );
   });
 
+  it('resets view state when showing sign-in', () => {
+    var existingState = Object.assign({}, initialMgmtState, {
+      tab: 'pay-methods',
+      view: actionTypes.SHOW_PAY_METHODS,
+    });
+    assert.deepEqual(
+      management(existingState, {type: actionTypes.SHOW_SIGN_IN}),
+      initialMgmtState
+    );
+  });
+
 });

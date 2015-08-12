@@ -14,6 +14,18 @@ export function showMyAccount() {
   };
 }
 
+export function showSignIn() {
+  return {
+    type: actionTypes.SHOW_SIGN_IN,
+  };
+}
+
+export function showSignOut() {
+  return {
+    type: actionTypes.SHOW_SIGN_OUT,
+  };
+}
+
 export function showPayMethods() {
   return {
     type: actionTypes.SHOW_PAY_METHODS,

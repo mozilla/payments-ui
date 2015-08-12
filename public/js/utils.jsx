@@ -55,7 +55,8 @@ export function parseQuery(url){
   // @param {string} url - complete URL that may or may not include a query
   // @returns {object} - parsed query string parameter names mapped to values
   //
-  var urlParts = url.split('?');
+  var baseUrl = url.split('#')[0];
+  var urlParts = baseUrl.split('?');
   var data = {};
 
   if (urlParts.length > 1) {

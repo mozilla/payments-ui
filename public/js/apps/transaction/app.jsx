@@ -10,6 +10,7 @@ import ErrorMessage from 'components/error';
 import DefaultSignIn from 'views/shared/sign-in';
 import DefaultTransaction from 'views/transaction';
 
+import * as appActions from 'actions/app';
 import * as userActions from 'actions/user';
 import { parseQuery } from 'utils';
 
@@ -58,11 +59,14 @@ export default class TransactionApp extends Component {
               console.log('rendering app error');
               return <ErrorMessage error={connector.app.error} />;
             } else if (!connector.user.signedIn) {
-              console.log('rendering login');
+              console.log('rendering sign-in');
               return (
                 <SignIn
                   accessToken={state.accessToken}
+                  allowUserSignIn={false}
+                  user={connector.user}
                   {...bindActionCreators(userActions, connector.dispatch) }
+                  {...bindActionCreators(appActions, connector.dispatch) }
                 />
               );
             } else {
