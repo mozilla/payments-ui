@@ -14,7 +14,7 @@ export default class SubmitButton extends Component {
   }
 
   static defaultProps = {
-    modifier: null,
+    cssModifier: null,
     text: gettext('Submit'),
   }
 

@@ -28,7 +28,7 @@ export default class PayMethodChoice extends Component {
     this.state = {
       isSubmitting: false,
       payMethod: (this.props.payMethods.length === 1 ?
-             this.props.payMethods[0].resource_uri : null),
+                  this.props.payMethods[0].resource_uri : null),
     };
   }
 
