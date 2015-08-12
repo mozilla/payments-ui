@@ -17,7 +17,7 @@ describe('Transaction', function() {
   var productId = 'mozilla-concrete-brick';
   var FakeBraintreeToken = helpers.stubComponent();
   var FakeCompletePayment = helpers.stubComponent();
-  var FakeCardListing = helpers.stubComponent();
+  var FakePayMethodListing = helpers.stubComponent();
   var FakeAddSubscription = helpers.stubComponent();
   var store;
 
@@ -39,7 +39,7 @@ describe('Transaction', function() {
             <Transaction
               BraintreeToken={FakeBraintreeToken}
               AddSubscription={FakeAddSubscription}
-              CardListing={FakeCardListing}
+              PayMethodListing={FakePayMethodListing}
               CompletePayment={FakeCompletePayment}
               user={testUser} productId={productId} />
           );
@@ -68,7 +68,7 @@ describe('Transaction', function() {
     });
 
     var child = TestUtils.findRenderedComponentWithType(
-      View, FakeCardListing
+      View, FakePayMethodListing
     );
     assert.equal(child.props.productId, productId);
     assert.equal(child.props.payMethods, payMethods);

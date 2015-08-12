@@ -1,11 +1,11 @@
 import React from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
 
-import CardChoice from 'components/card-choice';
-import CardListing from 'views/transaction/card-listing';
+import PayMethodChoice from 'components/pay-method-choice';
+import PayMethodListing from 'views/transaction/pay-method-listing';
 
 
-describe('Card Listing', function() {
+describe('Pay Method Listing', function() {
 
   var payWithNewCardSpy;
   var View;
@@ -16,18 +16,18 @@ describe('Card Listing', function() {
     payWithNewCardSpy = sinon.spy();
 
     View = TestUtils.renderIntoDocument(
-      <CardListing
+      <PayMethodListing
         payMethods={[savedVisa]}
         payWithNewCard={payWithNewCardSpy}
         productId='mozilla-concrete-brick' />
     );
   });
 
-  it('should show card choice', function() {
-    var card = TestUtils.findRenderedComponentWithType(
-      View, CardChoice
+  it('should show payMethod choice', function() {
+    var payMethod = TestUtils.findRenderedComponentWithType(
+      View, PayMethodChoice
     );
-    assert.deepEqual(card.props.cards, [savedVisa]);
+    assert.deepEqual(payMethod.props.payMethods, [savedVisa]);
   });
 
   it('should request to pay with new card when clicking link', function() {

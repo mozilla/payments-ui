@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { Component, PropTypes } from 'react';
 
-import CardIcon from 'components/card-icon';
+import PayMethodIcon from 'components/pay-method-icon';
 import InputError from 'components/input-error';
 import MaskedInput from 'react-maskedinput';
 
@@ -96,7 +96,8 @@ export default class CardInput extends Component {
         { this.props.showError ?
           <InputError errorMessage={this.props.errorMessage}
                       errorModifier={this.props.errorModifier} /> : null }
-        { showCardIcon ? <CardIcon cardType={this.props.cardType} /> : null }
+        { showCardIcon ?
+          <PayMethodIcon payMethodType={this.props.cardType} /> : null }
         <MaskedInput
           {...this.props.attrs}
           id={this.props.id}

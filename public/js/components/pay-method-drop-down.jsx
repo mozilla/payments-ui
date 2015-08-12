@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import cx from 'classnames';
 
-import PayMethodIcon from 'components/card-icon';
+import PayMethodIcon from 'components/pay-method-icon';
 import { gettext } from 'utils';
 
 const defaultSelectText = gettext('Please select');
@@ -144,7 +144,7 @@ export default class PayMethodDropDown extends Component {
     return (
       <div className={proxySelectClasses}>
         {this.state.selectedPayMethodType ?
-         <PayMethodIcon cardType={this.state.selectedPayMethodType} /> :
+         <PayMethodIcon payMethodType={this.state.selectedPayMethodType} /> :
          null}
         <span className={contentClasses} ariaHidden="true">
           <span className="vh">{this.state.selectedPayMethodType}</span>

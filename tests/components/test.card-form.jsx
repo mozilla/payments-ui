@@ -41,8 +41,8 @@ describe('Card Form', function() {
           id: 'card',
         },
       });
-      var cardIcon = helpers.findByClass(view, 'card-icon');
-      assert.include(cardIcon.props.className, 'cctype-' + cardType);
+      var cardIcon = helpers.findByClass(view, 'pay-method-icon');
+      assert.include(cardIcon.props.className, 'pmtype-' + cardType);
     };
   }
 
