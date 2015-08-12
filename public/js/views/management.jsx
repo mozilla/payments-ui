@@ -81,19 +81,26 @@ export default class Management extends Component {
   }
 
   renderNav = () => {
-     var nav = [];
-     for (var i = 0; i < navData.length; i += 1) {
-       var navItem = navData[i];
-       var isActive = this.props.tab === navItem.className;
-       var classes = cx('nav', navItem.className, {'active': isActive});
-       nav.push((
-         <li className={classes} key={navItem.className}>
-           <a href="#" onClick={this.props[navItem.action]}>
-             {navItem.text}</a>
-         </li>
-       ));
-     }
-     return <ul>{nav}</ul>;
+    var nav = [];
+    for (var i = 0; i < navData.length; i += 1) {
+      var navItem = navData[i];
+      var isActive = this.props.tab === navItem.className;
+      var classes = cx('nav', navItem.className, {'active': isActive});
+      nav.push((
+        <li className={classes} key={navItem.className}>
+          <a href="#" onClick={this.props[navItem.action]}>
+            {navItem.text}</a>
+        </li>
+      ));
+    }
+
+    nav.push((
+      <li className="signout">
+        <a href="#" onClick={this.userSignOut}>{gettext('Sign Out')}</a>
+      </li>
+    ));
+
+    return <ul>{nav}</ul>;
   }
 
   render() {

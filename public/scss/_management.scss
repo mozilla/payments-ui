@@ -166,8 +166,29 @@
         a:hover {
             background: $hover-grey;
             color: #fff;
-
         }
 
+        .signout {
+            bottom: 15px;
+            left: 15px;
+            position: absolute;
+            right: 15px;
+
+            a:link {
+                border-radius: 2px;
+                border: 1px solid $hover-grey;
+                padding: 0.5em;
+                text-align: center;
+                transition: all 0.3s;
+
+                &:focus,
+                &:hover,
+                &:active {
+                    color: #fff;
+                    background: none;
+                    border: 1px solid $ship-grey;
+                }
+            }
+        }
     }
 }

@@ -39261,6 +39261,17 @@ webpackJsonp([0,2],[
 	          )
 	        ));
 	      }
+	
+	      nav.push(_react2['default'].createElement(
+	        'li',
+	        { className: 'signout' },
+	        _react2['default'].createElement(
+	          'a',
+	          { href: '#', onClick: _this.userSignOut },
+	          (0, _utils.gettext)('Sign Out')
+	        )
+	      ));
+	
 	      return _react2['default'].createElement(
 	        'ul',
 	        null,

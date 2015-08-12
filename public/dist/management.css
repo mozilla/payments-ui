@@ -1479,4 +1479,27 @@ button.spinner:after {
   color: #fff;
 }
 
+.management .sidebar .signout {
+  bottom: 15px;
+  left: 15px;
+  position: absolute;
+  right: 15px;
+}
+
+.management .sidebar .signout a:link {
+  border-radius: 2px;
+  border: 1px solid #5E6972;
+  padding: 0.5em;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.management .sidebar .signout a:link:focus,
+.management .sidebar .signout a:link:hover,
+.management .sidebar .signout a:link:active {
+  color: #fff;
+  background: none;
+  border: 1px solid #c1c1c1;
+}
+
 /*# sourceMappingURL=management.css.map */
