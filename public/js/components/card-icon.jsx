@@ -32,6 +32,6 @@ export default class CardIcon extends Component {
       'card-icon',
       'cctype-' + (cardTypeMap[cardType] || cardType),
     ]);
-    return cardType ? <span className={cardClassName} /> : null;
+    return cardType ? <span className={cardClassName}></span> : null;
   }
 }

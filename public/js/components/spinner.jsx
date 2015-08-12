@@ -15,7 +15,7 @@ export default class Spinner extends Component {
   render() {
     return (
       <div className="spinner-cont">
-        <div className="spinner" />
+        <div className="spinner"></div>
         <span className="text">{this.props.text}</span>
       </div>
     );
