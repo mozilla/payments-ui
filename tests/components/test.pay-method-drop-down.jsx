@@ -56,7 +56,7 @@ describe('Pay Method Dropdown', function() {
     assert.include(findDOMNode(content).innerHTML, '0000');
   });
 
-  it('adds card-icon when pay-method is selected', function() {
+  it('adds pay-method icon when pay-method is selected', function() {
     var event = {
       target: {
         value: '/braintree/mozilla/paymethod/1/',
@@ -65,9 +65,10 @@ describe('Pay Method Dropdown', function() {
       },
     };
     this.PayMethodDropDown.handleChange(event);
-    var cardIcon = helpers.findByClass(this.PayMethodDropDown, 'card-icon');
+    var payMethodIcon = helpers.findByClass(
+      this.PayMethodDropDown, 'pay-method-icon');
     assert.include(
-      findDOMNode(cardIcon).className.split(' '), 'cctype-mastercard');
+      findDOMNode(payMethodIcon).className.split(' '), 'pmtype-mastercard');
   });
 
   it('updates internal state when pay method is selected', function() {

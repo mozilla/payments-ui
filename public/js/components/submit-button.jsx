@@ -7,10 +7,10 @@ import { gettext } from 'utils';
 export default class SubmitButton extends Component {
 
   static propTypes = {
-    cssModifier: PropTypes.string.isRequired,
+    cssModifier: PropTypes.string,
     isDisabled: PropTypes.bool,
     showSpinner: PropTypes.bool,
-    text: PropTypes.string.isRequired,
+    text: PropTypes.string,
   }
 
   static defaultProps = {

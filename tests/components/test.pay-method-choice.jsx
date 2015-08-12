@@ -1,12 +1,12 @@
 import React from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
 
-import CardChoice from 'components/card-choice';
+import PayMethodChoice from 'components/pay-method-choice';
 
 import * as helpers from '../helpers';
 
 
-describe('Card Choice', function() {
+describe('Pay Method Choice', function() {
 
   var cards = [
     'amex',
@@ -17,7 +17,7 @@ describe('Card Choice', function() {
     'visa',
   ];
 
-  var cardListData = [{
+  var payMethodData = [{
       'id': 1,
       'resource_uri': '/braintree/mozilla/paymethod/1/',
       'truncated_id': '4444',
@@ -51,20 +51,21 @@ describe('Card Choice', function() {
   ];
 
   beforeEach(function() {
-    this.CardChoice = TestUtils.renderIntoDocument(
-      <CardChoice cards={cardListData}
+    this.PayMethodChoice = TestUtils.renderIntoDocument(
+      <PayMethodChoice payMethods={payMethodData}
         cssModifier='whatevar-modifier' />
     );
-    sinon.spy(this.CardChoice, 'setState');
+    sinon.spy(this.PayMethodChoice, 'setState');
   });
 
   afterEach(function() {
-    this.CardChoice.setState.restore();
+    this.PayMethodChoice.setState.restore();
   });
 
   function testCardType(cardType) {
     return function() {
-      var cardIcon = helpers.findByClass(this.CardChoice, 'cctype-' + cardType);
+      var cardIcon = helpers.findByClass(
+        this.PayMethodChoice, 'pmtype-' + cardType);
       assert.notEqual(cardIcon, null);
     };
   }
@@ -79,9 +80,9 @@ describe('Card Choice', function() {
         value: '/braintree/mozilla/paymethod/5/',
       },
     };
-    this.CardChoice.handleCardChange(event);
+    this.PayMethodChoice.handlePayMethodChange(event);
     var input = TestUtils.scryRenderedDOMComponentsWithTag(
-        this.CardChoice, 'input')[4];
+        this.PayMethodChoice, 'input')[4];
     assert.equal(input.props.checked, true);
   });
 
@@ -91,31 +92,32 @@ describe('Card Choice', function() {
         value: 'whatevar',
       },
     };
-    this.CardChoice.handleCardChange(event);
-    assert.ok(this.CardChoice.setState.calledWith({
-      'card': 'whatevar',
+    this.PayMethodChoice.handlePayMethodChange(event);
+    assert.ok(this.PayMethodChoice.setState.calledWith({
+      'payMethod': 'whatevar',
     }), 'setState should be called');
   });
 
   it('Has a disabled button when no card is selected', function() {
-    var submitButton = helpers.findByTag(this.CardChoice, 'button');
+    var submitButton = helpers.findByTag(this.PayMethodChoice, 'button');
     assert.notEqual(submitButton.getDOMNode().getAttribute('disabled'), null);
   });
 
   it('has button enabled when selection is made', function() {
-    var submitButton = helpers.findByTag(this.CardChoice, 'button');
+    var submitButton = helpers.findByTag(this.PayMethodChoice, 'button');
     var event = {
       target: {
         value: '/braintree/mozilla/paymethod/6/',
       },
     };
-    this.CardChoice.handleCardChange(event);
+    this.PayMethodChoice.handlePayMethodChange(event);
     assert.equal(submitButton.getDOMNode().getAttribute('disabled'), null);
   });
 
   it('has a modifer classname passed to card-list', function() {
-    var cardList = helpers.findByClass(this.CardChoice, 'card-list');
-    assert.include(React.findDOMNode(cardList).className.split(' '),
+    var payMethod = helpers.findByClass(
+      this.PayMethodChoice, 'pay-method-list');
+    assert.include(React.findDOMNode(payMethod).className.split(' '),
                    'whatevar-modifier');
   });
 
@@ -123,7 +125,7 @@ describe('Card Choice', function() {
 
 describe('Single Card Choice', function() {
 
-    var cardListData = [{
+    var payMethodData = [{
         'id': 1,
         'resource_uri': '/braintree/mozilla/paymethod/1/',
         'truncated_id': '4444',
@@ -132,18 +134,18 @@ describe('Single Card Choice', function() {
      ];
 
     beforeEach(function() {
-      this.CardChoice = TestUtils.renderIntoDocument(
-        <CardChoice cards={cardListData} />
+      this.PayMethodChoice = TestUtils.renderIntoDocument(
+        <PayMethodChoice payMethods={payMethodData} />
       );
     });
 
     it('Has the card selected when just one card', function() {
-        var input = helpers.findByTag(this.CardChoice, 'input');
+        var input = helpers.findByTag(this.PayMethodChoice, 'input');
         assert.equal(input.getDOMNode().getAttribute('checked'), '');
     });
 
     it('Has the submit button enabled when just one card', function() {
-      var submitButton = helpers.findByTag(this.CardChoice, 'button');
+      var submitButton = helpers.findByTag(this.PayMethodChoice, 'button');
       assert.equal(submitButton.getDOMNode().getAttribute('disabled'), null);
     });
 });

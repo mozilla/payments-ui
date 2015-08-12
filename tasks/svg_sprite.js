@@ -1,5 +1,5 @@
 module.exports = {
-  cardicons: {
+  paymethods: {
     expand: true,
     cwd: 'node_modules/payment-icons/min/flat',
     src: ['*.svg'],
@@ -15,16 +15,16 @@ module.exports = {
       mode: {
         css: {
           layout: 'vertical',
-          common: 'card-icon',
+          common: 'pay-method-icon',
           dimensions: true,
           padding: 10,
-          prefix: '.cctype-%s',
+          prefix: '.pmtype-%s',
           dest: 'scss',
-          sprite: '../img/cardicons-sprite.svg',
+          sprite: '../img/pay-method-sprite.svg',
           bust: false,
           render: {
             scss: {
-              dest: '_cardicons-sprite.scss'
+              dest: '_pay-method-sprite.scss'
             }
           }
         }

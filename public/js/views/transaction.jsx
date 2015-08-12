@@ -10,7 +10,7 @@ import * as subscriptionActions from 'actions/subscriptions';
 import DefaultBraintreeToken from 'views/shared/braintree-token';
 
 import DefaultAddSubscription from 'views/transaction/add-subscription';
-import DefaultCardListing from 'views/transaction/card-listing';
+import DefaultPayMethodListing from 'views/transaction/pay-method-listing';
 import DefaultCompletePayment from 'views/transaction/complete-payment';
 
 
@@ -19,15 +19,15 @@ export default class Transaction extends Component {
   static propTypes = {
     AddSubscription: PropTypes.func.isRequired,
     BraintreeToken: PropTypes.func.isRequired,
-    CardListing: PropTypes.func.isRequired,
     CompletePayment: PropTypes.func.isRequired,
+    PayMethodListing: PropTypes.func.isRequired,
     productId: PropTypes.string.isRequired,
     user: PropTypes.object.isRequired,
   }
 
   static defaultProps = {
     AddSubscription: DefaultAddSubscription,
-    CardListing: DefaultCardListing,
+    PayMethodListing: DefaultPayMethodListing,
     CompletePayment: DefaultCompletePayment,
     BraintreeToken: DefaultBraintreeToken,
   }
@@ -43,7 +43,7 @@ export default class Transaction extends Component {
     var props = this.props;
     var BraintreeToken = props.BraintreeToken;
     var CompletePayment = props.CompletePayment;
-    var CardListing = props.CardListing;
+    var PayMethodListing = props.PayMethodListing;
     var AddSubscription = props.AddSubscription;
 
     if (connector.transaction.completed) {
@@ -57,7 +57,7 @@ export default class Transaction extends Component {
       var { createSubscription } = bindActionCreators(subscriptionActions,
                                                       connector.dispatch);
       return (
-        <CardListing
+        <PayMethodListing
           createSubscription={createSubscription}
           productId={props.productId}
           payMethods={connector.transaction.availablePayMethods}
