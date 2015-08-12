@@ -1,26 +1,9 @@
-@import 'lib/normalize';
-@import 'lib/tabzilla';
-
 @import 'inc/vars';
 @import 'inc/mixins';
 
-@import '_base';
-@import '_global';
-@import '_utils';
-
-@import '_typography';
-@import '_buttons';
-@import '_cardicons-sprite';
-@import '_forms';
-@import '_product';
-@import '_spinner';
-@import '_subscriptions';
-@import '_app-error';
 @import '_modal';
+@import '_subscriptions';
 @import '_mgmt-nav-sprite.scss';
-@import '_card-list';
-@import '_pay-methods';
 @import '_json-table';
-@import '_pay-method-drop-down.scss';
-
+@import 'lib/tabzilla';
 @import '_management';
