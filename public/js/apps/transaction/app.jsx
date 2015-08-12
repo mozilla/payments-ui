@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 
 import dataStore from 'data-store';
 import ErrorMessage from 'components/error';
-import DefaultLogin from 'views/shared/login';
+import DefaultSignIn from 'views/shared/sign-in';
 import DefaultTransaction from 'views/transaction';
 
 import * as userActions from 'actions/user';
@@ -17,13 +17,13 @@ import { parseQuery } from 'utils';
 export default class TransactionApp extends Component {
 
   static propTypes = {
-    Login: PropTypes.func.isRequired,
+    SignIn: PropTypes.func.isRequired,
     Transaction: PropTypes.func.isRequired,
     win: PropTypes.object,
   }
 
   static defaultProps = {
-    Login: DefaultLogin,
+    SignIn: DefaultSignIn,
     Transaction: DefaultTransaction,
     win: window,
   }
@@ -47,7 +47,7 @@ export default class TransactionApp extends Component {
 
   render() {
     var state = this.state;
-    var Login = this.props.Login;
+    var SignIn = this.props.SignIn;
     var Transaction = this.props.Transaction;
 
     return (
@@ -60,7 +60,7 @@ export default class TransactionApp extends Component {
             } else if (!connector.user.signedIn) {
               console.log('rendering login');
               return (
-                <Login
+                <SignIn
                   accessToken={state.accessToken}
                   {...bindActionCreators(userActions, connector.dispatch) }
                 />

@@ -1,17 +1,17 @@
 import React from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
 
-import Login from 'views/shared/login';
+import SignIn from 'views/shared/sign-in';
 
 
-describe('Login', function() {
+describe('SignIn', function() {
 
   var accessToken = 'some-oauth-access-token';
   var tokenSignInSpy = sinon.spy();
 
   function mountView() {
     return TestUtils.renderIntoDocument(
-      <Login accessToken={accessToken} tokenSignIn={tokenSignInSpy} />
+      <SignIn accessToken={accessToken} tokenSignIn={tokenSignInSpy} />
     );
   }
 

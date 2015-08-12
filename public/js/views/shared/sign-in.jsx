@@ -6,7 +6,7 @@ import { gettext } from 'utils';
 import tracking from 'tracking';
 
 
-export default class Login extends Component {
+export default class SignIn extends Component {
 
   static propTypes = {
     accessToken: PropTypes.string.isRequired,
@@ -14,7 +14,7 @@ export default class Login extends Component {
   };
 
   componentDidMount() {
-    tracking.setPage('/login');
+    tracking.setPage('/sign-in');
     this.props.tokenSignIn(this.props.accessToken);
   }
 
