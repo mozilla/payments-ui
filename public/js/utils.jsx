@@ -5,7 +5,6 @@
 * @param {object} opt - the defaults to use
 * @returns {object}
 */
-
 export function defaults(object, opt) {
   object = object || {};
   opt = opt || {};
@@ -63,15 +62,14 @@ export function setTitle(string, doc=document) {
 }
 
 
+/*
+ * Given a complete URL, parse the query string and return an
+ * object of parameters->values. This doesn't bother with repeated
+ * parameter names. You'll get the last one defined.
+ * @param {string} url - complete URL that may or may not include a query
+ * @returns {object} - parsed query string parameter names mapped to values
+ */
 export function parseQuery(url){
-  //
-  // Given a complete URL, parse the query string and return an
-  // object of parameters->values. This doesn't bother with repeated
-  // parameter names. You'll get the last one defined.
-  //
-  // @param {string} url - complete URL that may or may not include a query
-  // @returns {object} - parsed query string parameter names mapped to values
-  //
   var urlParts = url.split('?');
   var data = {};
 
@@ -86,4 +84,20 @@ export function parseQuery(url){
   }
 
   return data;
+}
+
+
+/**
+ * Given a list of pay-method objects return one that matches
+ * the payMethodUri. If no matches returns null.
+ * @param {list} payMethods - a list of pay-method objects.
+ * @param {string} payMethodUri - a pay method uri.
+ */
+export function getPayMethodFromUri(payMethods, payMethodUri) {
+  var matches = payMethods.filter(item => payMethodUri === item.resource_uri);
+  if (matches.length > 1) {
+    throw new Error('Pay methods should be unique. ' +
+      'Found more than one matching ' + payMethodUri);
+  }
+  return matches.length ? matches[0] : null;
 }

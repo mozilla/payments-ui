@@ -7,19 +7,19 @@ import { gettext } from 'utils';
 export default class SubmitButton extends Component {
 
   static propTypes = {
+    content: PropTypes.string,
     cssModifier: PropTypes.string,
     isDisabled: PropTypes.bool,
     showSpinner: PropTypes.bool,
-    text: PropTypes.string,
   }
 
   static defaultProps = {
     cssModifier: null,
-    text: gettext('Submit'),
+    content: gettext('Submit'),
   }
 
   render() {
-    var { isDisabled, text, showSpinner, ...buttonAttrs } = this.props;
+    var { isDisabled, content, showSpinner, ...buttonAttrs } = this.props;
 
     var buttonClassNames = cx({
       'spinner': showSpinner,
@@ -35,7 +35,7 @@ export default class SubmitButton extends Component {
       <button {...buttonAttrs}
         className={buttonClassNames}
         disabled={isDisabled}
-        type="submit">{text}</button>
+        type="submit">{content}</button>
     );
   }
 }

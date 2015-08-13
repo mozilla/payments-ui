@@ -12,7 +12,8 @@ describe('SubmitButton', function() {
   });
 
   it('uses custom text as supplied', function() {
-    var Button = TestUtils.renderIntoDocument(<SubmitButton text="whatever" />);
+    var Button = TestUtils.renderIntoDocument(
+      <SubmitButton content="whatever" />);
     assert.equal(findDOMNode(Button).firstChild.nodeValue, 'whatever');
   });
 

@@ -49,6 +49,11 @@ export default function management(state, action) {
         tab: 'pay-methods',
         view: action.type,
       });
+    case actionTypes.SHOW_CONFIRM_DEL_PAY_METHOD:
+      return Object.assign({}, initialMgmtState, {
+        tab: 'pay-methods',
+        view: action.type,
+      });
     case actionTypes.SHOW_HISTORY:
       return Object.assign({}, initialMgmtState, {
         tab: 'history',
@@ -59,7 +64,7 @@ export default function management(state, action) {
         tab: 'profile',
         view: action.type,
       });
-    case actionTypes.SHOW_SUBSCRIPTIONS:
+    case actionTypes.SHOW_SUBS:
       return Object.assign({}, initialMgmtState, {
         tab: 'subs',
         view: action.type,

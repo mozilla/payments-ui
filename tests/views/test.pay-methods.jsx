@@ -6,7 +6,7 @@ import PayMethods from 'views/management/pay-methods';
 import * as helpers from '../helpers';
 
 
-describe('PayMethods', function() {
+describe('Pay Methods', function() {
 
   beforeEach(function() {
     const fakeCards = [
@@ -23,9 +23,16 @@ describe('PayMethods', function() {
       },
     ];
 
+    this.getPayMethodsStub = sinon.stub();
     this.PayMethods = TestUtils.renderIntoDocument(
-      <PayMethods payMethods={fakeCards} />
+      <PayMethods
+        payMethods={fakeCards}
+        getPayMethods={this.getPayMethodsStub} />
     );
+  });
+
+  it('should call getPayMethods stub', function() {
+    assert.equal(this.getPayMethodsStub.called, true);
   });
 
   it('should have a card dropdown', function() {
@@ -35,7 +42,9 @@ describe('PayMethods', function() {
 
   it('should show no-results message', function() {
     var noPayMethods = TestUtils.renderIntoDocument(
-      <PayMethods payMethods={[]} />
+      <PayMethods
+        payMethods={[]}
+        getPayMethods={this.getPayMethodsStub} />
     );
     var content = helpers.findByClass(noPayMethods, 'no-results');
     assert.ok(TestUtils.isDOMComponent(content));
@@ -43,7 +52,9 @@ describe('PayMethods', function() {
 
   it('should have disabled class on delete link if no cards', function() {
     var noPayMethods = TestUtils.renderIntoDocument(
-      <PayMethods payMethods={[]} />
+      <PayMethods
+        payMethods={[]}
+        getPayMethods={this.getPayMethodsStub} />
     );
     var delButton = helpers.findByClass(noPayMethods, 'delete').getDOMNode();
     assert.ok(delButton.className.split(' ').indexOf('disabled') > -1);

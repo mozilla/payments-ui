@@ -38,7 +38,7 @@ describe('subscription actions', function() {
       getUserSubscriptions(fetch);
 
       var action = dispatchSpy.firstCall.args[0];
-      assert.equal(action.type, actionTypes.LOADING_USER_SUBSCRIPTIONS);
+      assert.equal(action.type, actionTypes.LOADING_USER_SUBS);
     });
 
     it('should dispatch user subscription action', function() {
@@ -46,7 +46,7 @@ describe('subscription actions', function() {
       getUserSubscriptions(fetch);
 
       var action = dispatchSpy.secondCall.args[0];
-      assert.equal(action.type, actionTypes.GOT_USER_SUBSCRIPTIONS);
+      assert.equal(action.type, actionTypes.GOT_USER_SUBS);
     });
 
     it('should dispatch subscription data', function() {
