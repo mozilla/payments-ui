@@ -8,6 +8,7 @@ import Subscription from 'components/subscription';
 export default class SubscriptionList extends Component {
 
   static propTypes = {
+    payMethods: PropTypes.array,
     subscriptions: PropTypes.array,
   }
 
@@ -26,7 +27,8 @@ export default class SubscriptionList extends Component {
       this.props.subscriptions.forEach((data) => {
         subs.push(
           <li key={data.id}>
-            <Subscription {...data}/>
+            <Subscription {...data}
+              payMethods={this.props.payMethods} />
           </li>
         );
       });
