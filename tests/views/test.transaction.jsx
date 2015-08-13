@@ -13,7 +13,7 @@ import Transaction from 'views/transaction';
 
 describe('Transaction', function() {
 
-  var testUser;
+  var fakeUser;
   var productId = 'mozilla-concrete-brick';
   var FakeBraintreeToken = helpers.stubComponent();
   var FakeCompletePayment = helpers.stubComponent();
@@ -23,13 +23,12 @@ describe('Transaction', function() {
 
   beforeEach(function() {
     store = createReduxStore();
-    testUser = Object.assign({}, defaultUser, {
+    fakeUser = Object.assign({}, defaultUser, {
       email: 'f@f.com',
     });
   });
 
-  function mountView(userOverrides) {
-    testUser = Object.assign({}, testUser, userOverrides);
+  function mountView() {
     var FluxContainer = helpers.getFluxContainer(store);
 
     var container = TestUtils.renderIntoDocument(
@@ -41,7 +40,7 @@ describe('Transaction', function() {
               AddSubscription={FakeAddSubscription}
               PayMethodListing={FakePayMethodListing}
               CompletePayment={FakeCompletePayment}
-              user={testUser} productId={productId} />
+              user={fakeUser} productId={productId} />
           );
         }}
       </FluxContainer>
@@ -57,7 +56,7 @@ describe('Transaction', function() {
 
     store.dispatch({
       type: actionTypes.USER_SIGNED_IN,
-      user: Object.assign({}, testUser, {
+      user: Object.assign({}, fakeUser, {
         payMethods: payMethods,
       }),
     });
@@ -96,7 +95,7 @@ describe('Transaction', function() {
     var child = TestUtils.findRenderedComponentWithType(
       View, FakeCompletePayment
     );
-    assert.equal(child.props.userEmail, testUser.email);
+    assert.equal(child.props.userEmail, fakeUser.email);
   });
 
   it('should render new card entry on explicit request', function() {
@@ -106,7 +105,7 @@ describe('Transaction', function() {
     // Dispatch a user that would normally trigger a card listing.
     store.dispatch({
       type: actionTypes.USER_SIGNED_IN,
-      user: Object.assign({}, testUser, {
+      user: Object.assign({}, fakeUser, {
         payMethods: payMethods,
       }),
     });

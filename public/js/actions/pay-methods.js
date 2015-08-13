@@ -36,7 +36,7 @@ export function delPayMethod(payMethodUri, fetch=api.fetch) {
 
 export function getPayMethods(fetch=api.fetch) {
   // Note: not currently used as payMethods
-  // are added to user state upon login.
+  // are added to user state upon sign-in.
   return dispatch => {
     fetch({
       method: 'get',

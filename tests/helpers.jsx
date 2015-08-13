@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react';
+import React, { Component } from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
 
 
@@ -180,10 +180,9 @@ export function fakeFetch({xhrError={}, returnedData={},
 
 
 export function stubComponent() {
-  return React.createClass({
-    displayName: 'StubComponent',
-    render: function() {
-      return <div></div>;
-    },
-  });
+  return class StubComponent extends Component {
+    render() {
+      return <div>This is a stub component.</div>;
+    }
+  };
 }

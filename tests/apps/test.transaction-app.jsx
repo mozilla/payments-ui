@@ -15,7 +15,7 @@ describe('Transaction App', function() {
 
   var accessToken = 'some-oauth-token';
   var productId = 'mozilla-concrete-brick';
-  var FakeLogin = helpers.stubComponent();
+  var FakeSignIn = helpers.stubComponent();
   var FakeTransaction = helpers.stubComponent();
   var store;
 
@@ -38,7 +38,7 @@ describe('Transaction App', function() {
         {function() {
           return (
             <TransactionApp
-              Login={FakeLogin} Transaction={FakeTransaction} win={fakeWin} />
+              SignIn={FakeSignIn} Transaction={FakeTransaction} win={fakeWin} />
           );
         }}
       </FluxContainer>
@@ -65,10 +65,11 @@ describe('Transaction App', function() {
 
   it('should render a sign-in page', function() {
     var View = mountView();
-    var login = TestUtils.findRenderedComponentWithType(
-      View, FakeLogin
+    var signIn = TestUtils.findRenderedComponentWithType(
+      View, FakeSignIn
     );
-    assert.equal(login.props.accessToken, accessToken);
+    assert.equal(signIn.props.accessToken, accessToken);
+    assert.equal(signIn.props.allowUserSignIn, false);
   });
 
   it('should render a purchase page', function() {

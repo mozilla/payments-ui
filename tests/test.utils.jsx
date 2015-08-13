@@ -21,6 +21,11 @@ describe('utils.parseQuery', function() {
     assert.deepEqual(utils.parseQuery('http://foo/?foo=1&foo=2'), {foo: '2'});
   });
 
+  it('should strip anchor hashes', function() {
+    assert.deepEqual(utils.parseQuery('http://foo/?foo=foo#anchor'),
+                     {foo: 'foo'});
+  });
+
 });
 
 

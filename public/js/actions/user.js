@@ -17,7 +17,6 @@ export function tokenSignIn(accessToken, api=defaultApi) {
 
       api.setCSRFToken(data.csrf_token);
 
-      console.log('login succeeded, setting user');
       dispatch({
         type: actionTypes.USER_SIGNED_IN,
         user: {

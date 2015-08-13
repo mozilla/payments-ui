@@ -12,7 +12,6 @@ import * as subscriptionActions from 'actions/subscriptions';
 import * as transactionActions from 'actions/transaction';
 import { parseQuery } from 'utils';
 
-import Spinner from 'components/spinner';
 import AddPayMethod from 'views/management/add-pay-method';
 import DelPayMethod from 'views/management/del-pay-method';
 import MyAccount from 'views/management/my-account';
@@ -22,6 +21,8 @@ import { default as DefaultPayMethods } from 'views/management/pay-methods';
 
 import BraintreeToken from 'views/shared/braintree-token';
 import ModalError from 'views/shared/modal-error';
+import { default as DefaultSignIn } from 'views/shared/sign-in';
+import SignOut from 'views/shared/sign-out';
 
 import { default as DefaultManagement } from 'views/management';
 
@@ -29,14 +30,16 @@ import { default as DefaultManagement } from 'views/management';
 export default class ManagementApp extends Component {
 
   static propTypes = {
-    Management: PropTypes.func.isRequired,
-    PayMethods: PropTypes.func.isRequired,
+    Management: PropTypes.func,
+    PayMethods: PropTypes.func,
+    SignIn: PropTypes.func,
     window: PropTypes.object.isRequired,
   }
 
   static defaultProps = {
     Management: DefaultManagement,
     PayMethods: DefaultPayMethods,
+    SignIn: DefaultSignIn,
     window: window,
   }
 
@@ -63,6 +66,7 @@ export default class ManagementApp extends Component {
     var children = [];
     var Management = this.props.Management;
     var PayMethods = this.props.PayMethods;
+    var SignIn = this.props.SignIn;
 
     if (connector.management.error) {
       children.push(
@@ -81,6 +85,15 @@ export default class ManagementApp extends Component {
       children.push((
         <PayMethods {...boundMgmtActions}
           payMethods={connector.user.payMethods} />
+      ));
+    } else if (connector.management.view === 'SHOW_SIGN_OUT') {
+      console.log('Showing sign out');
+      children.push((
+        <SignOut
+          user={connector.user}
+          {...boundUserActions}
+          {...boundMgmtActions}
+        />
       ));
     } else if (connector.management.view === 'SHOW_ADD_PAY_METHOD') {
       if (!connector.user.braintreeToken) {
@@ -121,17 +134,24 @@ export default class ManagementApp extends Component {
         />
       ));
     } else {
-      children.push(<Spinner/>);
+      console.log('Showing sign in');
+      children.push(
+        <SignIn
+          accessToken={accessToken}
+          user={connector.user}
+          {...boundUserActions}
+          {...boundMgmtActions}
+        />
+      );
     }
 
 
     return (<Management
               {...boundMgmtActions}
               {...boundUserActions}
-              accessToken={accessToken}
               tab={connector.management.tab}
-              view={connector.management.view}
               user={connector.user}
+              view={connector.management.view}
             >{children}</Management>);
   }
 

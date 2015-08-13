@@ -12,6 +12,7 @@ describe('management/app', function() {
   var fakeWindow;
   var FakeManagement;
   var FakeManageCards;
+  var FakeSignIn;
   var store;
 
   beforeEach(function() {
@@ -22,6 +23,7 @@ describe('management/app', function() {
     };
     FakeManagement = helpers.stubComponent();
     FakeManageCards = helpers.stubComponent();
+    FakeSignIn = helpers.stubComponent();
     store = createReduxStore();
   });
 
@@ -34,6 +36,7 @@ describe('management/app', function() {
                   window={window}
                   Management={FakeManagement}
                   ManageCards={FakeManageCards}
+                  SignIn={FakeSignIn}
          />}
       </FluxContainer>
     );
@@ -42,7 +45,7 @@ describe('management/app', function() {
     );
   }
 
-  it('should pass an access token', function() {
+  it('should sign-in with access token', function() {
     var token = 'some-fxa-token';
 
     var view = mountView({
@@ -53,10 +56,13 @@ describe('management/app', function() {
       },
     });
 
-    var child = TestUtils.findRenderedComponentWithType(
+    var mgmt = TestUtils.findRenderedComponentWithType(
       view, FakeManagement
     );
-    assert.equal(child.props.accessToken, token);
+    // The first child should be the sign-in component.
+    // Make sure it gets the access token.
+    var signIn = mgmt.props.children[0];
+    assert.equal(signIn.props.accessToken, token);
 
   });
 
