@@ -28,7 +28,7 @@ export default class Subscription extends Component {
     return (
       <div className="subscription">
         <div className="product">
-          <img alt="" src={productData.img} width="50" />
+          <img alt="" src={productData.img} />
           <div className="meta">
             <h2 className="seller">{productData.seller.name.en}</h2>
             <p className="description">{productData.description.en}</p>
