@@ -20,12 +20,16 @@ export default class PayMethodDropDown extends Component {
         type_name: PropTypes.string,
       })
     ).isRequired,
+    selectId: PropTypes.string,
+    selectNameAttr: PropTypes.string,
     selectedPayMethodResource: PropTypes.string,
     showDefaultOption: PropTypes.bool,
   }
 
   static defaultProps = {
+    selectId: null,
     showDefaultOption: true,
+    selectNameAttr: 'pay-method',
   }
 
   constructor(props) {
@@ -151,10 +155,12 @@ export default class PayMethodDropDown extends Component {
           {this.state.selectedText}
         </span>
         <select
+          id={this.props.selectId}
           onBlur={this.handleBlur}
           onChange={this.handleChange}
           onFocus={this.handleFocus}
-          onKeyUp={this.handleChange}>
+          onKeyUp={this.handleChange}
+          name={this.props.selectNameAttr}>
           {payMethodOptions}
         </select>
       </div>

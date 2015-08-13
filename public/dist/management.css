@@ -61,8 +61,11 @@
 
 .subscription-list {
   margin: 0;
-  max-width: 600px;
   padding: 0;
+}
+
+.subscription-list .small {
+  max-width: 300px;
 }
 
 .subscription-list li {
@@ -76,51 +79,51 @@
   border-top: none;
 }
 
+.subscription {
+  overflow: hidden;
+}
+
 .subscription .product {
-  float: left;
+  max-width: 50%;
 }
 
 .subscription .product img {
   display: block;
-  width: 50px;
   float: left;
-  margin-right: 10px;
+  margin-right: 20px;
+  width: 50px;
+}
+
+.subscription .product .meta {
+  float: left;
+  width: calc(100% - 70px);
 }
 
 .subscription .product .seller {
-  padding: 0;
-  margin: 0 0 0.1em 0;
   font-weight: normal;
-  float: left;
-  white-space: nowrap;
+  margin: 0 0 0.1em 0;
   overflow: hidden;
+  padding: 0;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .subscription .product .description {
+  margin: 0 0 1em;
   text-align: left;
 }
 
-.subscription .price {
+.subscription .product .next-payment,
+.subscription .product .price {
+  border-top: 1px solid #C8C8C8;
+  display: block;
+  padding: 0.5em 0;
+}
+
+.subscription .actions,
+.subscription .cancel,
+.subscription .change-pay-account {
   float: right;
-}
-
-.subscription nav {
-  clear: both;
-}
-
-.subscription nav .cancel {
-  float: left;
-}
-
-.subscription nav .change-pay-account {
-  float: right;
-}
-
-.subscription:after {
-  content: "";
-  display: table;
-  clear: both;
 }
 
 .nav:after {

@@ -37074,7 +37074,8 @@
 /* 259 */,
 /* 260 */,
 /* 261 */,
-/* 262 */
+/* 262 */,
+/* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37084,8 +37085,8 @@
 	});
 	exports.get = get;
 	var productData = {
-	  'mozilla-concrete-brick': __webpack_require__(263),
-	  'mozilla-concrete-mortar': __webpack_require__(264)
+	  'mozilla-concrete-brick': __webpack_require__(264),
+	  'mozilla-concrete-mortar': __webpack_require__(265)
 	};
 	
 	exports['default'] = productData;
@@ -37098,7 +37099,7 @@
 	}
 
 /***/ },
-/* 263 */
+/* 264 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -37124,7 +37125,7 @@
 	}
 
 /***/ },
-/* 264 */
+/* 265 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -37150,7 +37151,6 @@
 	}
 
 /***/ },
-/* 265 */,
 /* 266 */,
 /* 267 */,
 /* 268 */,
@@ -37787,7 +37787,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _products = __webpack_require__(262);
+	var _products = __webpack_require__(263);
 	
 	var products = _interopRequireWildcard(_products);
 	
