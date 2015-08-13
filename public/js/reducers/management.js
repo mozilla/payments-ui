@@ -36,6 +36,9 @@ export default function management(state, action) {
         tab: 'pay-methods',
         view: action.type,
       });
+    case actionTypes.SHOW_SIGN_IN:
+      // Reset all view/tab state which will trigger a sign-in screen.
+      return Object.assign({}, initialMgmtState);
     case actionTypes.SHOW_ADD_PAY_METHOD:
       return Object.assign({}, initialMgmtState, {
         tab: 'pay-methods',
@@ -49,6 +52,11 @@ export default function management(state, action) {
     case actionTypes.SHOW_HISTORY:
       return Object.assign({}, initialMgmtState, {
         tab: 'history',
+        view: action.type,
+      });
+    case actionTypes.SHOW_SIGN_OUT:
+      return Object.assign({}, initialMgmtState, {
+        tab: 'profile',
         view: action.type,
       });
     case actionTypes.SHOW_SUBSCRIPTIONS:

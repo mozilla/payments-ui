@@ -27,28 +27,13 @@ const navData = [
 export default class Management extends Component {
 
   static propTypes = {
-    accessToken: PropTypes.string,
     getPayMethods: PropTypes.func.isRequired,
     getUserSubscriptions: PropTypes.func.isRequired,
     showPayMethods: PropTypes.func.isRequired,
+    showSignOut: PropTypes.func.isRequired,
     tab: PropTypes.string.isRequired,
-    tokenSignIn: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
-    userSignIn: PropTypes.func.isRequired,
-    userSignOut: PropTypes.func.isRequired,
     userSubscriptions: PropTypes.array,
-  }
-
-  componentDidMount() {
-    if (!this.props.user.signedIn) {
-      if (this.props.accessToken) {
-        console.log('page loaded with access token; signing in');
-        this.props.tokenSignIn(this.props.accessToken);
-      } else {
-        console.log('prompting user to sign in');
-        this.props.userSignIn();
-      }
-    }
   }
 
   showMyAccount = e => {
@@ -70,35 +55,35 @@ export default class Management extends Component {
     this.props.getUserSubscriptions();
   }
 
-  userSignIn = e => {
+  showSignOut = e => {
     e.preventDefault();
-    this.props.userSignIn();
-  }
-
-  userSignOut = e => {
-    e.preventDefault();
-    this.props.userSignOut();
+    this.props.showSignOut();
   }
 
   renderNav = () => {
     var nav = [];
-    for (var i = 0; i < navData.length; i += 1) {
-      var navItem = navData[i];
-      var isActive = this.props.tab === navItem.className;
-      var classes = cx('nav', navItem.className, {'active': isActive});
+
+    if (this.props.user.signedIn) {
+      for (var i = 0; i < navData.length; i += 1) {
+        var navItem = navData[i];
+        var isActive = this.props.tab === navItem.className;
+        var classes = cx('nav', navItem.className, {'active': isActive});
+        nav.push((
+          <li className={classes} key={navItem.className}>
+            <a href="#" onClick={this.props[navItem.action]}>
+              {navItem.text}</a>
+          </li>
+        ));
+      }
+
       nav.push((
-        <li className={classes} key={navItem.className}>
-          <a href="#" onClick={this.props[navItem.action]}>
-            {navItem.text}</a>
+        <li className="signout">
+          <a id="show-sign-out" href="#" onClick={this.showSignOut}>
+            {gettext('Sign Out')}
+          </a>
         </li>
       ));
     }
-
-    nav.push((
-      <li className="signout">
-        <a href="#" onClick={this.userSignOut}>{gettext('Sign Out')}</a>
-      </li>
-    ));
 
     return <ul>{nav}</ul>;
   }
