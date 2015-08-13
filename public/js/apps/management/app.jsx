@@ -109,6 +109,7 @@ export default class ManagementApp extends Component {
       children.push((
         <Subscriptions
           {...boundSubscriptionActions}
+          payMethods={connector.user.payMethods}
           userSubscriptions={connector.user.subscriptions}
         />
       ));
