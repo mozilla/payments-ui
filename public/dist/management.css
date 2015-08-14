@@ -234,6 +234,7 @@
 
 .management {
   background: #F2F2F2;
+  border-top: 2px solid white;
 }
 
 .management #tabzilla {
