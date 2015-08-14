@@ -25117,6 +25117,7 @@ webpackJsonp([0,2],[
 	  value: true
 	});
 	exports.defaults = defaults;
+	exports.configGetText = configGetText;
 	exports.isDisabled = isDisabled;
 	exports.getMountNode = getMountNode;
 	exports.gettext = gettext;
@@ -25132,6 +25133,27 @@ webpackJsonp([0,2],[
 	    }
 	  });
 	  return object;
+	}
+	
+	/**
+	* Similar to getText, but works on a product JSON object returned by
+	* the payments configuration so we can figure out the best data to show.
+	*
+	* This loops through each language in navigator.languages until it finds
+	* a match, if not it falls back to en.
+	*
+	* @param {object} config - the value from payment-config
+	*/
+	
+	function configGetText(config) {
+	  var nav = arguments.length <= 1 || arguments[1] === undefined ? navigator : arguments[1];
+	
+	  var result = null;
+	  var languages = nav.languages || new Array(nav.language || nav.userLanguage);
+	  languages.some(function (value) {
+	    return result = config[value];
+	  });
+	  return result || config.en;
 	}
 	
 	function isDisabled(domNode) {
@@ -38518,11 +38540,7 @@ webpackJsonp([0,2],[
 	          )
 	        ),
 	        cell: function cell(item) {
-	          return (
-	            // TODO: get localized seller name, not just English.
-	            // https://github.com/mozilla/payments-ui/issues/307
-	            products.get(item.transaction.seller_product.public_id).seller.name.en
-	          );
+	          return (0, _utils.configGetText)(products.get(item.transaction.seller_product.public_id).seller.name);
 	        }
 	      }, {
 	        key: 'amount',
