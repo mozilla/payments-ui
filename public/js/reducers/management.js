@@ -67,6 +67,7 @@ export default function management(state, action) {
     case actionTypes.CREDIT_CARD_SUBMISSION_ERRORS:
       return Object.assign({}, initialMgmtState, {
         cardSubmissionErrors: action.apiErrorResult,
+        tab: state.tab,
       });
     case actionTypes.CLOSE_MODAL:
       return initialMgmtState;

@@ -36,4 +36,14 @@ describe('management reducer', () => {
     );
   });
 
+  it('preserves tab on error', () => {
+    var existingState = Object.assign({}, initialMgmtState, {
+      tab: 'pay-methods',
+    });
+    assert.strictEqual(
+      management(existingState,
+                 {type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS}).tab,
+      existingState.tab);
+  });
+
 });
