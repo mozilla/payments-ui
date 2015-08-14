@@ -17,6 +17,23 @@ export function defaults(object, opt) {
   return object;
 }
 
+/**
+* Similar to getText, but works on a product JSON object returned by
+* the payments configuration so we can figure out the best data to show.
+*
+* This loops through each language in navigator.languages until it finds
+* a match, if not it falls back to en.
+*
+* @param {object} config - the value from payment-config
+*/
+
+export function configGetText(config, nav=navigator) {
+  var result = null;
+  var languages = nav.languages || new Array(nav.language || nav.userLanguage);
+  languages.some(value => result = config[value]);
+  return result || config.en;
+}
+
 
 export function isDisabled(domNode) {
   // Links dont' have disabled attrs so here we're checking

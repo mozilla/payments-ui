@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import JsonTable from 'react-json-table';
 
-import { gettext, setTitle } from 'utils';
+import { configGetText, gettext, setTitle } from 'utils';
 import * as products from 'products';
 import Spinner from 'components/spinner';
 
@@ -54,9 +54,10 @@ export default class History extends Component {
           </select>
         ),
         cell: (item) => (
-          // TODO: get localized seller name, not just English.
-          // https://github.com/mozilla/payments-ui/issues/307
-          products.get(item.transaction.seller_product.public_id).seller.name.en
+          configGetText(
+            products.get(
+              item.transaction.seller_product.public_id
+            ).seller.name)
         ),
       },
       {
