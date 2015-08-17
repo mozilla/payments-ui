@@ -96,6 +96,11 @@
       margin: 0 0 0 200px;
       width: auto;
       max-width: 800px;
+
+      &.no-sidebar {
+          margin: 0 auto;
+          text-align: center;
+      }
     }
 
     .sidebar {

@@ -31,12 +31,13 @@ export default class SignOut extends Component {
       return <Spinner text={gettext('Signing out')}/>;
     } else {
       return (
-        <div>
-          <p>{gettext('You are now signed out.')}</p>
+        <div className="signed-out">
           <p>
             <a className="button quiet" href="#"
               onClick={this.handleShowSignIn}>{gettext('Sign In')}</a>
           </p>
+          <p>{gettext('Sign in to add and remove payment methods, ' +
+                      'view receipts, and manage subscriptions.')}</p>
         </div>
       );
     }
