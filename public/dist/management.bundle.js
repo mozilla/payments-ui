@@ -39422,12 +39422,7 @@ webpackJsonp([0,2],[
 	      } else {
 	        return _react2['default'].createElement(
 	          'div',
-	          null,
-	          _react2['default'].createElement(
-	            'p',
-	            null,
-	            (0, _utils.gettext)('You are now signed out.')
-	          ),
+	          { className: 'signed-out' },
 	          _react2['default'].createElement(
 	            'p',
 	            null,
@@ -39437,6 +39432,11 @@ webpackJsonp([0,2],[
 	                onClick: this.handleShowSignIn },
 	              (0, _utils.gettext)('Sign In')
 	            )
+	          ),
+	          _react2['default'].createElement(
+	            'p',
+	            null,
+	            (0, _utils.gettext)('Sign in to add and remove payment methods, ' + 'view receipts, and manage subscriptions.')
 	          )
 	        );
 	      }
@@ -39542,32 +39542,30 @@ webpackJsonp([0,2],[
 	    this.renderNav = function () {
 	      var nav = [];
 	
-	      if (_this.props.user.signedIn) {
-	        for (var i = 0; i < navData.length; i += 1) {
-	          var navItem = navData[i];
-	          var isActive = _this.props.tab === navItem.className;
-	          var classes = (0, _classnames2['default'])('nav', navItem.className, { 'active': isActive });
-	          nav.push(_react2['default'].createElement(
-	            'li',
-	            { className: classes, key: navItem.className },
-	            _react2['default'].createElement(
-	              'a',
-	              { href: '#', onClick: _this.props[navItem.action] },
-	              navItem.text
-	            )
-	          ));
-	        }
-	
+	      for (var i = 0; i < navData.length; i += 1) {
+	        var navItem = navData[i];
+	        var isActive = _this.props.tab === navItem.className;
+	        var classes = (0, _classnames2['default'])('nav', navItem.className, { 'active': isActive });
 	        nav.push(_react2['default'].createElement(
 	          'li',
-	          { className: 'signout' },
+	          { className: classes, key: navItem.className },
 	          _react2['default'].createElement(
 	            'a',
-	            { id: 'show-sign-out', href: '#', onClick: _this.showSignOut },
-	            (0, _utils.gettext)('Sign Out')
+	            { href: '#', onClick: _this.props[navItem.action] },
+	            navItem.text
 	          )
 	        ));
 	      }
+	
+	      nav.push(_react2['default'].createElement(
+	        'li',
+	        { className: 'signout' },
+	        _react2['default'].createElement(
+	          'a',
+	          { id: 'show-sign-out', href: '#', onClick: _this.showSignOut },
+	          (0, _utils.gettext)('Sign Out')
+	        )
+	      ));
 	
 	      return _react2['default'].createElement(
 	        'ul',
@@ -39582,20 +39580,32 @@ webpackJsonp([0,2],[
 	    value: function render() {
 	      var props = this.props;
 	
-	      return _react2['default'].createElement(
-	        'div',
-	        null,
-	        _react2['default'].createElement(
-	          'nav',
-	          { className: 'sidebar' },
-	          this.renderNav()
-	        ),
-	        _react2['default'].createElement(
-	          'main',
-	          { className: 'content' },
-	          props.children
-	        )
-	      );
+	      if (!this.props.user.signedIn) {
+	        return _react2['default'].createElement(
+	          'div',
+	          null,
+	          _react2['default'].createElement(
+	            'main',
+	            { className: 'content no-sidebar' },
+	            props.children
+	          )
+	        );
+	      } else {
+	        return _react2['default'].createElement(
+	          'div',
+	          null,
+	          _react2['default'].createElement(
+	            'nav',
+	            { className: 'sidebar' },
+	            this.renderNav()
+	          ),
+	          _react2['default'].createElement(
+	            'main',
+	            { className: 'content' },
+	            props.children
+	          )
+	        );
+	      }
 	    }
 	  }], [{
 	    key: 'propTypes',

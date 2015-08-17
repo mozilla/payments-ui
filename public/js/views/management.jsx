@@ -63,27 +63,25 @@ export default class Management extends Component {
   renderNav = () => {
     var nav = [];
 
-    if (this.props.user.signedIn) {
-      for (var i = 0; i < navData.length; i += 1) {
-        var navItem = navData[i];
-        var isActive = this.props.tab === navItem.className;
-        var classes = cx('nav', navItem.className, {'active': isActive});
-        nav.push((
-          <li className={classes} key={navItem.className}>
-            <a href="#" onClick={this.props[navItem.action]}>
-              {navItem.text}</a>
-          </li>
-        ));
-      }
-
+    for (var i = 0; i < navData.length; i += 1) {
+      var navItem = navData[i];
+      var isActive = this.props.tab === navItem.className;
+      var classes = cx('nav', navItem.className, {'active': isActive});
       nav.push((
-        <li className="signout">
-          <a id="show-sign-out" href="#" onClick={this.showSignOut}>
-            {gettext('Sign Out')}
-          </a>
+        <li className={classes} key={navItem.className}>
+          <a href="#" onClick={this.props[navItem.action]}>
+            {navItem.text}</a>
         </li>
       ));
     }
+
+    nav.push((
+      <li className="signout">
+        <a id="show-sign-out" href="#" onClick={this.showSignOut}>
+          {gettext('Sign Out')}
+        </a>
+      </li>
+    ));
 
     return <ul>{nav}</ul>;
   }
@@ -91,13 +89,21 @@ export default class Management extends Component {
   render() {
     var props = this.props;
 
-    return (
-      <div>
-        <nav className="sidebar">
-          {this.renderNav()}
-        </nav>
-        <main className="content">{props.children}</main>
-      </div>
-    );
+    if (!this.props.user.signedIn) {
+      return (
+        <div>
+          <main className="content no-sidebar">{props.children}</main>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <nav className="sidebar">
+            {this.renderNav()}
+          </nav>
+          <main className="content">{props.children}</main>
+        </div>
+      );
+    }
   }
 }

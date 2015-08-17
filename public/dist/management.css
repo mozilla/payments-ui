@@ -194,6 +194,22 @@
   border-bottom: 1px solid #c1c1c1;
 }
 
+.management .signed-out {
+  width: 100%;
+  margin-top: 26%;
+}
+
+.management .signed-out p {
+  width: 220px;
+  margin: 0 auto 1em auto;
+}
+
+.management .signed-out .button.quiet {
+  background-color: transparent;
+  width: 100%;
+  margin-bottom: 0;
+}
+
 #tabzilla {
   float: right;
   position: relative;
@@ -335,6 +351,11 @@
   margin: 0 0 0 200px;
   width: auto;
   max-width: 800px;
+}
+
+.management main.no-sidebar {
+  margin: 0 auto;
+  text-align: center;
 }
 
 .management .sidebar {
