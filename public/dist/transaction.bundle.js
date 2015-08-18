@@ -52,7 +52,7 @@
 	
 	var _tracking2 = _interopRequireDefault(_tracking);
 	
-	var _app = __webpack_require__(276);
+	var _app = __webpack_require__(277);
 	
 	_tracking2['default'].init();
 	(0, _app.init)();
@@ -37120,7 +37120,8 @@
 	exports.get = get;
 	var productData = {
 	  'mozilla-concrete-brick': __webpack_require__(264),
-	  'mozilla-concrete-mortar': __webpack_require__(265)
+	  'mozilla-concrete-mortar': __webpack_require__(265),
+	  'mozilla-foundation-donation': __webpack_require__(266)
 	};
 	
 	exports['default'] = productData;
@@ -37145,13 +37146,16 @@
 			"en": "$10.00"
 		},
 		"seller": {
-			"url": "http://pay.dev.mozaws.net/",
+			"kind": "products",
 			"terms": "http://pay.dev.mozaws.net/terms/",
-			"id": "mozilla-concrete",
 			"name": {
 				"en": "Mozilla Concrete"
-			}
+			},
+			"url": "http://pay.dev.mozaws.net/",
+			"email": "support@concrete.mozilla.org",
+			"id": "mozilla-concrete"
 		},
+		"recurrence": "monthly",
 		"currency": "USD",
 		"amount": "10.00",
 		"active": true,
@@ -37171,13 +37175,16 @@
 			"en": "$5.00"
 		},
 		"seller": {
-			"url": "http://pay.dev.mozaws.net/",
+			"kind": "products",
 			"terms": "http://pay.dev.mozaws.net/terms/",
-			"id": "mozilla-concrete",
 			"name": {
 				"en": "Mozilla Concrete"
-			}
+			},
+			"url": "http://pay.dev.mozaws.net/",
+			"email": "support@concrete.mozilla.org",
+			"id": "mozilla-concrete"
 		},
+		"recurrence": "monthly",
 		"currency": "USD",
 		"amount": "5.00",
 		"active": true,
@@ -37185,10 +37192,37 @@
 	}
 
 /***/ },
-/* 266 */,
+/* 266 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"description": {
+			"en": "Donation"
+		},
+		"img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/default.png",
+		"price": {},
+		"seller": {
+			"kind": "donations",
+			"terms": "http://pay.dev.mozaws.net/terms/",
+			"name": {
+				"en": "Mozilla Foundation"
+			},
+			"url": "http://pay.dev.mozaws.net/",
+			"email": "support@foundation.mozilla.org",
+			"id": "mozilla-foundation"
+		},
+		"recurrence": null,
+		"currency": "USD",
+		"amount": null,
+		"active": true,
+		"id": "mozilla-foundation-donation"
+	}
+
+/***/ },
 /* 267 */,
 /* 268 */,
-/* 269 */
+/* 269 */,
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37256,9 +37290,9 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 270 */,
 /* 271 */,
-/* 272 */
+/* 272 */,
+/* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37321,7 +37355,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 273 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37410,9 +37444,9 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 274 */,
 /* 275 */,
-/* 276 */
+/* 276 */,
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37451,15 +37485,15 @@
 	
 	var _dataStore2 = _interopRequireDefault(_dataStore);
 	
-	var _componentsError = __webpack_require__(272);
+	var _componentsError = __webpack_require__(273);
 	
 	var _componentsError2 = _interopRequireDefault(_componentsError);
 	
-	var _viewsSharedSignIn = __webpack_require__(273);
+	var _viewsSharedSignIn = __webpack_require__(274);
 	
 	var _viewsSharedSignIn2 = _interopRequireDefault(_viewsSharedSignIn);
 	
-	var _viewsTransaction = __webpack_require__(277);
+	var _viewsTransaction = __webpack_require__(278);
 	
 	var _viewsTransaction2 = _interopRequireDefault(_viewsTransaction);
 	
@@ -37470,6 +37504,10 @@
 	var _actionsUser = __webpack_require__(250);
 	
 	var userActions = _interopRequireWildcard(_actionsUser);
+	
+	var _products = __webpack_require__(263);
+	
+	var products = _interopRequireWildcard(_products);
 	
 	var _utils = __webpack_require__(201);
 	
@@ -37520,6 +37558,9 @@
 	      var state = this.state;
 	      var SignIn = this.props.SignIn;
 	      var Transaction = this.props.Transaction;
+	      var product = products.get(state.productId);
+	      var signInRequired = product.seller.kind !== 'donations';
+	      console.log('sign-in required to transact product?', state.productId, signInRequired ? 'Yes' : 'No');
 	
 	      return _react2['default'].createElement(
 	        'main',
@@ -37531,7 +37572,7 @@
 	            if (connector.app.error) {
 	              console.log('rendering app error');
 	              return _react2['default'].createElement(_componentsError2['default'], { error: connector.app.error });
-	            } else if (!connector.user.signedIn) {
+	            } else if (signInRequired && !connector.user.signedIn) {
 	              console.log('rendering sign-in');
 	              return _react2['default'].createElement(SignIn, _extends({
 	                accessToken: state.accessToken,
@@ -37567,7 +37608,7 @@
 	}
 
 /***/ },
-/* 277 */
+/* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37610,19 +37651,19 @@
 	
 	var subscriptionActions = _interopRequireWildcard(_actionsSubscriptions);
 	
-	var _viewsSharedBraintreeToken = __webpack_require__(269);
+	var _viewsSharedBraintreeToken = __webpack_require__(270);
 	
 	var _viewsSharedBraintreeToken2 = _interopRequireDefault(_viewsSharedBraintreeToken);
 	
-	var _viewsTransactionAddSubscription = __webpack_require__(278);
+	var _viewsTransactionAddSubscription = __webpack_require__(279);
 	
 	var _viewsTransactionAddSubscription2 = _interopRequireDefault(_viewsTransactionAddSubscription);
 	
-	var _viewsTransactionPayMethodListing = __webpack_require__(280);
+	var _viewsTransactionPayMethodListing = __webpack_require__(281);
 	
 	var _viewsTransactionPayMethodListing2 = _interopRequireDefault(_viewsTransactionPayMethodListing);
 	
-	var _viewsTransactionCompletePayment = __webpack_require__(281);
+	var _viewsTransactionCompletePayment = __webpack_require__(282);
 	
 	var _viewsTransactionCompletePayment2 = _interopRequireDefault(_viewsTransactionCompletePayment);
 	
@@ -37728,7 +37769,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 278 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37755,7 +37796,7 @@
 	
 	var _componentsCardForm2 = _interopRequireDefault(_componentsCardForm);
 	
-	var _componentsProductDetail = __webpack_require__(279);
+	var _componentsProductDetail = __webpack_require__(280);
 	
 	var _componentsProductDetail2 = _interopRequireDefault(_componentsProductDetail);
 	
@@ -37823,7 +37864,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 279 */
+/* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37909,7 +37950,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 280 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37936,7 +37977,7 @@
 	
 	var _componentsPayMethodChoice2 = _interopRequireDefault(_componentsPayMethodChoice);
 	
-	var _componentsProductDetail = __webpack_require__(279);
+	var _componentsProductDetail = __webpack_require__(280);
 	
 	var _componentsProductDetail2 = _interopRequireDefault(_componentsProductDetail);
 	
@@ -38005,7 +38046,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 281 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38028,7 +38069,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsProductDetail = __webpack_require__(279);
+	var _componentsProductDetail = __webpack_require__(280);
 	
 	var _componentsProductDetail2 = _interopRequireDefault(_componentsProductDetail);
 	

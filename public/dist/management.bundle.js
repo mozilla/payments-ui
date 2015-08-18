@@ -86,31 +86,31 @@ webpackJsonp([0,2],[
 	
 	var _viewsManagementSubscriptions2 = _interopRequireDefault(_viewsManagementSubscriptions);
 	
-	var _viewsManagementHistory = __webpack_require__(266);
+	var _viewsManagementHistory = __webpack_require__(267);
 	
 	var _viewsManagementHistory2 = _interopRequireDefault(_viewsManagementHistory);
 	
-	var _viewsManagementPayMethods = __webpack_require__(268);
+	var _viewsManagementPayMethods = __webpack_require__(269);
 	
 	var _viewsManagementPayMethods2 = _interopRequireDefault(_viewsManagementPayMethods);
 	
-	var _viewsSharedBraintreeToken = __webpack_require__(269);
+	var _viewsSharedBraintreeToken = __webpack_require__(270);
 	
 	var _viewsSharedBraintreeToken2 = _interopRequireDefault(_viewsSharedBraintreeToken);
 	
-	var _viewsSharedModalError = __webpack_require__(270);
+	var _viewsSharedModalError = __webpack_require__(271);
 	
 	var _viewsSharedModalError2 = _interopRequireDefault(_viewsSharedModalError);
 	
-	var _viewsSharedSignIn = __webpack_require__(273);
+	var _viewsSharedSignIn = __webpack_require__(274);
 	
 	var _viewsSharedSignIn2 = _interopRequireDefault(_viewsSharedSignIn);
 	
-	var _viewsSharedSignOut = __webpack_require__(274);
+	var _viewsSharedSignOut = __webpack_require__(275);
 	
 	var _viewsSharedSignOut2 = _interopRequireDefault(_viewsSharedSignOut);
 	
-	var _viewsManagement = __webpack_require__(275);
+	var _viewsManagement = __webpack_require__(276);
 	
 	var _viewsManagement2 = _interopRequireDefault(_viewsManagement);
 	
@@ -38111,8 +38111,8 @@ webpackJsonp([0,2],[
 	  }], [{
 	    key: 'propTypes',
 	    value: {
-	      paymethod: _react.PropTypes.string.isRequired,
 	      payMethods: _react.PropTypes.array.isRequired,
+	      paymethod: _react.PropTypes.string.isRequired,
 	      seller_product: _react.PropTypes.shape({
 	        public_id: _react.PropTypes.string
 	      }).isRequired,
@@ -38374,7 +38374,8 @@ webpackJsonp([0,2],[
 	exports.get = get;
 	var productData = {
 	  'mozilla-concrete-brick': __webpack_require__(264),
-	  'mozilla-concrete-mortar': __webpack_require__(265)
+	  'mozilla-concrete-mortar': __webpack_require__(265),
+	  'mozilla-foundation-donation': __webpack_require__(266)
 	};
 	
 	exports['default'] = productData;
@@ -38399,13 +38400,16 @@ webpackJsonp([0,2],[
 			"en": "$10.00"
 		},
 		"seller": {
-			"url": "http://pay.dev.mozaws.net/",
+			"kind": "products",
 			"terms": "http://pay.dev.mozaws.net/terms/",
-			"id": "mozilla-concrete",
 			"name": {
 				"en": "Mozilla Concrete"
-			}
+			},
+			"url": "http://pay.dev.mozaws.net/",
+			"email": "support@concrete.mozilla.org",
+			"id": "mozilla-concrete"
 		},
+		"recurrence": "monthly",
 		"currency": "USD",
 		"amount": "10.00",
 		"active": true,
@@ -38425,13 +38429,16 @@ webpackJsonp([0,2],[
 			"en": "$5.00"
 		},
 		"seller": {
-			"url": "http://pay.dev.mozaws.net/",
+			"kind": "products",
 			"terms": "http://pay.dev.mozaws.net/terms/",
-			"id": "mozilla-concrete",
 			"name": {
 				"en": "Mozilla Concrete"
-			}
+			},
+			"url": "http://pay.dev.mozaws.net/",
+			"email": "support@concrete.mozilla.org",
+			"id": "mozilla-concrete"
 		},
+		"recurrence": "monthly",
 		"currency": "USD",
 		"amount": "5.00",
 		"active": true,
@@ -38440,6 +38447,33 @@ webpackJsonp([0,2],[
 
 /***/ },
 /* 266 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"description": {
+			"en": "Donation"
+		},
+		"img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/default.png",
+		"price": {},
+		"seller": {
+			"kind": "donations",
+			"terms": "http://pay.dev.mozaws.net/terms/",
+			"name": {
+				"en": "Mozilla Foundation"
+			},
+			"url": "http://pay.dev.mozaws.net/",
+			"email": "support@foundation.mozilla.org",
+			"id": "mozilla-foundation"
+		},
+		"recurrence": null,
+		"currency": "USD",
+		"amount": null,
+		"active": true,
+		"id": "mozilla-foundation-donation"
+	}
+
+/***/ },
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38464,7 +38498,7 @@ webpackJsonp([0,2],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactJsonTable = __webpack_require__(267);
+	var _reactJsonTable = __webpack_require__(268);
 	
 	var _reactJsonTable2 = _interopRequireDefault(_reactJsonTable);
 	
@@ -38610,7 +38644,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 267 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(3);
@@ -38840,7 +38874,7 @@ webpackJsonp([0,2],[
 
 
 /***/ },
-/* 268 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38966,7 +39000,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 269 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39034,7 +39068,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 270 */
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39057,11 +39091,11 @@ webpackJsonp([0,2],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsModal = __webpack_require__(271);
+	var _componentsModal = __webpack_require__(272);
 	
 	var _componentsModal2 = _interopRequireDefault(_componentsModal);
 	
-	var _componentsError = __webpack_require__(272);
+	var _componentsError = __webpack_require__(273);
 	
 	var _componentsError2 = _interopRequireDefault(_componentsError);
 	
@@ -39099,7 +39133,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 271 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39205,7 +39239,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 272 */
+/* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39268,7 +39302,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 273 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39357,7 +39391,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 274 */
+/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39458,7 +39492,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 275 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
