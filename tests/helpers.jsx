@@ -83,7 +83,7 @@ export function findByClass(component, className){
 }
 
 
-export function findAllByClass (component, className){
+export function findAllByClass(component, className){
   return TestUtils.scryRenderedDOMComponentsWithClass(component, className);
 }
 
