@@ -12,6 +12,7 @@ import DefaultTransaction from 'views/transaction';
 
 import * as appActions from 'actions/app';
 import * as userActions from 'actions/user';
+import * as products from 'products';
 import { parseQuery } from 'utils';
 
 
@@ -50,6 +51,10 @@ export default class TransactionApp extends Component {
     var state = this.state;
     var SignIn = this.props.SignIn;
     var Transaction = this.props.Transaction;
+    var product = products.get(state.productId);
+    var signInRequired = product.seller.kind !== 'donations';
+    console.log('sign-in required to transact product?', state.productId,
+                signInRequired ? 'Yes' : 'No');
 
     return (
       <main>
@@ -58,7 +63,7 @@ export default class TransactionApp extends Component {
             if (connector.app.error) {
               console.log('rendering app error');
               return <ErrorMessage error={connector.app.error} />;
-            } else if (!connector.user.signedIn) {
+            } else if (signInRequired && !connector.user.signedIn) {
               console.log('rendering sign-in');
               return (
                 <SignIn

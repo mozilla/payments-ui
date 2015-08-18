@@ -11,7 +11,7 @@
     "connect-fonts-firasans": "0.0.4",
     "events": "1.0.2",
     "jquery": "2.1.4",
-    "mozilla-payments-config": "0.0.8",
+    "mozilla-payments-config": "0.0.11",
     "mozilla-tabzilla": "0.4.0",
     "normalize.css": "3.0.3",
     "object.assign": "3.0.1",

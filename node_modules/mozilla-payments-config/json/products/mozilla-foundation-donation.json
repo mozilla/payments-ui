@@ -1,24 +1,22 @@
 {
   "description": {
-    "en": "Brick"
+    "en": "Donation"
   }, 
   "img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/default.png", 
-  "price": {
-    "en": "$10.00"
-  }, 
+  "price": {}, 
   "seller": {
-    "kind": "products", 
+    "kind": "donations", 
     "terms": "http://pay.dev.mozaws.net/terms/", 
     "name": {
-      "en": "Mozilla Concrete"
+      "en": "Mozilla Foundation"
     }, 
     "url": "http://pay.dev.mozaws.net/", 
-    "email": "support@concrete.mozilla.org", 
-    "id": "mozilla-concrete"
+    "email": "support@foundation.mozilla.org", 
+    "id": "mozilla-foundation"
   }, 
-  "recurrence": "monthly", 
+  "recurrence": null, 
   "currency": "USD", 
-  "amount": "10.00", 
+  "amount": null, 
   "active": true, 
-  "id": "mozilla-concrete-brick"
+  "id": "mozilla-foundation-donation"
 }
