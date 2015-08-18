@@ -14,7 +14,7 @@ import ErrorMessage from 'components/error';
 describe('Transaction App', function() {
 
   var accessToken = 'some-oauth-token';
-  var productId = 'mozilla-concrete-brick';
+  var defaultProductId = 'mozilla-concrete-brick';
   var FakeSignIn = helpers.stubComponent();
   var FakeTransaction = helpers.stubComponent();
   var store;
@@ -23,7 +23,7 @@ describe('Transaction App', function() {
     store = createReduxStore();
   });
 
-  function mountView() {
+  function mountView({productId=defaultProductId} = {}) {
     var FluxContainer = helpers.getFluxContainer(store);
 
     var fakeWin = {
@@ -88,6 +88,16 @@ describe('Transaction App', function() {
       View, FakeTransaction
     );
     assert.deepEqual(purchase.props.user, user);
+  });
+
+  it('should skip sign-in for a donation product', function() {
+
+    var View = mountView({productId: 'mozilla-foundation-donation'});
+
+    // Make sure we are in the transaction flow, not sign-in.
+    TestUtils.findRenderedComponentWithType(
+      View, FakeTransaction
+    );
   });
 
 });

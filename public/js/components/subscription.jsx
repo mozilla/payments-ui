@@ -8,8 +8,8 @@ import * as products from 'products';
 export default class Subscription extends Component {
 
   static propTypes = {
-    paymethod: PropTypes.string.isRequired,
     payMethods: PropTypes.array.isRequired,
+    paymethod: PropTypes.string.isRequired,
     seller_product: PropTypes.shape({
       public_id: PropTypes.string,
     }).isRequired,
