@@ -27196,7 +27196,8 @@ webpackJsonp([0,2],[
 	      });
 	    case actionTypes.CREDIT_CARD_SUBMISSION_ERRORS:
 	      return Object.assign({}, initialMgmtState, {
-	        cardSubmissionErrors: action.apiErrorResult
+	        cardSubmissionErrors: action.apiErrorResult,
+	        tab: state.tab
 	      });
 	    case actionTypes.CLOSE_MODAL:
 	      return initialMgmtState;
