@@ -2,10 +2,9 @@ import $ from 'jquery';
 
 import * as defaultSettings from 'settings';
 
-var csrfToken;
 
-
-export function fetch(request, {jquery=$, settings=defaultSettings} = {}) {
+export function fetch(request,
+                      {jquery=$, settings=defaultSettings, csrfToken} = {}) {
   request = Object.assign({
     dataType: 'json',
     headers: {},
@@ -22,6 +21,15 @@ export function fetch(request, {jquery=$, settings=defaultSettings} = {}) {
     request.xhrFields.withCredentials = true;
   }
 
+  if (typeof csrfToken === 'undefined') {
+    // This exists to stop someone from forgetting to pass in the stored CSRF
+    // token.
+    throw new Error(
+      'You must set a CSRF token value; ' +
+      'set it to false to fetch a resource without a token'
+    );
+  }
+
   if (csrfToken) {
     request.headers['X-CSRFToken'] = csrfToken;
   } else {
@@ -30,9 +38,4 @@ export function fetch(request, {jquery=$, settings=defaultSettings} = {}) {
   }
 
   return jquery.ajax(request);
-}
-
-
-export function setCSRFToken(token) {
-  csrfToken = token;
 }

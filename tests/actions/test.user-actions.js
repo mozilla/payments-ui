@@ -29,15 +29,9 @@ describe('userActions', function() {
     };
   }
 
-  function tokenSignIn({accessToken='some-access-token', api=null,
-                        fetch=null}) {
-    if (!api) {
-      api = {
-        fetch: fetch,
-        setCSRFToken: sinon.stub(),
-      };
-    }
-    userActions.tokenSignIn(accessToken, api)(dispatchSpy);
+  function tokenSignIn({accessToken='some-access-token', fetch}) {
+    var deferredAction = userActions.tokenSignIn(accessToken, fetch);
+    helpers.doApiAction(deferredAction, dispatchSpy);
   }
 
   describe('tokenSignIn', function() {
@@ -47,7 +41,7 @@ describe('userActions', function() {
 
       tokenSignIn({fetch: fetch});
 
-      var action = dispatchSpy.firstCall.args[0];
+      var action = dispatchSpy.secondCall.args[0];
       assert.equal(action.type, actionTypes.USER_SIGNED_IN);
     });
 
@@ -56,7 +50,7 @@ describe('userActions', function() {
 
       tokenSignIn({fetch: fetch});
 
-      var action = dispatchSpy.firstCall.args[0];
+      var action = dispatchSpy.secondCall.args[0];
       assert.equal(action.user.email, data.buyer_email);
     });
 
@@ -68,7 +62,7 @@ describe('userActions', function() {
 
       tokenSignIn({fetch: fetch});
 
-      var action = dispatchSpy.firstCall.args[0];
+      var action = dispatchSpy.secondCall.args[0];
       assert.equal(action.user.payMethods, payMethods);
     });
 
@@ -77,7 +71,7 @@ describe('userActions', function() {
 
       tokenSignIn({fetch: fetch});
 
-      var action = dispatchSpy.firstCall.args[0];
+      var action = dispatchSpy.secondCall.args[0];
       assert.deepEqual(action.user.payMethods, []);
     });
 
@@ -89,16 +83,15 @@ describe('userActions', function() {
                    'this-access-token');
     });
 
-    it('should configure CSRF headers on sign-in', function() {
+    it('should dispatch a CSRF token', function() {
       var data = fakeSignInResult();
       var fetch = helpers.fakeFetch({returnedData: data});
-      var api = {
-        fetch: fetch,
-        setCSRFToken: sinon.stub(),
-      };
-      tokenSignIn({api: api});
+      tokenSignIn({fetch: fetch});
 
-      assert.deepEqual(api.setCSRFToken.firstCall.args[0], data.csrf_token);
+      assert.deepEqual(dispatchSpy.firstCall.args[0], {
+        type: actionTypes.GOT_CSRF_TOKEN,
+        csrfToken: data.csrf_token,
+      });
     });
 
     it('should set app error on failure', function() {
@@ -134,14 +127,11 @@ describe('userActions', function() {
       };
     }
 
-    function signInAction({fetch=null, api=null}) {
-      if (!api) {
-        api = {
-          fetch: fetch,
-          setCSRFToken: sinon.stub(),
-        };
-      }
-      userActions.userSignIn(fxaSignIn.client, api)(dispatchSpy);
+    function signInAction(fetch) {
+      var deferredAction = userActions.userSignIn(
+        fxaSignIn.client, fetch
+      );
+      helpers.doApiAction(deferredAction, dispatchSpy);
     }
 
     function resolveSignIn() {
@@ -155,17 +145,17 @@ describe('userActions', function() {
     it('should dispatch a sign-in action', function() {
       var { fetch } = setApiSignInResult();
 
-      signInAction({fetch: fetch});
+      signInAction(fetch);
       resolveSignIn();
 
-      var action = dispatchSpy.firstCall.args[0];
+      var action = dispatchSpy.secondCall.args[0];
       assert.equal(action.type, actionTypes.USER_SIGNED_IN);
     });
 
     it('should dispatch an FxA sign-in error', function() {
       var { fetch } = setApiSignInResult();
 
-      signInAction({fetch: fetch});
+      signInAction(fetch);
 
       var fxaError = new Error('some FxA error');
       fxaSignIn.promise.reject(fxaError);
@@ -177,34 +167,32 @@ describe('userActions', function() {
     it('should dispatch an API sign-in error', function() {
       var { fetch } = setApiSignInResult({fetchOpt: {result: 'fail'}});
 
-      signInAction({fetch: fetch});
+      signInAction(fetch);
       resolveSignIn();
 
       var action = dispatchSpy.firstCall.args[0];
       assert.deepEqual(action, appActions.error('API user sign-in failed'));
     });
 
-    it('should configure CSRF headers on sign-in', function() {
+    it('should dispatch CSRF token', function() {
       var data = fakeSignInResult();
       var fetch = helpers.fakeFetch({returnedData: data});
-      var api = {
-        fetch: fetch,
-        setCSRFToken: sinon.spy(),
-      };
-      signInAction({api: api});
+      signInAction(fetch);
       resolveSignIn();
 
-      assert.deepEqual(api.setCSRFToken.firstCall.args[0],
-                       data.csrf_token);
+      assert.deepEqual(dispatchSpy.firstCall.args[0], {
+        type: actionTypes.GOT_CSRF_TOKEN,
+        csrfToken: data.csrf_token,
+      });
     });
 
     it('should set the email from sign-in', function() {
       var { fetch, data } = setApiSignInResult();
 
-      signInAction({fetch: fetch});
+      signInAction(fetch);
       resolveSignIn();
 
-      var action = dispatchSpy.firstCall.args[0];
+      var action = dispatchSpy.secondCall.args[0];
       assert.equal(action.user.email, data.buyer_email);
     });
 
@@ -214,10 +202,10 @@ describe('userActions', function() {
       data.payment_methods = payMethods;
       var { fetch } = setApiSignInResult({data: data});
 
-      signInAction({fetch: fetch});
+      signInAction(fetch);
       resolveSignIn();
 
-      var action = dispatchSpy.firstCall.args[0];
+      var action = dispatchSpy.secondCall.args[0];
       assert.equal(action.user.payMethods, payMethods);
     });
 
@@ -225,10 +213,15 @@ describe('userActions', function() {
 
   describe('userSignOut', function() {
 
+    function userSignOut(fetch) {
+      var deferredAction = userActions.userSignOut(fetch);
+      helpers.doApiAction(deferredAction, dispatchSpy);
+    }
+
     it('should dispatch a sign-out action', function() {
       var fetch = helpers.fakeFetch();
 
-      userActions.userSignOut(fetch)(dispatchSpy);
+      userSignOut(fetch);
 
       var action = dispatchSpy.firstCall.args[0];
       assert.equal(action.type, actionTypes.USER_SIGNED_OUT);
@@ -237,7 +230,7 @@ describe('userActions', function() {
     it('should dispatch a sign-out error', function() {
       var fetch = helpers.fakeFetch({result: 'fail'});
 
-      userActions.userSignOut(fetch)(dispatchSpy);
+      userSignOut(fetch);
 
       var action = dispatchSpy.firstCall.args[0];
       assert.deepEqual(action, appActions.error('API user sign-out failed'));
@@ -247,16 +240,38 @@ describe('userActions', function() {
 
   describe('getBraintreeToken', function() {
 
-    it('should dispatch GOT_BRAINTREE_TOKEN', function() {
+    function apiResult() {
+      return {
+        token: 'braintree-token',
+        csrf_token: 'some-csrf-token',
+      };
+    }
+
+    it('should dispatch GOT_CSRF_TOKEN', function() {
+      var data = apiResult();
       var fetch = helpers.fakeFetch({
-        returnedData: {token: 'braintree-token'}
+        returnedData: data,
       });
 
       userActions.getBraintreeToken(fetch)(dispatchSpy);
 
       assert.deepEqual(dispatchSpy.firstCall.args[0], {
+        type: actionTypes.GOT_CSRF_TOKEN,
+        csrfToken: data.csrf_token,
+      });
+    });
+
+    it('should dispatch GOT_BRAINTREE_TOKEN', function() {
+      var data = apiResult();
+      var fetch = helpers.fakeFetch({
+        returnedData: data,
+      });
+
+      userActions.getBraintreeToken(fetch)(dispatchSpy);
+
+      assert.deepEqual(dispatchSpy.secondCall.args[0], {
         type: actionTypes.GOT_BRAINTREE_TOKEN,
-        braintreeToken: 'braintree-token',
+        braintreeToken: data.token,
       });
     });
 

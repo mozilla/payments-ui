@@ -17,6 +17,7 @@ describe('api', () => {
         opt = {
           settings: fakeSettings,
           jquery: fakeJquery,
+          csrfToken: false,
         };
       }
       return api.fetch(request, opt);
@@ -35,14 +36,21 @@ describe('api', () => {
       fetch();
       assert.equal(fakeJquery.ajax.firstCall.args[0].xhrFields.withCredentials,
                    undefined);
-    })
+    });
 
     it('sends credentials when CORS is allowed', () => {
       fakeSettings.allowCORSRequests = true;
       fetch();
       assert.equal(fakeJquery.ajax.firstCall.args[0].xhrFields.withCredentials,
                    true);
-    })
+    });
+
+    it('requires a CSRF token', () => {
+      assert.throws(
+        () => fetch({url: '/some/service'}, {csrfToken: undefined}),
+        /You must set a CSRF token/
+      );
+    });
 
   });
 });

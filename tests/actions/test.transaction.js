@@ -60,7 +60,10 @@ describe('transactionActions', function() {
     if (!apiResult) {
       apiResult = getApiResult();
     }
-    transactionActions.getUserTransactions(apiResult.fakeFetch)(dispatchSpy);
+    var deferredAction = transactionActions.getUserTransactions(
+      apiResult.fakeFetch
+    );
+    helpers.doApiAction(deferredAction, dispatchSpy);
   }
 
   describe('getUserTransactions', function() {

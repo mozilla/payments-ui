@@ -8,7 +8,7 @@ import * as transactionActions from './transaction';
 
 
 export function getUserSubscriptions(fetch=api.fetch) {
-  return dispatch => {
+  return (dispatch, getState) => {
 
     dispatch({
       type: actionTypes.LOADING_USER_SUBSCRIPTIONS,
@@ -18,6 +18,8 @@ export function getUserSubscriptions(fetch=api.fetch) {
       method: 'get',
       url: '/braintree/subscriptions/',
       context: this,
+    }, {
+      csrfToken: getState().app.csrfToken,
     }).then(data => {
       console.log('got subscriptions from API:', data);
       dispatch({
@@ -36,7 +38,7 @@ export function getUserSubscriptions(fetch=api.fetch) {
 export function createSubscription(productId, payMethod,
                                    braintreeToken, fetch=api.fetch,
                                    BraintreeClient=braintree.api.Client) {
-  return dispatch => {
+  return (dispatch, getState) => {
 
     function requestSub(opts={}) {
       var data = {
@@ -49,6 +51,8 @@ export function createSubscription(productId, payMethod,
         data: data,
         url: '/braintree/subscriptions/',
         method: 'post',
+      }, {
+        csrfToken: getState().app.csrfToken,
       }).then(() => {
         console.log('Successfully subscribed + completed payment');
         dispatch(transactionActions.complete());
