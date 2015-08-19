@@ -19,7 +19,7 @@ export function payWithNewCard() {
 
 
 export function getUserTransactions(fetch=api.fetch) {
-  return dispatch => {
+  return (dispatch, getState) => {
 
     dispatch({
       type: actionTypes.LOADING_USER_TRANSACTIONS,
@@ -28,6 +28,8 @@ export function getUserTransactions(fetch=api.fetch) {
     fetch({
       method: 'get',
       url: '/braintree/transactions/',
+    }, {
+      csrfToken: getState().app.csrfToken,
     }).then(data => {
       console.log('got transactions from API:', data);
       dispatch({

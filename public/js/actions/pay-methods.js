@@ -12,7 +12,7 @@ export function delPayMethod(payMethodUri, fetch=api.fetch) {
     throw new Error('payMethodUri is undefined');
   }
 
-  return dispatch => {
+  return (dispatch, getState) => {
     fetch({
       method: 'post',
       url: '/braintree/paymethod/delete/',
@@ -20,6 +20,8 @@ export function delPayMethod(payMethodUri, fetch=api.fetch) {
         pay_method_uri: payMethodUri,
       },
       context: this,
+    }, {
+      csrfToken: getState().app.csrfToken,
     }).then(function(data) {
       dispatch({
         type: actionTypes.GOT_PAY_METHODS,
@@ -37,10 +39,12 @@ export function delPayMethod(payMethodUri, fetch=api.fetch) {
 export function getPayMethods(fetch=api.fetch) {
   // Note: not currently used as payMethods
   // are added to user state upon sign-in.
-  return dispatch => {
+  return (dispatch, getState) => {
     fetch({
       method: 'get',
       url: '/braintree/mozilla/paymethod/',
+    }, {
+      csrfToken: getState().app.csrfToken,
     }).then(function(data) {
       dispatch({
         type: actionTypes.GOT_PAY_METHODS,
@@ -56,7 +60,7 @@ export function getPayMethods(fetch=api.fetch) {
 
 export function addCreditCard(braintreeToken, creditCard, fetch=api.fetch,
                               BraintreeClient=braintree.api.Client) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     var client = new BraintreeClient({
       clientToken: braintreeToken,
     });
@@ -75,6 +79,8 @@ export function addCreditCard(braintreeToken, creditCard, fetch=api.fetch,
           },
           url: '/braintree/paymethod/',
           method: 'post',
+        }, {
+          csrfToken: getState().app.csrfToken,
         }).then(data => {
           console.log('Successfully added a pay method. API Result:', data);
           dispatch({

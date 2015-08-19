@@ -1,21 +1,26 @@
 import * as actionTypes from 'constants/action-types';
 import * as settings from 'settings';
 
-import * as defaultApi from './api';
+import * as api from './api';
 import * as appActions from './app';
 
 
-export function tokenSignIn(accessToken, api=defaultApi) {
+export function tokenSignIn(accessToken, fetch=api.fetch) {
   return dispatch => {
-    api.fetch({
+    fetch({
       data: {
         access_token: accessToken,
       },
       method: 'post',
       url: '/auth/sign-in/',
+    }, {
+      csrfToken: false,
     }).then(data => {
 
-      api.setCSRFToken(data.csrf_token);
+      dispatch({
+        type: actionTypes.GOT_CSRF_TOKEN,
+        csrfToken: data.csrf_token,
+      });
 
       dispatch({
         type: actionTypes.USER_SIGNED_IN,
@@ -35,7 +40,7 @@ export function tokenSignIn(accessToken, api=defaultApi) {
 }
 
 
-export function userSignIn(FxaClient=window.FxaRelierClient, api=defaultApi) {
+export function userSignIn(FxaClient=window.FxaRelierClient, fetch=api.fetch) {
   return dispatch => {
     console.log('signing in FxA user');
 
@@ -58,18 +63,23 @@ export function userSignIn(FxaClient=window.FxaRelierClient, api=defaultApi) {
       console.log('FxA sign-in succeeded:', fxaResult);
       console.log('requesting token for code', fxaResult.code);
 
-      api.fetch({
+      fetch({
         type: 'post',
         url: '/auth/sign-in/',
         data: {
           authorization_code: fxaResult.code,
           client_id: settings.fxaClientId,
         },
+      }, {
+        csrfToken: false,
       })
       .then(apiResult => {
         console.log('API sign-in suceeded; result:', apiResult);
 
-        api.setCSRFToken(apiResult.csrf_token);
+        dispatch({
+          type: actionTypes.GOT_CSRF_TOKEN,
+          csrfToken: apiResult.csrf_token,
+        });
 
         dispatch({
           type: actionTypes.USER_SIGNED_IN,
@@ -93,11 +103,13 @@ export function userSignIn(FxaClient=window.FxaRelierClient, api=defaultApi) {
 }
 
 
-export function userSignOut(fetch=defaultApi.fetch) {
-  return dispatch => {
+export function userSignOut(fetch=api.fetch) {
+  return (dispatch, getState) => {
     fetch({
       method: 'post',
       url: '/auth/sign-out/',
+    }, {
+      csrfToken: getState().app.csrfToken,
     }).then(() => {
       console.log('API user sign-out succeeded');
 
@@ -115,17 +127,26 @@ export function userSignOut(fetch=defaultApi.fetch) {
 }
 
 
-export function getBraintreeToken(fetch=defaultApi.fetch) {
+export function getBraintreeToken(fetch=api.fetch) {
   console.log('Requesting braintree token');
   return dispatch => {
     fetch({
       method: 'post',
       url: '/braintree/token/generate/',
+    }, {
+      csrfToken: false,
     }).then(data => {
+
+      dispatch({
+        type: actionTypes.GOT_CSRF_TOKEN,
+        csrfToken: data.csrf_token,
+      });
+
       dispatch({
         type: actionTypes.GOT_BRAINTREE_TOKEN,
         braintreeToken: data.token,
       });
+
     }).fail(apiError => {
       console.log('failed to get braintree token', apiError.responseJSON);
       dispatch(appActions.error('Failed to get a braintree token'));

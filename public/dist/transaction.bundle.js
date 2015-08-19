@@ -26749,20 +26749,28 @@
 	
 	var actionTypes = _interopRequireWildcard(_constantsActionTypes);
 	
+	var initialAppState = {
+	  csrfToken: null
+	};
+	
+	exports.initialAppState = initialAppState;
+	
 	function app(state, action) {
-	
-	  if (action.type === actionTypes.APP_ERROR) {
-	    return {
-	      error: {
-	        debugMessage: action.error.debugMessage
-	      }
-	    };
+	  switch (action.type) {
+	    case actionTypes.APP_ERROR:
+	      return Object.assign({}, state, {
+	        error: {
+	          debugMessage: action.error.debugMessage
+	        }
+	      });
+	    case actionTypes.GOT_CSRF_TOKEN:
+	      return Object.assign({}, state, {
+	        csrfToken: action.csrfToken
+	      });
+	    default:
+	      return state || initialAppState;
 	  }
-	
-	  return state || {};
 	}
-	
-	module.exports = exports['default'];
 
 /***/ },
 /* 240 */
@@ -26787,6 +26795,8 @@
 	exports.DEL_PAY_METHOD = DEL_PAY_METHOD;
 	var GOT_BRAINTREE_TOKEN = 'GOT_BRAINTREE_TOKEN';
 	exports.GOT_BRAINTREE_TOKEN = GOT_BRAINTREE_TOKEN;
+	var GOT_CSRF_TOKEN = 'GOT_CSRF_TOKEN';
+	exports.GOT_CSRF_TOKEN = GOT_CSRF_TOKEN;
 	var GOT_PAY_METHODS = 'GOT_PAY_METHODS';
 	exports.GOT_PAY_METHODS = GOT_PAY_METHODS;
 	var GOT_USER_SUBSCRIPTIONS = 'GOT_USER_SUBSCRIPTIONS';
@@ -27089,7 +27099,6 @@
 	  value: true
 	});
 	exports.fetch = fetch;
-	exports.setCSRFToken = setCSRFToken;
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
@@ -27103,8 +27112,6 @@
 	
 	var defaultSettings = _interopRequireWildcard(_settings);
 	
-	var csrfToken;
-	
 	function fetch(request) {
 	  var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 	
@@ -27112,6 +27119,7 @@
 	  var jquery = _ref$jquery === undefined ? _jquery2['default'] : _ref$jquery;
 	  var _ref$settings = _ref.settings;
 	  var settings = _ref$settings === undefined ? defaultSettings : _ref$settings;
+	  var csrfToken = _ref.csrfToken;
 	
 	  request = Object.assign({
 	    dataType: 'json',
@@ -27129,6 +27137,12 @@
 	    request.xhrFields.withCredentials = true;
 	  }
 	
+	  if (typeof csrfToken === 'undefined') {
+	    // This exists to stop someone from forgetting to pass in the stored CSRF
+	    // token.
+	    throw new Error('You must set a CSRF token value; ' + 'set it to false to fetch a resource without a token');
+	  }
+	
 	  if (csrfToken) {
 	    request.headers['X-CSRFToken'] = csrfToken;
 	  } else {
@@ -27136,10 +27150,6 @@
 	  }
 	
 	  return jquery.ajax(request);
-	}
-	
-	function setCSRFToken(token) {
-	  csrfToken = token;
 	}
 
 /***/ },
@@ -36408,25 +36418,30 @@
 	
 	var _api = __webpack_require__(247);
 	
-	var defaultApi = _interopRequireWildcard(_api);
+	var api = _interopRequireWildcard(_api);
 	
 	var _app = __webpack_require__(249);
 	
 	var appActions = _interopRequireWildcard(_app);
 	
 	function tokenSignIn(accessToken) {
-	  var api = arguments.length <= 1 || arguments[1] === undefined ? defaultApi : arguments[1];
+	  var fetch = arguments.length <= 1 || arguments[1] === undefined ? api.fetch : arguments[1];
 	
 	  return function (dispatch) {
-	    api.fetch({
+	    fetch({
 	      data: {
 	        access_token: accessToken
 	      },
 	      method: 'post',
 	      url: '/auth/sign-in/'
+	    }, {
+	      csrfToken: false
 	    }).then(function (data) {
 	
-	      api.setCSRFToken(data.csrf_token);
+	      dispatch({
+	        type: actionTypes.GOT_CSRF_TOKEN,
+	        csrfToken: data.csrf_token
+	      });
 	
 	      dispatch({
 	        type: actionTypes.USER_SIGNED_IN,
@@ -36445,7 +36460,7 @@
 	
 	function userSignIn() {
 	  var FxaClient = arguments.length <= 0 || arguments[0] === undefined ? window.FxaRelierClient : arguments[0];
-	  var api = arguments.length <= 1 || arguments[1] === undefined ? defaultApi : arguments[1];
+	  var fetch = arguments.length <= 1 || arguments[1] === undefined ? api.fetch : arguments[1];
 	
 	  return function (dispatch) {
 	    console.log('signing in FxA user');
@@ -36468,17 +36483,22 @@
 	      console.log('FxA sign-in succeeded:', fxaResult);
 	      console.log('requesting token for code', fxaResult.code);
 	
-	      api.fetch({
+	      fetch({
 	        type: 'post',
 	        url: '/auth/sign-in/',
 	        data: {
 	          authorization_code: fxaResult.code,
 	          client_id: settings.fxaClientId
 	        }
+	      }, {
+	        csrfToken: false
 	      }).then(function (apiResult) {
 	        console.log('API sign-in suceeded; result:', apiResult);
 	
-	        api.setCSRFToken(apiResult.csrf_token);
+	        dispatch({
+	          type: actionTypes.GOT_CSRF_TOKEN,
+	          csrfToken: apiResult.csrf_token
+	        });
 	
 	        dispatch({
 	          type: actionTypes.USER_SIGNED_IN,
@@ -36499,12 +36519,14 @@
 	}
 	
 	function userSignOut() {
-	  var fetch = arguments.length <= 0 || arguments[0] === undefined ? defaultApi.fetch : arguments[0];
+	  var fetch = arguments.length <= 0 || arguments[0] === undefined ? api.fetch : arguments[0];
 	
-	  return function (dispatch) {
+	  return function (dispatch, getState) {
 	    fetch({
 	      method: 'post',
 	      url: '/auth/sign-out/'
+	    }, {
+	      csrfToken: getState().app.csrfToken
 	    }).then(function () {
 	      console.log('API user sign-out succeeded');
 	
@@ -36520,14 +36542,22 @@
 	}
 	
 	function getBraintreeToken() {
-	  var fetch = arguments.length <= 0 || arguments[0] === undefined ? defaultApi.fetch : arguments[0];
+	  var fetch = arguments.length <= 0 || arguments[0] === undefined ? api.fetch : arguments[0];
 	
 	  console.log('Requesting braintree token');
 	  return function (dispatch) {
 	    fetch({
 	      method: 'post',
 	      url: '/braintree/token/generate/'
+	    }, {
+	      csrfToken: false
 	    }).then(function (data) {
+	
+	      dispatch({
+	        type: actionTypes.GOT_CSRF_TOKEN,
+	        csrfToken: data.csrf_token
+	      });
+	
 	      dispatch({
 	        type: actionTypes.GOT_BRAINTREE_TOKEN,
 	        braintreeToken: data.token
@@ -36580,7 +36610,7 @@
 	
 	  var fetch = arguments.length <= 0 || arguments[0] === undefined ? api.fetch : arguments[0];
 	
-	  return function (dispatch) {
+	  return function (dispatch, getState) {
 	
 	    dispatch({
 	      type: actionTypes.LOADING_USER_SUBSCRIPTIONS
@@ -36590,6 +36620,8 @@
 	      method: 'get',
 	      url: '/braintree/subscriptions/',
 	      context: _this
+	    }, {
+	      csrfToken: getState().app.csrfToken
 	    }).then(function (data) {
 	      console.log('got subscriptions from API:', data);
 	      dispatch({
@@ -36607,7 +36639,7 @@
 	  var fetch = arguments.length <= 3 || arguments[3] === undefined ? api.fetch : arguments[3];
 	  var BraintreeClient = arguments.length <= 4 || arguments[4] === undefined ? _braintreeWeb2['default'].api.Client : arguments[4];
 	
-	  return function (dispatch) {
+	  return function (dispatch, getState) {
 	
 	    function requestSub() {
 	      var opts = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
@@ -36622,6 +36654,8 @@
 	        data: data,
 	        url: '/braintree/subscriptions/',
 	        method: 'post'
+	      }, {
+	        csrfToken: getState().app.csrfToken
 	      }).then(function () {
 	        console.log('Successfully subscribed + completed payment');
 	        dispatch(transactionActions.complete());
@@ -36710,7 +36744,7 @@
 	function getUserTransactions() {
 	  var fetch = arguments.length <= 0 || arguments[0] === undefined ? api.fetch : arguments[0];
 	
-	  return function (dispatch) {
+	  return function (dispatch, getState) {
 	
 	    dispatch({
 	      type: actionTypes.LOADING_USER_TRANSACTIONS
@@ -36719,6 +36753,8 @@
 	    fetch({
 	      method: 'get',
 	      url: '/braintree/transactions/'
+	    }, {
+	      csrfToken: getState().app.csrfToken
 	    }).then(function (data) {
 	      console.log('got transactions from API:', data);
 	      dispatch({
