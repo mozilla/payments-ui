@@ -18,6 +18,18 @@ describe('ProductDetail', function() {
     assert.ok(TestUtils.isDOMComponent(title));
   });
 
+  it('should show recurrence for monthly', function() {
+    var title = helpers.findByClass(this.ProductDetail, 'recurrence');
+    assert.ok(TestUtils.isDOMComponent(title));
+  });
+
+  it('should not show recurrence for none', function() {
+    this.ProductDetail = TestUtils.renderIntoDocument(
+      <ProductDetail productId="mozilla-foundation-donation" />
+    );
+    expect(() => helpers.findByClass(this.ProductDetail, 'recurrence'))
+      .to.throw('Did not find exactly one match');
+  });
 });
 
 
