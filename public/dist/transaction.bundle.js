@@ -37945,6 +37945,11 @@
 	    value: function render() {
 	
 	      var productData = products.get(this.props.productId);
+	      var recurrence = productData.recurrence === 'monthly' ? _react2['default'].createElement(
+	        'div',
+	        { className: 'recurrence' },
+	        (0, _utils.gettext)('per month')
+	      ) : '';
 	
 	      return _react2['default'].createElement(
 	        'div',
@@ -37964,11 +37969,7 @@
 	          { className: 'price' },
 	          productData.price.en
 	        ),
-	        _react2['default'].createElement(
-	          'div',
-	          null,
-	          (0, _utils.gettext)('per month')
-	        )
+	        recurrence
 	      );
 	    }
 	  }], [{
