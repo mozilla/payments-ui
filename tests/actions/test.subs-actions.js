@@ -28,9 +28,14 @@ describe('subscription actions', function() {
       };
     }
 
+    function getUserSubscriptions(fetch) {
+      var deferredAction = subActions.getUserSubscriptions(fetch);
+      helpers.doApiAction(deferredAction, dispatchSpy);
+    }
+
     it('should dispatch a loading action', function() {
       var { fetch } = setApiResult();
-      subActions.getUserSubscriptions(fetch)(dispatchSpy);
+      getUserSubscriptions(fetch);
 
       var action = dispatchSpy.firstCall.args[0];
       assert.equal(action.type, actionTypes.LOADING_USER_SUBSCRIPTIONS);
@@ -38,7 +43,7 @@ describe('subscription actions', function() {
 
     it('should dispatch user subscription action', function() {
       var { fetch } = setApiResult();
-      subActions.getUserSubscriptions(fetch)(dispatchSpy);
+      getUserSubscriptions(fetch);
 
       var action = dispatchSpy.secondCall.args[0];
       assert.equal(action.type, actionTypes.GOT_USER_SUBSCRIPTIONS);
@@ -46,7 +51,7 @@ describe('subscription actions', function() {
 
     it('should dispatch subscription data', function() {
       var { fetch, data } = setApiResult();
-      subActions.getUserSubscriptions(fetch)(dispatchSpy);
+      getUserSubscriptions(fetch);
 
       var action = dispatchSpy.secondCall.args[0];
       assert.equal(action.subscriptions, data.subscriptions);
@@ -54,7 +59,7 @@ describe('subscription actions', function() {
 
     it('should dispatch app error on failure', function() {
       var { fetch } = setApiResult({fetchOpt: {result: 'fail'}});
-      subActions.getUserSubscriptions(fetch)(dispatchSpy);
+      getUserSubscriptions(fetch);
 
       var action = dispatchSpy.secondCall.args[0];
       assert.deepEqual(action,
@@ -93,11 +98,14 @@ describe('subscription actions', function() {
 
     function createSubscription(fetch, client=FakeBraintreeClient,
                                 payMethod=fakeCard) {
-      subActions.createSubscription('product-id',
-                                    payMethod,
-                                    'braintree-token',
-                                    fetch,
-                                    client)(dispatchSpy);
+      var deferredAction = subActions.createSubscription(
+                                          'product-id',
+                                          payMethod,
+                                          'braintree-token',
+                                          fetch,
+                                          client);
+
+      helpers.doApiAction(deferredAction, dispatchSpy);
     }
 
     it('should dispatch a completion action', function() {
@@ -153,7 +161,8 @@ describe('subscription actions', function() {
     it('should throw with unrecognized pay method', function() {
       assert.throws(() => {
         var fetch = helpers.fakeFetch();
-        createSubscription(fetch, FakeBraintreeClient, () => {});
+        var invalidPayMethod = 999;
+        createSubscription(fetch, FakeBraintreeClient, invalidPayMethod);
       }, Error, /Unrecognized payMethod/);
     });
 

@@ -23,23 +23,28 @@ describe('Pay Method Actions', function() {
       };
     }
 
+    function getPayMethods(fetch) {
+      var deferredAction = payMethodActions.getPayMethods(fetch);
+      helpers.doApiAction(deferredAction, dispatchSpy);
+    }
+
     it('should dispatch user pay_methods action', function() {
       var { fetch } = setApiGetResult();
-      payMethodActions.getPayMethods(fetch)(dispatchSpy);
+      getPayMethods(fetch);
       var action = dispatchSpy.firstCall.args[0];
       assert.equal(action.type, actionTypes.GOT_PAY_METHODS);
     });
 
     it('should dispatch payMethod data', function() {
       var { fetch, data } = setApiGetResult();
-      payMethodActions.getPayMethods(fetch)(dispatchSpy);
+      getPayMethods(fetch);
       var action = dispatchSpy.firstCall.args[0];
       assert.equal(action.payMethods, data);
     });
 
     it('should dispatch app error on failure', function() {
       var { fetch } = setApiGetResult({fetchOpt: {result: 'fail'}});
-      payMethodActions.getPayMethods(fetch)(dispatchSpy);
+      getPayMethods(fetch);
       var action = dispatchSpy.firstCall.args[0];
       assert.deepEqual(action,
                        appActions.error('Retrieving cards failed'));
@@ -67,8 +72,10 @@ describe('Pay Method Actions', function() {
     }
 
     function addCreditCard(fetch, client=FakeBraintreeClient) {
-      payMethodActions.addCreditCard('braintree-token', fakeCard,
-                                     fetch, client)(dispatchSpy);
+      var deferredAction = payMethodActions.addCreditCard(
+        'braintree-token', fakeCard, fetch, client
+      );
+      helpers.doApiAction(deferredAction, dispatchSpy);
     }
 
     function setApiPostResult({fetchOpt={}} = {}) {
@@ -128,7 +135,10 @@ describe('Pay Method Actions', function() {
   describe('delPayMethod', function() {
 
     function delPayMethod(payMethodUri, fetch) {
-      payMethodActions.delPayMethod(payMethodUri, fetch)(dispatchSpy);
+      var deferredAction = payMethodActions.delPayMethod(
+        payMethodUri, fetch
+      );
+      helpers.doApiAction(deferredAction, dispatchSpy);
     }
 
     function setApiPostResult({fetchOpt={}} = {}) {

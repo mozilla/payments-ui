@@ -186,3 +186,21 @@ export function stubComponent() {
     }
   };
 }
+
+
+export function doApiAction(deferredAction, dispatchSpy, getState) {
+  //
+  // Execute a deferred API action with a default csrf token for convenience.
+  //
+  if (!dispatchSpy) {
+    dispatchSpy = sinon.spy();
+  }
+  if (!getState) {
+    getState = () => ({
+      app: {
+        csrfToken: 'some-csrf-token',
+      },
+    });
+  }
+  deferredAction(dispatchSpy, getState);
+}
