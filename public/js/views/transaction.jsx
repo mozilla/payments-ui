@@ -5,29 +5,29 @@ import { Connector } from 'react-redux';
 
 import * as transactionActions from 'actions/transaction';
 import * as userActions from 'actions/user';
-import * as subscriptionActions from 'actions/subscriptions';
 
 import DefaultBraintreeToken from 'views/shared/braintree-token';
 
-import DefaultAddSubscription from 'views/transaction/add-subscription';
-import DefaultPayMethodListing from 'views/transaction/pay-method-listing';
+import DefaultProductPay from 'views/transaction/product-pay';
+import DefaultProductPayChooser from 'views/transaction/product-pay-chooser';
 import DefaultCompletePayment from 'views/transaction/complete-payment';
 
 
 export default class Transaction extends Component {
 
   static propTypes = {
-    AddSubscription: PropTypes.func.isRequired,
     BraintreeToken: PropTypes.func.isRequired,
     CompletePayment: PropTypes.func.isRequired,
-    PayMethodListing: PropTypes.func.isRequired,
+    ProductPay: PropTypes.func.isRequired,
+    ProductPayChooser: PropTypes.func.isRequired,
+    amount: PropTypes.string,
     productId: PropTypes.string.isRequired,
     user: PropTypes.object.isRequired,
   }
 
   static defaultProps = {
-    AddSubscription: DefaultAddSubscription,
-    PayMethodListing: DefaultPayMethodListing,
+    ProductPay: DefaultProductPay,
+    ProductPayChooser: DefaultProductPayChooser,
     CompletePayment: DefaultCompletePayment,
     BraintreeToken: DefaultBraintreeToken,
   }
@@ -43,8 +43,10 @@ export default class Transaction extends Component {
     var props = this.props;
     var BraintreeToken = props.BraintreeToken;
     var CompletePayment = props.CompletePayment;
-    var PayMethodListing = props.PayMethodListing;
-    var AddSubscription = props.AddSubscription;
+    var ProductPayChooser = props.ProductPayChooser;
+    var ProductPay = props.ProductPay;
+    var { processPayment } = bindActionCreators(transactionActions,
+                                                connector.dispatch);
 
     if (connector.transaction.completed) {
       return (
@@ -54,11 +56,10 @@ export default class Transaction extends Component {
       );
     } else if (connector.transaction.availablePayMethods.length > 0) {
       console.log('rendering card listing');
-      var { createSubscription } = bindActionCreators(subscriptionActions,
-                                                      connector.dispatch);
       return (
-        <PayMethodListing
-          createSubscription={createSubscription}
+        <ProductPayChooser
+          amount={props.amount}
+          processPayment={processPayment}
           productId={props.productId}
           payMethods={connector.transaction.availablePayMethods}
           {...bindActionCreators(transactionActions, connector.dispatch)}
@@ -73,13 +74,12 @@ export default class Transaction extends Component {
       );
     } else {
       console.log('rendering card entry');
-      var { createSubscription } = bindActionCreators(subscriptionActions,
-                                                      connector.dispatch);
       return (
-        <AddSubscription
+        <ProductPay
+          amount={props.amount}
           cardSubmissionErrors={connector.transaction.cardSubmissionErrors}
           braintreeToken={connector.user.braintreeToken}
-          createSubscription={createSubscription}
+          processPayment={processPayment}
           productId={props.productId}
         />
       );

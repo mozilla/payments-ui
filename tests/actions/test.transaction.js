@@ -5,6 +5,13 @@ import * as transactionActions from 'actions/transaction';
 import * as helpers from '../helpers';
 
 
+const fakeCreditCard = {
+  number: '411111111111',
+  cvv: '222',
+  expiration: '06/16',
+};
+
+
 export function transactionData() {
   return [{
     kind: "subscription_charged_successfully",
@@ -95,6 +102,169 @@ describe('transactionActions', function() {
       var action = dispatchSpy.secondCall.args[0];
       assert.deepEqual(action,
                        appActions.error('failed to get transactions'));
+    });
+
+  });
+
+  describe('processPayment', function() {
+
+    var fakeCreateSubscription;
+    var fakePayOnce;
+
+    beforeEach(function() {
+      dispatchSpy = sinon.spy();
+      fakeCreateSubscription = sinon.spy();
+      fakePayOnce = sinon.spy();
+    });
+
+    function processPayment({productId='mozilla-concrete-brick',
+                             client=helpers.FakeBraintreeClient,
+                             creditCard=fakeCreditCard,
+                             createSubscription=fakeCreateSubscription,
+                             payOnce=fakePayOnce,
+                             ...args}) {
+      var deferredAction = transactionActions.processPayment({
+        productId: productId,
+        creditCard: creditCard,
+        braintreeToken: 'braintree-token',
+        BraintreeClient: client,
+        createSubscription: createSubscription,
+        payOnce: payOnce,
+        ...args,
+      });
+
+      helpers.doApiAction(deferredAction, dispatchSpy);
+    }
+
+    it('should create a subscription for recurring products', function() {
+      processPayment({productId: 'mozilla-concrete-brick'});
+
+      assert.ok(fakeCreateSubscription.called);
+      var args = fakeCreateSubscription.firstCall.args[0];
+      assert.equal(args.dispatch, dispatchSpy);
+      assert.equal(args.productId, 'mozilla-concrete-brick');
+      assert.equal(args.payNonce, 'some-nonce');
+    });
+
+    it('should create a sale for one-off products', function() {
+      processPayment({productId: 'mozilla-foundation-donation'});
+
+      assert.ok(fakePayOnce.called);
+      var args = fakePayOnce.firstCall.args[0];
+      assert.equal(args.dispatch, dispatchSpy);
+      assert.equal(args.productId, 'mozilla-foundation-donation');
+      assert.equal(args.payNonce, 'some-nonce');
+    });
+
+    it('should pass amount to pay processor', function() {
+      processPayment({productId: 'mozilla-foundation-donation',
+                      amount: '10.00'});
+      var args = fakePayOnce.firstCall.args[0];
+      assert.equal(args.amount, '10.00');
+    });
+
+    it('should pass pay method URI to pay processor', function() {
+      var payMethodUri = '/some/paymethod/123';
+      processPayment({creditCard: null, payMethodUri: payMethodUri});
+      var args = fakeCreateSubscription.firstCall.args[0];
+      assert.equal(args.payMethodUri, payMethodUri);
+    });
+
+    it('should throw error for missing pay method', function() {
+      assert.throws(() => {
+        processPayment({payMethodUri: null, creditCard: null});
+      }, Error, /Either creditCard or payMethodUri is required/);
+    });
+  });
+
+  describe('processOneTimePayment', function() {
+    var defaultProductId = 'mozilla-foundation-donation';
+    var fakeFetch;
+
+    beforeEach(function() {
+      fakeFetch = helpers.fakeFetch();
+    });
+
+    function processOneTimePayment({fetch=fakeFetch,
+                                    amount='10.00',
+                                    productId=defaultProductId,
+                                    client=helpers.FakeBraintreeClient,
+                                    payNonce='braintree-pay-nonce',
+                                    getState=helpers.getAppStateWithCSRF,
+                                    payMethodUri} = {}) {
+      transactionActions.processOneTimePayment({
+        dispatch: dispatchSpy,
+        amount: amount,
+        getState: getState,
+        productId: productId,
+        payNonce: payNonce,
+        payMethodUri: payMethodUri,
+        fetch: fetch,
+      });
+    }
+
+    it('should create a sale with basic data', function() {
+      var amount = '5.00';
+
+      processOneTimePayment({
+        amount: amount,
+      });
+
+      assert.equal(fakeFetch.firstCall.args[0].url, '/braintree/sale/');
+
+      var data = fakeFetch.firstCall.args[0].data;
+      assert.equal(data.amount, amount);
+      assert.equal(data.product_id, defaultProductId);
+    });
+
+    it('should pay with a nonce if provided', function() {
+      processOneTimePayment({
+        payNonce: 'some-nonce', payMethodUri: null,
+      });
+
+      var data = fakeFetch.firstCall.args[0].data;
+      assert.equal(data.nonce, 'some-nonce');
+    });
+
+    it('should post a pay method URI', function() {
+      var payMethodUri = '/some/paymethod/123';
+
+      processOneTimePayment({
+        payNonce: null,
+        payMethodUri: payMethodUri,
+      });
+
+      var data = fakeFetch.firstCall.args[0].data;
+      assert.equal(data.paymethod, payMethodUri);
+      assert.equal(data.nonce, undefined);
+    });
+
+    it('should dispatch an error action with card', function() {
+      var apiError = {error_response: 'some error'};
+      var fetch = helpers.fakeFetch({
+        result: 'fail',
+        xhrError: {responseJSON: apiError},
+      });
+      processOneTimePayment({fetch: fetch});
+
+      var action = dispatchSpy.firstCall.args[0];
+      assert.deepEqual(action, {
+        type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
+        apiErrorResult: apiError,
+      });
+    });
+
+    it('should dispatch an error action with payMethodURI', function() {
+      var apiError = {error_response: 'some error'};
+      var fetch = helpers.fakeFetch({
+        result: 'fail',
+        xhrError: {responseJSON: apiError},
+      });
+      processOneTimePayment({fetch: fetch, payNonce: null,
+                             payMethodUri: '/some/paymethod/123'});
+
+      var action = dispatchSpy.firstCall.args[0];
+      assert.equal(action.type, actionTypes.APP_ERROR);
     });
 
   });

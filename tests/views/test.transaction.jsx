@@ -17,8 +17,8 @@ describe('Transaction', function() {
   var productId = 'mozilla-concrete-brick';
   var FakeBraintreeToken = helpers.stubComponent();
   var FakeCompletePayment = helpers.stubComponent();
-  var FakePayMethodListing = helpers.stubComponent();
-  var FakeAddSubscription = helpers.stubComponent();
+  var FakeProductPayChooser = helpers.stubComponent();
+  var FakeProductPay = helpers.stubComponent();
   var store;
 
   beforeEach(function() {
@@ -37,8 +37,8 @@ describe('Transaction', function() {
           return (
             <Transaction
               BraintreeToken={FakeBraintreeToken}
-              AddSubscription={FakeAddSubscription}
-              PayMethodListing={FakePayMethodListing}
+              ProductPay={FakeProductPay}
+              ProductPayChooser={FakeProductPayChooser}
               CompletePayment={FakeCompletePayment}
               user={fakeUser} productId={productId} />
           );
@@ -50,10 +50,7 @@ describe('Transaction', function() {
     );
   }
 
-  it('should render a card listing', function() {
-    var payMethods = [{type: 'Visa'}];
-    var View = mountView();
-
+  function signInUser({payMethods}) {
     store.dispatch({
       type: actionTypes.USER_SIGNED_IN,
       user: Object.assign({}, fakeUser, {
@@ -65,24 +62,28 @@ describe('Transaction', function() {
       type: actionTypes.GOT_BRAINTREE_TOKEN,
       braintreeToken: 'braintree-token',
     });
+  }
+
+  it('should show pay chooser when user has pay methods', function() {
+    var payMethods = [{type: 'Visa'}];
+    var View = mountView();
+
+    signInUser({payMethods: payMethods})
 
     var child = TestUtils.findRenderedComponentWithType(
-      View, FakePayMethodListing
+      View, FakeProductPayChooser
     );
     assert.equal(child.props.productId, productId);
     assert.equal(child.props.payMethods, payMethods);
   });
 
-  it('should render a card entry form', function() {
+  it('should show new payment form when user has no pay methods', function() {
     var View = mountView();
 
-    store.dispatch({
-      type: actionTypes.GOT_BRAINTREE_TOKEN,
-      braintreeToken: 'braintree-token',
-    });
+    signInUser({payMethods: []});
 
     var child = TestUtils.findRenderedComponentWithType(
-      View, FakeAddSubscription
+      View, FakeProductPay
     );
     assert.equal(child.props.productId, productId);
   });
@@ -102,24 +103,15 @@ describe('Transaction', function() {
     var payMethods = [{type: 'Visa'}];
     var View = mountView();
 
-    // Dispatch a user that would normally trigger a card listing.
-    store.dispatch({
-      type: actionTypes.USER_SIGNED_IN,
-      user: Object.assign({}, fakeUser, {
-        payMethods: payMethods,
-      }),
-    });
+    // When a user signs in this would normally trigger a pay chooser.
+    signInUser({payMethods: payMethods});
 
-    store.dispatch({
-      type: actionTypes.GOT_BRAINTREE_TOKEN,
-      braintreeToken: 'braintree-token',
-    });
-
+    // Dispatch a specific payWithNewCard request.
     store.dispatch(transactionActions.payWithNewCard());
 
     // Instead make sure a new card entry form was rendered.
     TestUtils.findRenderedComponentWithType(
-      View, FakeAddSubscription
+      View, FakeProductPay
     );
   });
 
