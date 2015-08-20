@@ -72,12 +72,14 @@ export function parseQuery(url){
   // @param {string} url - complete URL that may or may not include a query
   // @returns {object} - parsed query string parameter names mapped to values
   //
-  var baseUrl = url.split('#')[0];
-  var urlParts = baseUrl.split('?');
+  var urlParts = url.split('?');
   var data = {};
 
   if (urlParts.length > 1) {
-    urlParts[1].split('&').forEach((nameVal) => {
+    var query = urlParts[1];
+    // Get rid of any anchor that might be on the end of the query:
+    query = query.split('#')[0];
+    query.split('&').forEach((nameVal) => {
       var parts = nameVal.split('=');
       data[parts[0]] = decodeURIComponent(parts[1] || '');
     });
