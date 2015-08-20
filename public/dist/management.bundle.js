@@ -74,43 +74,43 @@ webpackJsonp([0,2],[
 	
 	var _viewsManagementAddPayMethod2 = _interopRequireDefault(_viewsManagementAddPayMethod);
 	
-	var _viewsManagementDelPayMethod = __webpack_require__(253);
+	var _viewsManagementDelPayMethod = __webpack_require__(258);
 	
 	var _viewsManagementDelPayMethod2 = _interopRequireDefault(_viewsManagementDelPayMethod);
 	
-	var _viewsManagementMyAccount = __webpack_require__(257);
+	var _viewsManagementMyAccount = __webpack_require__(262);
 	
 	var _viewsManagementMyAccount2 = _interopRequireDefault(_viewsManagementMyAccount);
 	
-	var _viewsManagementSubscriptions = __webpack_require__(258);
+	var _viewsManagementSubscriptions = __webpack_require__(263);
 	
 	var _viewsManagementSubscriptions2 = _interopRequireDefault(_viewsManagementSubscriptions);
 	
-	var _viewsManagementHistory = __webpack_require__(267);
+	var _viewsManagementHistory = __webpack_require__(268);
 	
 	var _viewsManagementHistory2 = _interopRequireDefault(_viewsManagementHistory);
 	
-	var _viewsManagementPayMethods = __webpack_require__(269);
+	var _viewsManagementPayMethods = __webpack_require__(270);
 	
 	var _viewsManagementPayMethods2 = _interopRequireDefault(_viewsManagementPayMethods);
 	
-	var _viewsSharedBraintreeToken = __webpack_require__(270);
+	var _viewsSharedBraintreeToken = __webpack_require__(271);
 	
 	var _viewsSharedBraintreeToken2 = _interopRequireDefault(_viewsSharedBraintreeToken);
 	
-	var _viewsSharedModalError = __webpack_require__(271);
+	var _viewsSharedModalError = __webpack_require__(272);
 	
 	var _viewsSharedModalError2 = _interopRequireDefault(_viewsSharedModalError);
 	
-	var _viewsSharedSignIn = __webpack_require__(274);
+	var _viewsSharedSignIn = __webpack_require__(275);
 	
 	var _viewsSharedSignIn2 = _interopRequireDefault(_viewsSharedSignIn);
 	
-	var _viewsSharedSignOut = __webpack_require__(275);
+	var _viewsSharedSignOut = __webpack_require__(276);
 	
 	var _viewsSharedSignOut2 = _interopRequireDefault(_viewsSharedSignOut);
 	
-	var _viewsManagement = __webpack_require__(276);
+	var _viewsManagement = __webpack_require__(277);
 	
 	var _viewsManagement2 = _interopRequireDefault(_viewsManagement);
 	
@@ -37098,12 +37098,6 @@ webpackJsonp([0,2],[
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _braintreeWeb = __webpack_require__(246);
-	
-	var _braintreeWeb2 = _interopRequireDefault(_braintreeWeb);
-	
 	var _constantsActionTypes = __webpack_require__(240);
 	
 	var actionTypes = _interopRequireWildcard(_constantsActionTypes);
@@ -37150,71 +37144,40 @@ webpackJsonp([0,2],[
 	  };
 	}
 	
-	function createSubscription(productId, payMethod, braintreeToken) {
-	  var fetch = arguments.length <= 3 || arguments[3] === undefined ? api.fetch : arguments[3];
-	  var BraintreeClient = arguments.length <= 4 || arguments[4] === undefined ? _braintreeWeb2['default'].api.Client : arguments[4];
+	function createSubscription(_ref) {
+	  var dispatch = _ref.dispatch;
+	  var productId = _ref.productId;
+	  var getState = _ref.getState;
+	  var payNonce = _ref.payNonce;
+	  var payMethodUri = _ref.payMethodUri;
+	  var _ref$fetch = _ref.fetch;
+	  var fetch = _ref$fetch === undefined ? api.fetch : _ref$fetch;
 	
-	  return function (dispatch, getState) {
-	
-	    function requestSub() {
-	      var opts = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var data = {
-	        plan_id: productId
-	      };
-	      data.pay_method_uri = opts.payMethodUri;
-	      data.pay_method_nonce = opts.nonce;
-	
-	      return fetch({
-	        data: data,
-	        url: '/braintree/subscriptions/',
-	        method: 'post'
-	      }, {
-	        csrfToken: getState().app.csrfToken
-	      }).then(function () {
-	        console.log('Successfully subscribed + completed payment');
-	        dispatch(transactionActions.complete());
-	      }).fail(function ($xhr) {
-	        if (data.pay_method_nonce) {
-	          dispatch({
-	            type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
-	            apiErrorResult: $xhr.responseJSON
-	          });
-	        } else {
-	          dispatch(appActions.error('Subscription creation failed'));
-	        }
-	      });
-	    }
-	
-	    // Check to see if payMethod is a card object
-	    if (typeof payMethod === 'object') {
-	      if (typeof payMethod.number === 'undefined' || typeof payMethod.cvv === 'undefined' || typeof payMethod.expiration === 'undefined') {
-	        throw new Error('Invalid card object');
-	      }
-	
-	      var client = new BraintreeClient({
-	        clientToken: braintreeToken
-	      });
-	
-	      client.tokenizeCard({
-	        number: payMethod.number,
-	        expirationDate: payMethod.expiration,
-	        cvv: payMethod.cvv
-	      }, function (err, nonce) {
-	        if (err) {
-	          console.error('Braintree tokenization error:', err);
-	          dispatch(appActions.error('Braintree tokenization error'));
-	        } else {
-	          requestSub({ nonce: nonce });
-	        }
-	      });
-	      // Check for a payMethodUri
-	    } else if (typeof payMethod === 'string') {
-	        requestSub({ payMethodUri: payMethod });
-	      } else {
-	        throw new Error('Unrecognized payMethod should be a card ' + '(object) or payMethodUri (string)');
-	      }
+	  var data = {
+	    plan_id: productId
 	  };
+	  data.pay_method_uri = payMethodUri;
+	  data.pay_method_nonce = payNonce;
+	
+	  return fetch({
+	    data: data,
+	    url: '/braintree/subscriptions/',
+	    method: 'post'
+	  }, {
+	    csrfToken: getState().app.csrfToken
+	  }).then(function () {
+	    console.log('Successfully subscribed + completed payment');
+	    dispatch(transactionActions.complete());
+	  }).fail(function ($xhr) {
+	    if (data.pay_method_nonce) {
+	      dispatch({
+	        type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
+	        apiErrorResult: $xhr.responseJSON
+	      });
+	    } else {
+	      dispatch(appActions.error('Subscription creation failed'));
+	    }
+	  });
 	}
 
 /***/ },
@@ -37226,15 +37189,32 @@ webpackJsonp([0,2],[
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	exports.complete = complete;
 	exports.payWithNewCard = payWithNewCard;
+	exports.processOneTimePayment = processOneTimePayment;
+	exports.processPayment = processPayment;
 	exports.getUserTransactions = getUserTransactions;
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	var _braintreeWeb = __webpack_require__(246);
+	
+	var _braintreeWeb2 = _interopRequireDefault(_braintreeWeb);
+	
 	var _constantsActionTypes = __webpack_require__(240);
 	
 	var actionTypes = _interopRequireWildcard(_constantsActionTypes);
+	
+	var _products = __webpack_require__(253);
+	
+	var products = _interopRequireWildcard(_products);
 	
 	var _app = __webpack_require__(249);
 	
@@ -37243,6 +37223,10 @@ webpackJsonp([0,2],[
 	var _api = __webpack_require__(247);
 	
 	var api = _interopRequireWildcard(_api);
+	
+	var _braintree = __webpack_require__(257);
+	
+	var _subscriptions = __webpack_require__(251);
 	
 	function complete() {
 	  return {
@@ -37253,6 +37237,94 @@ webpackJsonp([0,2],[
 	function payWithNewCard() {
 	  return {
 	    type: actionTypes.PAY_WITH_NEW_CARD
+	  };
+	}
+	
+	function processOneTimePayment(_ref) {
+	  var dispatch = _ref.dispatch;
+	  var productId = _ref.productId;
+	  var getState = _ref.getState;
+	  var payNonce = _ref.payNonce;
+	  var payMethodUri = _ref.payMethodUri;
+	  var _ref$fetch = _ref.fetch;
+	  var fetch = _ref$fetch === undefined ? api.fetch : _ref$fetch;
+	  var amount = _ref.amount;
+	
+	  var data = {
+	    amount: amount,
+	    product_id: productId
+	  };
+	  data.paymethod = payMethodUri;
+	  data.nonce = payNonce;
+	
+	  return fetch({
+	    data: data,
+	    url: '/braintree/sale/',
+	    method: 'post'
+	  }, {
+	    csrfToken: getState().app.csrfToken
+	  }).then(function () {
+	    console.log('Successfully completed sale');
+	    dispatch(complete());
+	  }).fail(function ($xhr) {
+	    if (data.nonce) {
+	      dispatch({
+	        type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
+	        apiErrorResult: $xhr.responseJSON
+	      });
+	    } else {
+	      dispatch(appActions.error('product sale failed'));
+	    }
+	  });
+	}
+	
+	function processPayment(_ref2) {
+	  var productId = _ref2.productId;
+	  var braintreeToken = _ref2.braintreeToken;
+	  var creditCard = _ref2.creditCard;
+	  var payMethodUri = _ref2.payMethodUri;
+	  var _ref2$BraintreeClient = _ref2.BraintreeClient;
+	  var BraintreeClient = _ref2$BraintreeClient === undefined ? _braintreeWeb2['default'].api.Client : _ref2$BraintreeClient;
+	  var _ref2$createSubscription = _ref2.createSubscription;
+	  var createSubscription = _ref2$createSubscription === undefined ? _subscriptions.createSubscription : _ref2$createSubscription;
+	  var _ref2$payOnce = _ref2.payOnce;
+	  var payOnce = _ref2$payOnce === undefined ? processOneTimePayment : _ref2$payOnce;
+	
+	  var args = _objectWithoutProperties(_ref2, ['productId', 'braintreeToken', 'creditCard', 'payMethodUri', 'BraintreeClient', 'createSubscription', 'payOnce']);
+	
+	  return function (dispatch, getState) {
+	    var product = products.get(productId);
+	    var payForProduct;
+	
+	    if (product.recurrence === 'monthly') {
+	      console.log('calling createSubscription for product', product.id);
+	      payForProduct = createSubscription;
+	    } else {
+	      console.log('calling processOneTimePayment for product', product.id);
+	      payForProduct = payOnce;
+	    }
+	
+	    var payArgs = _extends({
+	      dispatch: dispatch,
+	      getState: getState,
+	      productId: productId
+	    }, args);
+	
+	    if (creditCard) {
+	      (0, _braintree.tokenizeCreditCard)({
+	        dispatch: dispatch,
+	        braintreeToken: braintreeToken,
+	        BraintreeClient: BraintreeClient,
+	        creditCard: creditCard,
+	        callback: function callback(nonce) {
+	          return payForProduct(_extends({ payNonce: nonce }, payArgs));
+	        }
+	      });
+	    } else if (payMethodUri) {
+	      payForProduct(_extends({ payMethodUri: payMethodUri }, payArgs));
+	    } else {
+	      throw new Error('Either creditCard or payMethodUri is required.');
+	    }
 	  };
 	}
 	
@@ -37292,6 +37364,170 @@ webpackJsonp([0,2],[
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
+	exports.get = get;
+	var productData = {
+	  'mozilla-concrete-brick': __webpack_require__(254),
+	  'mozilla-concrete-mortar': __webpack_require__(255),
+	  'mozilla-foundation-donation': __webpack_require__(256)
+	};
+	
+	exports['default'] = productData;
+	
+	function get(id) {
+	  if (!productData[id]) {
+	    throw new Error('Invalid product: ' + id);
+	  }
+	  return productData[id];
+	}
+
+/***/ },
+/* 254 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"description": {
+			"en": "Brick"
+		},
+		"img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/default.png",
+		"price": {
+			"en": "$10.00"
+		},
+		"seller": {
+			"kind": "products",
+			"terms": "http://pay.dev.mozaws.net/terms/",
+			"name": {
+				"en": "Mozilla Concrete"
+			},
+			"url": "http://pay.dev.mozaws.net/",
+			"email": "support@concrete.mozilla.org",
+			"id": "mozilla-concrete"
+		},
+		"recurrence": "monthly",
+		"currency": "USD",
+		"amount": "10.00",
+		"active": true,
+		"id": "mozilla-concrete-brick"
+	}
+
+/***/ },
+/* 255 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"description": {
+			"en": "Mortar"
+		},
+		"img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/mortar.png",
+		"price": {
+			"en": "$5.00"
+		},
+		"seller": {
+			"kind": "products",
+			"terms": "http://pay.dev.mozaws.net/terms/",
+			"name": {
+				"en": "Mozilla Concrete"
+			},
+			"url": "http://pay.dev.mozaws.net/",
+			"email": "support@concrete.mozilla.org",
+			"id": "mozilla-concrete"
+		},
+		"recurrence": "monthly",
+		"currency": "USD",
+		"amount": "5.00",
+		"active": true,
+		"id": "mozilla-concrete-mortar"
+	}
+
+/***/ },
+/* 256 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"description": {
+			"en": "Donation"
+		},
+		"img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/default.png",
+		"price": {},
+		"seller": {
+			"kind": "donations",
+			"terms": "http://pay.dev.mozaws.net/terms/",
+			"name": {
+				"en": "Mozilla Foundation"
+			},
+			"url": "http://pay.dev.mozaws.net/",
+			"email": "support@foundation.mozilla.org",
+			"id": "mozilla-foundation"
+		},
+		"recurrence": null,
+		"currency": "USD",
+		"amount": null,
+		"active": true,
+		"id": "mozilla-foundation-donation"
+	}
+
+/***/ },
+/* 257 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports.tokenizeCreditCard = tokenizeCreditCard;
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _braintreeWeb = __webpack_require__(246);
+	
+	var _braintreeWeb2 = _interopRequireDefault(_braintreeWeb);
+	
+	var _app = __webpack_require__(249);
+	
+	var appActions = _interopRequireWildcard(_app);
+	
+	function tokenizeCreditCard(_ref) {
+	  var dispatch = _ref.dispatch;
+	  var braintreeToken = _ref.braintreeToken;
+	  var creditCard = _ref.creditCard;
+	  var callback = _ref.callback;
+	  var _ref$BraintreeClient = _ref.BraintreeClient;
+	  var BraintreeClient = _ref$BraintreeClient === undefined ? _braintreeWeb2['default'].api.Client : _ref$BraintreeClient;
+	
+	  if (typeof creditCard.number === 'undefined' || typeof creditCard.cvv === 'undefined' || typeof creditCard.expiration === 'undefined') {
+	    console.error('not a complete card object:', creditCard);
+	    throw new Error('Invalid card object');
+	  }
+	
+	  var client = new BraintreeClient({
+	    clientToken: braintreeToken
+	  });
+	
+	  client.tokenizeCard({
+	    number: creditCard.number,
+	    expirationDate: creditCard.expiration,
+	    cvv: creditCard.cvv
+	  }, function (err, nonce) {
+	    if (err) {
+	      console.error('Braintree tokenization error:', err);
+	      dispatch(appActions.error('Braintree tokenization error'));
+	    } else {
+	      callback(nonce);
+	    }
+	  });
+	}
+
+/***/ },
+/* 258 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 	
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
@@ -37307,7 +37543,7 @@ webpackJsonp([0,2],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsPayMethodChoice = __webpack_require__(254);
+	var _componentsPayMethodChoice = __webpack_require__(259);
 	
 	var _componentsPayMethodChoice2 = _interopRequireDefault(_componentsPayMethodChoice);
 	
@@ -37385,7 +37621,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 254 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37408,7 +37644,7 @@ webpackJsonp([0,2],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsPayMethodList = __webpack_require__(255);
+	var _componentsPayMethodList = __webpack_require__(260);
 	
 	var _componentsPayMethodList2 = _interopRequireDefault(_componentsPayMethodList);
 	
@@ -37499,7 +37735,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 255 */
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37524,7 +37760,7 @@ webpackJsonp([0,2],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsPayMethodItem = __webpack_require__(256);
+	var _componentsPayMethodItem = __webpack_require__(261);
 	
 	var _componentsPayMethodItem2 = _interopRequireDefault(_componentsPayMethodItem);
 	
@@ -37594,7 +37830,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 256 */
+/* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37686,7 +37922,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 257 */
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37795,7 +38031,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 258 */
+/* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37818,7 +38054,7 @@ webpackJsonp([0,2],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsSubscriptionList = __webpack_require__(259);
+	var _componentsSubscriptionList = __webpack_require__(264);
 	
 	var _componentsSubscriptionList2 = _interopRequireDefault(_componentsSubscriptionList);
 	
@@ -37874,7 +38110,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 259 */
+/* 264 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37901,11 +38137,11 @@ webpackJsonp([0,2],[
 	
 	var _utils = __webpack_require__(201);
 	
-	var _componentsSpinner = __webpack_require__(260);
+	var _componentsSpinner = __webpack_require__(265);
 	
 	var _componentsSpinner2 = _interopRequireDefault(_componentsSpinner);
 	
-	var _componentsSubscription = __webpack_require__(261);
+	var _componentsSubscription = __webpack_require__(266);
 	
 	var _componentsSubscription2 = _interopRequireDefault(_componentsSubscription);
 	
@@ -37976,7 +38212,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 260 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38045,7 +38281,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 261 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38070,13 +38306,13 @@ webpackJsonp([0,2],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsPayMethodDropDown = __webpack_require__(262);
+	var _componentsPayMethodDropDown = __webpack_require__(267);
 	
 	var _componentsPayMethodDropDown2 = _interopRequireDefault(_componentsPayMethodDropDown);
 	
 	var _utils = __webpack_require__(201);
 	
-	var _products = __webpack_require__(263);
+	var _products = __webpack_require__(253);
 	
 	var products = _interopRequireWildcard(_products);
 	
@@ -38180,7 +38416,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 262 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38407,117 +38643,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 263 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	exports.get = get;
-	var productData = {
-	  'mozilla-concrete-brick': __webpack_require__(264),
-	  'mozilla-concrete-mortar': __webpack_require__(265),
-	  'mozilla-foundation-donation': __webpack_require__(266)
-	};
-	
-	exports['default'] = productData;
-	
-	function get(id) {
-	  if (!productData[id]) {
-	    throw new Error('Invalid product: ' + id);
-	  }
-	  return productData[id];
-	}
-
-/***/ },
-/* 264 */
-/***/ function(module, exports) {
-
-	module.exports = {
-		"description": {
-			"en": "Brick"
-		},
-		"img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/default.png",
-		"price": {
-			"en": "$10.00"
-		},
-		"seller": {
-			"kind": "products",
-			"terms": "http://pay.dev.mozaws.net/terms/",
-			"name": {
-				"en": "Mozilla Concrete"
-			},
-			"url": "http://pay.dev.mozaws.net/",
-			"email": "support@concrete.mozilla.org",
-			"id": "mozilla-concrete"
-		},
-		"recurrence": "monthly",
-		"currency": "USD",
-		"amount": "10.00",
-		"active": true,
-		"id": "mozilla-concrete-brick"
-	}
-
-/***/ },
-/* 265 */
-/***/ function(module, exports) {
-
-	module.exports = {
-		"description": {
-			"en": "Mortar"
-		},
-		"img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/mortar.png",
-		"price": {
-			"en": "$5.00"
-		},
-		"seller": {
-			"kind": "products",
-			"terms": "http://pay.dev.mozaws.net/terms/",
-			"name": {
-				"en": "Mozilla Concrete"
-			},
-			"url": "http://pay.dev.mozaws.net/",
-			"email": "support@concrete.mozilla.org",
-			"id": "mozilla-concrete"
-		},
-		"recurrence": "monthly",
-		"currency": "USD",
-		"amount": "5.00",
-		"active": true,
-		"id": "mozilla-concrete-mortar"
-	}
-
-/***/ },
-/* 266 */
-/***/ function(module, exports) {
-
-	module.exports = {
-		"description": {
-			"en": "Donation"
-		},
-		"img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/default.png",
-		"price": {},
-		"seller": {
-			"kind": "donations",
-			"terms": "http://pay.dev.mozaws.net/terms/",
-			"name": {
-				"en": "Mozilla Foundation"
-			},
-			"url": "http://pay.dev.mozaws.net/",
-			"email": "support@foundation.mozilla.org",
-			"id": "mozilla-foundation"
-		},
-		"recurrence": null,
-		"currency": "USD",
-		"amount": null,
-		"active": true,
-		"id": "mozilla-foundation-donation"
-	}
-
-/***/ },
-/* 267 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38542,17 +38668,17 @@ webpackJsonp([0,2],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactJsonTable = __webpack_require__(268);
+	var _reactJsonTable = __webpack_require__(269);
 	
 	var _reactJsonTable2 = _interopRequireDefault(_reactJsonTable);
 	
 	var _utils = __webpack_require__(201);
 	
-	var _products = __webpack_require__(263);
+	var _products = __webpack_require__(253);
 	
 	var products = _interopRequireWildcard(_products);
 	
-	var _componentsSpinner = __webpack_require__(260);
+	var _componentsSpinner = __webpack_require__(265);
 	
 	var _componentsSpinner2 = _interopRequireDefault(_componentsSpinner);
 	
@@ -38688,7 +38814,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 268 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(3);
@@ -38918,7 +39044,7 @@ webpackJsonp([0,2],[
 
 
 /***/ },
-/* 269 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38945,7 +39071,7 @@ webpackJsonp([0,2],[
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var _componentsPayMethodDropDown = __webpack_require__(262);
+	var _componentsPayMethodDropDown = __webpack_require__(267);
 	
 	var _componentsPayMethodDropDown2 = _interopRequireDefault(_componentsPayMethodDropDown);
 	
@@ -39044,7 +39170,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 270 */
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39067,7 +39193,7 @@ webpackJsonp([0,2],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsSpinner = __webpack_require__(260);
+	var _componentsSpinner = __webpack_require__(265);
 	
 	var _componentsSpinner2 = _interopRequireDefault(_componentsSpinner);
 	
@@ -39112,7 +39238,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 271 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39135,11 +39261,11 @@ webpackJsonp([0,2],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsModal = __webpack_require__(272);
+	var _componentsModal = __webpack_require__(273);
 	
 	var _componentsModal2 = _interopRequireDefault(_componentsModal);
 	
-	var _componentsError = __webpack_require__(273);
+	var _componentsError = __webpack_require__(274);
 	
 	var _componentsError2 = _interopRequireDefault(_componentsError);
 	
@@ -39177,7 +39303,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 272 */
+/* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39283,7 +39409,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 273 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39346,7 +39472,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 274 */
+/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39369,7 +39495,7 @@ webpackJsonp([0,2],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsSpinner = __webpack_require__(260);
+	var _componentsSpinner = __webpack_require__(265);
 	
 	var _componentsSpinner2 = _interopRequireDefault(_componentsSpinner);
 	
@@ -39435,7 +39561,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 275 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39458,7 +39584,7 @@ webpackJsonp([0,2],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsSpinner = __webpack_require__(260);
+	var _componentsSpinner = __webpack_require__(265);
 	
 	var _componentsSpinner2 = _interopRequireDefault(_componentsSpinner);
 	
@@ -39536,7 +39662,7 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 276 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

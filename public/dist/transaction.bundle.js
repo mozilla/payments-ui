@@ -52,7 +52,7 @@
 	
 	var _tracking2 = _interopRequireDefault(_tracking);
 	
-	var _app = __webpack_require__(277);
+	var _app = __webpack_require__(278);
 	
 	_tracking2['default'].init();
 	(0, _app.init)();
@@ -36585,12 +36585,6 @@
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _braintreeWeb = __webpack_require__(246);
-	
-	var _braintreeWeb2 = _interopRequireDefault(_braintreeWeb);
-	
 	var _constantsActionTypes = __webpack_require__(240);
 	
 	var actionTypes = _interopRequireWildcard(_constantsActionTypes);
@@ -36637,71 +36631,40 @@
 	  };
 	}
 	
-	function createSubscription(productId, payMethod, braintreeToken) {
-	  var fetch = arguments.length <= 3 || arguments[3] === undefined ? api.fetch : arguments[3];
-	  var BraintreeClient = arguments.length <= 4 || arguments[4] === undefined ? _braintreeWeb2['default'].api.Client : arguments[4];
+	function createSubscription(_ref) {
+	  var dispatch = _ref.dispatch;
+	  var productId = _ref.productId;
+	  var getState = _ref.getState;
+	  var payNonce = _ref.payNonce;
+	  var payMethodUri = _ref.payMethodUri;
+	  var _ref$fetch = _ref.fetch;
+	  var fetch = _ref$fetch === undefined ? api.fetch : _ref$fetch;
 	
-	  return function (dispatch, getState) {
-	
-	    function requestSub() {
-	      var opts = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var data = {
-	        plan_id: productId
-	      };
-	      data.pay_method_uri = opts.payMethodUri;
-	      data.pay_method_nonce = opts.nonce;
-	
-	      return fetch({
-	        data: data,
-	        url: '/braintree/subscriptions/',
-	        method: 'post'
-	      }, {
-	        csrfToken: getState().app.csrfToken
-	      }).then(function () {
-	        console.log('Successfully subscribed + completed payment');
-	        dispatch(transactionActions.complete());
-	      }).fail(function ($xhr) {
-	        if (data.pay_method_nonce) {
-	          dispatch({
-	            type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
-	            apiErrorResult: $xhr.responseJSON
-	          });
-	        } else {
-	          dispatch(appActions.error('Subscription creation failed'));
-	        }
-	      });
-	    }
-	
-	    // Check to see if payMethod is a card object
-	    if (typeof payMethod === 'object') {
-	      if (typeof payMethod.number === 'undefined' || typeof payMethod.cvv === 'undefined' || typeof payMethod.expiration === 'undefined') {
-	        throw new Error('Invalid card object');
-	      }
-	
-	      var client = new BraintreeClient({
-	        clientToken: braintreeToken
-	      });
-	
-	      client.tokenizeCard({
-	        number: payMethod.number,
-	        expirationDate: payMethod.expiration,
-	        cvv: payMethod.cvv
-	      }, function (err, nonce) {
-	        if (err) {
-	          console.error('Braintree tokenization error:', err);
-	          dispatch(appActions.error('Braintree tokenization error'));
-	        } else {
-	          requestSub({ nonce: nonce });
-	        }
-	      });
-	      // Check for a payMethodUri
-	    } else if (typeof payMethod === 'string') {
-	        requestSub({ payMethodUri: payMethod });
-	      } else {
-	        throw new Error('Unrecognized payMethod should be a card ' + '(object) or payMethodUri (string)');
-	      }
+	  var data = {
+	    plan_id: productId
 	  };
+	  data.pay_method_uri = payMethodUri;
+	  data.pay_method_nonce = payNonce;
+	
+	  return fetch({
+	    data: data,
+	    url: '/braintree/subscriptions/',
+	    method: 'post'
+	  }, {
+	    csrfToken: getState().app.csrfToken
+	  }).then(function () {
+	    console.log('Successfully subscribed + completed payment');
+	    dispatch(transactionActions.complete());
+	  }).fail(function ($xhr) {
+	    if (data.pay_method_nonce) {
+	      dispatch({
+	        type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
+	        apiErrorResult: $xhr.responseJSON
+	      });
+	    } else {
+	      dispatch(appActions.error('Subscription creation failed'));
+	    }
+	  });
 	}
 
 /***/ },
@@ -36713,15 +36676,32 @@
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	exports.complete = complete;
 	exports.payWithNewCard = payWithNewCard;
+	exports.processOneTimePayment = processOneTimePayment;
+	exports.processPayment = processPayment;
 	exports.getUserTransactions = getUserTransactions;
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	var _braintreeWeb = __webpack_require__(246);
+	
+	var _braintreeWeb2 = _interopRequireDefault(_braintreeWeb);
+	
 	var _constantsActionTypes = __webpack_require__(240);
 	
 	var actionTypes = _interopRequireWildcard(_constantsActionTypes);
+	
+	var _products = __webpack_require__(253);
+	
+	var products = _interopRequireWildcard(_products);
 	
 	var _app = __webpack_require__(249);
 	
@@ -36730,6 +36710,10 @@
 	var _api = __webpack_require__(247);
 	
 	var api = _interopRequireWildcard(_api);
+	
+	var _braintree = __webpack_require__(257);
+	
+	var _subscriptions = __webpack_require__(251);
 	
 	function complete() {
 	  return {
@@ -36740,6 +36724,94 @@
 	function payWithNewCard() {
 	  return {
 	    type: actionTypes.PAY_WITH_NEW_CARD
+	  };
+	}
+	
+	function processOneTimePayment(_ref) {
+	  var dispatch = _ref.dispatch;
+	  var productId = _ref.productId;
+	  var getState = _ref.getState;
+	  var payNonce = _ref.payNonce;
+	  var payMethodUri = _ref.payMethodUri;
+	  var _ref$fetch = _ref.fetch;
+	  var fetch = _ref$fetch === undefined ? api.fetch : _ref$fetch;
+	  var amount = _ref.amount;
+	
+	  var data = {
+	    amount: amount,
+	    product_id: productId
+	  };
+	  data.paymethod = payMethodUri;
+	  data.nonce = payNonce;
+	
+	  return fetch({
+	    data: data,
+	    url: '/braintree/sale/',
+	    method: 'post'
+	  }, {
+	    csrfToken: getState().app.csrfToken
+	  }).then(function () {
+	    console.log('Successfully completed sale');
+	    dispatch(complete());
+	  }).fail(function ($xhr) {
+	    if (data.nonce) {
+	      dispatch({
+	        type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
+	        apiErrorResult: $xhr.responseJSON
+	      });
+	    } else {
+	      dispatch(appActions.error('product sale failed'));
+	    }
+	  });
+	}
+	
+	function processPayment(_ref2) {
+	  var productId = _ref2.productId;
+	  var braintreeToken = _ref2.braintreeToken;
+	  var creditCard = _ref2.creditCard;
+	  var payMethodUri = _ref2.payMethodUri;
+	  var _ref2$BraintreeClient = _ref2.BraintreeClient;
+	  var BraintreeClient = _ref2$BraintreeClient === undefined ? _braintreeWeb2['default'].api.Client : _ref2$BraintreeClient;
+	  var _ref2$createSubscription = _ref2.createSubscription;
+	  var createSubscription = _ref2$createSubscription === undefined ? _subscriptions.createSubscription : _ref2$createSubscription;
+	  var _ref2$payOnce = _ref2.payOnce;
+	  var payOnce = _ref2$payOnce === undefined ? processOneTimePayment : _ref2$payOnce;
+	
+	  var args = _objectWithoutProperties(_ref2, ['productId', 'braintreeToken', 'creditCard', 'payMethodUri', 'BraintreeClient', 'createSubscription', 'payOnce']);
+	
+	  return function (dispatch, getState) {
+	    var product = products.get(productId);
+	    var payForProduct;
+	
+	    if (product.recurrence === 'monthly') {
+	      console.log('calling createSubscription for product', product.id);
+	      payForProduct = createSubscription;
+	    } else {
+	      console.log('calling processOneTimePayment for product', product.id);
+	      payForProduct = payOnce;
+	    }
+	
+	    var payArgs = _extends({
+	      dispatch: dispatch,
+	      getState: getState,
+	      productId: productId
+	    }, args);
+	
+	    if (creditCard) {
+	      (0, _braintree.tokenizeCreditCard)({
+	        dispatch: dispatch,
+	        braintreeToken: braintreeToken,
+	        BraintreeClient: BraintreeClient,
+	        creditCard: creditCard,
+	        callback: function callback(nonce) {
+	          return payForProduct(_extends({ payNonce: nonce }, payArgs));
+	        }
+	      });
+	    } else if (payMethodUri) {
+	      payForProduct(_extends({ payMethodUri: payMethodUri }, payArgs));
+	    } else {
+	      throw new Error('Either creditCard or payMethodUri is required.');
+	    }
 	  };
 	}
 	
@@ -36771,8 +36843,172 @@
 	}
 
 /***/ },
-/* 253 */,
+/* 253 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports.get = get;
+	var productData = {
+	  'mozilla-concrete-brick': __webpack_require__(254),
+	  'mozilla-concrete-mortar': __webpack_require__(255),
+	  'mozilla-foundation-donation': __webpack_require__(256)
+	};
+	
+	exports['default'] = productData;
+	
+	function get(id) {
+	  if (!productData[id]) {
+	    throw new Error('Invalid product: ' + id);
+	  }
+	  return productData[id];
+	}
+
+/***/ },
 /* 254 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"description": {
+			"en": "Brick"
+		},
+		"img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/default.png",
+		"price": {
+			"en": "$10.00"
+		},
+		"seller": {
+			"kind": "products",
+			"terms": "http://pay.dev.mozaws.net/terms/",
+			"name": {
+				"en": "Mozilla Concrete"
+			},
+			"url": "http://pay.dev.mozaws.net/",
+			"email": "support@concrete.mozilla.org",
+			"id": "mozilla-concrete"
+		},
+		"recurrence": "monthly",
+		"currency": "USD",
+		"amount": "10.00",
+		"active": true,
+		"id": "mozilla-concrete-brick"
+	}
+
+/***/ },
+/* 255 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"description": {
+			"en": "Mortar"
+		},
+		"img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/mortar.png",
+		"price": {
+			"en": "$5.00"
+		},
+		"seller": {
+			"kind": "products",
+			"terms": "http://pay.dev.mozaws.net/terms/",
+			"name": {
+				"en": "Mozilla Concrete"
+			},
+			"url": "http://pay.dev.mozaws.net/",
+			"email": "support@concrete.mozilla.org",
+			"id": "mozilla-concrete"
+		},
+		"recurrence": "monthly",
+		"currency": "USD",
+		"amount": "5.00",
+		"active": true,
+		"id": "mozilla-concrete-mortar"
+	}
+
+/***/ },
+/* 256 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"description": {
+			"en": "Donation"
+		},
+		"img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/default.png",
+		"price": {},
+		"seller": {
+			"kind": "donations",
+			"terms": "http://pay.dev.mozaws.net/terms/",
+			"name": {
+				"en": "Mozilla Foundation"
+			},
+			"url": "http://pay.dev.mozaws.net/",
+			"email": "support@foundation.mozilla.org",
+			"id": "mozilla-foundation"
+		},
+		"recurrence": null,
+		"currency": "USD",
+		"amount": null,
+		"active": true,
+		"id": "mozilla-foundation-donation"
+	}
+
+/***/ },
+/* 257 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports.tokenizeCreditCard = tokenizeCreditCard;
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _braintreeWeb = __webpack_require__(246);
+	
+	var _braintreeWeb2 = _interopRequireDefault(_braintreeWeb);
+	
+	var _app = __webpack_require__(249);
+	
+	var appActions = _interopRequireWildcard(_app);
+	
+	function tokenizeCreditCard(_ref) {
+	  var dispatch = _ref.dispatch;
+	  var braintreeToken = _ref.braintreeToken;
+	  var creditCard = _ref.creditCard;
+	  var callback = _ref.callback;
+	  var _ref$BraintreeClient = _ref.BraintreeClient;
+	  var BraintreeClient = _ref$BraintreeClient === undefined ? _braintreeWeb2['default'].api.Client : _ref$BraintreeClient;
+	
+	  if (typeof creditCard.number === 'undefined' || typeof creditCard.cvv === 'undefined' || typeof creditCard.expiration === 'undefined') {
+	    console.error('not a complete card object:', creditCard);
+	    throw new Error('Invalid card object');
+	  }
+	
+	  var client = new BraintreeClient({
+	    clientToken: braintreeToken
+	  });
+	
+	  client.tokenizeCard({
+	    number: creditCard.number,
+	    expirationDate: creditCard.expiration,
+	    cvv: creditCard.cvv
+	  }, function (err, nonce) {
+	    if (err) {
+	      console.error('Braintree tokenization error:', err);
+	      dispatch(appActions.error('Braintree tokenization error'));
+	    } else {
+	      callback(nonce);
+	    }
+	  });
+	}
+
+/***/ },
+/* 258 */,
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36795,7 +37031,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsPayMethodList = __webpack_require__(255);
+	var _componentsPayMethodList = __webpack_require__(260);
 	
 	var _componentsPayMethodList2 = _interopRequireDefault(_componentsPayMethodList);
 	
@@ -36886,7 +37122,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 255 */
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36911,7 +37147,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsPayMethodItem = __webpack_require__(256);
+	var _componentsPayMethodItem = __webpack_require__(261);
 	
 	var _componentsPayMethodItem2 = _interopRequireDefault(_componentsPayMethodItem);
 	
@@ -36981,7 +37217,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 256 */
+/* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37073,10 +37309,10 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 257 */,
-/* 258 */,
-/* 259 */,
-/* 260 */
+/* 262 */,
+/* 263 */,
+/* 264 */,
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37145,122 +37381,12 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 261 */,
-/* 262 */,
-/* 263 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	exports.get = get;
-	var productData = {
-	  'mozilla-concrete-brick': __webpack_require__(264),
-	  'mozilla-concrete-mortar': __webpack_require__(265),
-	  'mozilla-foundation-donation': __webpack_require__(266)
-	};
-	
-	exports['default'] = productData;
-	
-	function get(id) {
-	  if (!productData[id]) {
-	    throw new Error('Invalid product: ' + id);
-	  }
-	  return productData[id];
-	}
-
-/***/ },
-/* 264 */
-/***/ function(module, exports) {
-
-	module.exports = {
-		"description": {
-			"en": "Brick"
-		},
-		"img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/default.png",
-		"price": {
-			"en": "$10.00"
-		},
-		"seller": {
-			"kind": "products",
-			"terms": "http://pay.dev.mozaws.net/terms/",
-			"name": {
-				"en": "Mozilla Concrete"
-			},
-			"url": "http://pay.dev.mozaws.net/",
-			"email": "support@concrete.mozilla.org",
-			"id": "mozilla-concrete"
-		},
-		"recurrence": "monthly",
-		"currency": "USD",
-		"amount": "10.00",
-		"active": true,
-		"id": "mozilla-concrete-brick"
-	}
-
-/***/ },
-/* 265 */
-/***/ function(module, exports) {
-
-	module.exports = {
-		"description": {
-			"en": "Mortar"
-		},
-		"img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/mortar.png",
-		"price": {
-			"en": "$5.00"
-		},
-		"seller": {
-			"kind": "products",
-			"terms": "http://pay.dev.mozaws.net/terms/",
-			"name": {
-				"en": "Mozilla Concrete"
-			},
-			"url": "http://pay.dev.mozaws.net/",
-			"email": "support@concrete.mozilla.org",
-			"id": "mozilla-concrete"
-		},
-		"recurrence": "monthly",
-		"currency": "USD",
-		"amount": "5.00",
-		"active": true,
-		"id": "mozilla-concrete-mortar"
-	}
-
-/***/ },
-/* 266 */
-/***/ function(module, exports) {
-
-	module.exports = {
-		"description": {
-			"en": "Donation"
-		},
-		"img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/default.png",
-		"price": {},
-		"seller": {
-			"kind": "donations",
-			"terms": "http://pay.dev.mozaws.net/terms/",
-			"name": {
-				"en": "Mozilla Foundation"
-			},
-			"url": "http://pay.dev.mozaws.net/",
-			"email": "support@foundation.mozilla.org",
-			"id": "mozilla-foundation"
-		},
-		"recurrence": null,
-		"currency": "USD",
-		"amount": null,
-		"active": true,
-		"id": "mozilla-foundation-donation"
-	}
-
-/***/ },
+/* 266 */,
 /* 267 */,
 /* 268 */,
 /* 269 */,
-/* 270 */
+/* 270 */,
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37283,7 +37409,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsSpinner = __webpack_require__(260);
+	var _componentsSpinner = __webpack_require__(265);
 	
 	var _componentsSpinner2 = _interopRequireDefault(_componentsSpinner);
 	
@@ -37328,9 +37454,9 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 271 */,
 /* 272 */,
-/* 273 */
+/* 273 */,
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37393,7 +37519,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 274 */
+/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37416,7 +37542,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsSpinner = __webpack_require__(260);
+	var _componentsSpinner = __webpack_require__(265);
 	
 	var _componentsSpinner2 = _interopRequireDefault(_componentsSpinner);
 	
@@ -37482,9 +37608,9 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 275 */,
 /* 276 */,
-/* 277 */
+/* 277 */,
+/* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37523,15 +37649,15 @@
 	
 	var _dataStore2 = _interopRequireDefault(_dataStore);
 	
-	var _componentsError = __webpack_require__(273);
+	var _componentsError = __webpack_require__(274);
 	
 	var _componentsError2 = _interopRequireDefault(_componentsError);
 	
-	var _viewsSharedSignIn = __webpack_require__(274);
+	var _viewsSharedSignIn = __webpack_require__(275);
 	
 	var _viewsSharedSignIn2 = _interopRequireDefault(_viewsSharedSignIn);
 	
-	var _viewsTransaction = __webpack_require__(278);
+	var _viewsTransaction = __webpack_require__(279);
 	
 	var _viewsTransaction2 = _interopRequireDefault(_viewsTransaction);
 	
@@ -37543,7 +37669,7 @@
 	
 	var userActions = _interopRequireWildcard(_actionsUser);
 	
-	var _products = __webpack_require__(263);
+	var _products = __webpack_require__(253);
 	
 	var products = _interopRequireWildcard(_products);
 	
@@ -37578,7 +37704,9 @@
 	    // TODO: we should validate/clean this input to raise early errors.
 	    this.state = {
 	      accessToken: qs.access_token,
-	      productId: qs.product
+	      productId: qs.product,
+	      // This is an amount to pay, which applies to things like donations.
+	      amount: qs.amount
 	    };
 	  }
 	
@@ -37620,6 +37748,7 @@
 	            } else {
 	              console.log('rendering purchase flow');
 	              return _react2['default'].createElement(Transaction, {
+	                amount: state.amount,
 	                productId: state.productId,
 	                user: connector.user
 	              });
@@ -37646,7 +37775,7 @@
 	}
 
 /***/ },
-/* 278 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37685,23 +37814,19 @@
 	
 	var userActions = _interopRequireWildcard(_actionsUser);
 	
-	var _actionsSubscriptions = __webpack_require__(251);
-	
-	var subscriptionActions = _interopRequireWildcard(_actionsSubscriptions);
-	
-	var _viewsSharedBraintreeToken = __webpack_require__(270);
+	var _viewsSharedBraintreeToken = __webpack_require__(271);
 	
 	var _viewsSharedBraintreeToken2 = _interopRequireDefault(_viewsSharedBraintreeToken);
 	
-	var _viewsTransactionAddSubscription = __webpack_require__(279);
+	var _viewsTransactionProductPay = __webpack_require__(280);
 	
-	var _viewsTransactionAddSubscription2 = _interopRequireDefault(_viewsTransactionAddSubscription);
+	var _viewsTransactionProductPay2 = _interopRequireDefault(_viewsTransactionProductPay);
 	
-	var _viewsTransactionPayMethodListing = __webpack_require__(281);
+	var _viewsTransactionProductPayChooser = __webpack_require__(282);
 	
-	var _viewsTransactionPayMethodListing2 = _interopRequireDefault(_viewsTransactionPayMethodListing);
+	var _viewsTransactionProductPayChooser2 = _interopRequireDefault(_viewsTransactionProductPayChooser);
 	
-	var _viewsTransactionCompletePayment = __webpack_require__(282);
+	var _viewsTransactionCompletePayment = __webpack_require__(283);
 	
 	var _viewsTransactionCompletePayment2 = _interopRequireDefault(_viewsTransactionCompletePayment);
 	
@@ -37728,8 +37853,12 @@
 	      var props = this.props;
 	      var BraintreeToken = props.BraintreeToken;
 	      var CompletePayment = props.CompletePayment;
-	      var PayMethodListing = props.PayMethodListing;
-	      var AddSubscription = props.AddSubscription;
+	      var ProductPayChooser = props.ProductPayChooser;
+	      var ProductPay = props.ProductPay;
+	
+	      var _bindActionCreators = (0, _redux.bindActionCreators)(transactionActions, connector.dispatch);
+	
+	      var processPayment = _bindActionCreators.processPayment;
 	
 	      if (connector.transaction.completed) {
 	        return _react2['default'].createElement(CompletePayment, {
@@ -37737,13 +37866,9 @@
 	          userEmail: props.user.email });
 	      } else if (connector.transaction.availablePayMethods.length > 0) {
 	        console.log('rendering card listing');
-	
-	        var _bindActionCreators = (0, _redux.bindActionCreators)(subscriptionActions, connector.dispatch);
-	
-	        var createSubscription = _bindActionCreators.createSubscription;
-	
-	        return _react2['default'].createElement(PayMethodListing, _extends({
-	          createSubscription: createSubscription,
+	        return _react2['default'].createElement(ProductPayChooser, _extends({
+	          amount: props.amount,
+	          processPayment: processPayment,
 	          productId: props.productId,
 	          payMethods: connector.transaction.availablePayMethods
 	        }, (0, _redux.bindActionCreators)(transactionActions, connector.dispatch)));
@@ -37752,15 +37877,11 @@
 	        return _react2['default'].createElement(BraintreeToken, (0, _redux.bindActionCreators)(userActions, connector.dispatch));
 	      } else {
 	        console.log('rendering card entry');
-	
-	        var _bindActionCreators2 = (0, _redux.bindActionCreators)(subscriptionActions, connector.dispatch);
-	
-	        var createSubscription = _bindActionCreators2.createSubscription;
-	
-	        return _react2['default'].createElement(AddSubscription, {
+	        return _react2['default'].createElement(ProductPay, {
+	          amount: props.amount,
 	          cardSubmissionErrors: connector.transaction.cardSubmissionErrors,
 	          braintreeToken: connector.user.braintreeToken,
-	          createSubscription: createSubscription,
+	          processPayment: processPayment,
 	          productId: props.productId
 	        });
 	      }
@@ -37781,10 +37902,11 @@
 	  }], [{
 	    key: 'propTypes',
 	    value: {
-	      AddSubscription: _react.PropTypes.func.isRequired,
 	      BraintreeToken: _react.PropTypes.func.isRequired,
 	      CompletePayment: _react.PropTypes.func.isRequired,
-	      PayMethodListing: _react.PropTypes.func.isRequired,
+	      ProductPay: _react.PropTypes.func.isRequired,
+	      ProductPayChooser: _react.PropTypes.func.isRequired,
+	      amount: _react.PropTypes.string,
 	      productId: _react.PropTypes.string.isRequired,
 	      user: _react.PropTypes.object.isRequired
 	    },
@@ -37792,8 +37914,8 @@
 	  }, {
 	    key: 'defaultProps',
 	    value: {
-	      AddSubscription: _viewsTransactionAddSubscription2['default'],
-	      PayMethodListing: _viewsTransactionPayMethodListing2['default'],
+	      ProductPay: _viewsTransactionProductPay2['default'],
+	      ProductPayChooser: _viewsTransactionProductPayChooser2['default'],
 	      CompletePayment: _viewsTransactionCompletePayment2['default'],
 	      BraintreeToken: _viewsSharedBraintreeToken2['default']
 	    },
@@ -37804,101 +37926,6 @@
 	})(_react.Component);
 	
 	exports['default'] = Transaction;
-	module.exports = exports['default'];
-
-/***/ },
-/* 279 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-	
-	var _react = __webpack_require__(3);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _componentsCardForm = __webpack_require__(159);
-	
-	var _componentsCardForm2 = _interopRequireDefault(_componentsCardForm);
-	
-	var _componentsProductDetail = __webpack_require__(280);
-	
-	var _componentsProductDetail2 = _interopRequireDefault(_componentsProductDetail);
-	
-	var _tracking = __webpack_require__(203);
-	
-	var _tracking2 = _interopRequireDefault(_tracking);
-	
-	var _utils = __webpack_require__(201);
-	
-	var AddSubscription = (function (_Component) {
-	  _inherits(AddSubscription, _Component);
-	
-	  function AddSubscription() {
-	    _classCallCheck(this, AddSubscription);
-	
-	    _get(Object.getPrototypeOf(AddSubscription.prototype), 'constructor', this).apply(this, arguments);
-	  }
-	
-	  _createClass(AddSubscription, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      _tracking2['default'].setPage('/add-subscription');
-	    }
-	  }, {
-	    key: 'handleCardSubmit',
-	    value: function handleCardSubmit(creditCard) {
-	      console.log('submitting credit card to sign up for subscription', this.props.productId);
-	      this.props.createSubscription(this.props.productId, creditCard, this.props.braintreeToken);
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this = this;
-	
-	      return _react2['default'].createElement(
-	        'div',
-	        { className: 'card-details' },
-	        _react2['default'].createElement(_componentsProductDetail2['default'], { productId: this.props.productId }),
-	        _react2['default'].createElement(_componentsCardForm2['default'], {
-	          submissionErrors: this.props.cardSubmissionErrors,
-	          submitPrompt: (0, _utils.gettext)('Subscribe'),
-	          handleCardSubmit: function (card) {
-	            return _this.handleCardSubmit(card);
-	          },
-	          id: 'braintree-form',
-	          method: 'post'
-	        })
-	      );
-	    }
-	  }], [{
-	    key: 'propTypes',
-	    value: {
-	      braintreeToken: _react.PropTypes.string.isRequired,
-	      cardSubmissionErrors: _react.PropTypes.object,
-	      createSubscription: _react.PropTypes.func.isRequired,
-	      productId: _react.PropTypes.string.isRequired
-	    },
-	    enumerable: true
-	  }]);
-	
-	  return AddSubscription;
-	})(_react.Component);
-	
-	exports['default'] = AddSubscription;
 	module.exports = exports['default'];
 
 /***/ },
@@ -37927,7 +37954,125 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _products = __webpack_require__(263);
+	var _componentsCardForm = __webpack_require__(159);
+	
+	var _componentsCardForm2 = _interopRequireDefault(_componentsCardForm);
+	
+	var _componentsProductDetail = __webpack_require__(281);
+	
+	var _componentsProductDetail2 = _interopRequireDefault(_componentsProductDetail);
+	
+	var _products = __webpack_require__(253);
+	
+	var products = _interopRequireWildcard(_products);
+	
+	var _tracking = __webpack_require__(203);
+	
+	var _tracking2 = _interopRequireDefault(_tracking);
+	
+	var _utils = __webpack_require__(201);
+	
+	var ProductPay = (function (_Component) {
+	  _inherits(ProductPay, _Component);
+	
+	  function ProductPay() {
+	    _classCallCheck(this, ProductPay);
+	
+	    _get(Object.getPrototypeOf(ProductPay.prototype), 'constructor', this).apply(this, arguments);
+	  }
+	
+	  _createClass(ProductPay, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      _tracking2['default'].setPage('/product-pay');
+	    }
+	  }, {
+	    key: 'handleCardSubmit',
+	    value: function handleCardSubmit(creditCard) {
+	      console.log('submitting credit card to sign up for subscription', this.props.productId);
+	      this.props.processPayment({ productId: this.props.productId,
+	        creditCard: creditCard,
+	        braintreeToken: this.props.braintreeToken,
+	        amount: this.props.amount });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this = this;
+	
+	      var product = products.get(this.props.productId);
+	      var submitPrompt;
+	      if (product.seller.kind === 'donations') {
+	        submitPrompt = (0, _utils.gettext)('Donate now');
+	      } else {
+	        // TODO: also handle non-recurring, non-donations here.
+	        submitPrompt = (0, _utils.gettext)('Subscribe');
+	      }
+	
+	      return _react2['default'].createElement(
+	        'div',
+	        { className: 'card-details' },
+	        _react2['default'].createElement(_componentsProductDetail2['default'], {
+	          productId: this.props.productId,
+	          price: this.props.amount
+	        }),
+	        _react2['default'].createElement(_componentsCardForm2['default'], {
+	          submissionErrors: this.props.cardSubmissionErrors,
+	          submitPrompt: submitPrompt,
+	          handleCardSubmit: function (card) {
+	            return _this.handleCardSubmit(card);
+	          },
+	          id: 'braintree-form',
+	          method: 'post'
+	        })
+	      );
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: {
+	      // Amount to pay, which only applies to things like donations.
+	      amount: _react.PropTypes.string,
+	      braintreeToken: _react.PropTypes.string.isRequired,
+	      cardSubmissionErrors: _react.PropTypes.object,
+	      processPayment: _react.PropTypes.func.isRequired,
+	      productId: _react.PropTypes.string.isRequired
+	    },
+	    enumerable: true
+	  }]);
+	
+	  return ProductPay;
+	})(_react.Component);
+	
+	exports['default'] = ProductPay;
+	module.exports = exports['default'];
+
+/***/ },
+/* 281 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _products = __webpack_require__(253);
 	
 	var products = _interopRequireWildcard(_products);
 	
@@ -37952,6 +38097,16 @@
 	        { className: 'recurrence' },
 	        (0, _utils.gettext)('per month')
 	      ) : '';
+	      var price;
+	
+	      // TODO: localize/format prices with currency symbol.
+	      if (productData.price && Object.keys(productData.price).length) {
+	        console.log('Showing configured price for product', productData.id);
+	        price = productData.price.en;
+	      } else {
+	        console.log('Showing component property price for product', productData.id);
+	        price = this.props.price;
+	      }
 	
 	      return _react2['default'].createElement(
 	        'div',
@@ -37969,7 +38124,7 @@
 	        _react2['default'].createElement(
 	          'div',
 	          { className: 'price' },
-	          productData.price.en
+	          price
 	        ),
 	        recurrence
 	      );
@@ -37977,6 +38132,9 @@
 	  }], [{
 	    key: 'propTypes',
 	    value: {
+	      // Optional product price. This only applies to products that do not have
+	      // a configured price, such as donations.
+	      price: _react.PropTypes.string,
 	      productId: _react.PropTypes.string.isRequired
 	    },
 	    enumerable: true
@@ -37986,102 +38144,6 @@
 	})(_react.Component);
 	
 	exports['default'] = ProductDetail;
-	module.exports = exports['default'];
-
-/***/ },
-/* 281 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-	
-	var _react = __webpack_require__(3);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _componentsPayMethodChoice = __webpack_require__(254);
-	
-	var _componentsPayMethodChoice2 = _interopRequireDefault(_componentsPayMethodChoice);
-	
-	var _componentsProductDetail = __webpack_require__(280);
-	
-	var _componentsProductDetail2 = _interopRequireDefault(_componentsProductDetail);
-	
-	var _utils = __webpack_require__(201);
-	
-	var _tracking = __webpack_require__(203);
-	
-	var _tracking2 = _interopRequireDefault(_tracking);
-	
-	var PayMethodListing = (function (_Component) {
-	  _inherits(PayMethodListing, _Component);
-	
-	  function PayMethodListing() {
-	    var _this = this;
-	
-	    _classCallCheck(this, PayMethodListing);
-	
-	    _get(Object.getPrototypeOf(PayMethodListing.prototype), 'constructor', this).apply(this, arguments);
-	
-	    this.handleSubmit = function (payMethod) {
-	      _this.props.createSubscription(_this.props.productId, payMethod);
-	    };
-	  }
-	
-	  _createClass(PayMethodListing, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      _tracking2['default'].setPage('/pay-method-listing');
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2['default'].createElement(
-	        'div',
-	        null,
-	        _react2['default'].createElement(_componentsProductDetail2['default'], { productId: this.props.productId }),
-	        _react2['default'].createElement(_componentsPayMethodChoice2['default'], {
-	          payMethods: this.props.payMethods,
-	          productId: this.props.productId,
-	          submitButtonText: (0, _utils.gettext)('Subscribe'),
-	          submitHandler: this.handleSubmit
-	        }),
-	        _react2['default'].createElement(
-	          'a',
-	          { className: 'add-card', href: '#',
-	            onClick: this.props.payWithNewCard },
-	          (0, _utils.gettext)('Add new credit card')
-	        )
-	      );
-	    }
-	  }], [{
-	    key: 'propTypes',
-	    value: {
-	      createSubscription: _react.PropTypes.func.isRequired,
-	      payMethods: _react.PropTypes.array.isRequired,
-	      payWithNewCard: _react.PropTypes.func.isRequired,
-	      productId: _react.PropTypes.string.isRequired
-	    },
-	    enumerable: true
-	  }]);
-	
-	  return PayMethodListing;
-	})(_react.Component);
-	
-	exports['default'] = PayMethodListing;
 	module.exports = exports['default'];
 
 /***/ },
@@ -38098,6 +38160,8 @@
 	
 	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
@@ -38108,7 +38172,123 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsProductDetail = __webpack_require__(280);
+	var _componentsPayMethodChoice = __webpack_require__(259);
+	
+	var _componentsPayMethodChoice2 = _interopRequireDefault(_componentsPayMethodChoice);
+	
+	var _componentsProductDetail = __webpack_require__(281);
+	
+	var _componentsProductDetail2 = _interopRequireDefault(_componentsProductDetail);
+	
+	var _products = __webpack_require__(253);
+	
+	var products = _interopRequireWildcard(_products);
+	
+	var _utils = __webpack_require__(201);
+	
+	var _tracking = __webpack_require__(203);
+	
+	var _tracking2 = _interopRequireDefault(_tracking);
+	
+	var ProductPayChooser = (function (_Component) {
+	  _inherits(ProductPayChooser, _Component);
+	
+	  function ProductPayChooser() {
+	    var _this = this;
+	
+	    _classCallCheck(this, ProductPayChooser);
+	
+	    _get(Object.getPrototypeOf(ProductPayChooser.prototype), 'constructor', this).apply(this, arguments);
+	
+	    this.handleSubmit = function (payMethodUri) {
+	      _this.props.processPayment({ productId: _this.props.productId,
+	        amount: _this.props.amount,
+	        payMethodUri: payMethodUri });
+	    };
+	  }
+	
+	  _createClass(ProductPayChooser, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      _tracking2['default'].setPage('/product-pay-chooser');
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var product = products.get(this.props.productId);
+	      var submitPrompt;
+	      if (product.seller.kind === 'donations') {
+	        submitPrompt = (0, _utils.gettext)('Donate now');
+	      } else {
+	        // TODO: also handle non-recurring, non-donations here.
+	        submitPrompt = (0, _utils.gettext)('Subscribe');
+	      }
+	
+	      return _react2['default'].createElement(
+	        'div',
+	        null,
+	        _react2['default'].createElement(_componentsProductDetail2['default'], {
+	          productId: this.props.productId,
+	          price: this.props.amount
+	        }),
+	        _react2['default'].createElement(_componentsPayMethodChoice2['default'], {
+	          payMethods: this.props.payMethods,
+	          productId: this.props.productId,
+	          submitButtonText: submitPrompt,
+	          submitHandler: this.handleSubmit
+	        }),
+	        _react2['default'].createElement(
+	          'a',
+	          { className: 'add-card', href: '#',
+	            onClick: this.props.payWithNewCard },
+	          (0, _utils.gettext)('Add new credit card')
+	        )
+	      );
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: {
+	      // Amount to pay, which applies to things like donations.
+	      amount: _react.PropTypes.string,
+	      payMethods: _react.PropTypes.array.isRequired,
+	      payWithNewCard: _react.PropTypes.func.isRequired,
+	      processPayment: _react.PropTypes.func.isRequired,
+	      productId: _react.PropTypes.string.isRequired
+	    },
+	    enumerable: true
+	  }]);
+	
+	  return ProductPayChooser;
+	})(_react.Component);
+	
+	exports['default'] = ProductPayChooser;
+	module.exports = exports['default'];
+
+/***/ },
+/* 283 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _componentsProductDetail = __webpack_require__(281);
 	
 	var _componentsProductDetail2 = _interopRequireDefault(_componentsProductDetail);
 	

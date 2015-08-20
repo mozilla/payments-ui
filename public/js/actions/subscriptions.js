@@ -1,5 +1,3 @@
-import braintree from 'braintree-web';
-
 import * as actionTypes from 'constants/action-types';
 
 import * as api from './api';
@@ -35,69 +33,32 @@ export function getUserSubscriptions(fetch=api.fetch) {
 }
 
 
-export function createSubscription(productId, payMethod,
-                                   braintreeToken, fetch=api.fetch,
-                                   BraintreeClient=braintree.api.Client) {
-  return (dispatch, getState) => {
-
-    function requestSub(opts={}) {
-      var data = {
-        plan_id: productId,
-      };
-      data.pay_method_uri = opts.payMethodUri;
-      data.pay_method_nonce = opts.nonce;
-
-      return fetch({
-        data: data,
-        url: '/braintree/subscriptions/',
-        method: 'post',
-      }, {
-        csrfToken: getState().app.csrfToken,
-      }).then(() => {
-        console.log('Successfully subscribed + completed payment');
-        dispatch(transactionActions.complete());
-      }).fail($xhr => {
-        if (data.pay_method_nonce) {
-          dispatch({
-            type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
-            apiErrorResult: $xhr.responseJSON,
-          });
-        } else {
-          dispatch(appActions.error('Subscription creation failed'));
-        }
-      });
-    }
-
-    // Check to see if payMethod is a card object
-    if (typeof payMethod === 'object') {
-      if (typeof payMethod.number === 'undefined' ||
-          typeof payMethod.cvv === 'undefined' ||
-          typeof payMethod.expiration === 'undefined') {
-        throw new Error('Invalid card object');
-      }
-
-      var client = new BraintreeClient({
-        clientToken: braintreeToken,
-      });
-
-      client.tokenizeCard({
-        number: payMethod.number,
-        expirationDate: payMethod.expiration,
-        cvv: payMethod.cvv,
-      }, (err, nonce) => {
-        if (err) {
-          console.error('Braintree tokenization error:', err);
-          dispatch(appActions.error('Braintree tokenization error'));
-        } else {
-          requestSub({nonce: nonce});
-        }
-      });
-    // Check for a payMethodUri
-    } else if (typeof payMethod === 'string') {
-      requestSub({payMethodUri: payMethod});
-    } else {
-      throw new Error('Unrecognized payMethod should be a card ' +
-                      '(object) or payMethodUri (string)');
-    }
+export function createSubscription({dispatch, productId,
+                                    getState, payNonce, payMethodUri,
+                                    fetch=api.fetch}) {
+  var data = {
+    plan_id: productId,
   };
+  data.pay_method_uri = payMethodUri;
+  data.pay_method_nonce = payNonce;
+
+  return fetch({
+    data: data,
+    url: '/braintree/subscriptions/',
+    method: 'post',
+  }, {
+    csrfToken: getState().app.csrfToken,
+  }).then(() => {
+    console.log('Successfully subscribed + completed payment');
+    dispatch(transactionActions.complete());
+  }).fail($xhr => {
+    if (data.pay_method_nonce) {
+      dispatch({
+        type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
+        apiErrorResult: $xhr.responseJSON,
+      });
+    } else {
+      dispatch(appActions.error('Subscription creation failed'));
+    }
+  });
 }
