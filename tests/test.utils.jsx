@@ -26,6 +26,11 @@ describe('utils.parseQuery', function() {
                      {foo: 'foo'});
   });
 
+  it('should preserve URL path hashes', function() {
+    assert.deepEqual(utils.parseQuery('http://foo/#/?foo=foo'),
+                     {foo: 'foo'});
+  });
+
 });
 
 
