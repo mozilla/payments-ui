@@ -188,19 +188,40 @@ export function stubComponent() {
 }
 
 
-export function doApiAction(deferredAction, dispatchSpy, getState) {
+export function getAppStateWithCSRF() {
+  return {
+    app: {
+      csrfToken: 'some-csrf-token',
+    },
+  };
+}
+
+
+export function doApiAction(deferredAction, dispatchSpy,
+                            getState=getAppStateWithCSRF) {
   //
   // Execute a deferred API action with a default csrf token for convenience.
   //
   if (!dispatchSpy) {
     dispatchSpy = sinon.spy();
   }
-  if (!getState) {
-    getState = () => ({
-      app: {
-        csrfToken: 'some-csrf-token',
-      },
-    });
-  }
   deferredAction(dispatchSpy, getState);
+}
+
+
+
+
+export class FakeBraintreeClient {
+  tokenizeCard(config, callback) {
+    console.log('resolving braintree tokenization');
+    callback(null, 'some-nonce');
+  }
+}
+
+
+export class FakeBraintreeClientError {
+  tokenizeCard(config, callback) {
+    console.log('resolving braintree tokenization with error');
+    callback("I'm some error");
+  }
 }

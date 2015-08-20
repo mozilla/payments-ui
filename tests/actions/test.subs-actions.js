@@ -70,47 +70,28 @@ describe('subscription actions', function() {
 
   describe('createSubscription', function() {
 
-    var fakeCard = {
-      number: '411111111111',
-      cvv: '222',
-      expiration: '06/16',
-    };
+    var fakeFetch;
+    beforeEach(function() {
+      dispatchSpy = sinon.spy();
+      fakeFetch = helpers.fakeFetch();
+    });
 
-    // Bad card with missing cvv
-    // and expiration.
-    var fakeBadCard = {
-      number: '411111111111',
-    };
-
-    class FakeBraintreeClient {
-      tokenizeCard(config, callback) {
-        console.log('resolving braintree tokenization');
-        callback(null, 'some-nonce');
-      }
-    }
-
-    class FakeBraintreeClientError {
-      tokenizeCard(config, callback) {
-        console.log('resolving braintree tokenization with error');
-        callback("I'm some error");
-      }
-    }
-
-    function createSubscription(fetch, client=FakeBraintreeClient,
-                                payMethod=fakeCard) {
-      var deferredAction = subActions.createSubscription(
-                                          'product-id',
-                                          payMethod,
-                                          'braintree-token',
-                                          fetch,
-                                          client);
-
-      helpers.doApiAction(deferredAction, dispatchSpy);
+    function createSubscription({fetch=fakeFetch,
+                                 payNonce='braintree-pay-nonce',
+                                 getState=helpers.getAppStateWithCSRF,
+                                 payMethodUri} = {}) {
+      subActions.createSubscription({
+        dispatch: dispatchSpy,
+        getState: getState,
+        productId: 'product-id',
+        payNonce: payNonce,
+        payMethodUri: payMethodUri,
+        fetch: fetch,
+      });
     }
 
     it('should dispatch a completion action', function() {
-      var fetch = helpers.fakeFetch();
-      createSubscription(fetch);
+      createSubscription();
 
       var action = dispatchSpy.firstCall.args[0];
       assert.deepEqual(action, transactionActions.complete());
@@ -122,7 +103,7 @@ describe('subscription actions', function() {
         result: 'fail',
         xhrError: {responseJSON: apiError},
       });
-      createSubscription(fetch);
+      createSubscription({fetch: fetch});
 
       var action = dispatchSpy.firstCall.args[0];
       assert.deepEqual(action, {
@@ -137,35 +118,12 @@ describe('subscription actions', function() {
         result: 'fail',
         xhrError: {responseJSON: apiError},
       });
-      createSubscription(fetch, FakeBraintreeClient,
-                         'fake-pay-method-uri');
+      createSubscription({fetch: fetch,
+                          payNonce: null,
+                          payMethodUri: 'fake-pay-method-uri'});
       var action = dispatchSpy.firstCall.args[0];
       assert.equal(action.type, actionTypes.APP_ERROR);
     });
-
-    it('should dispatch an error on tokenization failure', function() {
-      var fetch = helpers.fakeFetch();
-      createSubscription(fetch, FakeBraintreeClientError);
-      var action = dispatchSpy.firstCall.args[0];
-      assert.deepEqual(action,
-                       appActions.error('Braintree tokenization error'));
-    });
-
-    it('should throw with a bad card', function() {
-      assert.throws(() => {
-        var fetch = helpers.fakeFetch();
-        createSubscription(fetch, FakeBraintreeClient, fakeBadCard);
-      }, Error, /Invalid card object/);
-    });
-
-    it('should throw with unrecognized pay method', function() {
-      assert.throws(() => {
-        var fetch = helpers.fakeFetch();
-        var invalidPayMethod = 999;
-        createSubscription(fetch, FakeBraintreeClient, invalidPayMethod);
-      }, Error, /Unrecognized payMethod/);
-    });
-
   });
 
 });
