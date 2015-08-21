@@ -28,7 +28,7 @@ describe('Transaction', function() {
     });
   });
 
-  function mountView() {
+  function mountView({...props} = {}) {
     var FluxContainer = helpers.getFluxContainer(store);
 
     var container = TestUtils.renderIntoDocument(
@@ -40,7 +40,10 @@ describe('Transaction', function() {
               ProductPay={FakeProductPay}
               ProductPayChooser={FakeProductPayChooser}
               CompletePayment={FakeCompletePayment}
-              user={fakeUser} productId={productId} />
+              user={fakeUser}
+              productId={productId}
+              {...props}
+            />
           );
         }}
       </FluxContainer>
@@ -89,7 +92,7 @@ describe('Transaction', function() {
   });
 
   it('should render a payment completed page', function() {
-    var View = mountView();
+    var View = mountView({amount: '5.00'});
 
     store.dispatch(transactionActions.complete());
 
@@ -97,6 +100,7 @@ describe('Transaction', function() {
       View, FakeCompletePayment
     );
     assert.equal(child.props.userEmail, fakeUser.email);
+    assert.equal(child.props.amount, '5.00');
   });
 
   it('should render new card entry on explicit request', function() {
