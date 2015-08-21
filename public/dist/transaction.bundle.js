@@ -38339,6 +38339,17 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var email = this.props.userEmail ? _react2['default'].createElement(
+	        'p',
+	        { className: 'receipt' },
+	        (0, _utils.gettext)('Your receipt has been sent to'),
+	        _react2['default'].createElement(
+	          'span',
+	          { className: 'email' },
+	          this.props.userEmail
+	        )
+	      ) : '';
+	
 	      return _react2['default'].createElement(
 	        'div',
 	        { className: 'complete' },
@@ -38348,16 +38359,7 @@
 	          { className: 'accepted' },
 	          (0, _utils.gettext)('Payment Accepted')
 	        ),
-	        _react2['default'].createElement(
-	          'p',
-	          { className: 'receipt' },
-	          (0, _utils.gettext)('Your receipt has been sent to'),
-	          _react2['default'].createElement(
-	            'span',
-	            { className: 'email' },
-	            this.props.userEmail
-	          )
-	        ),
+	        email,
 	        _react2['default'].createElement(_componentsSubmitButton2['default'], { text: (0, _utils.gettext)('OK'),
 	          onClick: this.handleClick })
 	      );
