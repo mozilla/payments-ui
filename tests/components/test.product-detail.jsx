@@ -41,16 +41,33 @@ describe('ProductDetail', function() {
   });
 
   it('should show variable price', function() {
-    var price = '5.00';
-    var productId = 'mozilla-foundation-donation';
-
     var view = mountView({
-      price: price,
-      productId: productId,
+      price: '5.00',
+      productId: 'mozilla-foundation-donation',
     });
 
     var renderedPrice = helpers.findByClass(view, 'price');
-    assert.equal(renderedPrice.getDOMNode().textContent, price);
+    assert.equal(renderedPrice.getDOMNode().textContent, '$5.00');
+  });
+
+  it('should fix up variable price numbers', function() {
+    var view = mountView({
+      price: '5.3457888',
+      productId: 'mozilla-foundation-donation',
+    });
+
+    var renderedPrice = helpers.findByClass(view, 'price');
+    assert.equal(renderedPrice.getDOMNode().textContent, '$5.35');
+  });
+
+  it('should render variable price integers', function() {
+    var view = mountView({
+      price: '5',
+      productId: 'mozilla-foundation-donation',
+    });
+
+    var renderedPrice = helpers.findByClass(view, 'price');
+    assert.equal(renderedPrice.getDOMNode().textContent, '$5.00');
   });
 
   it('should ignore variable price when product has fixed price', function() {
