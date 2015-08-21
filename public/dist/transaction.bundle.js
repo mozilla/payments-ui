@@ -37862,6 +37862,7 @@
 	
 	      if (connector.transaction.completed) {
 	        return _react2['default'].createElement(CompletePayment, {
+	          amount: props.amount,
 	          productId: props.productId,
 	          userEmail: props.user.email });
 	      } else if (connector.transaction.availablePayMethods.length > 0) {
@@ -38354,7 +38355,10 @@
 	      return _react2['default'].createElement(
 	        'div',
 	        { className: 'complete' },
-	        _react2['default'].createElement(_componentsProductDetail2['default'], { productId: this.props.productId }),
+	        _react2['default'].createElement(_componentsProductDetail2['default'], {
+	          price: this.props.amount,
+	          productId: this.props.productId
+	        }),
 	        _react2['default'].createElement(
 	          'p',
 	          { className: 'accepted' },
@@ -38368,6 +38372,7 @@
 	  }], [{
 	    key: 'propTypes',
 	    value: {
+	      amount: _react2['default'].PropTypes.string,
 	      productId: _react2['default'].PropTypes.string.isRequired,
 	      userEmail: _react2['default'].PropTypes.string.isRequired,
 	      win: _react2['default'].PropTypes.object
