@@ -42,14 +42,17 @@ export default class CompletePayment extends Component {
   }
 
   render() {
+    var email = (this.props.userEmail ?
+      <p className="receipt">
+        {gettext('Your receipt has been sent to')}
+        <span className="email">{this.props.userEmail}</span>
+      </p> : '');
+
     return (
       <div className="complete">
         <ProductDetail productId={this.props.productId} />
         <p className="accepted">{gettext('Payment Accepted')}</p>
-        <p className="receipt">
-          {gettext('Your receipt has been sent to')}
-          <span className="email">{this.props.userEmail}</span>
-        </p>
+        {email}
         <SubmitButton text={gettext('OK')}
                       onClick={this.handleClick} />
       </div>

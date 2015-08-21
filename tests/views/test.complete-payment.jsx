@@ -32,6 +32,15 @@ describe('CompletePayment', function() {
     assert.equal(findDOMNode(email).textContent, this.email);
   });
 
+  it('should not show email message if no email', function() {
+    this.CompletePayment = TestUtils.renderIntoDocument(
+      <CompletePayment productId='mozilla-concrete-brick'
+                       win={this.win} />
+    );
+    expect(() => helpers.findByClass(this.CompletePayment, 'email'))
+      .to.throw('Did not find exactly one match');
+  });
+
   it('should fire handleClick when OK button is clicked', function() {
     var event = {
       preventDefault: sinon.stub(),
