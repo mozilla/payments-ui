@@ -1,57 +1,73 @@
 import React, { findDOMNode } from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
 
-import * as helpers from '../helpers';
-
+import ProductDetail from 'components/product-detail';
 import CompletePayment from 'views/transaction/complete-payment';
+
+import * as helpers from '../helpers';
 
 
 describe('CompletePayment', function() {
+  var sandbox;
+  var email = 'buyer@somewhere.org';
+  var win;
 
   beforeEach(function() {
-    this.sandbox = sinon.sandbox.create();
-    this.email = 'buyer@somewhere.org';
-    this.win = {
+    sandbox = sinon.sandbox.create();
+    win = {
       parent: {
-        postMessage: this.sandbox.stub(),
+        postMessage: sandbox.stub(),
       },
     };
-    this.CompletePayment = TestUtils.renderIntoDocument(
-      <CompletePayment productId='mozilla-concrete-brick'
-                       userEmail={this.email}
-                       win={this.win} />
-    );
   });
 
+  function mountView({productId='mozilla-concrete-brick',
+                      userEmail=email,
+                      ...props} = {}) {
+    return TestUtils.renderIntoDocument(
+      <CompletePayment productId={productId}
+                       userEmail={userEmail}
+                       win={win}
+                       {...props} />
+    );
+  }
+
   afterEach(function() {
-    this.sandbox.restore();
+    sandbox.restore();
   });
 
   it('should show where the receipt was emailed', function() {
-    var email = helpers.findByClass(this.CompletePayment, 'email');
-    assert.equal(findDOMNode(email).textContent, this.email);
+    var view = mountView();
+    var emailElem = helpers.findByClass(view, 'email');
+    assert.equal(findDOMNode(emailElem).textContent, email);
   });
 
   it('should not show email message if no email', function() {
-    this.CompletePayment = TestUtils.renderIntoDocument(
-      <CompletePayment productId='mozilla-concrete-brick'
-                       win={this.win} />
-    );
-    expect(() => helpers.findByClass(this.CompletePayment, 'email'))
+    var view = mountView({userEmail: null});
+    expect(() => helpers.findByClass(view, 'email'))
       .to.throw('Did not find exactly one match');
   });
 
   it('should fire handleClick when OK button is clicked', function() {
+    var view = mountView();
     var event = {
       preventDefault: sinon.stub(),
     };
     this.button = TestUtils.findRenderedDOMComponentWithTag(
-      this.CompletePayment, 'button');
+      view, 'button');
 
     TestUtils.Simulate.click(this.button, event);
     assert.equal(event.preventDefault.callCount, 1);
-    assert.ok(this.win.parent.postMessage.calledWith(
+    assert.ok(win.parent.postMessage.calledWith(
       JSON.stringify({event: 'purchase-completed'}), '*'));
+  });
+
+  it('should pass amount to product details', function() {
+    var view = mountView({amount: '10.00'});
+    var product = TestUtils.findRenderedComponentWithType(
+      view, ProductDetail
+    );
+    assert.equal(product.props.price, '10.00');
   });
 
 });

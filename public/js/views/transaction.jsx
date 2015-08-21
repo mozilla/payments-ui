@@ -51,6 +51,7 @@ export default class Transaction extends Component {
     if (connector.transaction.completed) {
       return (
         <CompletePayment
+          amount={props.amount}
           productId={props.productId}
           userEmail={props.user.email} />
       );
