@@ -38105,7 +38105,8 @@
 	        price = productData.price.en;
 	      } else {
 	        console.log('Showing component property price for product', productData.id);
-	        price = this.props.price;
+	        var decimalPrice = parseFloat(this.props.price);
+	        price = '$' + parseFloat(Math.round(decimalPrice * 100) / 100).toFixed(2);
 	      }
 	
 	      return _react2['default'].createElement(
