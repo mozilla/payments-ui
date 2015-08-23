@@ -38,12 +38,29 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', ['clean:dist', 'sass', 'webpack']);
 
-  grunt.registerTask('serve',
+  // The dev server used for live reloading in the browser.
+  grunt.registerTask('serve', 'Dev server with webpack hot module reloading',
     ['clean:dist', 'sass:dev', 'webpack-dev-server:start', 'watch:sass']);
-  grunt.registerTask('start',
-    ['clean:dist', 'sass:dev', 'webpack:dev', 'watch:sass']);
-  grunt.registerTask('start-email',
+  // Used to serve email CSS.
+  grunt.registerTask('watch-email',
     ['clean:dist', 'sass:email', 'webpack:dev', 'watch:sassemail']);
+  // Regular grunt server, used when running inside the payments-env docker.
+  grunt.registerTask('watch-static',
+    ['clean:dist', 'sass:dev', 'webpack:dev', 'watch:sass']);
+  // Legacy tasks still used by payments-env, see:
+  // https://github.com/mozilla/payments-ui/issues/361
+  grunt.registerTask('start', 'Deprecated; use `watch-static` instead',
+                     function() {
+    grunt.log.writeln(
+      '"grunt start" is deprecated; use `grunt watch-static` instead');
+    grunt.task.run('watch-static');
+  });
+  grunt.registerTask('start-email', 'Deprecated; use `watch-email` instead',
+                     function() {
+    grunt.log.writeln(
+      '"grunt start-email" is deprecated; use `grunt watch-email` instead');
+    grunt.task.run('watch-email');
+  });
 
   grunt.registerTask('test', ['karma:run', 'eslint', 'csslint:lax']);
 
