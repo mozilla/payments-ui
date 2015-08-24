@@ -58,7 +58,7 @@ export default function user(state, action) {
     });
   }
 
-  if (action.type === actionTypes.GOT_FILTERED_USER_SUBS) {
+  if (action.type === actionTypes.GOT_SUBS_BY_PAY_METHOD) {
     return Object.assign({}, initialUserState, state, {
       // This is short-lived data only relevant to the current
       // operation.

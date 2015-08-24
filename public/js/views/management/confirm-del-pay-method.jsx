@@ -15,10 +15,9 @@ export default class ConfirmDelPayMethod extends Component {
 
   static propTypes = {
     affectedSubscriptions: PropTypes.array,
-    closeModal: PropTypes.func.isRequired,
     delPayMethod: PropTypes.func.isRequired,
     error: PropTypes.func.isRequired,
-    getFilteredUserSubscriptions: PropTypes.func.isRequired,
+    getSubsByPayMethod: PropTypes.func.isRequired,
     payMethodUri: PropTypes.string.isRequired,
     payMethods: PropTypes.array.isRequired,
     showDelPayMethod: PropTypes.func.isRequired,
@@ -37,43 +36,53 @@ export default class ConfirmDelPayMethod extends Component {
   componentDidMount() {
     setTitle('Delete Payment Method?');
     tracking.setPage('/confirm-del-pay-method');
-    this.props.getFilteredUserSubscriptions(this.props.payMethodUri);
+    this.props.getSubsByPayMethod(this.props.payMethodUri);
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
     this.setState({isSubmitting: true});
-    console.log(e);
-
 
     var affectedSubs = this.props.affectedSubscriptions;
-    var deferreds = [];
+
+    function deletePayMethod() {
+      return this.props.delPayMethod(this.props.payMethodUri).done(() => {
+        this.props.showPayMethods();
+      });
+    }
+
     // If there are affected subs...
     if (affectedSubs) {
+      var deferreds = [];
       var select = e.target.querySelector('[name="new-pay-method"]');
       //... and there's a select for choosing the new pay method
-      console.log(select);
       if (select && select.options) {
         var newPayMethodUri = select.options[select.selectedIndex].value;
-        console.log(newPayMethodUri);
         // Update the list of subs to use newPayMethodUri
         for (var i = 0; i < affectedSubs.length; i += 1) {
           var sub = affectedSubs[i];
           deferreds.push(
             this.props.updateSubPayMethod(sub.resource_uri, newPayMethodUri));
         }
+
+        // Update all the affected subs
+        $.when(...deferreds).done(() => {
+          // Delete the card in question.
+          console.log('Subs update successful now deleting payMethod');
+          deletePayMethod();
+        }).fail(() => {
+          // Abort any outstanding requests
+          console.log('Aborting outstanding requests');
+          for (var j = 0; j < deferreds.length; j += 1) {
+            deferreds[j].abort();
+          }
+          this.props.error('Failed to update subscriptions');
+        });
       }
+
+    } else {
+      deletePayMethod();
     }
-
-    // Delete the card in question.
-    deferreds.push(this.props.delPayMethod(this.props.payMethodUri));
-
-    $.when(...deferreds).done(() => {
-      this.props.showPayMethods();
-    }).fail(() => {
-      this.props.error('Failed to update subscriptions');
-    });
-
   }
 
   getAltPayMethods = (payMethodResourceUri) => {
@@ -132,24 +141,25 @@ export default class ConfirmDelPayMethod extends Component {
       // If there's no alternative pay methods then deletion
       // amounts to cancellation of the affected subs.
       } else {
-        return ((
+        return (
           <div>
             <PayMethodItem
               inputType="hidden"
               payMethod={this.state.payMethod}
             />
             <hr />
-            <p>{gettext('These subscriptions will be cancelled')}</p>
+            <p className="cancellation"
+              >{gettext('These subscriptions will be cancelled')}</p>
             {this.renderSubs()}
           </div>
-        ));
+        );
       }
     // No subs are tied to this pay method. Just show a deletion
     // confirmation.
     } else {
       return (
         <div>
-          <p>{gettext('Are you sure you want to delete' +
+          <p className="deletion">{gettext('Are you sure you want to delete' +
             ' the following payment method?')}</p>
           <PayMethodItem
             inputType="hidden"

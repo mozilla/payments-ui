@@ -54,7 +54,7 @@ export function getFilteredUserSubscriptions(payMethodUri, fetch=api.fetch) {
         return item.paymethod === payMethodUri;
       });
       dispatch({
-        type: actionTypes.GOT_FILTERED_USER_SUBS,
+        type: actionTypes.GOT_SUBS_BY_PAY_METHOD,
         subscriptions: filteredSubs,
         payMethodUri: payMethodUri,
       });
@@ -105,6 +105,7 @@ export function updateSubPayMethod(subscriptionUri, newPayMethodUri,
     subscription_uri: subscriptionUri,
   };
 
+  // Note: The caller is responsible for dispatching based on error/succcess.
   return (dispatch, getState) => {
     return fetch({
       data: data,
@@ -118,7 +119,6 @@ export function updateSubPayMethod(subscriptionUri, newPayMethodUri,
     }).fail(() => {
       console.error('Failed to update subscription: ' + subscriptionUri +
                     ' to use payMethod: ' + newPayMethodUri);
-      dispatch(appActions.error('Subscription pay method update failed'));
     });
   };
 }
