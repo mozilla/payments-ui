@@ -53,10 +53,11 @@ describe('CompletePayment', function() {
     var event = {
       preventDefault: sinon.stub(),
     };
-    this.button = TestUtils.findRenderedDOMComponentWithTag(
+    var button = TestUtils.findRenderedDOMComponentWithTag(
       view, 'button');
-
-    TestUtils.Simulate.click(this.button, event);
+    console.log(button);
+    assert.equal(React.findDOMNode(button).textContent, 'OK');
+    TestUtils.Simulate.click(button, event);
     assert.equal(event.preventDefault.callCount, 1);
     assert.ok(win.parent.postMessage.calledWith(
       JSON.stringify({event: 'purchase-completed'}), '*'));
