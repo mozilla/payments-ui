@@ -8,7 +8,6 @@ export const initialUserState = {
   braintreeToken: null,
   subscriptions: null,
   transactions: null,
-  tmp: {},
 };
 
 
@@ -55,18 +54,6 @@ export default function user(state, action) {
   if (action.type === actionTypes.GOT_USER_SUBS) {
     return Object.assign({}, initialUserState, state, {
       subscriptions: action.subscriptions,
-    });
-  }
-
-  if (action.type === actionTypes.GOT_SUBS_BY_PAY_METHOD) {
-    return Object.assign({}, initialUserState, state, {
-      // This is short-lived data only relevant to the current
-      // operation.
-      tmp: {
-        operation: actionTypes.SHOW_CONFIRM_DEL_PAY_METHOD,
-        affectedSubscriptions: action.subscriptions,
-        payMethodUri: action.payMethodUri,
-      },
     });
   }
 

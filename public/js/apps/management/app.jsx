@@ -121,11 +121,12 @@ export default class ManagementApp extends Component {
         />
       ));
     } else if (connector.management.view === 'SHOW_CONFIRM_DEL_PAY_METHOD') {
+      var mgmt = connector.management;
       children.push((
         <ConfirmDelPayMethod
           payMethods={connector.user.payMethods}
-          payMethodUri={connector.user.tmp.payMethodUri}
-          affectedSubscriptions={connector.user.tmp.affectedSubscriptions}
+          payMethodUri={mgmt.viewData.payMethodUri}
+          affectedSubscriptions={mgmt.viewData.affectedSubscriptions}
           {...boundMgmtActions}
           {...boundPayMethodActions}
           {...boundSubscriptionActions}

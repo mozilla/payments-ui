@@ -5,6 +5,7 @@ export const initialMgmtState = {
   error: null,
   tab: null,
   view: null,
+  viewData: {},
 };
 
 
@@ -24,6 +25,25 @@ export default function management(state, action) {
       return Object.assign({}, initialMgmtState, {
         error: {
           debugMessage: action.error.debugMessage,
+        },
+      });
+    case actionTypes.GOT_SUBS_BY_PAY_METHOD:
+      return Object.assign({}, initialMgmtState, state, {
+        // This is short-lived data only relevant to the current
+        // operation.
+        viewData: {
+          affectedSubscriptions: action.subscriptions,
+          payMethodUri: action.payMethodUri,
+        },
+      });
+    case actionTypes.SHOW_CONFIRM_DEL_PAY_METHOD:
+      return Object.assign({}, initialMgmtState, state, {
+        // Ephemeral data for this operation only.
+        tab: 'pay-methods',
+        view: action.type,
+        viewData: {
+          operation: actionTypes.SHOW_CONFIRM_DEL_PAY_METHOD,
+          payMethodUri: action.payMethodUri,
         },
       });
     case actionTypes.SHOW_MY_ACCOUNT:
@@ -49,11 +69,6 @@ export default function management(state, action) {
         tab: 'pay-methods',
         view: action.type,
       });
-    case actionTypes.SHOW_CONFIRM_DEL_PAY_METHOD:
-      return Object.assign({}, initialMgmtState, {
-        tab: 'pay-methods',
-        view: action.type,
-      });
     case actionTypes.SHOW_HISTORY:
       return Object.assign({}, initialMgmtState, {
         tab: 'history',
@@ -75,6 +90,7 @@ export default function management(state, action) {
       });
     case actionTypes.CLOSE_MODAL:
       return initialMgmtState;
+
     default:
       return state;
   }

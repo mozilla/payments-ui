@@ -33,7 +33,7 @@ export function getUserSubscriptions(fetch=api.fetch) {
 }
 
 
-export function getFilteredUserSubscriptions(payMethodUri, fetch=api.fetch) {
+export function getSubsByPayMethod(payMethodUri, fetch=api.fetch) {
   // TODO This should be a specific API request
   // see https://github.com/mozilla/payments-service/issues/127
   return (dispatch, getState) => {

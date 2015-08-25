@@ -45,11 +45,11 @@ export default class ConfirmDelPayMethod extends Component {
 
     var affectedSubs = this.props.affectedSubscriptions;
 
-    function deletePayMethod() {
+    var deletePayMethod = () => {
       return this.props.delPayMethod(this.props.payMethodUri).done(() => {
         this.props.showPayMethods();
       });
-    }
+    };
 
     // If there are affected subs...
     if (affectedSubs) {
@@ -65,7 +65,7 @@ export default class ConfirmDelPayMethod extends Component {
             this.props.updateSubPayMethod(sub.resource_uri, newPayMethodUri));
         }
 
-        // Update all the affected subs
+        // Update all the affected subs.
         $.when(...deferreds).done(() => {
           // Delete the card in question.
           console.log('Subs update successful now deleting payMethod');
@@ -78,9 +78,15 @@ export default class ConfirmDelPayMethod extends Component {
           }
           this.props.error('Failed to update subscriptions');
         });
+      } else {
+        // What we're doing amounts to cancellation.
+        console.log('Deletion of payMethodUri', this.props.payMethodUri,
+                    'amounts to cancellation of', affectedSubs);
+        deletePayMethod();
       }
-
     } else {
+      // Simply delete the pay method.
+      console.log('No affected subs deleting', this.props.payMethodUri);
       deletePayMethod();
     }
   }
