@@ -1,6 +1,7 @@
 import React from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
 
+import $ from 'jquery';
 import ConfirmDelPayMethod from 'views/management/confirm-del-pay-method';
 
 import * as helpers from '../helpers';
@@ -52,9 +53,11 @@ describe('Confirm Delete Pay Methods', function() {
       },
     ];
 
+    this.delPayMethodStub = sinon.stub();
+    this.delPayMethodStub.returns($.Deferred().resolve());
+
     this.getSubsByPayMethodStub = sinon.stub();
     this.showDelPayMethodStub = sinon.stub();
-    this.showPayMethodsStub = sinon.stub();
     this.showPayMethodsStub = sinon.stub();
     this.updateSubPayMethodStub = sinon.stub();
 
@@ -64,6 +67,7 @@ describe('Confirm Delete Pay Methods', function() {
       return TestUtils.renderIntoDocument(
         <ConfirmDelPayMethod
           affectedSubscriptions={affectedSubscriptions}
+          delPayMethod={this.delPayMethodStub}
           getSubsByPayMethod={this.getSubsByPayMethodStub}
           payMethodUri={payMethodUri}
           payMethods={payMethods}
@@ -129,4 +133,67 @@ describe('Confirm Delete Pay Methods', function() {
     assert.ok(helpers.findByClass(view, 'cancellation'));
   });
 
+  it('should call delete on simple pay method deletion', function() {
+    var view = this.mountView('/pay-method/2/', []);
+    var fakeEvent = {
+      target: {
+        querySelector: function() {
+          return null;
+        },
+      },
+      preventDefault: sinon.stub(),
+    };
+    view.handleSubmit(fakeEvent);
+    assert.ok(fakeEvent.preventDefault.called);
+    assert.ok(this.delPayMethodStub.calledWith('/pay-method/2/'));
+    assert.ok(this.showPayMethodsStub.called,
+              'view change should be initiated');
+  });
+
+  it('should call delete on pay method when no alt pay methods', function() {
+    var payMethods = [this.fakePayMethods[1]];
+    var view = this.mountView('/pay-method/2/', this.fakeSubs, payMethods);
+    var fakeEvent = {
+      target: {
+        querySelector: function() {
+          return null;
+        },
+      },
+      preventDefault: sinon.stub(),
+    };
+    view.handleSubmit(fakeEvent);
+    assert.ok(fakeEvent.preventDefault.called);
+    assert.ok(this.delPayMethodStub.calledWith('/pay-method/2/'));
+    assert.ok(this.showPayMethodsStub.called,
+              'view change should be initiated');
+  });
+
+  it('Should change affected subs and call delete', function() {
+    var payMethods = [this.fakePayMethods[1]];
+    var view = this.mountView('/pay-method/2/', this.fakeSubs, payMethods);
+    var fakeEvent = {
+      target: {
+        querySelector: function() {
+          return {
+            selectedIndex: 0,
+            options: [{
+              value: 'pm-uri',
+            }],
+          };
+        },
+      },
+      preventDefault: sinon.stub(),
+    };
+    view.handleSubmit(fakeEvent);
+    assert.ok(fakeEvent.preventDefault.called);
+    var updateStub = this.updateSubPayMethodStub;
+    assert.ok(updateStub.calledTwice);
+    assert.ok(updateStub.firstCall.calledWith('/sub/1/', 'pm-uri'),
+              'args should be correct in first call');
+    assert.ok(updateStub.secondCall.calledWith('/sub/2/', 'pm-uri'),
+              'args should be correct in second call');
+    assert.ok(this.delPayMethodStub.calledWith('/pay-method/2/'));
+    assert.ok(this.showPayMethodsStub.called,
+              'view change should be initiated');
+  });
 });
