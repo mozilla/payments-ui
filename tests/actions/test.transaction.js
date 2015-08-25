@@ -192,7 +192,7 @@ describe('transactionActions', function() {
                                     payNonce='braintree-pay-nonce',
                                     getState=helpers.getAppStateWithCSRF,
                                     payMethodUri} = {}) {
-      transactionActions.processOneTimePayment({
+      transactionActions._processOneTimePayment({
         dispatch: dispatchSpy,
         amount: amount,
         getState: getState,
