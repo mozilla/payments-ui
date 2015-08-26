@@ -9,6 +9,7 @@ import { gettext, isDisabled, setTitle } from 'utils';
 export default class PayMethods extends Component {
 
   static propTypes = {
+    getPayMethods: PropTypes.func.isRequired,
     payMethods: PropTypes.array.isRequired,
     showAddPayMethod: PropTypes.func.isRequired,
     showDelPayMethod: PropTypes.func.isRequired,
@@ -16,6 +17,7 @@ export default class PayMethods extends Component {
 
   componentDidMount() {
     setTitle(gettext('Payment Methods'));
+    this.props.getPayMethods();
   }
 
   handleAddPayMethod = e => {

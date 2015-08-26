@@ -44,6 +44,13 @@ export function showDelPayMethod() {
   };
 }
 
+export function showConfirmDelPayMethod(payMethodUri) {
+  return {
+    type: actionTypes.SHOW_CONFIRM_DEL_PAY_METHOD,
+    payMethodUri: payMethodUri,
+  };
+}
+
 export function showHistory() {
   return {
     type: actionTypes.SHOW_HISTORY,
@@ -52,7 +59,7 @@ export function showHistory() {
 
 export function showSubscriptions() {
   return {
-    type: actionTypes.SHOW_SUBSCRIPTIONS,
+    type: actionTypes.SHOW_SUBS,
   };
 }
 

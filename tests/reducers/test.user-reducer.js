@@ -82,7 +82,7 @@ describe('User Reducer', function() {
     existingUser.subscriptions = [{}];
 
     var user = reducers.user(existingUser, {
-      type: actionTypes.LOADING_USER_SUBSCRIPTIONS,
+      type: actionTypes.LOADING_USER_SUBS,
     });
     assert.equal(user.subscriptions, null);
     // Check that the existing data was preserved too.
@@ -94,7 +94,7 @@ describe('User Reducer', function() {
     var data = [{id: 123}];
 
     var user = reducers.user(existingUser, {
-      type: actionTypes.GOT_USER_SUBSCRIPTIONS,
+      type: actionTypes.GOT_USER_SUBS,
       subscriptions: data,
     });
 

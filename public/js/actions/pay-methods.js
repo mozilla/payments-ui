@@ -13,7 +13,7 @@ export function delPayMethod(payMethodUri, fetch=api.fetch) {
   }
 
   return (dispatch, getState) => {
-    fetch({
+    return fetch({
       method: 'post',
       url: '/braintree/paymethod/delete/',
       data: {
