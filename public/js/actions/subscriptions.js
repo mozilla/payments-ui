@@ -39,7 +39,7 @@ export function getSubsByPayMethod(payMethodUri, fetch=api.fetch) {
   return (dispatch, getState) => {
 
     dispatch({
-      type: actionTypes.LOADING_FILTERED_USER_SUBS,
+      type: actionTypes.LOADING_SUBS_BY_PAY_METHOD,
     });
 
     fetch({

@@ -126,4 +126,70 @@ describe('subscription actions', function() {
     });
   });
 
+  describe('getSubsByPayMethod', function() {
+
+    var fakeFetch;
+
+    beforeEach(function() {
+      dispatchSpy = sinon.spy();
+      fakeFetch = helpers.fakeFetch({
+        returnedData: {
+          subscriptions: [
+            {
+              'id': 1,
+              'paymethod': '/pay-method/2/',
+            }, {
+              'id': 2,
+              'paymethod': '/pay-method/3/',
+            }, {
+              'id': 2,
+              'paymethod': '/pay-method/2/',
+            },
+          ],
+        },
+      });
+    });
+
+    function getSubsByPayMethod({payMethodUri, fetch=fakeFetch}) {
+      var deferredAction = subActions.getSubsByPayMethod(payMethodUri, fetch);
+      helpers.doApiAction(deferredAction, dispatchSpy);
+    }
+
+    it('should dispatch a GOT_SUBS_BY_PAY_METHOD', function() {
+      getSubsByPayMethod({payMethodUri: '/pay-method/2/'});
+      var action = dispatchSpy.secondCall.args[0];
+      assert.equal(action.type, 'GOT_SUBS_BY_PAY_METHOD');
+    });
+
+    it('should provide 2 matching subs', function() {
+      getSubsByPayMethod({payMethodUri: '/pay-method/2/'});
+      var action = dispatchSpy.secondCall.args[0];
+      assert.equal(action.subscriptions.length, 2);
+    });
+
+    it('should provide 1 matching sub', function() {
+      getSubsByPayMethod({payMethodUri: '/pay-method/3/'});
+      var action = dispatchSpy.secondCall.args[0];
+      assert.equal(action.subscriptions.length, 1);
+    });
+
+    it('should provide zero matching subs', function() {
+      getSubsByPayMethod({payMethodUri: '/pay-method/4/'});
+      var action = dispatchSpy.secondCall.args[0];
+      assert.equal(action.subscriptions.length, 0);
+    });
+
+    it('should dispatch an error action', function() {
+      var apiError = {error_response: 'some error'};
+      var fetch = helpers.fakeFetch({
+        result: 'fail',
+        xhrError: {responseJSON: apiError},
+      });
+      getSubsByPayMethod({payMethodUri: '/pay-method/2/', fetch: fetch});
+      var action = dispatchSpy.secondCall.args[0];
+      assert.equal(action.type, actionTypes.APP_ERROR);
+    });
+
+  });
+
 });
