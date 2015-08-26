@@ -79,7 +79,6 @@ export default class ConfirmDelPayMethod extends Component {
           this.props.error('Failed to update subscriptions');
         });
       } else {
-        // What we're doing amounts to cancellation.
         console.log('Deletion of payMethodUri', this.props.payMethodUri,
                     'amounts to cancellation of', affectedSubs);
         deletePayMethod();
@@ -154,8 +153,8 @@ export default class ConfirmDelPayMethod extends Component {
               payMethod={this.state.payMethod}
             />
             <hr />
-            <p className="cancellation"
-              >{gettext('These subscriptions will be cancelled')}</p>
+            <p className="cancellation">
+              {gettext('These subscriptions will be cancelled')}</p>
             {this.renderSubs()}
           </div>
         );

@@ -48,7 +48,9 @@ export default class Subscription extends Component {
               payMethods={this.props.payMethods}
               selectId="pm"
               selectedPayMethodResource={this.props.paymethod}
-            /> : <p className="warn">{gettext('No pay methods available')}</p>}
+            /> :
+            <p className="warn">{gettext('No payment methods available')}</p>
+          }
           <a className="cancel" href="#">{gettext('Cancel subscription')}</a>
         </div> : null}
       </div>

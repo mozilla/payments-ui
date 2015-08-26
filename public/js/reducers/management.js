@@ -42,7 +42,6 @@ export default function management(state, action) {
         tab: 'pay-methods',
         view: action.type,
         viewData: {
-          operation: actionTypes.SHOW_CONFIRM_DEL_PAY_METHOD,
           payMethodUri: action.payMethodUri,
         },
       });

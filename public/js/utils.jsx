@@ -89,8 +89,8 @@ export function parseQuery(url){
 
 /**
  * Given a list of pay-method objects return one that matches
- * the payMethodUri. If no matches returns null.
- * @param {list} payMethods - a list of pay-method objects.
+ * the payMethodUri. If no matches, it returns null.
+ * @param {Array<object>} payMethods - an array of pay-method objects.
  * @param {string} payMethodUri - a pay method uri.
  */
 export function getPayMethodFromUri(payMethods, payMethodUri) {

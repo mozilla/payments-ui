@@ -75,15 +75,5 @@ export default function user(state, action) {
     });
   }
 
-  if (action.type === actionTypes.SHOW_CONFIRM_DEL_PAY_METHOD) {
-    return Object.assign({}, initialUserState, state, {
-      // Ephemeral data for this operation only.
-      tmp: {
-        operation: actionTypes.SHOW_CONFIRM_DEL_PAY_METHOD,
-        payMethodUri: action.payMethodUri,
-      },
-    });
-  }
-
   return state || initialUserState;
 }

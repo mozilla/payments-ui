@@ -50,9 +50,8 @@ export function getSubsByPayMethod(payMethodUri, fetch=api.fetch) {
       csrfToken: getState().app.csrfToken,
     }).then(data => {
       console.log('got subscriptions from API:', data);
-      var filteredSubs = data.subscriptions.filter(function(item) {
-        return item.paymethod === payMethodUri;
-      });
+      var filteredSubs = data.subscriptions.filter(
+        item => item.paymethod === payMethodUri);
       dispatch({
         type: actionTypes.GOT_SUBS_BY_PAY_METHOD,
         subscriptions: filteredSubs,
@@ -61,7 +60,7 @@ export function getSubsByPayMethod(payMethodUri, fetch=api.fetch) {
     }).fail(apiError => {
       console.log('error getting filtered subscriptions:',
                   apiError.responseJSON);
-      dispatch(appActions.error('failed to get subscriptions'));
+      dispatch(appActions.error('failed to get subscriptions by pay method'));
     });
 
   };

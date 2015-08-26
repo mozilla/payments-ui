@@ -35,7 +35,6 @@ describe('Confirm Delete Pay Methods', function() {
         'paymethod': '/pay-method/2/',
         'resource_uri': '/sub/1/',
         'seller_product': {
-          'external_id': 'mozilla-concrete-mortar',
           'public_id': 'mozilla-concrete-mortar',
           'resource_pk': 1,
           'resource_uri': '/generic/product/1/',
@@ -45,7 +44,6 @@ describe('Confirm Delete Pay Methods', function() {
         'paymethod': '/pay-method/2/',
         'resource_uri': '/sub/2/',
         'seller_product': {
-          'external_id': 'mozilla-concrete-brick',
           'public_id': 'mozilla-concrete-brick',
           'resource_pk': 2,
           'resource_uri': '/generic/product/2/',
@@ -61,9 +59,9 @@ describe('Confirm Delete Pay Methods', function() {
     this.showPayMethodsStub = sinon.stub();
     this.updateSubPayMethodStub = sinon.stub();
 
-    this.mountView = function(payMethodUri,
+    this.mountView = function({payMethodUri,
                               affectedSubscriptions=this.fakeSubs,
-                              payMethods=this.fakePayMethods) {
+                              payMethods=this.fakePayMethods}) {
       return TestUtils.renderIntoDocument(
         <ConfirmDelPayMethod
           affectedSubscriptions={affectedSubscriptions}
@@ -80,18 +78,20 @@ describe('Confirm Delete Pay Methods', function() {
   });
 
   it('should set payMethodUri on state', function() {
-    var view = this.mountView('/pay-method/2/');
+    var view = this.mountView({payMethodUri: '/pay-method/2/'});
     assert.equal(view.state.payMethod, this.fakePayMethods[1]);
   });
 
   it('should render a spinner if null subs', function() {
-    var view = this.mountView('/pay-method/2/', null);
+    var view = this.mountView({payMethodUri: '/pay-method/2/',
+                               affectedSubscriptions: null});
     var spinner = helpers.findByClass(view, 'spinner');
     assert.ok(spinner);
   });
 
   it('should just show delete confirmation when no affected subs', function() {
-    var view = this.mountView('/pay-method/2/', []);
+    var view = this.mountView({payMethodUri: '/pay-method/2/',
+                               affectedSubscriptions: []});
     var inputs = helpers.findAllNodesByTag(view, 'input');
     assert.equal(inputs.length, 1, 'should be only one input');
     assert.equal(inputs[0].getAttribute('type'),
@@ -104,7 +104,7 @@ describe('Confirm Delete Pay Methods', function() {
   });
 
   it('should prompt selection of new pay method', function() {
-    var view = this.mountView('/pay-method/2/');
+    var view = this.mountView({payMethodUri: '/pay-method/2/'});
     var inputs = helpers.findAllNodesByTag(view, 'input');
     assert.equal(inputs.length, 1, 'should be only one input');
     assert.equal(inputs[0].getAttribute('type'),
@@ -121,7 +121,8 @@ describe('Confirm Delete Pay Methods', function() {
 
   it('should amount to cancellation when no alt pay methods', function() {
     var payMethods = [this.fakePayMethods[1]];
-    var view = this.mountView('/pay-method/2/', this.fakeSubs, payMethods);
+    var view = this.mountView({payMethodUri: '/pay-method/2/',
+                               payMethods: payMethods});
     var inputs = helpers.findAllNodesByTag(view, 'input');
     assert.equal(inputs.length, 1, 'should be only one input');
     assert.equal(inputs[0].getAttribute('type'),
@@ -134,7 +135,8 @@ describe('Confirm Delete Pay Methods', function() {
   });
 
   it('should call delete on simple pay method deletion', function() {
-    var view = this.mountView('/pay-method/2/', []);
+    var view = this.mountView({payMethodUri: '/pay-method/2/',
+                               affectedSubscriptions: []});
     var fakeEvent = {
       target: {
         querySelector: function() {
@@ -152,7 +154,8 @@ describe('Confirm Delete Pay Methods', function() {
 
   it('should call delete on pay method when no alt pay methods', function() {
     var payMethods = [this.fakePayMethods[1]];
-    var view = this.mountView('/pay-method/2/', this.fakeSubs, payMethods);
+    var view = this.mountView({payMethodUri: '/pay-method/2/',
+                               payMethods: payMethods});
     var fakeEvent = {
       target: {
         querySelector: function() {
@@ -170,7 +173,8 @@ describe('Confirm Delete Pay Methods', function() {
 
   it('Should change affected subs and call delete', function() {
     var payMethods = [this.fakePayMethods[1]];
-    var view = this.mountView('/pay-method/2/', this.fakeSubs, payMethods);
+    var view = this.mountView({payMethodUri: '/pay-method/2/',
+                               payMethods: payMethods});
     var fakeEvent = {
       target: {
         querySelector: function() {
