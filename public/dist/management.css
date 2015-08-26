@@ -60,12 +60,8 @@
 }
 
 .subscription-list {
-  margin: 0;
+  margin: 1em 0;
   padding: 0;
-}
-
-.subscription-list .small {
-  max-width: 300px;
 }
 
 .subscription-list li {
@@ -77,6 +73,33 @@
 
 .subscription-list li:first-child {
   border-top: none;
+}
+
+.subscription-list.compact {
+  margin-bottom: 2em;
+}
+
+.subscription-list.compact li {
+  border-top: none;
+  margin: 1em 0 0;
+  padding: 1em 0 0;
+}
+
+.subscription-list.compact .product {
+  max-width: 100%;
+}
+
+.subscription-list.compact .product .description {
+  display: inline;
+}
+
+.subscription-list.compact .product .price {
+  border-top: none;
+  display: inline;
+}
+
+.subscription-list.compact .product .price:before {
+  content: ' – ';
 }
 
 .subscription {

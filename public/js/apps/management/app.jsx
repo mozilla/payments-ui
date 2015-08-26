@@ -14,6 +14,7 @@ import { parseQuery } from 'utils';
 
 import AddPayMethod from 'views/management/add-pay-method';
 import DelPayMethod from 'views/management/del-pay-method';
+import ConfirmDelPayMethod from 'views/management/confirm-del-pay-method';
 import MyAccount from 'views/management/my-account';
 import Subscriptions from 'views/management/subscriptions';
 import History from 'views/management/history';
@@ -84,6 +85,7 @@ export default class ManagementApp extends Component {
       console.log('Showing pay methods');
       children.push((
         <PayMethods {...boundMgmtActions}
+          {...boundPayMethodActions}
           payMethods={connector.user.payMethods} />
       ));
     } else if (connector.management.view === 'SHOW_SIGN_OUT') {
@@ -118,7 +120,19 @@ export default class ManagementApp extends Component {
           {...boundPayMethodActions}
         />
       ));
-    } else if (connector.management.view === 'SHOW_SUBSCRIPTIONS') {
+    } else if (connector.management.view === 'SHOW_CONFIRM_DEL_PAY_METHOD') {
+      var mgmt = connector.management;
+      children.push((
+        <ConfirmDelPayMethod
+          payMethods={connector.user.payMethods}
+          payMethodUri={mgmt.viewData.payMethodUri}
+          affectedSubscriptions={mgmt.viewData.affectedSubscriptions}
+          {...boundMgmtActions}
+          {...boundPayMethodActions}
+          {...boundSubscriptionActions}
+        />
+      ));
+    } else if (connector.management.view === 'SHOW_SUBS') {
       children.push((
         <Subscriptions
           {...boundSubscriptionActions}

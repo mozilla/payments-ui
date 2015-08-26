@@ -189,7 +189,7 @@ export default class CardForm extends Component {
         </div>
         <SubmitButton isDisabled={!formIsValid}
           showSpinner={this.state.isSubmitting}
-          text={this.props.submitPrompt} />
+          content={this.props.submitPrompt} />
       </form>
     );
   }

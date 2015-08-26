@@ -60,7 +60,7 @@ export default class PayMethodChoice extends Component {
         <SubmitButton isDisabled={!formIsValid}
           cssModifier={this.props.submitButtonCSSModifier}
           showSpinner={this.state.isSubmitting}
-          text={this.props.submitButtonText}
+          content={this.props.submitButtonText}
         />
       </form>
     );

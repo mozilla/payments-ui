@@ -404,6 +404,14 @@ main {
   width: 100%;
 }
 
+hr {
+  border: 1px solid #C8C8C8;
+  border-bottom: none;
+  border-right: none;
+  border-left: none;
+  margin: 2em 0;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -669,6 +677,11 @@ label:focus ~ .input-help-focused {
 
 .pay-method-item {
   position: relative;
+}
+
+.pay-method-item input[type=hidden] + label {
+  padding: 1em 0 1em 70px;
+  text-align: left;
 }
 
 .pay-method-item input[type=radio] {
@@ -1075,6 +1088,10 @@ h4 {
 
 h5 {
   font-size: 110%;
+}
+
+.warn {
+  color: #d63920;
 }
 
 /*
