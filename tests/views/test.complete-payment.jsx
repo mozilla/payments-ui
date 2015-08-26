@@ -44,8 +44,16 @@ describe('CompletePayment', function() {
 
   it('should not show email message if no email', function() {
     var view = mountView({userEmail: null});
-    expect(() => helpers.findByClass(view, 'email'))
-      .to.throw('Did not find exactly one match');
+    assert.throws(
+      () => helpers.findByClass(view, 'email'),
+      Error, /Did not find exactly one match/);
+  });
+
+  it('should have a button with OK', function() {
+    var view = mountView();
+    var button = TestUtils.findRenderedDOMComponentWithTag(
+      view, 'button');
+    assert.equal(React.findDOMNode(button).textContent, 'OK');
   });
 
   it('should fire handleClick when OK button is clicked', function() {
@@ -55,8 +63,6 @@ describe('CompletePayment', function() {
     };
     var button = TestUtils.findRenderedDOMComponentWithTag(
       view, 'button');
-    console.log(button);
-    assert.equal(React.findDOMNode(button).textContent, 'OK');
     TestUtils.Simulate.click(button, event);
     assert.equal(event.preventDefault.callCount, 1);
     assert.ok(win.parent.postMessage.calledWith(
