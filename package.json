@@ -77,7 +77,7 @@
     "url": "git+https://github.com/mozilla/payments-ui.git"
   },
   "author": "Mozilla Payments Team",
-  "license": "MPL2.0",
+  "license": "MPL-2.0",
   "bugs": {
     "url": "https://github.com/mozilla/payments-ui/issues"
   },
