@@ -66,9 +66,9 @@ export function getSubsByPayMethod(payMethodUri, fetch=api.fetch) {
   };
 }
 
-export function createSubscription({dispatch, productId,
-                                    getState, payNonce, payMethodUri,
-                                    fetch=api.fetch}) {
+export function _createSubscription({dispatch, productId,
+                                     getState, payNonce, payMethodUri,
+                                     fetch=api.fetch}) {
   var data = {
     plan_id: productId,
   };

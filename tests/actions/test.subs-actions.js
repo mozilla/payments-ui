@@ -80,7 +80,7 @@ describe('subscription actions', function() {
                                  payNonce='braintree-pay-nonce',
                                  getState=helpers.getAppStateWithCSRF,
                                  payMethodUri} = {}) {
-      subActions.createSubscription({
+      subActions._createSubscription({
         dispatch: dispatchSpy,
         getState: getState,
         productId: 'product-id',
