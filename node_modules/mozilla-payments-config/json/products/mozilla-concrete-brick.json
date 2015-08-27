@@ -1,7 +1,5 @@
 {
-  "description": {
-    "en": "Brick"
-  }, 
+  "user_identification": "fxa-auth", 
   "img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/default.png", 
   "price": {
     "en": "$10.00"
@@ -20,5 +18,8 @@
   "currency": "USD", 
   "amount": "10.00", 
   "active": true, 
-  "id": "mozilla-concrete-brick"
+  "id": "mozilla-concrete-brick", 
+  "description": {
+    "en": "Brick"
+  }
 }

@@ -1,5 +1,5 @@
 {
-  "user_identification": null, 
+  "user_identification": "email", 
   "img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/default.png", 
   "price": {}, 
   "seller": {
@@ -12,12 +12,12 @@
     "email": "support@foundation.mozilla.org", 
     "id": "mozilla-foundation"
   }, 
-  "recurrence": null, 
+  "recurrence": "monthly", 
   "currency": "USD", 
   "amount": null, 
   "active": true, 
-  "id": "mozilla-foundation-donation", 
+  "id": "mozilla-foundation-recurring-donation", 
   "description": {
-    "en": "Donation"
+    "en": "Recurring Donation"
   }
 }
