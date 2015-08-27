@@ -6,7 +6,7 @@ import * as products from 'products';
 import * as appActions from './app';
 import * as api from './api';
 import { tokenizeCreditCard } from './braintree';
-import { createSubscription as
+import { _createSubscription as
          defaultCreateSubscription } from './subscriptions';
 
 
@@ -24,10 +24,10 @@ export function payWithNewCard() {
 }
 
 
-export function processOneTimePayment({dispatch, productId, getState,
-                                       payNonce, payMethodUri,
-                                       fetch=api.fetch,
-                                       amount}) {
+export function _processOneTimePayment({dispatch, productId, getState,
+                                        payNonce, payMethodUri,
+                                        fetch=api.fetch,
+                                        amount}) {
   var data = {
     amount: amount,
     product_id: productId,
@@ -61,18 +61,18 @@ export function processPayment({productId, braintreeToken, creditCard,
                                 payMethodUri,
                                 BraintreeClient=braintree.api.Client,
                                 createSubscription=defaultCreateSubscription,
-                                payOnce=processOneTimePayment,
+                                payOnce=_processOneTimePayment,
                                 ...args}) {
   return (dispatch, getState) => {
     var product = products.get(productId);
     var payForProduct;
 
     if (product.recurrence === 'monthly') {
-      console.log('calling createSubscription for product',
+      console.log('calling _createSubscription for product',
                   product.id);
       payForProduct = createSubscription;
     } else {
-      console.log('calling processOneTimePayment for product',
+      console.log('calling _processOneTimePayment for product',
                   product.id);
       payForProduct = payOnce;
     }

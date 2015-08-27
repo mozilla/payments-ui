@@ -48,11 +48,11 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _tracking = __webpack_require__(257);
+	var _tracking = __webpack_require__(258);
 	
 	var _tracking2 = _interopRequireDefault(_tracking);
 	
-	var _app = __webpack_require__(279);
+	var _app = __webpack_require__(280);
 	
 	_tracking2['default'].init();
 	(0, _app.init)();
@@ -31911,7 +31911,7 @@
 	});
 	exports.getUserSubscriptions = getUserSubscriptions;
 	exports.getSubsByPayMethod = getSubsByPayMethod;
-	exports.createSubscription = createSubscription;
+	exports._createSubscription = _createSubscription;
 	exports.updateSubPayMethod = updateSubPayMethod;
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
@@ -31998,7 +31998,7 @@
 	  };
 	}
 	
-	function createSubscription(_ref) {
+	function _createSubscription(_ref) {
 	  var dispatch = _ref.dispatch;
 	  var productId = _ref.productId;
 	  var getState = _ref.getState;
@@ -32072,7 +32072,7 @@
 	
 	exports.complete = complete;
 	exports.payWithNewCard = payWithNewCard;
-	exports.processOneTimePayment = processOneTimePayment;
+	exports._processOneTimePayment = _processOneTimePayment;
 	exports.processPayment = processPayment;
 	exports.getUserTransactions = getUserTransactions;
 	
@@ -32102,7 +32102,7 @@
 	
 	var api = _interopRequireWildcard(_api);
 	
-	var _braintree = __webpack_require__(211);
+	var _braintree = __webpack_require__(212);
 	
 	var _subscriptions = __webpack_require__(205);
 	
@@ -32118,7 +32118,7 @@
 	  };
 	}
 	
-	function processOneTimePayment(_ref) {
+	function _processOneTimePayment(_ref) {
 	  var dispatch = _ref.dispatch;
 	  var productId = _ref.productId;
 	  var getState = _ref.getState;
@@ -32164,9 +32164,9 @@
 	  var _ref2$BraintreeClient = _ref2.BraintreeClient;
 	  var BraintreeClient = _ref2$BraintreeClient === undefined ? _braintreeWeb2['default'].api.Client : _ref2$BraintreeClient;
 	  var _ref2$createSubscription = _ref2.createSubscription;
-	  var createSubscription = _ref2$createSubscription === undefined ? _subscriptions.createSubscription : _ref2$createSubscription;
+	  var createSubscription = _ref2$createSubscription === undefined ? _subscriptions._createSubscription : _ref2$createSubscription;
 	  var _ref2$payOnce = _ref2.payOnce;
-	  var payOnce = _ref2$payOnce === undefined ? processOneTimePayment : _ref2$payOnce;
+	  var payOnce = _ref2$payOnce === undefined ? _processOneTimePayment : _ref2$payOnce;
 	
 	  var args = _objectWithoutProperties(_ref2, ['productId', 'braintreeToken', 'creditCard', 'payMethodUri', 'BraintreeClient', 'createSubscription', 'payOnce']);
 	
@@ -32175,10 +32175,10 @@
 	    var payForProduct;
 	
 	    if (product.recurrence === 'monthly') {
-	      console.log('calling createSubscription for product', product.id);
+	      console.log('calling _createSubscription for product', product.id);
 	      payForProduct = createSubscription;
 	    } else {
-	      console.log('calling processOneTimePayment for product', product.id);
+	      console.log('calling _processOneTimePayment for product', product.id);
 	      payForProduct = payOnce;
 	    }
 	
@@ -32246,7 +32246,8 @@
 	var productData = {
 	  'mozilla-concrete-brick': __webpack_require__(208),
 	  'mozilla-concrete-mortar': __webpack_require__(209),
-	  'mozilla-foundation-donation': __webpack_require__(210)
+	  'mozilla-foundation-donation': __webpack_require__(210),
+	  'mozilla-foundation-recurring-donation': __webpack_require__(211)
 	};
 	
 	exports['default'] = productData;
@@ -32263,9 +32264,7 @@
 /***/ function(module, exports) {
 
 	module.exports = {
-		"description": {
-			"en": "Brick"
-		},
+		"user_identification": "fxa-auth",
 		"img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/default.png",
 		"price": {
 			"en": "$10.00"
@@ -32284,7 +32283,10 @@
 		"currency": "USD",
 		"amount": "10.00",
 		"active": true,
-		"id": "mozilla-concrete-brick"
+		"id": "mozilla-concrete-brick",
+		"description": {
+			"en": "Brick"
+		}
 	}
 
 /***/ },
@@ -32292,9 +32294,7 @@
 /***/ function(module, exports) {
 
 	module.exports = {
-		"description": {
-			"en": "Mortar"
-		},
+		"user_identification": "fxa-auth",
 		"img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/mortar.png",
 		"price": {
 			"en": "$5.00"
@@ -32313,7 +32313,10 @@
 		"currency": "USD",
 		"amount": "5.00",
 		"active": true,
-		"id": "mozilla-concrete-mortar"
+		"id": "mozilla-concrete-mortar",
+		"description": {
+			"en": "Mortar"
+		}
 	}
 
 /***/ },
@@ -32321,9 +32324,7 @@
 /***/ function(module, exports) {
 
 	module.exports = {
-		"description": {
-			"en": "Donation"
-		},
+		"user_identification": null,
 		"img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/default.png",
 		"price": {},
 		"seller": {
@@ -32340,11 +32341,42 @@
 		"currency": "USD",
 		"amount": null,
 		"active": true,
-		"id": "mozilla-foundation-donation"
+		"id": "mozilla-foundation-donation",
+		"description": {
+			"en": "Donation"
+		}
 	}
 
 /***/ },
 /* 211 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"user_identification": "email",
+		"img": "https://raw.githubusercontent.com/mozilla/payments-config/master/payments_config/assets/default.png",
+		"price": {},
+		"seller": {
+			"kind": "donations",
+			"terms": "http://pay.dev.mozaws.net/terms/",
+			"name": {
+				"en": "Mozilla Foundation"
+			},
+			"url": "http://pay.dev.mozaws.net/",
+			"email": "support@foundation.mozilla.org",
+			"id": "mozilla-foundation"
+		},
+		"recurrence": "monthly",
+		"currency": "USD",
+		"amount": null,
+		"active": true,
+		"id": "mozilla-foundation-recurring-donation",
+		"description": {
+			"en": "Recurring Donation"
+		}
+	}
+
+/***/ },
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32398,7 +32430,7 @@
 	}
 
 /***/ },
-/* 212 */
+/* 213 */
 /***/ function(module, exports) {
 
 	/**
@@ -32523,8 +32555,8 @@
 	}
 
 /***/ },
-/* 213 */,
-/* 214 */
+/* 214 */,
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32547,7 +32579,7 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _cardValidator = __webpack_require__(215);
+	var _cardValidator = __webpack_require__(216);
 	
 	var _cardValidator2 = _interopRequireDefault(_cardValidator);
 	
@@ -32555,15 +32587,15 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsCardInput = __webpack_require__(250);
+	var _componentsCardInput = __webpack_require__(251);
 	
 	var _componentsCardInput2 = _interopRequireDefault(_componentsCardInput);
 	
-	var _componentsSubmitButton = __webpack_require__(256);
+	var _componentsSubmitButton = __webpack_require__(257);
 	
 	var _componentsSubmitButton2 = _interopRequireDefault(_componentsSubmitButton);
 	
-	var _utils = __webpack_require__(212);
+	var _utils = __webpack_require__(213);
 	
 	var defaultFieldAttrs = {
 	  'autoComplete': 'off',
@@ -32775,24 +32807,24 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 215 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
-	  number: __webpack_require__(218),
-	  expirationDate: __webpack_require__(245),
-	  expirationMonth: __webpack_require__(247),
-	  expirationYear: __webpack_require__(216),
-	  cvv: __webpack_require__(248),
-	  postalCode: __webpack_require__(249)
+	  number: __webpack_require__(219),
+	  expirationDate: __webpack_require__(246),
+	  expirationMonth: __webpack_require__(248),
+	  expirationYear: __webpack_require__(217),
+	  cvv: __webpack_require__(249),
+	  postalCode: __webpack_require__(250)
 	};
 
 
 /***/ },
-/* 216 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isString = __webpack_require__(217);
+	var isString = __webpack_require__(218);
 	var maxYear = 19;
 	
 	function verification(isValid, isPotentiallyValid, isCurrentYear) {
@@ -32853,7 +32885,7 @@
 
 
 /***/ },
-/* 217 */
+/* 218 */
 /***/ function(module, exports) {
 
 	/**
@@ -32912,14 +32944,14 @@
 
 
 /***/ },
-/* 218 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isString = __webpack_require__(217);
-	var extend = __webpack_require__(219);
-	var luhn10 = __webpack_require__(230);
-	var getCardTypes = __webpack_require__(231);
-	var isNumber = __webpack_require__(244);
+	var isString = __webpack_require__(218);
+	var extend = __webpack_require__(220);
+	var luhn10 = __webpack_require__(231);
+	var getCardTypes = __webpack_require__(232);
+	var isNumber = __webpack_require__(245);
 	
 	function verification(card, isPotentiallyValid, isValid) {
 	  return extend({}, {card: card, isPotentiallyValid: isPotentiallyValid, isValid: isValid});
@@ -32973,7 +33005,7 @@
 
 
 /***/ },
-/* 219 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32984,9 +33016,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseAssign = __webpack_require__(220),
-	    createAssigner = __webpack_require__(226),
-	    keys = __webpack_require__(222);
+	var baseAssign = __webpack_require__(221),
+	    createAssigner = __webpack_require__(227),
+	    keys = __webpack_require__(223);
 	
 	/**
 	 * A specialized version of `_.assign` for customizing assigned values without
@@ -33059,7 +33091,7 @@
 
 
 /***/ },
-/* 220 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -33070,8 +33102,8 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseCopy = __webpack_require__(221),
-	    keys = __webpack_require__(222);
+	var baseCopy = __webpack_require__(222),
+	    keys = __webpack_require__(223);
 	
 	/**
 	 * The base implementation of `_.assign` without support for argument juggling,
@@ -33092,7 +33124,7 @@
 
 
 /***/ },
-/* 221 */
+/* 222 */
 /***/ function(module, exports) {
 
 	/**
@@ -33130,7 +33162,7 @@
 
 
 /***/ },
-/* 222 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -33141,9 +33173,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(223),
-	    isArguments = __webpack_require__(224),
-	    isArray = __webpack_require__(225);
+	var getNative = __webpack_require__(224),
+	    isArguments = __webpack_require__(225),
+	    isArray = __webpack_require__(226);
 	
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -33372,7 +33404,7 @@
 
 
 /***/ },
-/* 223 */
+/* 224 */
 /***/ function(module, exports) {
 
 	/**
@@ -33509,7 +33541,7 @@
 
 
 /***/ },
-/* 224 */
+/* 225 */
 /***/ function(module, exports) {
 
 	/**
@@ -33623,7 +33655,7 @@
 
 
 /***/ },
-/* 225 */
+/* 226 */
 /***/ function(module, exports) {
 
 	/**
@@ -33803,7 +33835,7 @@
 
 
 /***/ },
-/* 226 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -33814,9 +33846,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var bindCallback = __webpack_require__(227),
-	    isIterateeCall = __webpack_require__(228),
-	    restParam = __webpack_require__(229);
+	var bindCallback = __webpack_require__(228),
+	    isIterateeCall = __webpack_require__(229),
+	    restParam = __webpack_require__(230);
 	
 	/**
 	 * Creates a function that assigns properties of source object(s) to a given
@@ -33861,7 +33893,7 @@
 
 
 /***/ },
-/* 227 */
+/* 228 */
 /***/ function(module, exports) {
 
 	/**
@@ -33932,7 +33964,7 @@
 
 
 /***/ },
-/* 228 */
+/* 229 */
 /***/ function(module, exports) {
 
 	/**
@@ -34070,7 +34102,7 @@
 
 
 /***/ },
-/* 229 */
+/* 230 */
 /***/ function(module, exports) {
 
 	/**
@@ -34143,7 +34175,7 @@
 
 
 /***/ },
-/* 230 */
+/* 231 */
 /***/ function(module, exports) {
 
 	/*eslint-disable*/
@@ -34155,11 +34187,11 @@
 
 
 /***/ },
-/* 231 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isString = __webpack_require__(217);
-	var clone = __webpack_require__(232);
+	var isString = __webpack_require__(218);
+	var clone = __webpack_require__(233);
 	
 	var types = [
 	  {
@@ -34274,7 +34306,7 @@
 
 
 /***/ },
-/* 232 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -34285,8 +34317,8 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseClone = __webpack_require__(233),
-	    bindCallback = __webpack_require__(243);
+	var baseClone = __webpack_require__(234),
+	    bindCallback = __webpack_require__(244);
 	
 	/**
 	 * Creates a deep clone of `value`. If `customizer` is provided it is invoked
@@ -34343,7 +34375,7 @@
 
 
 /***/ },
-/* 233 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -34354,13 +34386,13 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var arrayCopy = __webpack_require__(234),
-	    arrayEach = __webpack_require__(235),
-	    baseAssign = __webpack_require__(236),
-	    baseFor = __webpack_require__(242),
-	    getNative = __webpack_require__(239),
-	    isArray = __webpack_require__(241),
-	    keys = __webpack_require__(238);
+	var arrayCopy = __webpack_require__(235),
+	    arrayEach = __webpack_require__(236),
+	    baseAssign = __webpack_require__(237),
+	    baseFor = __webpack_require__(243),
+	    getNative = __webpack_require__(240),
+	    isArray = __webpack_require__(242),
+	    keys = __webpack_require__(239);
 	
 	/** `Object#toString` result references. */
 	var argsTag = '[object Arguments]',
@@ -34676,7 +34708,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 234 */
+/* 235 */
 /***/ function(module, exports) {
 
 	/**
@@ -34711,7 +34743,7 @@
 
 
 /***/ },
-/* 235 */
+/* 236 */
 /***/ function(module, exports) {
 
 	/**
@@ -34748,7 +34780,7 @@
 
 
 /***/ },
-/* 236 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -34759,8 +34791,8 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseCopy = __webpack_require__(237),
-	    keys = __webpack_require__(238);
+	var baseCopy = __webpack_require__(238),
+	    keys = __webpack_require__(239);
 	
 	/**
 	 * The base implementation of `_.assign` without support for argument juggling,
@@ -34781,7 +34813,7 @@
 
 
 /***/ },
-/* 237 */
+/* 238 */
 /***/ function(module, exports) {
 
 	/**
@@ -34819,7 +34851,7 @@
 
 
 /***/ },
-/* 238 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -34830,9 +34862,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(239),
-	    isArguments = __webpack_require__(240),
-	    isArray = __webpack_require__(241);
+	var getNative = __webpack_require__(240),
+	    isArguments = __webpack_require__(241),
+	    isArray = __webpack_require__(242);
 	
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -35061,7 +35093,7 @@
 
 
 /***/ },
-/* 239 */
+/* 240 */
 /***/ function(module, exports) {
 
 	/**
@@ -35198,7 +35230,7 @@
 
 
 /***/ },
-/* 240 */
+/* 241 */
 /***/ function(module, exports) {
 
 	/**
@@ -35312,7 +35344,7 @@
 
 
 /***/ },
-/* 241 */
+/* 242 */
 /***/ function(module, exports) {
 
 	/**
@@ -35492,7 +35524,7 @@
 
 
 /***/ },
-/* 242 */
+/* 243 */
 /***/ function(module, exports) {
 
 	/**
@@ -35584,7 +35616,7 @@
 
 
 /***/ },
-/* 243 */
+/* 244 */
 /***/ function(module, exports) {
 
 	/**
@@ -35655,7 +35687,7 @@
 
 
 /***/ },
-/* 244 */
+/* 245 */
 /***/ function(module, exports) {
 
 	/**
@@ -35720,13 +35752,13 @@
 
 
 /***/ },
-/* 245 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var parseDate = __webpack_require__(246);
-	var expirationMonth = __webpack_require__(247);
-	var expirationYear = __webpack_require__(216);
-	var isString = __webpack_require__(217);
+	var parseDate = __webpack_require__(247);
+	var expirationMonth = __webpack_require__(248);
+	var expirationYear = __webpack_require__(217);
+	var isString = __webpack_require__(218);
 	
 	function verification(isValid, isPotentiallyValid, month, year) {
 	  return {
@@ -35771,7 +35803,7 @@
 
 
 /***/ },
-/* 246 */
+/* 247 */
 /***/ function(module, exports) {
 
 	function parseDate(value) {
@@ -35799,10 +35831,10 @@
 
 
 /***/ },
-/* 247 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isString = __webpack_require__(217);
+	var isString = __webpack_require__(218);
 	
 	function verification(isValid, isPotentiallyValid, isValidForThisYear) {
 	  return {
@@ -35841,10 +35873,10 @@
 
 
 /***/ },
-/* 248 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isString = __webpack_require__(217);
+	var isString = __webpack_require__(218);
 	var DEFAULT_LENGTH = 3;
 	
 	function verification(isValid, isPotentiallyValid) {
@@ -35867,10 +35899,10 @@
 
 
 /***/ },
-/* 249 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isString = __webpack_require__(217);
+	var isString = __webpack_require__(218);
 	
 	function verification(isValid, isPotentiallyValid) {
 	  return {isValid: isValid, isPotentiallyValid: isPotentiallyValid};
@@ -35890,7 +35922,7 @@
 
 
 /***/ },
-/* 250 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35911,7 +35943,7 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _classnames = __webpack_require__(252);
+	var _classnames = __webpack_require__(253);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
@@ -35919,19 +35951,19 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsPayMethodIcon = __webpack_require__(253);
+	var _componentsPayMethodIcon = __webpack_require__(254);
 	
 	var _componentsPayMethodIcon2 = _interopRequireDefault(_componentsPayMethodIcon);
 	
-	var _componentsInputError = __webpack_require__(251);
+	var _componentsInputError = __webpack_require__(252);
 	
 	var _componentsInputError2 = _interopRequireDefault(_componentsInputError);
 	
-	var _reactMaskedinput = __webpack_require__(254);
+	var _reactMaskedinput = __webpack_require__(255);
 	
 	var _reactMaskedinput2 = _interopRequireDefault(_reactMaskedinput);
 	
-	var _utils = __webpack_require__(212);
+	var _utils = __webpack_require__(213);
 	
 	var cardPatterns = {
 	  'default': {
@@ -36051,7 +36083,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 251 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36078,7 +36110,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _classnames = __webpack_require__(252);
+	var _classnames = __webpack_require__(253);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
@@ -36123,7 +36155,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 252 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -36178,7 +36210,7 @@
 
 
 /***/ },
-/* 253 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36197,7 +36229,7 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _classnames = __webpack_require__(252);
+	var _classnames = __webpack_require__(253);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
@@ -36246,7 +36278,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 254 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36254,7 +36286,7 @@
 	var React = __webpack_require__(9)
 	var $__0=   __webpack_require__(139),getSelection=$__0.getSelection,setSelection=$__0.setSelection
 	
-	var InputMask = __webpack_require__(255)
+	var InputMask = __webpack_require__(256)
 	
 	var KEYCODE_Z = 90
 	var KEYCODE_Y = 89
@@ -36408,7 +36440,7 @@
 	module.exports = MaskedInput
 
 /***/ },
-/* 255 */
+/* 256 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36896,7 +36928,7 @@
 	module.exports = InputMask
 
 /***/ },
-/* 256 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36923,11 +36955,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _classnames = __webpack_require__(252);
+	var _classnames = __webpack_require__(253);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var _utils = __webpack_require__(212);
+	var _utils = __webpack_require__(213);
 	
 	var SubmitButton = (function (_Component) {
 	  _inherits(SubmitButton, _Component);
@@ -36992,7 +37024,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 257 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* global ga */
@@ -37112,8 +37144,8 @@
 	});
 
 /***/ },
-/* 258 */,
-/* 259 */
+/* 259 */,
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37136,15 +37168,15 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsPayMethodList = __webpack_require__(260);
+	var _componentsPayMethodList = __webpack_require__(261);
 	
 	var _componentsPayMethodList2 = _interopRequireDefault(_componentsPayMethodList);
 	
-	var _componentsSubmitButton = __webpack_require__(256);
+	var _componentsSubmitButton = __webpack_require__(257);
 	
 	var _componentsSubmitButton2 = _interopRequireDefault(_componentsSubmitButton);
 	
-	var _utils = __webpack_require__(212);
+	var _utils = __webpack_require__(213);
 	
 	var PayMethodChoice = (function (_Component) {
 	  _inherits(PayMethodChoice, _Component);
@@ -37227,7 +37259,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 260 */
+/* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37252,11 +37284,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsPayMethodItem = __webpack_require__(261);
+	var _componentsPayMethodItem = __webpack_require__(262);
 	
 	var _componentsPayMethodItem2 = _interopRequireDefault(_componentsPayMethodItem);
 	
-	var _classnames = __webpack_require__(252);
+	var _classnames = __webpack_require__(253);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
@@ -37322,7 +37354,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 261 */
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37345,7 +37377,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsPayMethodIcon = __webpack_require__(253);
+	var _componentsPayMethodIcon = __webpack_require__(254);
 	
 	var _componentsPayMethodIcon2 = _interopRequireDefault(_componentsPayMethodIcon);
 	
@@ -37414,10 +37446,10 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 262 */,
 /* 263 */,
 /* 264 */,
-/* 265 */
+/* 265 */,
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37440,7 +37472,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _utils = __webpack_require__(212);
+	var _utils = __webpack_require__(213);
 	
 	var Spinner = (function (_Component) {
 	  _inherits(Spinner, _Component);
@@ -37486,13 +37518,13 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 266 */,
 /* 267 */,
 /* 268 */,
 /* 269 */,
 /* 270 */,
 /* 271 */,
-/* 272 */
+/* 272 */,
+/* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37515,13 +37547,13 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsSpinner = __webpack_require__(265);
+	var _componentsSpinner = __webpack_require__(266);
 	
 	var _componentsSpinner2 = _interopRequireDefault(_componentsSpinner);
 	
-	var _utils = __webpack_require__(212);
+	var _utils = __webpack_require__(213);
 	
-	var _tracking = __webpack_require__(257);
+	var _tracking = __webpack_require__(258);
 	
 	var _tracking2 = _interopRequireDefault(_tracking);
 	
@@ -37560,9 +37592,9 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 273 */,
 /* 274 */,
-/* 275 */
+/* 275 */,
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37585,7 +37617,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _utils = __webpack_require__(212);
+	var _utils = __webpack_require__(213);
 	
 	var ErrorMessage = (function (_Component) {
 	  _inherits(ErrorMessage, _Component);
@@ -37625,7 +37657,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 276 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37648,13 +37680,13 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsSpinner = __webpack_require__(265);
+	var _componentsSpinner = __webpack_require__(266);
 	
 	var _componentsSpinner2 = _interopRequireDefault(_componentsSpinner);
 	
-	var _utils = __webpack_require__(212);
+	var _utils = __webpack_require__(213);
 	
-	var _tracking = __webpack_require__(257);
+	var _tracking = __webpack_require__(258);
 	
 	var _tracking2 = _interopRequireDefault(_tracking);
 	
@@ -37714,9 +37746,9 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 277 */,
 /* 278 */,
-/* 279 */
+/* 279 */,
+/* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37755,15 +37787,15 @@
 	
 	var _dataStore2 = _interopRequireDefault(_dataStore);
 	
-	var _componentsError = __webpack_require__(275);
+	var _componentsError = __webpack_require__(276);
 	
 	var _componentsError2 = _interopRequireDefault(_componentsError);
 	
-	var _viewsSharedSignIn = __webpack_require__(276);
+	var _viewsSharedSignIn = __webpack_require__(277);
 	
 	var _viewsSharedSignIn2 = _interopRequireDefault(_viewsSharedSignIn);
 	
-	var _viewsTransaction = __webpack_require__(280);
+	var _viewsTransaction = __webpack_require__(281);
 	
 	var _viewsTransaction2 = _interopRequireDefault(_viewsTransaction);
 	
@@ -37779,7 +37811,7 @@
 	
 	var products = _interopRequireWildcard(_products);
 	
-	var _utils = __webpack_require__(212);
+	var _utils = __webpack_require__(213);
 	
 	var TransactionApp = (function (_Component) {
 	  _inherits(TransactionApp, _Component);
@@ -37881,7 +37913,7 @@
 	}
 
 /***/ },
-/* 280 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37920,19 +37952,19 @@
 	
 	var userActions = _interopRequireWildcard(_actionsUser);
 	
-	var _viewsSharedBraintreeToken = __webpack_require__(272);
+	var _viewsSharedBraintreeToken = __webpack_require__(273);
 	
 	var _viewsSharedBraintreeToken2 = _interopRequireDefault(_viewsSharedBraintreeToken);
 	
-	var _viewsTransactionProductPay = __webpack_require__(281);
+	var _viewsTransactionProductPay = __webpack_require__(282);
 	
 	var _viewsTransactionProductPay2 = _interopRequireDefault(_viewsTransactionProductPay);
 	
-	var _viewsTransactionProductPayChooser = __webpack_require__(283);
+	var _viewsTransactionProductPayChooser = __webpack_require__(284);
 	
 	var _viewsTransactionProductPayChooser2 = _interopRequireDefault(_viewsTransactionProductPayChooser);
 	
-	var _viewsTransactionCompletePayment = __webpack_require__(284);
+	var _viewsTransactionCompletePayment = __webpack_require__(285);
 	
 	var _viewsTransactionCompletePayment2 = _interopRequireDefault(_viewsTransactionCompletePayment);
 	
@@ -38036,7 +38068,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 281 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38061,11 +38093,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsCardForm = __webpack_require__(214);
+	var _componentsCardForm = __webpack_require__(215);
 	
 	var _componentsCardForm2 = _interopRequireDefault(_componentsCardForm);
 	
-	var _componentsProductDetail = __webpack_require__(282);
+	var _componentsProductDetail = __webpack_require__(283);
 	
 	var _componentsProductDetail2 = _interopRequireDefault(_componentsProductDetail);
 	
@@ -38073,11 +38105,11 @@
 	
 	var products = _interopRequireWildcard(_products);
 	
-	var _tracking = __webpack_require__(257);
+	var _tracking = __webpack_require__(258);
 	
 	var _tracking2 = _interopRequireDefault(_tracking);
 	
-	var _utils = __webpack_require__(212);
+	var _utils = __webpack_require__(213);
 	
 	var ProductPay = (function (_Component) {
 	  _inherits(ProductPay, _Component);
@@ -38154,7 +38186,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 282 */
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38183,7 +38215,7 @@
 	
 	var products = _interopRequireWildcard(_products);
 	
-	var _utils = __webpack_require__(212);
+	var _utils = __webpack_require__(213);
 	
 	var ProductDetail = (function (_Component) {
 	  _inherits(ProductDetail, _Component);
@@ -38255,7 +38287,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 283 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38280,11 +38312,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsPayMethodChoice = __webpack_require__(259);
+	var _componentsPayMethodChoice = __webpack_require__(260);
 	
 	var _componentsPayMethodChoice2 = _interopRequireDefault(_componentsPayMethodChoice);
 	
-	var _componentsProductDetail = __webpack_require__(282);
+	var _componentsProductDetail = __webpack_require__(283);
 	
 	var _componentsProductDetail2 = _interopRequireDefault(_componentsProductDetail);
 	
@@ -38292,9 +38324,9 @@
 	
 	var products = _interopRequireWildcard(_products);
 	
-	var _utils = __webpack_require__(212);
+	var _utils = __webpack_require__(213);
 	
-	var _tracking = __webpack_require__(257);
+	var _tracking = __webpack_require__(258);
 	
 	var _tracking2 = _interopRequireDefault(_tracking);
 	
@@ -38373,7 +38405,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 284 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38396,17 +38428,17 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsProductDetail = __webpack_require__(282);
+	var _componentsProductDetail = __webpack_require__(283);
 	
 	var _componentsProductDetail2 = _interopRequireDefault(_componentsProductDetail);
 	
-	var _componentsSubmitButton = __webpack_require__(256);
+	var _componentsSubmitButton = __webpack_require__(257);
 	
 	var _componentsSubmitButton2 = _interopRequireDefault(_componentsSubmitButton);
 	
-	var _utils = __webpack_require__(212);
+	var _utils = __webpack_require__(213);
 	
-	var _tracking = __webpack_require__(257);
+	var _tracking = __webpack_require__(258);
 	
 	var _tracking2 = _interopRequireDefault(_tracking);
 	
