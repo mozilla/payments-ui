@@ -57,7 +57,7 @@ export default class CompletePayment extends Component {
         />
         <p className="accepted">{gettext('Payment Accepted')}</p>
         {email}
-        <SubmitButton text={gettext('OK')}
+        <SubmitButton content={gettext('OK')}
                       onClick={this.handleClick} />
       </div>
     );

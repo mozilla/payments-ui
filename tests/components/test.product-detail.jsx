@@ -7,7 +7,7 @@ import * as helpers from '../helpers';
 
 
 describe('ProductDetail', function() {
-  var defaultProductId = "mozilla-concrete-brick";
+  var defaultProductId = 'mozilla-concrete-brick';
 
   function mountView({price, productId=defaultProductId} = {}) {
     return TestUtils.renderIntoDocument(
@@ -28,9 +28,10 @@ describe('ProductDetail', function() {
   });
 
   it('should not show recurrence for none', function() {
-    var view = mountView({productId: "mozilla-foundation-donation"});
-    expect(() => helpers.findByClass(view, 'recurrence'))
-      .to.throw('Did not find exactly one match');
+    var view = mountView({productId: 'mozilla-foundation-donation'});
+    assert.throws(
+      () => helpers.findByClass(view, 'recurrence'),
+      Error, /Did not find exactly one match/);
   });
 
   it('should show fixed price', function() {
