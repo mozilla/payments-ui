@@ -29,9 +29,15 @@ export function _processOneTimePayment({dispatch, productId, getState,
                                         fetch=api.fetch,
                                         userDefinedAmount}) {
   var data = {
-    amount: userDefinedAmount,
     product_id: productId,
   };
+
+  if (userDefinedAmount) {
+    console.log('_processOneTimePayment was passed a userDefinedAmount',
+                userDefinedAmount);
+    data.amount = userDefinedAmount;
+  }
+
   data.paymethod = payMethodUri;
   data.nonce = payNonce;
 

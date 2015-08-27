@@ -53,4 +53,12 @@ describe('ProductPay', function() {
     assert.equal(card.props.submitPrompt, 'Donate now');
   });
 
+  it('should prompt for recurring donation', function() {
+    var View = mountView({productId: 'mozilla-foundation-recurring-donation'});
+    var card = TestUtils.findRenderedComponentWithType(
+      View, CardForm
+    );
+    assert.equal(card.props.submitPrompt, 'Donate now');
+  });
+
 });

@@ -68,4 +68,12 @@ describe('ProductPayChooser', function() {
     assert.equal(chooser.props.submitButtonText, 'Donate now');
   });
 
+  it('should prompt for recurring donation', function() {
+    var View = mountView({productId: 'mozilla-foundation-recurring-donation'});
+    var chooser = TestUtils.findRenderedComponentWithType(
+      View, PayMethodChoice
+    );
+    assert.equal(chooser.props.submitButtonText, 'Donate now');
+  });
+
 });

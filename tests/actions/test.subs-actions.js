@@ -79,13 +79,15 @@ describe('subscription actions', function() {
     function createSubscription({fetch=fakeFetch,
                                  payNonce='braintree-pay-nonce',
                                  getState=helpers.getAppStateWithCSRF,
-                                 payMethodUri} = {}) {
+                                 payMethodUri,
+                                 userDefinedAmount} = {}) {
       subActions._createSubscription({
         dispatch: dispatchSpy,
         getState: getState,
         productId: 'product-id',
         payNonce: payNonce,
         payMethodUri: payMethodUri,
+        userDefinedAmount: userDefinedAmount,
         fetch: fetch,
       });
     }
@@ -95,6 +97,11 @@ describe('subscription actions', function() {
 
       var action = dispatchSpy.firstCall.args[0];
       assert.deepEqual(action, transactionActions.complete());
+    });
+
+    it('should send amount data when passed userDefinedAmount', function() {
+       createSubscription({userDefinedAmount: '10.00'});
+       assert.equal(fakeFetch.firstCall.args[0].data.amount, '10.00');
     });
 
     it('should dispatch an error action', function() {
@@ -125,6 +132,7 @@ describe('subscription actions', function() {
       assert.equal(action.type, actionTypes.APP_ERROR);
     });
   });
+
 
   describe('getSubsByPayMethod', function() {
 
