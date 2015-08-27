@@ -38471,7 +38471,7 @@
 	          (0, _utils.gettext)('Payment Accepted')
 	        ),
 	        email,
-	        _react2['default'].createElement(_componentsSubmitButton2['default'], { text: (0, _utils.gettext)('OK'),
+	        _react2['default'].createElement(_componentsSubmitButton2['default'], { content: (0, _utils.gettext)('OK'),
 	          onClick: this.handleClick })
 	      );
 	    }
