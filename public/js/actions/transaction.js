@@ -27,9 +27,9 @@ export function payWithNewCard() {
 export function _processOneTimePayment({dispatch, productId, getState,
                                         payNonce, payMethodUri,
                                         fetch=api.fetch,
-                                        amount}) {
+                                        userDefinedAmount}) {
   var data = {
-    amount: amount,
+    amount: userDefinedAmount,
     product_id: productId,
   };
   data.paymethod = payMethodUri;

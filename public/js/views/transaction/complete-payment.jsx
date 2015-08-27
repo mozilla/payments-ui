@@ -10,8 +10,8 @@ import { default as tracking } from 'tracking';
 export default class CompletePayment extends Component {
 
   static propTypes = {
-    amount: React.PropTypes.string,
     productId: React.PropTypes.string.isRequired,
+    userDefinedAmount: React.PropTypes.string,
     userEmail: React.PropTypes.string.isRequired,
     win: React.PropTypes.object,
   }
@@ -52,8 +52,8 @@ export default class CompletePayment extends Component {
     return (
       <div className="complete">
         <ProductDetail
-          price={this.props.amount}
           productId={this.props.productId}
+          userDefinedAmount={this.props.userDefinedAmount}
         />
         <p className="accepted">{gettext('Payment Accepted')}</p>
         {email}

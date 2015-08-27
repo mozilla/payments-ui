@@ -12,11 +12,11 @@ export default class ProductPay extends Component {
 
   static propTypes = {
     // Amount to pay, which only applies to things like donations.
-    amount: PropTypes.string,
     braintreeToken: PropTypes.string.isRequired,
     cardSubmissionErrors: PropTypes.object,
     processPayment: PropTypes.func.isRequired,
     productId: PropTypes.string.isRequired,
+    userDefinedAmount: PropTypes.string,
   }
 
   componentDidMount() {
@@ -26,10 +26,12 @@ export default class ProductPay extends Component {
   handleCardSubmit(creditCard) {
     console.log('submitting credit card to sign up for subscription',
                 this.props.productId);
-    this.props.processPayment({productId: this.props.productId,
-                               creditCard: creditCard,
-                               braintreeToken: this.props.braintreeToken,
-                               amount: this.props.amount});
+    this.props.processPayment({
+      productId: this.props.productId,
+      creditCard: creditCard,
+      braintreeToken: this.props.braintreeToken,
+      userDefinedAmount: this.props.userDefinedAmount,
+    });
   }
 
   render() {
@@ -46,7 +48,7 @@ export default class ProductPay extends Component {
       <div className="card-details">
         <ProductDetail
           productId={this.props.productId}
-          price={this.props.amount}
+          userDefinedAmount={this.props.userDefinedAmount}
         />
         <CardForm
           submissionErrors={this.props.cardSubmissionErrors}

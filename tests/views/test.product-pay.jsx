@@ -10,7 +10,7 @@ describe('ProductPay', function() {
   var fakePaymentProcessor;
   var defaultProductId = 'mozilla-concrete-brick';
   var braintreeToken = 'some-braintree-token';
-  var amount = '10.00';
+  var userDefinedAmount = '10.00';
 
   beforeEach(function() {
     fakePaymentProcessor = sinon.spy();
@@ -19,7 +19,7 @@ describe('ProductPay', function() {
   function mountView({productId=defaultProductId} = {}) {
     return TestUtils.renderIntoDocument(
       <ProductPay
-        amount={amount}
+        userDefinedAmount={userDefinedAmount}
         braintreeToken={braintreeToken}
         cardSubmissionErrors={{}}
         productId={productId}
@@ -39,7 +39,7 @@ describe('ProductPay', function() {
 
     assert.equal(fakePaymentProcessor.called, true);
     var args = fakePaymentProcessor.firstCall.args;
-    assert.equal(args[0].amount, amount);
+    assert.equal(args[0].userDefinedAmount, userDefinedAmount);
     assert.equal(args[0].productId, defaultProductId);
     assert.equal(args[0].creditCard, cardData);
     assert.equal(args[0].braintreeToken, braintreeToken);
