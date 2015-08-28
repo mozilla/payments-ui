@@ -98,14 +98,23 @@ export default class CardInput extends Component {
                       errorModifier={this.props.errorModifier} /> : null }
         { showCardIcon ?
           <PayMethodIcon payMethodType={this.props.cardType} /> : null }
-        <MaskedInput
-          {...this.props.attrs}
-          id={this.props.id}
-          className={this.props.id + '-input'}
-          onChange={this.props.onChangeHandler}
-          pattern={pattern}
-          placeholder={placeholder}
-        />
+        {pattern ?
+          <MaskedInput
+            {...this.props.attrs}
+            id={this.props.id}
+            className={this.props.id + '-input'}
+            onChange={this.props.onChangeHandler}
+            pattern={pattern}
+            placeholder={placeholder}
+          /> :
+          <input
+            {...this.props.attrs}
+            id={this.props.id}
+            className={this.props.id + '-input'}
+            onChange={this.props.onChangeHandler}
+            placeholder={placeholder}
+          />
+        }
       </label>
     );
   }

@@ -18,12 +18,13 @@ describe('Card Form', function() {
   ];
   var handleCardSubmit;
 
-  function mountView({errors=null} = {}) {
+  function mountView({errors=null, emailFieldRequired=false} = {}) {
     return TestUtils.renderIntoDocument(
       <CardForm
-        submissionErrors={errors}
+        emailFieldRequired={emailFieldRequired}
         handleCardSubmit={handleCardSubmit}
         id="something"
+        submissionErrors={errors}
       />
     );
   }
@@ -84,6 +85,20 @@ describe('Card Form', function() {
     assert.ok(TestUtils.isCompositeComponent(expirationError));
   });
 
+ it('shows an email error on invalid input', function() {
+    var view = mountView({emailFieldRequired: true});
+    view.handleChange({
+      target: {
+        value: 'foo@@@@@',
+        id: 'email',
+      },
+    });
+    var email = helpers.findByClass(view, 'email');
+    assert.include(email.props.className, 'invalid');
+    var emailError = helpers.findByClass(email, 'tooltip');
+    assert.ok(TestUtils.isCompositeComponent(emailError));
+  });
+
   it('shows a cvv message from error props', function() {
     var view = mountView({errors: helpers.cvvError});
     var cvv = helpers.findByClass(view, 'cvv');
@@ -124,4 +139,8 @@ describe('Card Form', function() {
     }
   });
 
+  it('should have an email field if the product requires it', function() {
+    var view = mountView({emailFieldRequired: true});
+    assert.ok(helpers.findByClass(view, 'email-input'));
+  });
 });

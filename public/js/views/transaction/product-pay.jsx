@@ -23,15 +23,20 @@ export default class ProductPay extends Component {
     tracking.setPage('/product-pay');
   }
 
-  handleCardSubmit(creditCard) {
+  handleCardSubmit(creditCard, {email} = {}) {
     console.log('submitting credit card to sign up for subscription',
                 this.props.productId);
-    this.props.processPayment({
+    var data = {
       productId: this.props.productId,
       creditCard: creditCard,
       braintreeToken: this.props.braintreeToken,
       userDefinedAmount: this.props.userDefinedAmount,
-    });
+    };
+    if (email) {
+      console.log('Card submission included an email address');
+      data.email = email;
+    }
+    this.props.processPayment(data);
   }
 
   render() {
@@ -39,6 +44,7 @@ export default class ProductPay extends Component {
     var submitPrompt;
     if (product.seller.kind === 'donations') {
       submitPrompt = gettext('Donate now');
+      var emailFieldRequired = product.user_identification === 'email';
     } else {
       // TODO: also handle non-recurring, non-donations here.
       submitPrompt = gettext('Subscribe');
@@ -51,11 +57,12 @@ export default class ProductPay extends Component {
           userDefinedAmount={this.props.userDefinedAmount}
         />
         <CardForm
-          submissionErrors={this.props.cardSubmissionErrors}
-          submitPrompt={submitPrompt}
+          emailFieldRequired={emailFieldRequired}
           handleCardSubmit={(card) => this.handleCardSubmit(card)}
           id="braintree-form"
           method="post"
+          submissionErrors={this.props.cardSubmissionErrors}
+          submitPrompt={submitPrompt}
         />
       </div>
     );
