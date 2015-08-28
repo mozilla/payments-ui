@@ -79,16 +79,14 @@ describe('subscription actions', function() {
     function createSubscription({fetch=fakeFetch,
                                  payNonce='braintree-pay-nonce',
                                  getState=helpers.getAppStateWithCSRF,
-                                 payMethodUri,
-                                 userDefinedAmount} = {}) {
+                                 ...allParams} = {}) {
       subActions._createSubscription({
         dispatch: dispatchSpy,
         getState: getState,
         productId: 'product-id',
         payNonce: payNonce,
-        payMethodUri: payMethodUri,
-        userDefinedAmount: userDefinedAmount,
         fetch: fetch,
+        ...allParams,
       });
     }
 
@@ -102,6 +100,12 @@ describe('subscription actions', function() {
     it('should send amount data when passed userDefinedAmount', function() {
        createSubscription({userDefinedAmount: '10.00'});
        assert.equal(fakeFetch.firstCall.args[0].data.amount, '10.00');
+    });
+
+    it('should send email data when passed an email', function() {
+       createSubscription({email: 'trainee@yak-shavers.org'});
+       assert.equal(fakeFetch.firstCall.args[0].data.email,
+                    'trainee@yak-shavers.org');
     });
 
     it('should dispatch an error action', function() {
