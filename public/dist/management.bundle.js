@@ -32435,12 +32435,19 @@ webpackJsonp([0,2],[
 	  var getState = _ref.getState;
 	  var payNonce = _ref.payNonce;
 	  var payMethodUri = _ref.payMethodUri;
+	  var userDefinedAmount = _ref.userDefinedAmount;
 	  var _ref$fetch = _ref.fetch;
 	  var fetch = _ref$fetch === undefined ? api.fetch : _ref$fetch;
 	
 	  var data = {
 	    plan_id: productId
 	  };
+	
+	  if (userDefinedAmount) {
+	    console.log('_createSubscription was passed a userDefinedAmount', userDefinedAmount);
+	    data.amount = userDefinedAmount;
+	  }
+	
 	  data.pay_method_uri = payMethodUri;
 	  data.pay_method_nonce = payNonce;
 	
@@ -32557,12 +32564,17 @@ webpackJsonp([0,2],[
 	  var payMethodUri = _ref.payMethodUri;
 	  var _ref$fetch = _ref.fetch;
 	  var fetch = _ref$fetch === undefined ? api.fetch : _ref$fetch;
-	  var amount = _ref.amount;
+	  var userDefinedAmount = _ref.userDefinedAmount;
 	
 	  var data = {
-	    amount: amount,
 	    product_id: productId
 	  };
+	
+	  if (userDefinedAmount) {
+	    console.log('_processOneTimePayment was passed a userDefinedAmount', userDefinedAmount);
+	    data.amount = userDefinedAmount;
+	  }
+	
 	  data.paymethod = payMethodUri;
 	  data.nonce = payNonce;
 	

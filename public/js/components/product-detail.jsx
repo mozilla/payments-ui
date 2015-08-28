@@ -5,10 +5,8 @@ import { gettext } from 'utils';
 export default class ProductDetail extends Component {
 
   static propTypes = {
-    // Optional product price. This only applies to products that do not have
-    // a configured price, such as donations.
-    price: PropTypes.string,
     productId: PropTypes.string.isRequired,
+    userDefinedAmount: PropTypes.string,
   }
 
   render() {
@@ -23,9 +21,9 @@ export default class ProductDetail extends Component {
       console.log('Showing configured price for product', productData.id);
       price = productData.price.en;
     } else {
-      console.log('Showing component property price for product',
+      console.log('Showing user defined amount for product',
                   productData.id);
-      var decimalPrice = parseFloat(this.props.price);
+      var decimalPrice = parseFloat(this.props.userDefinedAmount);
       price = '$' + parseFloat(Math.round(decimalPrice * 100) / 100).toFixed(2);
     }
 

@@ -32004,12 +32004,19 @@
 	  var getState = _ref.getState;
 	  var payNonce = _ref.payNonce;
 	  var payMethodUri = _ref.payMethodUri;
+	  var userDefinedAmount = _ref.userDefinedAmount;
 	  var _ref$fetch = _ref.fetch;
 	  var fetch = _ref$fetch === undefined ? api.fetch : _ref$fetch;
 	
 	  var data = {
 	    plan_id: productId
 	  };
+	
+	  if (userDefinedAmount) {
+	    console.log('_createSubscription was passed a userDefinedAmount', userDefinedAmount);
+	    data.amount = userDefinedAmount;
+	  }
+	
 	  data.pay_method_uri = payMethodUri;
 	  data.pay_method_nonce = payNonce;
 	
@@ -32126,12 +32133,17 @@
 	  var payMethodUri = _ref.payMethodUri;
 	  var _ref$fetch = _ref.fetch;
 	  var fetch = _ref$fetch === undefined ? api.fetch : _ref$fetch;
-	  var amount = _ref.amount;
+	  var userDefinedAmount = _ref.userDefinedAmount;
 	
 	  var data = {
-	    amount: amount,
 	    product_id: productId
 	  };
+	
+	  if (userDefinedAmount) {
+	    console.log('_processOneTimePayment was passed a userDefinedAmount', userDefinedAmount);
+	    data.amount = userDefinedAmount;
+	  }
+	
 	  data.paymethod = payMethodUri;
 	  data.nonce = payNonce;
 	
@@ -37844,7 +37856,7 @@
 	      accessToken: qs.access_token,
 	      productId: qs.product,
 	      // This is an amount to pay, which applies to things like donations.
-	      amount: qs.amount
+	      userDefinedAmount: qs.amount
 	    };
 	  }
 	
@@ -37886,9 +37898,9 @@
 	            } else {
 	              console.log('rendering purchase flow');
 	              return _react2['default'].createElement(Transaction, {
-	                amount: state.amount,
 	                productId: state.productId,
-	                user: connector.user
+	                user: connector.user,
+	                userDefinedAmount: state.userDefinedAmount
 	              });
 	            }
 	          }
@@ -38000,16 +38012,16 @@
 	
 	      if (connector.transaction.completed) {
 	        return _react2['default'].createElement(CompletePayment, {
-	          amount: props.amount,
 	          productId: props.productId,
+	          userDefinedAmount: props.userDefinedAmount,
 	          userEmail: props.user.email });
 	      } else if (connector.transaction.availablePayMethods.length > 0) {
 	        console.log('rendering card listing');
 	        return _react2['default'].createElement(ProductPayChooser, _extends({
-	          amount: props.amount,
 	          processPayment: processPayment,
 	          productId: props.productId,
-	          payMethods: connector.transaction.availablePayMethods
+	          payMethods: connector.transaction.availablePayMethods,
+	          userDefinedAmount: props.userDefinedAmount
 	        }, (0, _redux.bindActionCreators)(transactionActions, connector.dispatch)));
 	      } else if (!connector.user.braintreeToken) {
 	        console.log('Retreiving Braintree Token');
@@ -38017,7 +38029,7 @@
 	      } else {
 	        console.log('rendering card entry');
 	        return _react2['default'].createElement(ProductPay, {
-	          amount: props.amount,
+	          userDefinedAmount: props.userDefinedAmount,
 	          cardSubmissionErrors: connector.transaction.cardSubmissionErrors,
 	          braintreeToken: connector.user.braintreeToken,
 	          processPayment: processPayment,
@@ -38045,9 +38057,9 @@
 	      CompletePayment: _react.PropTypes.func.isRequired,
 	      ProductPay: _react.PropTypes.func.isRequired,
 	      ProductPayChooser: _react.PropTypes.func.isRequired,
-	      amount: _react.PropTypes.string,
 	      productId: _react.PropTypes.string.isRequired,
-	      user: _react.PropTypes.object.isRequired
+	      user: _react.PropTypes.object.isRequired,
+	      userDefinedAmount: _react.PropTypes.string
 	    },
 	    enumerable: true
 	  }, {
@@ -38129,10 +38141,12 @@
 	    key: 'handleCardSubmit',
 	    value: function handleCardSubmit(creditCard) {
 	      console.log('submitting credit card to sign up for subscription', this.props.productId);
-	      this.props.processPayment({ productId: this.props.productId,
+	      this.props.processPayment({
+	        productId: this.props.productId,
 	        creditCard: creditCard,
 	        braintreeToken: this.props.braintreeToken,
-	        amount: this.props.amount });
+	        userDefinedAmount: this.props.userDefinedAmount
+	      });
 	    }
 	  }, {
 	    key: 'render',
@@ -38153,7 +38167,7 @@
 	        { className: 'card-details' },
 	        _react2['default'].createElement(_componentsProductDetail2['default'], {
 	          productId: this.props.productId,
-	          price: this.props.amount
+	          userDefinedAmount: this.props.userDefinedAmount
 	        }),
 	        _react2['default'].createElement(_componentsCardForm2['default'], {
 	          submissionErrors: this.props.cardSubmissionErrors,
@@ -38170,11 +38184,11 @@
 	    key: 'propTypes',
 	    value: {
 	      // Amount to pay, which only applies to things like donations.
-	      amount: _react.PropTypes.string,
 	      braintreeToken: _react.PropTypes.string.isRequired,
 	      cardSubmissionErrors: _react.PropTypes.object,
 	      processPayment: _react.PropTypes.func.isRequired,
-	      productId: _react.PropTypes.string.isRequired
+	      productId: _react.PropTypes.string.isRequired,
+	      userDefinedAmount: _react.PropTypes.string
 	    },
 	    enumerable: true
 	  }]);
@@ -38243,8 +38257,8 @@
 	        console.log('Showing configured price for product', productData.id);
 	        price = productData.price.en;
 	      } else {
-	        console.log('Showing component property price for product', productData.id);
-	        var decimalPrice = parseFloat(this.props.price);
+	        console.log('Showing user defined amount for product', productData.id);
+	        var decimalPrice = parseFloat(this.props.userDefinedAmount);
 	        price = '$' + parseFloat(Math.round(decimalPrice * 100) / 100).toFixed(2);
 	      }
 	
@@ -38272,10 +38286,8 @@
 	  }], [{
 	    key: 'propTypes',
 	    value: {
-	      // Optional product price. This only applies to products that do not have
-	      // a configured price, such as donations.
-	      price: _react.PropTypes.string,
-	      productId: _react.PropTypes.string.isRequired
+	      productId: _react.PropTypes.string.isRequired,
+	      userDefinedAmount: _react.PropTypes.string
 	    },
 	    enumerable: true
 	  }]);
@@ -38342,7 +38354,7 @@
 	
 	    this.handleSubmit = function (payMethodUri) {
 	      _this.props.processPayment({ productId: _this.props.productId,
-	        amount: _this.props.amount,
+	        userDefinedAmount: _this.props.userDefinedAmount,
 	        payMethodUri: payMethodUri });
 	    };
 	  }
@@ -38369,7 +38381,7 @@
 	        null,
 	        _react2['default'].createElement(_componentsProductDetail2['default'], {
 	          productId: this.props.productId,
-	          price: this.props.amount
+	          userDefinedAmount: this.props.userDefinedAmount
 	        }),
 	        _react2['default'].createElement(_componentsPayMethodChoice2['default'], {
 	          payMethods: this.props.payMethods,
@@ -38388,12 +38400,12 @@
 	  }], [{
 	    key: 'propTypes',
 	    value: {
-	      // Amount to pay, which applies to things like donations.
-	      amount: _react.PropTypes.string,
 	      payMethods: _react.PropTypes.array.isRequired,
 	      payWithNewCard: _react.PropTypes.func.isRequired,
 	      processPayment: _react.PropTypes.func.isRequired,
-	      productId: _react.PropTypes.string.isRequired
+	      productId: _react.PropTypes.string.isRequired,
+	      // Amount to pay, which applies to things like donations.
+	      userDefinedAmount: _react.PropTypes.string
 	    },
 	    enumerable: true
 	  }]);
@@ -38494,8 +38506,8 @@
 	        'div',
 	        { className: 'complete' },
 	        _react2['default'].createElement(_componentsProductDetail2['default'], {
-	          price: this.props.amount,
-	          productId: this.props.productId
+	          productId: this.props.productId,
+	          userDefinedAmount: this.props.userDefinedAmount
 	        }),
 	        _react2['default'].createElement(
 	          'p',
@@ -38510,8 +38522,8 @@
 	  }], [{
 	    key: 'propTypes',
 	    value: {
-	      amount: _react2['default'].PropTypes.string,
 	      productId: _react2['default'].PropTypes.string.isRequired,
+	      userDefinedAmount: _react2['default'].PropTypes.string,
 	      userEmail: _react2['default'].PropTypes.string.isRequired,
 	      win: _react2['default'].PropTypes.object
 	    },
