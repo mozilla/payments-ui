@@ -32896,6 +32896,8 @@ webpackJsonp([0,2],[
 	exports.setTitle = setTitle;
 	exports.parseQuery = parseQuery;
 	exports.getPayMethodFromUri = getPayMethodFromUri;
+	exports.isValidEmail = isValidEmail;
+	exports.validateEmailAsYouType = validateEmailAsYouType;
 	
 	function defaults(object, opt) {
 	  object = object || {};
@@ -32995,6 +32997,61 @@ webpackJsonp([0,2],[
 	    throw new Error('Pay methods should be unique. ' + 'Found more than one matching ' + payMethodUri);
 	  }
 	  return matches.length ? matches[0] : null;
+	}
+	
+	function isValidEmail(email) {
+	  if (typeof email !== 'string') {
+	    return false;
+	  }
+	
+	  var parts = email.split('@');
+	  var localLength = parts[0] && parts[0].length;
+	  var domainLength = parts[1] && parts[1].length;
+	
+	  // Original regexp from:
+	  //  http://blog.gerv.net/2011/05/html5_email_address_regexp/
+	  // Modified to remove the length checks, which are done later.
+	  // IETF spec: http://tools.ietf.org/html/rfc5321#section-4.5.3.1.1
+	  // NOTE: this does *NOT* allow internationalized domain names.
+	  /* eslint-disable max-len */
+	  return /^[\w.!#$%&'*+\-\/=?\^`{|}~]+@[a-z\d][a-z\d\-]*(?:\.[a-z\d][a-z\d\-]*)*$/i.test(email) &&
+	  /* eslint-enable */
+	  // total email allowed to be 254 bytes long
+	  // see http://www.rfc-editor.org/errata_search.php?rfc=3696&eid=1690
+	  email.length <= 254 &&
+	  // local side only allowed to be 64 bytes long
+	  localLength >= 1 && localLength <= 64 &&
+	  // domain side allowed to be up to 255 bytes long which
+	  // doesn't make much sense unless the local side has 0 length;
+	  domainLength >= 1 && domainLength <= 255;
+	}
+	
+	function validateEmailAsYouType(email) {
+	  var invalidEmail = {
+	    isPotentiallyValid: false,
+	    isValid: false
+	  };
+	  if (typeof email !== 'string') {
+	    return invalidEmail;
+	  }
+	  var parts = email.split('@');
+	  if (parts.length === 2 && parts[0] && parts[1]) {
+	    if (isValidEmail(email)) {
+	      return {
+	        isPotentiallyValid: true,
+	        isValid: true
+	      };
+	    } else {
+	      return invalidEmail;
+	    }
+	  } else if (parts.length > 2) {
+	    return invalidEmail;
+	  } else {
+	    return {
+	      isPotentiallyValid: true,
+	      isValid: false
+	    };
+	  }
 	}
 
 /***/ },
@@ -33176,6 +33233,19 @@ webpackJsonp([0,2],[
 	    'placeholder': (0, _utils.gettext)('Card number'),
 	    'validator': _cardValidator2['default'].number
 	  },
+	  email: {
+	    'attrs': {
+	      'type': 'email'
+	    },
+	    'classNames': ['email'],
+	    'errors': {
+	      invalid: (0, _utils.gettext)('Invalid email address')
+	    },
+	    'id': 'email',
+	    'pattern': null,
+	    'placeholder': (0, _utils.gettext)('Email address'),
+	    'validator': _utils.validateEmailAsYouType
+	  },
 	  expiration: {
 	    'attrs': defaultFieldAttrs,
 	    'classNames': ['expiration'],
@@ -33209,6 +33279,7 @@ webpackJsonp([0,2],[
 	    value: {
 	      card: _react.PropTypes.object,
 	      cvv: _react.PropTypes.object,
+	      emailFieldRequired: _react.PropTypes.bool,
 	      expiration: _react.PropTypes.object,
 	      handleCardSubmit: _react.PropTypes.func.isRequired,
 	      id: _react.PropTypes.string.isRequired,
@@ -33219,8 +33290,8 @@ webpackJsonp([0,2],[
 	  }, {
 	    key: 'defaultProps',
 	    value: {
-	      // This should always be overidden with a localized value.
-	      submitPrompt: 'Submit'
+	      emailFieldRequired: false,
+	      submitPrompt: (0, _utils.gettext)('Submit')
 	    },
 	    enumerable: true
 	  }]);
@@ -33257,17 +33328,23 @@ webpackJsonp([0,2],[
 	    this.handleSubmit = function (e) {
 	      e.preventDefault();
 	      _this.setState({ isSubmitting: true });
-	      _this.props.handleCardSubmit({
+	      var formData = {
 	        number: _this.state.card,
 	        cvv: _this.state.cvv,
 	        expiration: _this.state.expiration
-	      });
+	      };
+	      var opts = {};
+	      if (_this.props.emailFieldRequired) {
+	        opts.email = _this.state.email;
+	      }
+	      _this.props.handleCardSubmit(formData, opts);
 	    };
 	
 	    this.state = {
 	      card: '',
 	      cardType: null,
 	      cvv: '',
+	      email: '',
 	      errors: {},
 	      expiration: '',
 	      isSubmitting: false
@@ -33306,6 +33383,8 @@ webpackJsonp([0,2],[
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+	
 	      if (this.props.submissionErrors) {
 	        this.mapErrorsToFields(this.props.submissionErrors);
 	      }
@@ -33314,7 +33393,10 @@ webpackJsonp([0,2],[
 	
 	      // Update form validity based on fieldProps.
 	      Object.keys(fieldProps).forEach(function (field) {
-	        if (!fieldProps[field].isValid) {
+	        // Skip over the email field if it's not required.
+	        if (field === 'email' && !_this2.props.emailFieldRequired) {
+	          return;
+	        } else if (!fieldProps[field].isValid) {
 	          formIsValid = false;
 	        }
 	      });
@@ -33327,6 +33409,8 @@ webpackJsonp([0,2],[
 	        _react2['default'].createElement(
 	          'div',
 	          { className: 'wrapper' },
+	          this.props.emailFieldRequired ? _react2['default'].createElement(_componentsCardInput2['default'], _extends({}, fieldProps.email, {
+	            onChangeHandler: this.handleChange })) : null,
 	          _react2['default'].createElement(_componentsCardInput2['default'], _extends({}, fieldProps.card, {
 	            cardType: this.state.cardType,
 	            onChangeHandler: this.handleChange })),
@@ -36591,11 +36675,16 @@ webpackJsonp([0,2],[
 	        this.props.showError ? _react2['default'].createElement(_componentsInputError2['default'], { errorMessage: this.props.errorMessage,
 	          errorModifier: this.props.errorModifier }) : null,
 	        showCardIcon ? _react2['default'].createElement(_componentsPayMethodIcon2['default'], { payMethodType: this.props.cardType }) : null,
-	        _react2['default'].createElement(_reactMaskedinput2['default'], _extends({}, this.props.attrs, {
+	        pattern ? _react2['default'].createElement(_reactMaskedinput2['default'], _extends({}, this.props.attrs, {
 	          id: this.props.id,
 	          className: this.props.id + '-input',
 	          onChange: this.props.onChangeHandler,
 	          pattern: pattern,
+	          placeholder: placeholder
+	        })) : _react2['default'].createElement('input', _extends({}, this.props.attrs, {
+	          id: this.props.id,
+	          className: this.props.id + '-input',
+	          onChange: this.props.onChangeHandler,
 	          placeholder: placeholder
 	        }))
 	      );
