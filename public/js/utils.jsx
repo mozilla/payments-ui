@@ -101,3 +101,60 @@ export function getPayMethodFromUri(payMethods, payMethodUri) {
   }
   return matches.length ? matches[0] : null;
 }
+
+
+export function isValidEmail(email) {
+  if (typeof email !== 'string') {
+    return false;
+  }
+
+  var parts = email.split('@');
+  var localLength = parts[0] && parts[0].length;
+  var domainLength = parts[1] && parts[1].length;
+
+  // Original regexp from:
+  //  http://blog.gerv.net/2011/05/html5_email_address_regexp/
+  // Modified to remove the length checks, which are done later.
+  // IETF spec: http://tools.ietf.org/html/rfc5321#section-4.5.3.1.1
+  // NOTE: this does *NOT* allow internationalized domain names.
+  /* eslint-disable max-len */
+  return (/^[\w.!#$%&'*+\-\/=?\^`{|}~]+@[a-z\d][a-z\d\-]*(?:\.[a-z\d][a-z\d\-]*)*$/i).test(email) &&
+  /* eslint-enable */
+    // total email allowed to be 254 bytes long
+    // see http://www.rfc-editor.org/errata_search.php?rfc=3696&eid=1690
+    email.length <= 254 &&
+    // local side only allowed to be 64 bytes long
+    localLength >= 1 && localLength <= 64 &&
+    // domain side allowed to be up to 255 bytes long which
+    // doesn't make much sense unless the local side has 0 length;
+    domainLength >= 1 && domainLength <= 255;
+}
+
+
+export function validateEmailAsYouType(email) {
+  var invalidEmail = {
+    isPotentiallyValid: false,
+    isValid: false,
+  };
+  if (typeof email !== 'string') {
+    return invalidEmail;
+  }
+  var parts = email.split('@');
+  if (parts.length === 2 && parts[0] && parts[1]) {
+    if (isValidEmail(email)) {
+      return {
+        isPotentiallyValid: true,
+        isValid: true,
+      };
+    } else {
+      return invalidEmail;
+    }
+  } else if (parts.length > 2) {
+    return invalidEmail;
+  } else {
+    return {
+      isPotentiallyValid: true,
+      isValid: false,
+    };
+  }
+}

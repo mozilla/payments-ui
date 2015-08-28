@@ -120,3 +120,48 @@ describe('utils.configGetText', function() {
   });
 
 });
+
+
+describe('utils.isValidEmail', function() {
+
+  it('should be invalid as incomplete', function() {
+    assert.notOk(utils.isValidEmail('foo@'));
+  });
+
+  it('should be valid', function() {
+    assert.ok(utils.isValidEmail('foo@bar'));
+  });
+
+  it('should be invalid as ending in period', function() {
+    assert.notOk(utils.isValidEmail('foo@bar.'));
+  });
+
+});
+
+describe('utils.validateEmailAsYouType', function() {
+
+  it('should be potentially valid but not valid', function() {
+    var emailData = utils.validateEmailAsYouType('foo@');
+    assert.ok(emailData.isPotentiallyValid);
+    assert.notOk(emailData.isValid);
+  });
+
+  it('should be fully valid', function() {
+    var emailData = utils.validateEmailAsYouType('foo@bar.com');
+    assert.ok(emailData.isPotentiallyValid);
+    assert.ok(emailData.isValid);
+  });
+
+  it('should be invalid ending in a period', function() {
+    var emailData = utils.validateEmailAsYouType('foo@bar.');
+    assert.notOk(emailData.isPotentiallyValid);
+    assert.notOk(emailData.isValid);
+  });
+
+  it('should be invalid as too many @', function() {
+    var emailData = utils.validateEmailAsYouType('foo@@');
+    assert.notOk(emailData.isPotentiallyValid);
+    assert.notOk(emailData.isValid);
+  });
+
+});
