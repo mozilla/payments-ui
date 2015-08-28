@@ -92,7 +92,7 @@ describe('Transaction', function() {
   });
 
   it('should render a payment completed page', function() {
-    var View = mountView({amount: '5.00'});
+    var View = mountView({userDefinedAmount: '5.00'});
 
     store.dispatch(transactionActions.complete());
 
@@ -100,7 +100,7 @@ describe('Transaction', function() {
       View, FakeCompletePayment
     );
     assert.equal(child.props.userEmail, fakeUser.email);
-    assert.equal(child.props.amount, '5.00');
+    assert.equal(child.props.userDefinedAmount, '5.00');
   });
 
   it('should render new card entry on explicit request', function() {

@@ -158,9 +158,9 @@ describe('transactionActions', function() {
 
     it('should pass amount to pay processor', function() {
       processPayment({productId: 'mozilla-foundation-donation',
-                      amount: '10.00'});
+                      userDefinedAmount: '10.00'});
       var args = fakePayOnce.firstCall.args[0];
-      assert.equal(args.amount, '10.00');
+      assert.equal(args.userDefinedAmount, '10.00');
     });
 
     it('should pass pay method URI to pay processor', function() {
@@ -186,7 +186,7 @@ describe('transactionActions', function() {
     });
 
     function processOneTimePayment({fetch=fakeFetch,
-                                    amount='10.00',
+                                    userDefinedAmount='10.00',
                                     productId=defaultProductId,
                                     client=helpers.FakeBraintreeClient,
                                     payNonce='braintree-pay-nonce',
@@ -194,7 +194,7 @@ describe('transactionActions', function() {
                                     payMethodUri} = {}) {
       transactionActions._processOneTimePayment({
         dispatch: dispatchSpy,
-        amount: amount,
+        userDefinedAmount: userDefinedAmount,
         getState: getState,
         productId: productId,
         payNonce: payNonce,
@@ -204,16 +204,16 @@ describe('transactionActions', function() {
     }
 
     it('should create a sale with basic data', function() {
-      var amount = '5.00';
+      var userDefinedAmount = '5.00';
 
       processOneTimePayment({
-        amount: amount,
+        userDefinedAmount: userDefinedAmount,
       });
 
       assert.equal(fakeFetch.firstCall.args[0].url, '/braintree/sale/');
 
       var data = fakeFetch.firstCall.args[0].data;
-      assert.equal(data.amount, amount);
+      assert.equal(data.amount, userDefinedAmount);
       assert.equal(data.product_id, defaultProductId);
     });
 

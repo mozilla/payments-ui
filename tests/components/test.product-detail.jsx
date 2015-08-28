@@ -9,9 +9,10 @@ import * as helpers from '../helpers';
 describe('ProductDetail', function() {
   var defaultProductId = 'mozilla-concrete-brick';
 
-  function mountView({price, productId=defaultProductId} = {}) {
+  function mountView({userDefinedAmount, productId=defaultProductId} = {}) {
     return TestUtils.renderIntoDocument(
-      <ProductDetail productId={productId} price={price} />
+      <ProductDetail productId={productId}
+        userDefinedAmount={userDefinedAmount} />
     );
   }
 
@@ -43,7 +44,7 @@ describe('ProductDetail', function() {
 
   it('should show variable price', function() {
     var view = mountView({
-      price: '5.00',
+      userDefinedAmount: '5.00',
       productId: 'mozilla-foundation-donation',
     });
 
@@ -53,7 +54,7 @@ describe('ProductDetail', function() {
 
   it('should fix up variable price numbers', function() {
     var view = mountView({
-      price: '5.3457888',
+      userDefinedAmount: '5.3457888',
       productId: 'mozilla-foundation-donation',
     });
 
@@ -63,7 +64,7 @@ describe('ProductDetail', function() {
 
   it('should render variable price integers', function() {
     var view = mountView({
-      price: '5',
+      userDefinedAmount: '5',
       productId: 'mozilla-foundation-donation',
     });
 
@@ -72,7 +73,7 @@ describe('ProductDetail', function() {
   });
 
   it('should ignore variable price when product has fixed price', function() {
-    var view = mountView({price: '5.00'});
+    var view = mountView({userDefinedAmount: '5.00'});
 
     var renderedPrice = helpers.findByClass(view, 'price');
     var product = products.get(defaultProductId);

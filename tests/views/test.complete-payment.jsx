@@ -70,11 +70,11 @@ describe('CompletePayment', function() {
   });
 
   it('should pass amount to product details', function() {
-    var view = mountView({amount: '10.00'});
+    var view = mountView({userDefinedAmount: '10.00'});
     var product = TestUtils.findRenderedComponentWithType(
       view, ProductDetail
     );
-    assert.equal(product.props.price, '10.00');
+    assert.equal(product.props.userDefinedAmount, '10.00');
   });
 
 });

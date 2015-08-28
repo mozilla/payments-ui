@@ -20,9 +20,9 @@ export default class Transaction extends Component {
     CompletePayment: PropTypes.func.isRequired,
     ProductPay: PropTypes.func.isRequired,
     ProductPayChooser: PropTypes.func.isRequired,
-    amount: PropTypes.string,
     productId: PropTypes.string.isRequired,
     user: PropTypes.object.isRequired,
+    userDefinedAmount: PropTypes.string,
   }
 
   static defaultProps = {
@@ -51,18 +51,18 @@ export default class Transaction extends Component {
     if (connector.transaction.completed) {
       return (
         <CompletePayment
-          amount={props.amount}
           productId={props.productId}
+          userDefinedAmount={props.userDefinedAmount}
           userEmail={props.user.email} />
       );
     } else if (connector.transaction.availablePayMethods.length > 0) {
       console.log('rendering card listing');
       return (
         <ProductPayChooser
-          amount={props.amount}
           processPayment={processPayment}
           productId={props.productId}
           payMethods={connector.transaction.availablePayMethods}
+          userDefinedAmount={props.userDefinedAmount}
           {...bindActionCreators(transactionActions, connector.dispatch)}
         />
       );
@@ -77,7 +77,7 @@ export default class Transaction extends Component {
       console.log('rendering card entry');
       return (
         <ProductPay
-          amount={props.amount}
+          userDefinedAmount={props.userDefinedAmount}
           cardSubmissionErrors={connector.transaction.cardSubmissionErrors}
           braintreeToken={connector.user.braintreeToken}
           processPayment={processPayment}

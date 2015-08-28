@@ -38,7 +38,7 @@ export default class TransactionApp extends Component {
       accessToken: qs.access_token,
       productId: qs.product,
       // This is an amount to pay, which applies to things like donations.
-      amount: qs.amount,
+      userDefinedAmount: qs.amount,
     };
   }
 
@@ -80,9 +80,9 @@ export default class TransactionApp extends Component {
               console.log('rendering purchase flow');
               return (
                 <Transaction
-                  amount={state.amount}
                   productId={state.productId}
                   user={connector.user}
+                  userDefinedAmount={state.userDefinedAmount}
                 />
               );
             }

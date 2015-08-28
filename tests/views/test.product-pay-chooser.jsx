@@ -10,7 +10,7 @@ describe('ProductPayChooser', function() {
   var fakePaymentProcessor;
   var payWithNewCardSpy;
   var defaultProductId = 'mozilla-concrete-brick';
-  var amount = '10.00';
+  var userDefinedAmount = '10.00';
   var savedVisa = {provider_id: '3vr3ym', type_name: 'Visa'};
 
   beforeEach(function() {
@@ -21,7 +21,7 @@ describe('ProductPayChooser', function() {
   function mountView({productId=defaultProductId} = {}) {
     return TestUtils.renderIntoDocument(
       <ProductPayChooser
-        amount={amount}
+        userDefinedAmount={userDefinedAmount}
         payMethods={[savedVisa]}
         payWithNewCard={payWithNewCardSpy}
         processPayment={fakePaymentProcessor}
@@ -39,7 +39,7 @@ describe('ProductPayChooser', function() {
 
     assert.equal(fakePaymentProcessor.called, true);
     var args = fakePaymentProcessor.firstCall.args;
-    assert.equal(args[0].amount, amount);
+    assert.equal(args[0].userDefinedAmount, userDefinedAmount);
     assert.equal(args[0].productId, defaultProductId);
     assert.equal(args[0].payMethodUri, savedVisa);
   });
@@ -62,6 +62,14 @@ describe('ProductPayChooser', function() {
 
   it('should prompt for donation', function() {
     var View = mountView({productId: 'mozilla-foundation-donation'});
+    var chooser = TestUtils.findRenderedComponentWithType(
+      View, PayMethodChoice
+    );
+    assert.equal(chooser.props.submitButtonText, 'Donate now');
+  });
+
+  it('should prompt for recurring donation', function() {
+    var View = mountView({productId: 'mozilla-foundation-recurring-donation'});
     var chooser = TestUtils.findRenderedComponentWithType(
       View, PayMethodChoice
     );
