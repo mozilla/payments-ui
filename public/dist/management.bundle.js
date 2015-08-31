@@ -32436,6 +32436,7 @@ webpackJsonp([0,2],[
 	  var payNonce = _ref.payNonce;
 	  var payMethodUri = _ref.payMethodUri;
 	  var userDefinedAmount = _ref.userDefinedAmount;
+	  var email = _ref.email;
 	  var _ref$fetch = _ref.fetch;
 	  var fetch = _ref$fetch === undefined ? api.fetch : _ref$fetch;
 	
@@ -32446,6 +32447,11 @@ webpackJsonp([0,2],[
 	  if (userDefinedAmount) {
 	    console.log('_createSubscription was passed a userDefinedAmount', userDefinedAmount);
 	    data.amount = userDefinedAmount;
+	  }
+	
+	  if (email) {
+	    console.log('_createSubscription was passed an email', email);
+	    data.email = email;
 	  }
 	
 	  data.pay_method_uri = payMethodUri;

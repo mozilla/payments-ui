@@ -32005,6 +32005,7 @@
 	  var payNonce = _ref.payNonce;
 	  var payMethodUri = _ref.payMethodUri;
 	  var userDefinedAmount = _ref.userDefinedAmount;
+	  var email = _ref.email;
 	  var _ref$fetch = _ref.fetch;
 	  var fetch = _ref$fetch === undefined ? api.fetch : _ref$fetch;
 	
@@ -32015,6 +32016,11 @@
 	  if (userDefinedAmount) {
 	    console.log('_createSubscription was passed a userDefinedAmount', userDefinedAmount);
 	    data.amount = userDefinedAmount;
+	  }
+	
+	  if (email) {
+	    console.log('_createSubscription was passed an email', email);
+	    data.email = email;
 	  }
 	
 	  data.pay_method_uri = payMethodUri;
@@ -38216,9 +38222,30 @@
 	  _inherits(ProductPay, _Component);
 	
 	  function ProductPay() {
+	    var _this = this;
+	
 	    _classCallCheck(this, ProductPay);
 	
 	    _get(Object.getPrototypeOf(ProductPay.prototype), 'constructor', this).apply(this, arguments);
+	
+	    this.handleCardSubmit = function (creditCard) {
+	      var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	
+	      var email = _ref.email;
+	
+	      console.log('submitting credit card to sign up for subscription', _this.props.productId);
+	      var data = {
+	        productId: _this.props.productId,
+	        creditCard: creditCard,
+	        braintreeToken: _this.props.braintreeToken,
+	        userDefinedAmount: _this.props.userDefinedAmount
+	      };
+	      if (email) {
+	        console.log('Card submission included an email address');
+	        data.email = email;
+	      }
+	      _this.props.processPayment(data);
+	    };
 	  }
 	
 	  _createClass(ProductPay, [{
@@ -38227,30 +38254,8 @@
 	      _tracking2['default'].setPage('/product-pay');
 	    }
 	  }, {
-	    key: 'handleCardSubmit',
-	    value: function handleCardSubmit(creditCard) {
-	      var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-	
-	      var email = _ref.email;
-	
-	      console.log('submitting credit card to sign up for subscription', this.props.productId);
-	      var data = {
-	        productId: this.props.productId,
-	        creditCard: creditCard,
-	        braintreeToken: this.props.braintreeToken,
-	        userDefinedAmount: this.props.userDefinedAmount
-	      };
-	      if (email) {
-	        console.log('Card submission included an email address');
-	        data.email = email;
-	      }
-	      this.props.processPayment(data);
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this = this;
-	
 	      var product = products.get(this.props.productId);
 	      var submitPrompt;
 	      if (product.seller.kind === 'donations') {
@@ -38270,9 +38275,7 @@
 	        }),
 	        _react2['default'].createElement(_componentsCardForm2['default'], {
 	          emailFieldRequired: emailFieldRequired,
-	          handleCardSubmit: function (card) {
-	            return _this.handleCardSubmit(card);
-	          },
+	          handleCardSubmit: this.handleCardSubmit,
 	          id: 'braintree-form',
 	          method: 'post',
 	          submissionErrors: this.props.cardSubmissionErrors,

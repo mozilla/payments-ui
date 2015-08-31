@@ -68,7 +68,7 @@ export function getSubsByPayMethod(payMethodUri, fetch=api.fetch) {
 
 export function _createSubscription({dispatch, productId,
                                      getState, payNonce, payMethodUri,
-                                     userDefinedAmount,
+                                     userDefinedAmount, email,
                                      fetch=api.fetch}) {
   var data = {
     plan_id: productId,
@@ -78,6 +78,11 @@ export function _createSubscription({dispatch, productId,
     console.log('_createSubscription was passed a userDefinedAmount',
                 userDefinedAmount);
     data.amount = userDefinedAmount;
+  }
+
+  if (email) {
+    console.log('_createSubscription was passed an email', email);
+    data.email = email;
   }
 
   data.pay_method_uri = payMethodUri;
