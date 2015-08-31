@@ -23,7 +23,7 @@ export default class ProductPay extends Component {
     tracking.setPage('/product-pay');
   }
 
-  handleCardSubmit(creditCard, {email} = {}) {
+  handleCardSubmit = (creditCard, {email} = {}) => {
     console.log('submitting credit card to sign up for subscription',
                 this.props.productId);
     var data = {
@@ -58,7 +58,7 @@ export default class ProductPay extends Component {
         />
         <CardForm
           emailFieldRequired={emailFieldRequired}
-          handleCardSubmit={(card) => this.handleCardSubmit(card)}
+          handleCardSubmit={this.handleCardSubmit}
           id="braintree-form"
           method="post"
           submissionErrors={this.props.cardSubmissionErrors}
