@@ -5,7 +5,7 @@ import TestUtils from 'react/lib/ReactTestUtils';
 import Spinner from 'components/spinner';
 import History from 'views/management/history';
 
-import { transactionData } from './actions/test.transaction';
+import { transactionData } from '../actions/test.transaction';
 
 
 describe('History', function() {
@@ -44,6 +44,25 @@ describe('History', function() {
       view, JsonTable
     );
     assert.equal(table.props.rows, data);
+  });
+
+  it('should format transaction dates', function() {
+    var data = transactionData();
+    var view = mountView({transactions: data});
+    var table = TestUtils.findRenderedComponentWithType(
+      view, JsonTable
+    );
+
+    var cell;
+    // Use the JsonTable configuration to test formatting of date values.
+    table.props.columns.forEach(config => {
+      if (config.key === 'created') {
+        // Simulate how JsonTable formats a row.
+        cell = config.cell({created: '2015-08-07T14:53:23.966'}, 'created');
+      }
+    });
+
+    assert.equal(cell, 'Aug 7, 2015');
   });
 
 });
