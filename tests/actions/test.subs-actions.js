@@ -97,6 +97,17 @@ describe('subscription actions', function() {
       assert.deepEqual(action, transactionActions.complete());
     });
 
+    it('should dispatch an email in the completion action', function() {
+      var email = 'someone@somewhere.org';
+      createSubscription({email: email});
+
+      var action = dispatchSpy.firstCall.args[0];
+      assert.deepEqual(
+        action,
+        transactionActions.complete({userEmail: email})
+      );
+    });
+
     it('should send amount data when passed userDefinedAmount', function() {
        createSubscription({userDefinedAmount: '10.00'});
        assert.equal(fakeFetch.firstCall.args[0].data.amount, '10.00');

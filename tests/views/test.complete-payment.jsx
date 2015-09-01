@@ -77,4 +77,16 @@ describe('CompletePayment', function() {
     assert.equal(product.props.userDefinedAmount, '10.00');
   });
 
+  it('should show a payment accepted message', function() {
+    var view = mountView({productId: 'mozilla-concrete-brick'});
+    var msg = helpers.findByClass(view, 'accepted');
+    assert.equal(findDOMNode(msg).textContent, 'Payment Accepted');
+  });
+
+  it('should show a donation sent message', function() {
+    var view = mountView({productId: 'mozilla-foundation-donation'});
+    var msg = helpers.findByClass(view, 'accepted');
+    assert.equal(findDOMNode(msg).textContent, 'Donation Sent');
+  });
+
 });

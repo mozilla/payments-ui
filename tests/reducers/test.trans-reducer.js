@@ -18,6 +18,18 @@ describe('Transaction Reducer', function() {
     }));
   });
 
+  it('should store an optional email on completion', function() {
+    var email = 'someone@somewhere.org';
+    var trans = reducers.transaction(
+      undefined,
+      transactionActions.complete({userEmail: email})
+    );
+    assert.deepEqual(trans, Object.assign({}, initialTransState, {
+      completed: true,
+      userEmail: email,
+    }));
+  });
+
   it('should set available methods to user saved pay methods', function() {
     var payMethods = [{type: 'Visa'}];
 

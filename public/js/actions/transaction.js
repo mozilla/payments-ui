@@ -10,9 +10,10 @@ import { _createSubscription as
          defaultCreateSubscription } from './subscriptions';
 
 
-export function complete() {
+export function complete({userEmail} = {}) {
   return {
     type: actionTypes.COMPLETE_TRANSACTION,
+    userEmail: userEmail,
   };
 }
 
