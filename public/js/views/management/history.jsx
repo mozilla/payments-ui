@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import JsonTable from 'react-json-table';
+import fecha from 'fecha';
 
 import { configGetText, gettext, setTitle } from 'utils';
 import * as products from 'products';
@@ -31,10 +32,8 @@ export default class History extends Component {
         key: 'created',
         label: gettext('Date'),
         cell: (item, columnKey) => (
-            // TODO: parse and format date like:
-            // "2015-08-07T14:53:23.966" : 'Aug 7, 2015'
-            // https://github.com/mozilla/payments-ui/issues/306
-            item[columnKey]
+          fecha.format(fecha.parse(item[columnKey], 'YYYY-MM-DDThh:mm:ss.SSS'),
+                       'MMM D, YYYY')
         ),
       },
       {
