@@ -729,8 +729,8 @@ label:focus ~ .input-help-focused {
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 18px;
-  margin-bottom: 1em;
-  padding: 0.5em 2em 0.5em 0.5em;
+  margin: 1em 0;
+  padding: 0.5em 1.35em 0.5em 0.5em;
   position: relative;
   width: 100%;
   max-width: 300px;

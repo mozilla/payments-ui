@@ -106,6 +106,10 @@
   overflow: hidden;
 }
 
+.subscription .proxy-select {
+  margin-top: 0;
+}
+
 .subscription .product {
   max-width: 50%;
 }

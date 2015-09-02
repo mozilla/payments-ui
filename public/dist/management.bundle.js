@@ -78,7 +78,7 @@ webpackJsonp([0,2],[
 	
 	var _viewsManagementDelPayMethod2 = _interopRequireDefault(_viewsManagementDelPayMethod);
 	
-	var _viewsManagementConfirmDelPayMethod = __webpack_require__(263);
+	var _viewsManagementConfirmDelPayMethod = __webpack_require__(264);
 	
 	var _viewsManagementConfirmDelPayMethod2 = _interopRequireDefault(_viewsManagementConfirmDelPayMethod);
 	
@@ -37924,6 +37924,10 @@ webpackJsonp([0,2],[
 	
 	var _componentsPayMethodList2 = _interopRequireDefault(_componentsPayMethodList);
 	
+	var _componentsPayMethodDropDown = __webpack_require__(263);
+	
+	var _componentsPayMethodDropDown2 = _interopRequireDefault(_componentsPayMethodDropDown);
+	
 	var _componentsSubmitButton = __webpack_require__(257);
 	
 	var _componentsSubmitButton2 = _interopRequireDefault(_componentsSubmitButton);
@@ -37941,7 +37945,8 @@ webpackJsonp([0,2],[
 	      productId: _react.PropTypes.string.isRequired,
 	      submitButtonCSSModifier: _react.PropTypes.string.isRequired,
 	      submitButtonText: _react.PropTypes.string.isRequired,
-	      submitHandler: _react.PropTypes.func.isRequired
+	      submitHandler: _react.PropTypes.func.isRequired,
+	      useDropDown: _react.PropTypes.bool
 	    },
 	    enumerable: true
 	  }, {
@@ -37949,7 +37954,8 @@ webpackJsonp([0,2],[
 	    value: {
 	      cssModifier: null,
 	      submitButtonText: (0, _utils.gettext)('Submit'),
-	      submitButtonModifier: null
+	      submitButtonModifier: null,
+	      useDropDown: false
 	    },
 	    enumerable: true
 	  }]);
@@ -37971,9 +37977,18 @@ webpackJsonp([0,2],[
 	      _this.setState({ payMethod: e.target.value });
 	    };
 	
+	    var payMethodUri = null;
+	    if (this.props.useDropDown) {
+	      // TODO: Once a default pay method is possible this will need
+	      // to be updated.
+	      payMethodUri = this.props.payMethods[0].resource_uri;
+	    } else {
+	      payMethodUri = this.props.payMethods.length === 1 ? this.props.payMethods[0].resource_uri : null;
+	    }
+	
 	    this.state = {
 	      isSubmitting: false,
-	      payMethod: this.props.payMethods.length === 1 ? this.props.payMethods[0].resource_uri : null
+	      payMethod: payMethodUri
 	    };
 	  }
 	
@@ -37991,10 +38006,15 @@ webpackJsonp([0,2],[
 	      return _react2['default'].createElement(
 	        'form',
 	        { id: 'pay-method-choice', onSubmit: this.handleSubmit },
-	        _react2['default'].createElement(_componentsPayMethodList2['default'], {
+	        this.props.useDropDown === true ? _react2['default'].createElement(_componentsPayMethodDropDown2['default'], {
+	          onPayMethodChange: this.handlePayMethodChange,
+	          payMethods: payMethodData,
+	          showDefaultOption: false
+	        }) : _react2['default'].createElement(_componentsPayMethodList2['default'], {
 	          cssModifier: this.props.cssModifier,
 	          payMethods: payMethodData,
-	          onPayMethodChange: this.handlePayMethodChange }),
+	          onPayMethodChange: this.handlePayMethodChange
+	        }),
 	        _react2['default'].createElement(_componentsSubmitButton2['default'], { isDisabled: !formIsValid,
 	          cssModifier: this.props.submitButtonCSSModifier,
 	          showSpinner: this.state.isSubmitting,
@@ -38207,6 +38227,233 @@ webpackJsonp([0,2],[
 	  value: true
 	});
 	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(9);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _classnames = __webpack_require__(253);
+	
+	var _classnames2 = _interopRequireDefault(_classnames);
+	
+	var _componentsPayMethodIcon = __webpack_require__(254);
+	
+	var _componentsPayMethodIcon2 = _interopRequireDefault(_componentsPayMethodIcon);
+	
+	var _utils = __webpack_require__(213);
+	
+	var defaultSelectText = (0, _utils.gettext)('Please select');
+	
+	var PayMethodDropDown = (function (_Component) {
+	  _inherits(PayMethodDropDown, _Component);
+	
+	  _createClass(PayMethodDropDown, null, [{
+	    key: 'propTypes',
+	    value: {
+	      cssModifier: _react.PropTypes.string,
+	      onPayMethodChange: _react.PropTypes.func,
+	      payMethods: _react.PropTypes.arrayOf(_react.PropTypes.shape({
+	        id: _react.PropTypes.number,
+	        resource_uri: _react.PropTypes.string,
+	        truncated_id: _react.PropTypes.string,
+	        type_name: _react.PropTypes.string
+	      })).isRequired,
+	      selectId: _react.PropTypes.string,
+	      selectNameAttr: _react.PropTypes.string,
+	      selectedPayMethodResource: _react.PropTypes.string,
+	      showDefaultOption: _react.PropTypes.bool
+	    },
+	    enumerable: true
+	  }, {
+	    key: 'defaultProps',
+	    value: {
+	      selectId: null,
+	      showDefaultOption: true,
+	      selectNameAttr: 'pay-method'
+	    },
+	    enumerable: true
+	  }]);
+	
+	  function PayMethodDropDown(props) {
+	    var _this = this;
+	
+	    _classCallCheck(this, PayMethodDropDown);
+	
+	    _get(Object.getPrototypeOf(PayMethodDropDown.prototype), 'constructor', this).call(this, props);
+	
+	    this.handleFocus = function () {
+	      _this.setState({ isFocused: true });
+	    };
+	
+	    this.handleBlur = function () {
+	      _this.setState({ isFocused: false });
+	    };
+	
+	    this.handleChange = function (e) {
+	      if (_this.props.onPayMethodChange) {
+	        _this.props.onPayMethodChange(e);
+	      }
+	      _this.updatePayMethodSelection(e.target.value);
+	    };
+	
+	    var payMethodData;
+	    // Get the data for the default selected pay method.
+	    if (props.selectedPayMethodResource) {
+	      payMethodData = this.getSelectedPayMethod(props.selectedPayMethodResource);
+	    }
+	
+	    // If there's default selected option and showDefaultOption is false
+	    // we set the "fake select" to the first option.
+	    if ((!payMethodData || !Object.keys(payMethodData).length) && props.showDefaultOption === false) {
+	      payMethodData = props.payMethods[0];
+	    }
+	
+	    var initialState = {
+	      selectedText: defaultSelectText,
+	      selectedPayMethodType: null,
+	      isFocused: false
+	    };
+	
+	    var displayData = {};
+	    if (payMethodData) {
+	      displayData = this.getDisplayData(payMethodData);
+	    }
+	
+	    this.state = Object.assign({}, initialState, displayData);
+	  }
+	
+	  _createClass(PayMethodDropDown, [{
+	    key: 'getSelectedPayMethod',
+	    value: function getSelectedPayMethod(selectedPayMethodResource) {
+	      var selectedPayMethod = this.props.payMethods.filter(function (item) {
+	        return item.resource_uri === selectedPayMethodResource;
+	      });
+	      if (selectedPayMethod.length) {
+	        return selectedPayMethod[0];
+	      } else {
+	        return {};
+	      }
+	    }
+	  }, {
+	    key: 'getDisplayData',
+	
+	    // Returns an object with the necessary data
+	    // to use in setState.
+	    value: function getDisplayData(payMethod) {
+	      if (payMethod.type_name && payMethod.truncated_id) {
+	        return {
+	          selectedPayMethodType: payMethod.type_name.toLowerCase(),
+	          selectedText: '●●●● ●●●● ●●●● ' + payMethod.truncated_id
+	        };
+	      } else {
+	        return {
+	          selectedPayMethodType: null,
+	          selectedText: defaultSelectText
+	        };
+	      }
+	    }
+	  }, {
+	    key: 'updatePayMethodSelection',
+	    value: function updatePayMethodSelection(selectedPayMethodResource) {
+	      var payMethodData = this.getSelectedPayMethod(selectedPayMethodResource);
+	      this.setState(this.getDisplayData(payMethodData));
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var payMethods = this.props.payMethods;
+	      var payMethodOptions = [];
+	
+	      if (this.props.showDefaultOption === true) {
+	        payMethodOptions.push(_react2['default'].createElement(
+	          'option',
+	          {
+	            value: '',
+	            key: '_default',
+	            ref: '_default' },
+	          defaultSelectText
+	        ));
+	      }
+	
+	      for (var i = 0; i < payMethods.length; i += 1) {
+	        var payMethod = payMethods[i];
+	        var optionText = payMethod.type_name.toUpperCase() + ' ●●●● ●●●● ●●●● ' + payMethod.truncated_id;
+	
+	        var selected = payMethod.resource_uri === this.props.selectedPayMethodResource ? 'selected' : null;
+	
+	        payMethodOptions.push(_react2['default'].createElement(
+	          'option',
+	          {
+	            key: payMethod.id,
+	            selected: selected,
+	            value: payMethod.resource_uri
+	          },
+	          optionText
+	        ));
+	      }
+	
+	      var contentClasses = (0, _classnames2['default'])('content', {
+	        'has-pay-method': this.state.selectedPayMethodType
+	      });
+	
+	      var proxySelectClasses = (0, _classnames2['default'])('proxy-select', {
+	        'active': this.state.isFocused
+	      });
+	
+	      return _react2['default'].createElement(
+	        'div',
+	        { className: proxySelectClasses },
+	        this.state.selectedPayMethodType ? _react2['default'].createElement(_componentsPayMethodIcon2['default'], { payMethodType: this.state.selectedPayMethodType }) : null,
+	        _react2['default'].createElement(
+	          'span',
+	          { className: contentClasses, ariaHidden: 'true' },
+	          _react2['default'].createElement(
+	            'span',
+	            { className: 'vh' },
+	            this.state.selectedPayMethodType
+	          ),
+	          this.state.selectedText
+	        ),
+	        _react2['default'].createElement(
+	          'select',
+	          {
+	            id: this.props.selectId,
+	            onBlur: this.handleBlur,
+	            onChange: this.handleChange,
+	            onFocus: this.handleFocus,
+	            onKeyUp: this.handleChange,
+	            name: this.props.selectNameAttr },
+	          payMethodOptions
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return PayMethodDropDown;
+	})(_react.Component);
+	
+	exports['default'] = PayMethodDropDown;
+	module.exports = exports['default'];
+
+/***/ },
+/* 264 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -38231,7 +38478,7 @@ webpackJsonp([0,2],[
 	
 	var _componentsPayMethodItem2 = _interopRequireDefault(_componentsPayMethodItem);
 	
-	var _componentsPayMethodDropDown = __webpack_require__(264);
+	var _componentsPayMethodDropDown = __webpack_require__(263);
 	
 	var _componentsPayMethodDropDown2 = _interopRequireDefault(_componentsPayMethodDropDown);
 	
@@ -38507,233 +38754,6 @@ webpackJsonp([0,2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 264 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-	
-	var _react = __webpack_require__(9);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _classnames = __webpack_require__(253);
-	
-	var _classnames2 = _interopRequireDefault(_classnames);
-	
-	var _componentsPayMethodIcon = __webpack_require__(254);
-	
-	var _componentsPayMethodIcon2 = _interopRequireDefault(_componentsPayMethodIcon);
-	
-	var _utils = __webpack_require__(213);
-	
-	var defaultSelectText = (0, _utils.gettext)('Please select');
-	
-	var PayMethodDropDown = (function (_Component) {
-	  _inherits(PayMethodDropDown, _Component);
-	
-	  _createClass(PayMethodDropDown, null, [{
-	    key: 'propTypes',
-	    value: {
-	      cssModifier: _react.PropTypes.string,
-	      onPayMethodChange: _react.PropTypes.func,
-	      payMethods: _react.PropTypes.arrayOf(_react.PropTypes.shape({
-	        id: _react.PropTypes.number,
-	        resource_uri: _react.PropTypes.string,
-	        truncated_id: _react.PropTypes.string,
-	        type_name: _react.PropTypes.string
-	      })).isRequired,
-	      selectId: _react.PropTypes.string,
-	      selectNameAttr: _react.PropTypes.string,
-	      selectedPayMethodResource: _react.PropTypes.string,
-	      showDefaultOption: _react.PropTypes.bool
-	    },
-	    enumerable: true
-	  }, {
-	    key: 'defaultProps',
-	    value: {
-	      selectId: null,
-	      showDefaultOption: true,
-	      selectNameAttr: 'pay-method'
-	    },
-	    enumerable: true
-	  }]);
-	
-	  function PayMethodDropDown(props) {
-	    var _this = this;
-	
-	    _classCallCheck(this, PayMethodDropDown);
-	
-	    _get(Object.getPrototypeOf(PayMethodDropDown.prototype), 'constructor', this).call(this, props);
-	
-	    this.handleFocus = function () {
-	      _this.setState({ isFocused: true });
-	    };
-	
-	    this.handleBlur = function () {
-	      _this.setState({ isFocused: false });
-	    };
-	
-	    this.handleChange = function (e) {
-	      if (_this.props.onPayMethodChange) {
-	        _this.props.onPayMethodChange(e);
-	      }
-	      _this.updatePayMethodSelection(e.target.value);
-	    };
-	
-	    var payMethodData;
-	    // Get the data for the default selected pay method.
-	    if (props.selectedPayMethodResource) {
-	      payMethodData = this.getSelectedPayMethod(props.selectedPayMethodResource);
-	    }
-	
-	    // If there's default selected option and showDefaultOption is false
-	    // we set the "fake select" to the first option.
-	    if ((!payMethodData || !Object.keys(payMethodData).length) && props.showDefaultOption === false) {
-	      payMethodData = props.payMethods[0];
-	    }
-	
-	    var initialState = {
-	      selectedText: defaultSelectText,
-	      selectedPayMethodType: null,
-	      isFocused: false
-	    };
-	
-	    var displayData = {};
-	    if (payMethodData) {
-	      displayData = this.getDisplayData(payMethodData);
-	    }
-	
-	    this.state = Object.assign({}, initialState, displayData);
-	  }
-	
-	  _createClass(PayMethodDropDown, [{
-	    key: 'getSelectedPayMethod',
-	    value: function getSelectedPayMethod(selectedPayMethodResource) {
-	      var selectedPayMethod = this.props.payMethods.filter(function (item) {
-	        return item.resource_uri === selectedPayMethodResource;
-	      });
-	      if (selectedPayMethod.length) {
-	        return selectedPayMethod[0];
-	      } else {
-	        return {};
-	      }
-	    }
-	  }, {
-	    key: 'getDisplayData',
-	
-	    // Returns an object with the necessary data
-	    // to use in setState.
-	    value: function getDisplayData(payMethod) {
-	      if (payMethod.type_name && payMethod.truncated_id) {
-	        return {
-	          selectedPayMethodType: payMethod.type_name.toLowerCase(),
-	          selectedText: '●●●● ●●●● ●●●● ' + payMethod.truncated_id
-	        };
-	      } else {
-	        return {
-	          selectedPayMethodType: null,
-	          selectedText: defaultSelectText
-	        };
-	      }
-	    }
-	  }, {
-	    key: 'updatePayMethodSelection',
-	    value: function updatePayMethodSelection(selectedPayMethodResource) {
-	      var payMethodData = this.getSelectedPayMethod(selectedPayMethodResource);
-	      this.setState(this.getDisplayData(payMethodData));
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var payMethods = this.props.payMethods;
-	      var payMethodOptions = [];
-	
-	      if (this.props.showDefaultOption === true) {
-	        payMethodOptions.push(_react2['default'].createElement(
-	          'option',
-	          {
-	            value: '',
-	            key: '_default',
-	            ref: '_default' },
-	          defaultSelectText
-	        ));
-	      }
-	
-	      for (var i = 0; i < payMethods.length; i += 1) {
-	        var payMethod = payMethods[i];
-	        var optionText = payMethod.type_name.toUpperCase() + ' ●●●● ●●●● ●●●● ' + payMethod.truncated_id;
-	
-	        var selected = payMethod.resource_uri === this.props.selectedPayMethodResource ? 'selected' : null;
-	
-	        payMethodOptions.push(_react2['default'].createElement(
-	          'option',
-	          {
-	            key: payMethod.id,
-	            selected: selected,
-	            value: payMethod.resource_uri
-	          },
-	          optionText
-	        ));
-	      }
-	
-	      var contentClasses = (0, _classnames2['default'])('content', {
-	        'has-pay-method': this.state.selectedPayMethodType
-	      });
-	
-	      var proxySelectClasses = (0, _classnames2['default'])('proxy-select', {
-	        'active': this.state.isFocused
-	      });
-	
-	      return _react2['default'].createElement(
-	        'div',
-	        { className: proxySelectClasses },
-	        this.state.selectedPayMethodType ? _react2['default'].createElement(_componentsPayMethodIcon2['default'], { payMethodType: this.state.selectedPayMethodType }) : null,
-	        _react2['default'].createElement(
-	          'span',
-	          { className: contentClasses, ariaHidden: 'true' },
-	          _react2['default'].createElement(
-	            'span',
-	            { className: 'vh' },
-	            this.state.selectedPayMethodType
-	          ),
-	          this.state.selectedText
-	        ),
-	        _react2['default'].createElement(
-	          'select',
-	          {
-	            id: this.props.selectId,
-	            onBlur: this.handleBlur,
-	            onChange: this.handleChange,
-	            onFocus: this.handleFocus,
-	            onKeyUp: this.handleChange,
-	            name: this.props.selectNameAttr },
-	          payMethodOptions
-	        )
-	      );
-	    }
-	  }]);
-	
-	  return PayMethodDropDown;
-	})(_react.Component);
-	
-	exports['default'] = PayMethodDropDown;
-	module.exports = exports['default'];
-
-/***/ },
 /* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -38759,7 +38779,7 @@ webpackJsonp([0,2],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _componentsPayMethodDropDown = __webpack_require__(264);
+	var _componentsPayMethodDropDown = __webpack_require__(263);
 	
 	var _componentsPayMethodDropDown2 = _interopRequireDefault(_componentsPayMethodDropDown);
 	
