@@ -47,6 +47,10 @@
 .subscription {
     overflow: hidden;
 
+    .proxy-select {
+        margin-top: 0;
+    }
+
     .product {
         max-width: 50%;
 

@@ -10,7 +10,7 @@ describe('Pay Method Icon', function() {
     'discover',
     'jcb',
     'maestro',
-    'masterpayMethod',
+    'mastercard',
     'visa',
   ];
 

@@ -6,49 +6,52 @@ import PayMethodChoice from 'components/pay-method-choice';
 import * as helpers from '../helpers';
 
 
-describe('Pay Method Choice', function() {
+const cards = [
+  'amex',
+  'discover',
+  'jcb',
+  'maestro',
+  'mastercard',
+  'visa',
+];
 
-  var cards = [
-    'amex',
-    'discover',
-    'jcb',
-    'maestro',
-    'mastercard',
-    'visa',
-  ];
+const payMethodData = [{
+    'id': 1,
+    'resource_uri': '/braintree/mozilla/paymethod/1/',
+    'truncated_id': '4444',
+    'type_name': 'MasterCard',
+  }, {
+    'id': 2,
+    'resource_uri': '/braintree/mozilla/paymethod/2/',
+    'truncated_id': '1111',
+    'type_name': 'Visa',
+  }, {
+    'id': 3,
+    'resource_uri': '/braintree/mozilla/paymethod/3/',
+    'truncated_id': '0000',
+    'type_name': 'Maestro',
+  }, {
+    'id': 4,
+    'resource_uri': '/braintree/mozilla/paymethod/4/',
+    'truncated_id': '0000',
+    'type_name': 'JCB',
+  }, {
+    'id': 5,
+    'resource_uri': '/braintree/mozilla/paymethod/5/',
+    'truncated_id': '0000',
+    'type_name': 'Discover',
+  }, {
+    'id': 6,
+    'resource_uri': '/braintree/mozilla/paymethod/6/',
+    'truncated_id': '8431',
+    'type_name': 'American-Express',
+  },
+];
 
-  var payMethodData = [{
-      'id': 1,
-      'resource_uri': '/braintree/mozilla/paymethod/1/',
-      'truncated_id': '4444',
-      'type_name': 'MasterCard',
-    }, {
-      'id': 2,
-      'resource_uri': '/braintree/mozilla/paymethod/2/',
-      'truncated_id': '1111',
-      'type_name': 'Visa',
-    }, {
-      'id': 3,
-      'resource_uri': '/braintree/mozilla/paymethod/3/',
-      'truncated_id': '0000',
-      'type_name': 'Maestro',
-    }, {
-      'id': 4,
-      'resource_uri': '/braintree/mozilla/paymethod/4/',
-      'truncated_id': '0000',
-      'type_name': 'JCB',
-    }, {
-      'id': 5,
-      'resource_uri': '/braintree/mozilla/paymethod/5/',
-      'truncated_id': '0000',
-      'type_name': 'Discover',
-    }, {
-      'id': 6,
-      'resource_uri': '/braintree/mozilla/paymethod/6/',
-      'truncated_id': '8431',
-      'type_name': 'American-Express',
-    },
-  ];
+const singlePayMethodData = [payMethodData[0]];
+
+
+describe('Pay Method Choice (List)', function() {
 
   beforeEach(function() {
     this.PayMethodChoice = TestUtils.renderIntoDocument(
@@ -71,10 +74,10 @@ describe('Pay Method Choice', function() {
   }
 
   cards.forEach(function(card) {
-    it('Displays each card type ' + card, testCardType(card));
+    it('displays each card type ' + card, testCardType(card));
   });
 
-  it('Checked prop is updated when card is selected', function() {
+  it('updates checked property when card is selected', function() {
     var event = {
       target: {
         value: '/braintree/mozilla/paymethod/5/',
@@ -82,11 +85,11 @@ describe('Pay Method Choice', function() {
     };
     this.PayMethodChoice.handlePayMethodChange(event);
     var input = TestUtils.scryRenderedDOMComponentsWithTag(
-        this.PayMethodChoice, 'input')[4];
+      this.PayMethodChoice, 'input')[4];
     assert.equal(input.props.checked, true);
   });
 
-  it('State is updated when card is selected', function() {
+  it('updates state when pay method is selected', function() {
     var event = {
       target: {
         value: 'whatevar',
@@ -98,12 +101,12 @@ describe('Pay Method Choice', function() {
     }), 'setState should be called');
   });
 
-  it('Has a disabled button when no card is selected', function() {
+  it('has a disabled button when no pay method is selected', function() {
     var submitButton = helpers.findByTag(this.PayMethodChoice, 'button');
     assert.notEqual(submitButton.getDOMNode().getAttribute('disabled'), null);
   });
 
-  it('has button enabled when selection is made', function() {
+  it('has the submit button enabled when selection is made', function() {
     var submitButton = helpers.findByTag(this.PayMethodChoice, 'button');
     var event = {
       target: {
@@ -123,29 +126,73 @@ describe('Pay Method Choice', function() {
 
 });
 
-describe('Single Card Choice', function() {
 
-    var payMethodData = [{
-        'id': 1,
-        'resource_uri': '/braintree/mozilla/paymethod/1/',
-        'truncated_id': '4444',
-        'type_name': 'MasterCard',
-       },
-     ];
+describe('Single Pay Method (List)', function() {
 
-    beforeEach(function() {
-      this.PayMethodChoice = TestUtils.renderIntoDocument(
-        <PayMethodChoice payMethods={payMethodData} />
-      );
-    });
+  beforeEach(function() {
+    this.PayMethodChoice = TestUtils.renderIntoDocument(
+      <PayMethodChoice payMethods={singlePayMethodData} />
+    );
+  });
 
-    it('Has the card selected when just one card', function() {
-        var input = helpers.findByTag(this.PayMethodChoice, 'input');
-        assert.equal(input.getDOMNode().getAttribute('checked'), '');
-    });
+  it('has the card selected with a single pay method', function() {
+    var input = helpers.findByTag(this.PayMethodChoice, 'input');
+    assert.equal(input.getDOMNode().getAttribute('checked'), '');
+  });
 
-    it('Has the submit button enabled when just one card', function() {
-      var submitButton = helpers.findByTag(this.PayMethodChoice, 'button');
-      assert.equal(submitButton.getDOMNode().getAttribute('disabled'), null);
-    });
+  it('has the submit button enabled with a single pay method', function() {
+    var submitButton = helpers.findByTag(this.PayMethodChoice, 'button');
+    assert.equal(submitButton.getDOMNode().getAttribute('disabled'), null);
+  });
+
+});
+
+
+describe('Pay Method Choice (DropDown)', function() {
+
+  beforeEach(function() {
+    this.PayMethodChoice = TestUtils.renderIntoDocument(
+      <PayMethodChoice
+        payMethods={payMethodData}
+        useDropDown={true}
+      />
+    );
+  });
+
+  it('displays a drop-down with 6 options', function() {
+    assert.equal(
+      helpers.findAllByTag(this.PayMethodChoice, 'select').length, 1);
+    assert.equal(helpers.findAllByTag(this.PayMethodChoice, 'option').length,
+                 payMethodData.length);
+  });
+
+  it('has a submit button enabled by default', function() {
+    var submitButton = helpers.findByTag(this.PayMethodChoice, 'button');
+    assert.equal(submitButton.getDOMNode().getAttribute('disabled'), null);
+  });
+
+});
+
+
+describe('Single Pay Method (DropDown)', function() {
+
+  beforeEach(function() {
+    this.PayMethodChoice = TestUtils.renderIntoDocument(
+      <PayMethodChoice
+        payMethods={singlePayMethodData}
+        useDropDown={true}
+      />
+    );
+  });
+
+  it('has selected the option when just one pay method', function() {
+    var option = helpers.findByTag(this.PayMethodChoice, 'select');
+    assert.equal(option.getDOMNode().options.selectedIndex, 0);
+  });
+
+  it('has the submit button enabled', function() {
+    var submitButton = helpers.findByTag(this.PayMethodChoice, 'button');
+    assert.equal(submitButton.getDOMNode().getAttribute('disabled'), null);
+  });
+
 });
