@@ -22209,7 +22209,8 @@
 	var initialTransState = {
 	  completed: false,
 	  availablePayMethods: [],
-	  cardSubmissionErrors: null
+	  cardSubmissionErrors: null,
+	  userEmail: undefined
 	};
 	
 	exports.initialTransState = initialTransState;
@@ -22218,7 +22219,8 @@
 	
 	  if (action.type === actionTypes.COMPLETE_TRANSACTION) {
 	    return Object.assign({}, initialTransState, {
-	      completed: true
+	      completed: true,
+	      userEmail: action.userEmail
 	    });
 	  }
 	
@@ -32034,7 +32036,7 @@
 	    csrfToken: getState().app.csrfToken
 	  }).then(function () {
 	    console.log('Successfully subscribed + completed payment');
-	    dispatch(transactionActions.complete());
+	    dispatch(transactionActions.complete({ userEmail: email }));
 	  }).fail(function ($xhr) {
 	    if (data.pay_method_nonce) {
 	      dispatch({
@@ -32120,8 +32122,13 @@
 	var _subscriptions = __webpack_require__(205);
 	
 	function complete() {
+	  var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	  var userEmail = _ref.userEmail;
+	
 	  return {
-	    type: actionTypes.COMPLETE_TRANSACTION
+	    type: actionTypes.COMPLETE_TRANSACTION,
+	    userEmail: userEmail
 	  };
 	}
 	
@@ -32131,15 +32138,15 @@
 	  };
 	}
 	
-	function _processOneTimePayment(_ref) {
-	  var dispatch = _ref.dispatch;
-	  var productId = _ref.productId;
-	  var getState = _ref.getState;
-	  var payNonce = _ref.payNonce;
-	  var payMethodUri = _ref.payMethodUri;
-	  var _ref$fetch = _ref.fetch;
-	  var fetch = _ref$fetch === undefined ? api.fetch : _ref$fetch;
-	  var userDefinedAmount = _ref.userDefinedAmount;
+	function _processOneTimePayment(_ref2) {
+	  var dispatch = _ref2.dispatch;
+	  var productId = _ref2.productId;
+	  var getState = _ref2.getState;
+	  var payNonce = _ref2.payNonce;
+	  var payMethodUri = _ref2.payMethodUri;
+	  var _ref2$fetch = _ref2.fetch;
+	  var fetch = _ref2$fetch === undefined ? api.fetch : _ref2$fetch;
+	  var userDefinedAmount = _ref2.userDefinedAmount;
 	
 	  var data = {
 	    product_id: productId
@@ -32174,19 +32181,19 @@
 	  });
 	}
 	
-	function processPayment(_ref2) {
-	  var productId = _ref2.productId;
-	  var braintreeToken = _ref2.braintreeToken;
-	  var creditCard = _ref2.creditCard;
-	  var payMethodUri = _ref2.payMethodUri;
-	  var _ref2$BraintreeClient = _ref2.BraintreeClient;
-	  var BraintreeClient = _ref2$BraintreeClient === undefined ? _braintreeWeb2['default'].api.Client : _ref2$BraintreeClient;
-	  var _ref2$createSubscription = _ref2.createSubscription;
-	  var createSubscription = _ref2$createSubscription === undefined ? _subscriptions._createSubscription : _ref2$createSubscription;
-	  var _ref2$payOnce = _ref2.payOnce;
-	  var payOnce = _ref2$payOnce === undefined ? _processOneTimePayment : _ref2$payOnce;
+	function processPayment(_ref3) {
+	  var productId = _ref3.productId;
+	  var braintreeToken = _ref3.braintreeToken;
+	  var creditCard = _ref3.creditCard;
+	  var payMethodUri = _ref3.payMethodUri;
+	  var _ref3$BraintreeClient = _ref3.BraintreeClient;
+	  var BraintreeClient = _ref3$BraintreeClient === undefined ? _braintreeWeb2['default'].api.Client : _ref3$BraintreeClient;
+	  var _ref3$createSubscription = _ref3.createSubscription;
+	  var createSubscription = _ref3$createSubscription === undefined ? _subscriptions._createSubscription : _ref3$createSubscription;
+	  var _ref3$payOnce = _ref3.payOnce;
+	  var payOnce = _ref3$payOnce === undefined ? _processOneTimePayment : _ref3$payOnce;
 	
-	  var args = _objectWithoutProperties(_ref2, ['productId', 'braintreeToken', 'creditCard', 'payMethodUri', 'BraintreeClient', 'createSubscription', 'payOnce']);
+	  var args = _objectWithoutProperties(_ref3, ['productId', 'braintreeToken', 'creditCard', 'payMethodUri', 'BraintreeClient', 'createSubscription', 'payOnce']);
 	
 	  return function (dispatch, getState) {
 	    var product = products.get(productId);
@@ -38105,11 +38112,13 @@
 	
 	      var processPayment = _bindActionCreators.processPayment;
 	
+	      var userEmail = connector.transaction.userEmail ? connector.transaction.userEmail : props.user.email;
+	
 	      if (connector.transaction.completed) {
 	        return _react2['default'].createElement(CompletePayment, {
 	          productId: props.productId,
 	          userDefinedAmount: props.userDefinedAmount,
-	          userEmail: props.user.email });
+	          userEmail: userEmail });
 	      } else if (connector.transaction.availablePayMethods.length > 0) {
 	        console.log('rendering card listing');
 	        return _react2['default'].createElement(ProductPayChooser, _extends({
@@ -38533,6 +38542,8 @@
 	
 	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
@@ -38550,6 +38561,10 @@
 	var _componentsSubmitButton = __webpack_require__(257);
 	
 	var _componentsSubmitButton2 = _interopRequireDefault(_componentsSubmitButton);
+	
+	var _products = __webpack_require__(207);
+	
+	var products = _interopRequireWildcard(_products);
 	
 	var _utils = __webpack_require__(213);
 	
@@ -38605,6 +38620,9 @@
 	        )
 	      ) : '';
 	
+	      var product = products.get(this.props.productId);
+	      var completionMsg = product.seller.kind === 'donations' ? (0, _utils.gettext)('Donation Sent') : (0, _utils.gettext)('Payment Accepted');
+	
 	      return _react2['default'].createElement(
 	        'div',
 	        { className: 'complete' },
@@ -38615,7 +38633,7 @@
 	        _react2['default'].createElement(
 	          'p',
 	          { className: 'accepted' },
-	          (0, _utils.gettext)('Payment Accepted')
+	          completionMsg
 	        ),
 	        email,
 	        _react2['default'].createElement(_componentsSubmitButton2['default'], { content: (0, _utils.gettext)('OK'),

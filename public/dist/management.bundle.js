@@ -22412,7 +22412,8 @@ webpackJsonp([0,2],[
 	var initialTransState = {
 	  completed: false,
 	  availablePayMethods: [],
-	  cardSubmissionErrors: null
+	  cardSubmissionErrors: null,
+	  userEmail: undefined
 	};
 	
 	exports.initialTransState = initialTransState;
@@ -22421,7 +22422,8 @@ webpackJsonp([0,2],[
 	
 	  if (action.type === actionTypes.COMPLETE_TRANSACTION) {
 	    return Object.assign({}, initialTransState, {
-	      completed: true
+	      completed: true,
+	      userEmail: action.userEmail
 	    });
 	  }
 	
@@ -32465,7 +32467,7 @@ webpackJsonp([0,2],[
 	    csrfToken: getState().app.csrfToken
 	  }).then(function () {
 	    console.log('Successfully subscribed + completed payment');
-	    dispatch(transactionActions.complete());
+	    dispatch(transactionActions.complete({ userEmail: email }));
 	  }).fail(function ($xhr) {
 	    if (data.pay_method_nonce) {
 	      dispatch({
@@ -32551,8 +32553,13 @@ webpackJsonp([0,2],[
 	var _subscriptions = __webpack_require__(205);
 	
 	function complete() {
+	  var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	  var userEmail = _ref.userEmail;
+	
 	  return {
-	    type: actionTypes.COMPLETE_TRANSACTION
+	    type: actionTypes.COMPLETE_TRANSACTION,
+	    userEmail: userEmail
 	  };
 	}
 	
@@ -32562,15 +32569,15 @@ webpackJsonp([0,2],[
 	  };
 	}
 	
-	function _processOneTimePayment(_ref) {
-	  var dispatch = _ref.dispatch;
-	  var productId = _ref.productId;
-	  var getState = _ref.getState;
-	  var payNonce = _ref.payNonce;
-	  var payMethodUri = _ref.payMethodUri;
-	  var _ref$fetch = _ref.fetch;
-	  var fetch = _ref$fetch === undefined ? api.fetch : _ref$fetch;
-	  var userDefinedAmount = _ref.userDefinedAmount;
+	function _processOneTimePayment(_ref2) {
+	  var dispatch = _ref2.dispatch;
+	  var productId = _ref2.productId;
+	  var getState = _ref2.getState;
+	  var payNonce = _ref2.payNonce;
+	  var payMethodUri = _ref2.payMethodUri;
+	  var _ref2$fetch = _ref2.fetch;
+	  var fetch = _ref2$fetch === undefined ? api.fetch : _ref2$fetch;
+	  var userDefinedAmount = _ref2.userDefinedAmount;
 	
 	  var data = {
 	    product_id: productId
@@ -32605,19 +32612,19 @@ webpackJsonp([0,2],[
 	  });
 	}
 	
-	function processPayment(_ref2) {
-	  var productId = _ref2.productId;
-	  var braintreeToken = _ref2.braintreeToken;
-	  var creditCard = _ref2.creditCard;
-	  var payMethodUri = _ref2.payMethodUri;
-	  var _ref2$BraintreeClient = _ref2.BraintreeClient;
-	  var BraintreeClient = _ref2$BraintreeClient === undefined ? _braintreeWeb2['default'].api.Client : _ref2$BraintreeClient;
-	  var _ref2$createSubscription = _ref2.createSubscription;
-	  var createSubscription = _ref2$createSubscription === undefined ? _subscriptions._createSubscription : _ref2$createSubscription;
-	  var _ref2$payOnce = _ref2.payOnce;
-	  var payOnce = _ref2$payOnce === undefined ? _processOneTimePayment : _ref2$payOnce;
+	function processPayment(_ref3) {
+	  var productId = _ref3.productId;
+	  var braintreeToken = _ref3.braintreeToken;
+	  var creditCard = _ref3.creditCard;
+	  var payMethodUri = _ref3.payMethodUri;
+	  var _ref3$BraintreeClient = _ref3.BraintreeClient;
+	  var BraintreeClient = _ref3$BraintreeClient === undefined ? _braintreeWeb2['default'].api.Client : _ref3$BraintreeClient;
+	  var _ref3$createSubscription = _ref3.createSubscription;
+	  var createSubscription = _ref3$createSubscription === undefined ? _subscriptions._createSubscription : _ref3$createSubscription;
+	  var _ref3$payOnce = _ref3.payOnce;
+	  var payOnce = _ref3$payOnce === undefined ? _processOneTimePayment : _ref3$payOnce;
 	
-	  var args = _objectWithoutProperties(_ref2, ['productId', 'braintreeToken', 'creditCard', 'payMethodUri', 'BraintreeClient', 'createSubscription', 'payOnce']);
+	  var args = _objectWithoutProperties(_ref3, ['productId', 'braintreeToken', 'creditCard', 'payMethodUri', 'BraintreeClient', 'createSubscription', 'payOnce']);
 	
 	  return function (dispatch, getState) {
 	    var product = products.get(productId);
