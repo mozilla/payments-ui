@@ -39290,13 +39290,6 @@ webpackJsonp([0,2],[
 	      console.log('TODO: show receipt for transaction', transactionId);
 	    }
 	  }, {
-	    key: 'selectSeller',
-	    value: function selectSeller(e) {
-	      e.preventDefault();
-	      // https://github.com/mozilla/payments-ui/issues/305
-	      console.log('TODO: filter transactions by seller', e.target);
-	    }
-	  }, {
 	    key: 'renderContent',
 	    value: function renderContent() {
 	      var _this = this;
@@ -39314,20 +39307,7 @@ webpackJsonp([0,2],[
 	        }
 	      }, {
 	        key: 'seller',
-	        label: _react2['default'].createElement(
-	          'select',
-	          { onChange: this.selectSeller },
-	          _react2['default'].createElement(
-	            'option',
-	            { value: '' },
-	            (0, _utils.gettext)('View transactions from all companies')
-	          ),
-	          _react2['default'].createElement(
-	            'option',
-	            { value: 'example-seller' },
-	            'Example seller'
-	          )
-	        ),
+	        label: (0, _utils.gettext)('Vendor & Product'),
 	        cell: function cell(item) {
 	          return (0, _utils.configGetText)(products.get(item.transaction.seller_product.public_id).seller.name);
 	        }

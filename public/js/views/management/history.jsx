@@ -24,12 +24,6 @@ export default class History extends Component {
     console.log('TODO: show receipt for transaction', transactionId);
   }
 
-  selectSeller(e) {
-    e.preventDefault();
-    // https://github.com/mozilla/payments-ui/issues/305
-    console.log('TODO: filter transactions by seller', e.target);
-  }
-
   renderContent() {
 
     var columns = [
@@ -45,14 +39,7 @@ export default class History extends Component {
       },
       {
         key: 'seller',
-        label: (
-          <select onChange={this.selectSeller}>
-            <option value="">
-              {gettext('View transactions from all companies')}
-            </option>
-            <option value="example-seller">Example seller</option>
-          </select>
-        ),
+        label: gettext('Vendor & Product'),
         cell: (item) => (
           configGetText(
             products.get(
