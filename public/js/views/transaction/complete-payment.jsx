@@ -28,14 +28,30 @@ export default class CompletePayment extends Component {
   handleClick = (e) => {
     e.preventDefault();
     var win = this.props.win;
-    if (win.parent !== window) {
+    var _parent = win.parent;
+
+    // TODO: wrap this so dead code elimination removes it.
+    // The try/catch is just to make the OK button work when served by
+    // webpack-dev-server.
+    try {
+      if (_parent.location.hostname === 'pay.webpack') {
+        console.log(
+          'Setting _parent to the parent of the webpack-dev-server iframe');
+        _parent = _parent.parent;
+      }
+    } catch (exc) {
+      console.log('Cannot introspect the location object of parent',
+                  exc.message);
+    }
+
+    if (_parent !== window) {
       // Note: the targetOrigin is wide open.
       // Nothing sensitive should be sent whilst
       // that's the case.
       console.log('Telling parent to close modal.');
       // Stringifying the object is necessary for
       // IE9 support.
-      win.parent.postMessage(JSON.stringify({
+      _parent.postMessage(JSON.stringify({
         event: 'purchase-completed',
       }), '*');
     } else {
