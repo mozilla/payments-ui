@@ -96,7 +96,7 @@ export function _createSubscription({dispatch, productId,
     csrfToken: getState().app.csrfToken,
   }).then(() => {
     console.log('Successfully subscribed + completed payment');
-    dispatch(transactionActions.complete());
+    dispatch(transactionActions.complete({userEmail: email}));
   }).fail($xhr => {
     if (data.pay_method_nonce) {
       dispatch({

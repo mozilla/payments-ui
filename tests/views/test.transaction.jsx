@@ -91,7 +91,7 @@ describe('Transaction', function() {
     assert.equal(child.props.productId, productId);
   });
 
-  it('should render a payment completed page', function() {
+  it('should render a user defined amount on completion page', function() {
     var View = mountView({userDefinedAmount: '5.00'});
 
     store.dispatch(transactionActions.complete());
@@ -99,8 +99,30 @@ describe('Transaction', function() {
     var child = TestUtils.findRenderedComponentWithType(
       View, FakeCompletePayment
     );
-    assert.equal(child.props.userEmail, fakeUser.email);
     assert.equal(child.props.userDefinedAmount, '5.00');
+  });
+
+  it('should render a user email on completion page', function() {
+    var View = mountView();
+
+    store.dispatch(transactionActions.complete());
+
+    var child = TestUtils.findRenderedComponentWithType(
+      View, FakeCompletePayment
+    );
+    assert.equal(child.props.userEmail, fakeUser.email);
+  });
+
+  it('should render a custom email on completion page', function() {
+    var View = mountView();
+    var email = 'someone@somewhere.org';
+
+    store.dispatch(transactionActions.complete({userEmail: email}));
+
+    var child = TestUtils.findRenderedComponentWithType(
+      View, FakeCompletePayment
+    );
+    assert.equal(child.props.userEmail, email);
   });
 
   it('should render new card entry on explicit request', function() {

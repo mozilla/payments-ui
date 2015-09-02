@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import ProductDetail from 'components/product-detail';
 import SubmitButton from 'components/submit-button';
 
+import * as products from 'products';
 import { gettext } from 'utils';
 import { default as tracking } from 'tracking';
 
@@ -49,13 +50,18 @@ export default class CompletePayment extends Component {
         <span className="email">{this.props.userEmail}</span>
       </p> : '');
 
+    var product = products.get(this.props.productId);
+    var completionMsg = (product.seller.kind === 'donations' ?
+                         gettext('Donation Sent') :
+                         gettext('Payment Accepted'));
+
     return (
       <div className="complete">
         <ProductDetail
           productId={this.props.productId}
           userDefinedAmount={this.props.userDefinedAmount}
         />
-        <p className="accepted">{gettext('Payment Accepted')}</p>
+        <p className="accepted">{completionMsg}</p>
         {email}
         <SubmitButton content={gettext('OK')}
                       onClick={this.handleClick} />
