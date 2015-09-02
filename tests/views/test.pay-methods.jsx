@@ -35,8 +35,8 @@ describe('Pay Methods', function() {
     assert.equal(this.getPayMethodsStub.called, true);
   });
 
-  it('should have a card dropdown', function() {
-    var content = helpers.findByClass(this.PayMethods, 'proxy-select');
+  it('should have a card list', function() {
+    var content = helpers.findByClass(this.PayMethods, 'pay-method-list');
     assert.ok(TestUtils.isDOMComponent(content));
   });
 
