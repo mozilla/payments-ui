@@ -39636,9 +39636,9 @@ webpackJsonp([0,2],[
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var _componentsPayMethodDropDown = __webpack_require__(264);
+	var _componentsPayMethodList = __webpack_require__(261);
 	
-	var _componentsPayMethodDropDown2 = _interopRequireDefault(_componentsPayMethodDropDown);
+	var _componentsPayMethodList2 = _interopRequireDefault(_componentsPayMethodList);
 	
 	var _utils = __webpack_require__(213);
 	
@@ -39677,7 +39677,7 @@ webpackJsonp([0,2],[
 	    key: 'renderChild',
 	    value: function renderChild() {
 	      if (this.props.payMethods && this.props.payMethods.length) {
-	        return _react2['default'].createElement(_componentsPayMethodDropDown2['default'], { payMethods: this.props.payMethods });
+	        return _react2['default'].createElement(_componentsPayMethodList2['default'], { payMethods: this.props.payMethods });
 	      }
 	      return _react2['default'].createElement(
 	        'p',
@@ -39690,7 +39690,7 @@ webpackJsonp([0,2],[
 	    value: function render() {
 	
 	      var isDeleteDisabled = !this.props.payMethods || !this.props.payMethods.length;
-	      var deleteClasses = (0, _classnames2['default'])('button', 'quiet', 'delete', { 'disabled': isDeleteDisabled });
+	      var deleteClasses = (0, _classnames2['default'])('delete', { 'disabled': isDeleteDisabled });
 	
 	      return _react2['default'].createElement(
 	        'div',
@@ -39705,16 +39705,24 @@ webpackJsonp([0,2],[
 	          { className: 'small-form' },
 	          this.renderChild(),
 	          _react2['default'].createElement(
-	            'a',
-	            { className: 'button quiet add-pay-method', href: '#',
-	              onClick: this.handleAddPayMethod },
-	            (0, _utils.gettext)('Add a new card')
-	          ),
-	          _react2['default'].createElement(
-	            'a',
-	            { className: deleteClasses, href: '#',
-	              onClick: this.handleDelPayMethod },
-	            (0, _utils.gettext)('Delete')
+	            'div',
+	            { className: 'row' },
+	            _react2['default'].createElement(
+	              'div',
+	              { className: 'col' },
+	              _react2['default'].createElement(
+	                'a',
+	                { className: 'add-pay-method', href: '#',
+	                  onClick: this.handleAddPayMethod },
+	                (0, _utils.gettext)('Add a new card')
+	              )
+	            ),
+	            _react2['default'].createElement(
+	              'a',
+	              { className: deleteClasses, href: '#',
+	                onClick: this.handleDelPayMethod },
+	              (0, _utils.gettext)('Delete Pay Methods')
+	            )
 	          )
 	        )
 	      );
