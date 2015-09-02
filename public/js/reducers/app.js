@@ -3,6 +3,7 @@ import * as actionTypes from 'constants/action-types';
 
 export const initialAppState = {
   csrfToken: null,
+  error: null,
 };
 
 

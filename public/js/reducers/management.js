@@ -2,7 +2,6 @@ import * as actionTypes from 'constants/action-types';
 
 
 export const initialMgmtState = {
-  error: null,
   tab: null,
   view: null,
   viewData: {},
@@ -21,12 +20,6 @@ export default function management(state, action) {
         });
       }
       return state;
-    case actionTypes.APP_ERROR:
-      return Object.assign({}, initialMgmtState, {
-        error: {
-          debugMessage: action.error.debugMessage,
-        },
-      });
     case actionTypes.GOT_SUBS_BY_PAY_METHOD:
       return Object.assign({}, initialMgmtState, state, {
         // This is short-lived data only relevant to the current

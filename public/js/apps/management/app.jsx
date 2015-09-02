@@ -33,6 +33,7 @@ export default class ManagementApp extends Component {
     Management: PropTypes.func,
     PayMethods: PropTypes.func,
     SignIn: PropTypes.func,
+    app: PropTypes.object.isRequired,
     dispatch: PropTypes.func,
     management: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
@@ -48,7 +49,7 @@ export default class ManagementApp extends Component {
 
   render() {
 
-    const { dispatch, management, user } = this.props;
+    const { app, dispatch, management, user } = this.props;
 
     console.log('rendering management app at tab:', management.tab);
     var qs = parseQuery(this.props.window.location.href);
@@ -67,9 +68,9 @@ export default class ManagementApp extends Component {
     var PayMethods = this.props.PayMethods;
     var SignIn = this.props.SignIn;
 
-    if (management.error) {
+    if (app.error) {
       children.push(
-        <ModalError {...boundMgmtActions} error={management.error} />
+        <ModalError {...boundMgmtActions} error={app.error} />
       );
     } else if (management.view === 'SHOW_MY_ACCOUNT') {
       console.log('Showing pay methods');
@@ -171,6 +172,7 @@ export default class ManagementApp extends Component {
 
 function select(state) {
   return {
+    app: state.app,
     management: state.management,
     user: state.user,
   };
