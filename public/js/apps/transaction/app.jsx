@@ -54,9 +54,15 @@ export default class TransactionApp extends Component {
     var SignIn = this.props.SignIn;
     var Transaction = this.props.Transaction;
     var product = products.get(state.productId);
-    var signInRequired = product.seller.kind !== 'donations';
-    console.log('sign-in required to transact product?', state.productId,
-                signInRequired ? 'Yes' : 'No');
+
+    var signInRequired = true;
+    if (product.user_identification === null ||
+        product.user_identification === 'email') {
+      signInRequired = false;
+    }
+    console.log('sign-in required to transact product?', product.id, ':',
+                (signInRequired ? 'Yes' : 'No'), '; user_identification=',
+                product.user_identification);
 
     return (
       <main>
