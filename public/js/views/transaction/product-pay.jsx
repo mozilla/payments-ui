@@ -11,7 +11,6 @@ import { gettext } from 'utils';
 export default class ProductPay extends Component {
 
   static propTypes = {
-    // Amount to pay, which only applies to things like donations.
     braintreeToken: PropTypes.string.isRequired,
     cardSubmissionErrors: PropTypes.object,
     processPayment: PropTypes.func.isRequired,

@@ -38227,8 +38227,12 @@
 	      var SignIn = this.props.SignIn;
 	      var Transaction = this.props.Transaction;
 	      var product = products.get(state.productId);
-	      var signInRequired = product.seller.kind !== 'donations';
-	      console.log('sign-in required to transact product?', state.productId, signInRequired ? 'Yes' : 'No');
+	
+	      var signInRequired = true;
+	      if (product.user_identification === null || product.user_identification === 'email') {
+	        signInRequired = false;
+	      }
+	      console.log('sign-in required to transact product?', product.id, ':', signInRequired ? 'Yes' : 'No', '; user_identification=', product.user_identification);
 	
 	      return _react2['default'].createElement(
 	        'main',
@@ -38545,7 +38549,6 @@
 	  }], [{
 	    key: 'propTypes',
 	    value: {
-	      // Amount to pay, which only applies to things like donations.
 	      braintreeToken: _react.PropTypes.string.isRequired,
 	      cardSubmissionErrors: _react.PropTypes.object,
 	      processPayment: _react.PropTypes.func.isRequired,
@@ -38767,7 +38770,6 @@
 	      payWithNewCard: _react.PropTypes.func.isRequired,
 	      processPayment: _react.PropTypes.func.isRequired,
 	      productId: _react.PropTypes.string.isRequired,
-	      // Amount to pay, which applies to things like donations.
 	      userDefinedAmount: _react.PropTypes.string
 	    },
 	    enumerable: true
