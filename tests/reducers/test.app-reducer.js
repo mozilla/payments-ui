@@ -42,7 +42,7 @@ describe('App Reducer', function() {
   });
 
   it('should store CSRF token', function() {
-    var app = appReducer({}, {
+    var app = appReducer(initialAppState, {
       type: actionTypes.GOT_CSRF_TOKEN,
       csrfToken: 'some-csrf-token',
     });
