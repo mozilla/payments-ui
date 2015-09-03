@@ -21694,6 +21694,7 @@ webpackJsonp([0,2],[
 	    key: 'render',
 	    value: function render() {
 	      var _props = this.props;
+	      var app = _props.app;
 	      var dispatch = _props.dispatch;
 	      var management = _props.management;
 	      var user = _props.user;
@@ -21711,8 +21712,8 @@ webpackJsonp([0,2],[
 	      var PayMethods = this.props.PayMethods;
 	      var SignIn = this.props.SignIn;
 	
-	      if (management.error) {
-	        children.push(_react2['default'].createElement(_viewsSharedModalError2['default'], _extends({}, boundMgmtActions, { error: management.error })));
+	      if (app.error) {
+	        children.push(_react2['default'].createElement(_viewsSharedModalError2['default'], _extends({}, boundMgmtActions, { error: app.error })));
 	      } else if (management.view === 'SHOW_MY_ACCOUNT') {
 	        console.log('Showing pay methods');
 	        children.push(_react2['default'].createElement(_viewsManagementMyAccount2['default'], _extends({}, boundUserActions, {
@@ -21778,6 +21779,7 @@ webpackJsonp([0,2],[
 	      Management: _react.PropTypes.func,
 	      PayMethods: _react.PropTypes.func,
 	      SignIn: _react.PropTypes.func,
+	      app: _react.PropTypes.object.isRequired,
 	      dispatch: _react.PropTypes.func,
 	      management: _react.PropTypes.object.isRequired,
 	      user: _react.PropTypes.object.isRequired,
@@ -21802,6 +21804,7 @@ webpackJsonp([0,2],[
 	
 	function select(state) {
 	  return {
+	    app: state.app,
 	    management: state.management,
 	    user: state.user
 	  };
@@ -40611,7 +40614,8 @@ webpackJsonp([0,2],[
 	var actionTypes = _interopRequireWildcard(_constantsActionTypes);
 	
 	var initialAppState = {
-	  csrfToken: null
+	  csrfToken: null,
+	  error: null
 	};
 	
 	exports.initialAppState = initialAppState;
@@ -40651,7 +40655,6 @@ webpackJsonp([0,2],[
 	var actionTypes = _interopRequireWildcard(_constantsActionTypes);
 	
 	var initialMgmtState = {
-	  error: null,
 	  tab: null,
 	  view: null,
 	  viewData: {}
@@ -40671,12 +40674,6 @@ webpackJsonp([0,2],[
 	        });
 	      }
 	      return state;
-	    case actionTypes.APP_ERROR:
-	      return Object.assign({}, initialMgmtState, {
-	        error: {
-	          debugMessage: action.error.debugMessage
-	        }
-	      });
 	    case actionTypes.GOT_SUBS_BY_PAY_METHOD:
 	      return Object.assign({}, initialMgmtState, state, {
 	        // This is short-lived data only relevant to the current

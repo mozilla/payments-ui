@@ -38044,7 +38044,8 @@
 	var actionTypes = _interopRequireWildcard(_constantsActionTypes);
 	
 	var initialAppState = {
-	  csrfToken: null
+	  csrfToken: null,
+	  error: null
 	};
 	
 	exports.initialAppState = initialAppState;
@@ -38084,7 +38085,6 @@
 	var actionTypes = _interopRequireWildcard(_constantsActionTypes);
 	
 	var initialMgmtState = {
-	  error: null,
 	  tab: null,
 	  view: null,
 	  viewData: {}
@@ -38104,12 +38104,6 @@
 	        });
 	      }
 	      return state;
-	    case actionTypes.APP_ERROR:
-	      return Object.assign({}, initialMgmtState, {
-	        error: {
-	          debugMessage: action.error.debugMessage
-	        }
-	      });
 	    case actionTypes.GOT_SUBS_BY_PAY_METHOD:
 	      return Object.assign({}, initialMgmtState, state, {
 	        // This is short-lived data only relevant to the current
