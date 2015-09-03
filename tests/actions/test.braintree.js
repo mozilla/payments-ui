@@ -66,7 +66,7 @@ describe('braintreeActions', function() {
     });
 
     it('should dispatch an error on tokenization failure', function() {
-      tokenizeCreditCard({BraintreeClient: helpers.FakeBraintreeClientError})
+      tokenizeCreditCard({BraintreeClient: helpers.FakeBraintreeClientError});
       var action = dispatchSpy.firstCall.args[0];
       assert.deepEqual(action,
                        appActions.error('Braintree tokenization error'));

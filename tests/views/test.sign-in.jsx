@@ -20,7 +20,8 @@ describe('SignIn', function() {
     fakeUserSignIn = sinon.spy();
   });
 
-  function mountView({accessToken=fakeAccessToken, user=fakeUser, allowUserSignIn} = {}) {
+  function mountView({accessToken=fakeAccessToken,
+                      user=fakeUser, allowUserSignIn} = {}) {
     return TestUtils.renderIntoDocument(
       <SignIn
         accessToken={accessToken}

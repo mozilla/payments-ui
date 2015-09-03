@@ -14,25 +14,25 @@ const fakeCreditCard = {
 
 export function transactionData() {
   return [{
-    kind: "subscription_charged_successfully",
+    kind: 'subscription_charged_successfully',
     transaction: {
       resource_pk: 1,
       seller_product: {
         resource_pk: 1,
-        public_id: "mozilla-concrete-brick",
+        public_id: 'mozilla-concrete-brick',
       },
-      currency: "USD",
-      amount: "10.00",
-      uuid: "bt-b-cLt3FD",
+      currency: 'USD',
+      amount: '10.00',
+      uuid: 'bt-b-cLt3FD',
       type: 0,
       status: 2,
-      resource_uri:"/generic/transaction/1/"
+      resource_uri: '/generic/transaction/1/',
     },
-    created: "2015-08-07T14:53:23.966",
-    modified: "2015-08-07T14:53:23.966",
+    created: '2015-08-07T14:53:23.966',
+    modified: '2015-08-07T14:53:23.966',
     resource_pk: 1,
-    resource_uri: "/braintree/mozilla/transaction/1/",
-    subscription: "/braintree/mozilla/subscription/1/"
+    resource_uri: '/braintree/mozilla/transaction/1/',
+    subscription: '/braintree/mozilla/subscription/1/',
   }];
 }
 
@@ -47,7 +47,7 @@ describe('transactionActions', function() {
 
   function getApiResult({fetchResult} = {}) {
     var data = {
-      transactions: transactionData()
+      transactions: transactionData(),
     };
 
     var opt = {
@@ -60,7 +60,7 @@ describe('transactionActions', function() {
     return {
       fakeFetch: helpers.fakeFetch(opt),
       data: data,
-    }
+    };
   }
 
   function getUserTransactions({apiResult} = {}) {
@@ -188,7 +188,6 @@ describe('transactionActions', function() {
     function processOneTimePayment({fetch=fakeFetch,
                                     userDefinedAmount='10.00',
                                     productId=defaultProductId,
-                                    client=helpers.FakeBraintreeClient,
                                     payNonce='braintree-pay-nonce',
                                     getState=helpers.getAppStateWithCSRF,
                                     payMethodUri} = {}) {
