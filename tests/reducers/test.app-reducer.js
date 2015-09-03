@@ -10,6 +10,7 @@ describe('App Reducer', function() {
     return {
       error: {
         debugMessage: 'some informative message',
+        userMessage: undefined,
       },
     };
   }

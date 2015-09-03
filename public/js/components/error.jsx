@@ -9,11 +9,13 @@ export default class ErrorMessage extends Component {
   }
 
   render() {
-    console.log('rendering app error:', this.props.error);
+    console.error('app error occurred:', this.props.error.debugMessage);
+    var userMessage = (this.props.error.userMessage ||
+                       gettext('Internal error. Please try again later.'));
     return (
       <div className="app-error">
         <p className="msg">
-          {gettext('Internal error. Please try again later.')}
+          {userMessage}
         </p>
       </div>
     );

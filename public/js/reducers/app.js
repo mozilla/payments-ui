@@ -11,9 +11,7 @@ export default function app(state, action) {
   switch (action.type) {
     case actionTypes.APP_ERROR:
       return Object.assign({}, state, {
-        error: {
-          debugMessage: action.error.debugMessage,
-        },
+        error: action.error,
       });
     case actionTypes.GOT_CSRF_TOKEN:
       return Object.assign({}, state, {

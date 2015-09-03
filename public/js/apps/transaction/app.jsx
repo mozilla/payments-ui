@@ -6,13 +6,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import ErrorMessage from 'components/error';
+import Spinner from 'components/spinner';
 import DefaultSignIn from 'views/shared/sign-in';
 import DefaultTransaction from 'views/transaction';
 
 import * as appActions from 'actions/app';
 import * as userActions from 'actions/user';
 import * as products from 'products';
-import { parseQuery } from 'utils';
+import { gettext, parseQuery } from 'utils';
 
 
 export class TransactionApp extends Component {
@@ -34,55 +35,71 @@ export class TransactionApp extends Component {
 
   constructor(props) {
     super(props);
+    this.boundAppActions = bindActionCreators(appActions, props.dispatch);
+    this.boundUserActions = bindActionCreators(userActions, props.dispatch);
     var qs = parseQuery(props.win.location.href);
-    // TODO: we should validate/clean this input to raise early errors.
+
+    var isValid = true;
+    try {
+      this.product = products.get(qs.product);
+    } catch(e) {
+      this.boundAppActions.error(
+        'productId is invalid: ' + e,
+        {userMessage: gettext('This product cannot be purchased')}
+      );
+      isValid = false;
+    }
+
     this.state = {
       accessToken: qs.access_token,
+      isValid: isValid,
       productId: qs.product,
-      // This is an amount to pay, which applies to things like donations.
       userDefinedAmount: qs.amount,
     };
   }
 
   renderChild() {
-    var { app, user, dispatch } = this.props;
-
+    var { app, user, SignIn, Transaction } = this.props;
     var state = this.state;
-    var SignIn = this.props.SignIn;
-    var Transaction = this.props.Transaction;
-    var product = products.get(state.productId);
-
-    var signInRequired = true;
-    if (product.user_identification === null ||
-        product.user_identification === 'email') {
-      signInRequired = false;
-    }
-    console.log('sign-in required to transact product?', product.id, ':',
-                (signInRequired ? 'Yes' : 'No'), '; user_identification=',
-                product.user_identification);
 
     if (app.error) {
       console.log('rendering app error');
       return <ErrorMessage error={app.error} />;
-    } else if (signInRequired && !user.signedIn) {
-      console.log('rendering sign-in');
-      return (
-        <SignIn
-          accessToken={state.accessToken}
-          allowUserSignIn={false}
-          user={user}
-          {...bindActionCreators(userActions, dispatch) }
-          {...bindActionCreators(appActions, dispatch) }
-        />
-      );
+    } else if (!state.isValid) {
+      // This renders a temporary loading state while we wait for
+      // redux to re-render the component with an error to display.
+      return <Spinner />;
     } else {
-      console.log('rendering purchase flow');
-      return (
-        <Transaction
-          productId={state.productId}
-          userDefinedAmount={state.userDefinedAmount}
-        />
-      );
+
+      var signInRequired = true;
+      if (this.product.user_identification === null ||
+          this.product.user_identification === 'email') {
+        signInRequired = false;
+      }
+      console.log('sign-in required to transact product?', this.product.id, ':',
+                  (signInRequired ? 'Yes' : 'No'), '; user_identification=',
+                  this.product.user_identification);
+
+      if (signInRequired && !user.signedIn) {
+        console.log('rendering sign-in');
+        return (
+          <SignIn
+            accessToken={state.accessToken}
+            allowUserSignIn={false}
+            user={user}
+            {...this.boundUserActions }
+            {...this.boundAppActions }
+          />
+        );
+      } else {
+        console.log('rendering purchase flow');
+        return (
+          <Transaction
+            productId={this.product.id}
+            userDefinedAmount={state.userDefinedAmount}
+          />
+        );
+      }
     }
   }
 
