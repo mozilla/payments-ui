@@ -3,7 +3,7 @@ module.exports = {
     src: [
       'public/js/**/*.js*',
       '!public/js/bundle.js',
-      'tests/*.*',
+      'tests/**/*.js*',
       'Gruntfile.js',
       'tasks/*.js',
     ],
