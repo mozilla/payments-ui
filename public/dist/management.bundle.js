@@ -36844,13 +36844,13 @@ webpackJsonp([0,2],[
 			return classes.substr(1);
 		}
 	
-		if (true) {
+		if (typeof module !== 'undefined' && module.exports) {
+			module.exports = classNames;
+		} else if (true){
 			// AMD. Register as an anonymous module.
 			!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
 				return classNames;
 			}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-		} else if (typeof module !== 'undefined' && module.exports) {
-			module.exports = classNames;
 		} else {
 			window.classNames = classNames;
 		}
