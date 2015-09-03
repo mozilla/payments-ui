@@ -1,6 +1,8 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import * as reducers from 'reducers';
+
+import rootReducer from 'reducers';
+
 
 function logger({ getState }) {
   return next => action => {
@@ -15,10 +17,22 @@ function logger({ getState }) {
   };
 }
 
+const createStoreWithMiddleware = applyMiddleware(thunk, logger)(createStore);
+
+
 export function createReduxStore() {
-  const reducer = combineReducers(reducers);
-  const finalCreateStore = applyMiddleware(thunk, logger)(createStore);
-  return finalCreateStore(reducer);
+  const store = createStoreWithMiddleware(rootReducer);
+
+  if (module.hot) {
+    // Enable Webpack hot module replacement for reducers
+    // See: https://github.com/rackt/react-redux/releases/tag/v2.0.0
+    module.hot.accept('reducers', () => {
+      const nextRootReducer = require('reducers');
+      store.replaceReducer(nextRootReducer);
+    });
+  }
+
+  return store;
 }
 
 export default createReduxStore();
