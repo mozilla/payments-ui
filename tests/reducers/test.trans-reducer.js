@@ -1,18 +1,18 @@
 import * as actionTypes from 'constants/action-types';
 import * as transactionActions from 'actions/transaction';
-import * as reducers from 'reducers';
+import transactionReducer from 'reducers/transaction';
 import { initialTransState } from 'reducers/transaction';
 
 
 describe('Transaction Reducer', function() {
 
   it('should initialize a transaction', function() {
-    var trans = reducers.transaction(undefined, {});
+    var trans = transactionReducer(undefined, {});
     assert.deepEqual(trans, initialTransState);
   });
 
   it('should handle completed transactions', function() {
-    var trans = reducers.transaction(undefined, transactionActions.complete());
+    var trans = transactionReducer(undefined, transactionActions.complete());
     assert.deepEqual(trans, Object.assign({}, initialTransState, {
       completed: true,
     }));
@@ -20,7 +20,7 @@ describe('Transaction Reducer', function() {
 
   it('should store an optional email on completion', function() {
     var email = 'someone@somewhere.org';
-    var trans = reducers.transaction(
+    var trans = transactionReducer(
       undefined,
       transactionActions.complete({userEmail: email})
     );
@@ -33,7 +33,7 @@ describe('Transaction Reducer', function() {
   it('should set available methods to user saved pay methods', function() {
     var payMethods = [{type: 'Visa'}];
 
-    var trans = reducers.transaction(undefined, {
+    var trans = transactionReducer(undefined, {
       type: actionTypes.USER_SIGNED_IN,
       user: {
         payMethods: payMethods,

@@ -1,5 +1,6 @@
 import React from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
+import { Provider } from 'react-redux';
 
 import { createReduxStore } from 'data-store';
 
@@ -28,17 +29,16 @@ describe('management/app', function() {
   });
 
   function mountView({ window = fakeWindow } = {}) {
-    var FluxContainer = helpers.getFluxContainer(store);
 
     var container = TestUtils.renderIntoDocument(
-      <FluxContainer>
+      <Provider store={store}>
         {() => <ManagementApp
                   window={window}
                   Management={FakeManagement}
                   ManageCards={FakeManageCards}
                   SignIn={FakeSignIn}
          />}
-      </FluxContainer>
+      </Provider>
     );
     return TestUtils.findRenderedComponentWithType(
       container, ManagementApp

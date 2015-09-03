@@ -1,6 +1,6 @@
 import * as actionTypes from 'constants/action-types';
 import * as appActions from 'actions/app';
-import * as reducers from 'reducers';
+import appReducer from 'reducers/app';
 import { initialAppState } from 'reducers/app';
 
 
@@ -15,14 +15,14 @@ describe('App Reducer', function() {
   }
 
   it('should initialize an app', function() {
-    var app = reducers.app(undefined, {});
+    var app = appReducer(undefined, {});
     assert.deepEqual(app, initialAppState);
   });
 
   it('should set an app error', function() {
     var dispatchedApp = appWithError();
 
-    var app = reducers.app(
+    var app = appReducer(
       {}, appActions.error(dispatchedApp.error.debugMessage));
 
     assert.deepEqual(app, dispatchedApp);
@@ -33,16 +33,16 @@ describe('App Reducer', function() {
     var state = {};
 
     // Receive an error action:
-    state.app = reducers.app(
+    state.app = appReducer(
       state, appActions.error(dispatchedApp.error.debugMessage));
     // Receive and ignore some other action:
-    state.app = reducers.app(state.app, {});
+    state.app = appReducer(state.app, {});
 
     assert.deepEqual(state.app, dispatchedApp);
   });
 
   it('should store CSRF token', function() {
-    var app = reducers.app({}, {
+    var app = appReducer({}, {
       type: actionTypes.GOT_CSRF_TOKEN,
       csrfToken: 'some-csrf-token',
     });

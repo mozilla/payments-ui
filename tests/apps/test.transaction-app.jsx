@@ -1,5 +1,6 @@
 import React from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
+import { Provider } from 'react-redux';
 
 import * as helpers from '../helpers';
 
@@ -7,7 +8,7 @@ import { createReduxStore } from 'data-store';
 import { initialUserState } from 'reducers/user';
 import * as actionTypes from 'constants/action-types';
 import * as appActions from 'actions/app';
-import TransactionApp from 'apps/transaction/app';
+import { default as TransactionApp } from 'apps/transaction/app';
 import ErrorMessage from 'components/error';
 
 
@@ -24,8 +25,6 @@ describe('Transaction App', function() {
   });
 
   function mountView({productId=defaultProductId} = {}) {
-    var FluxContainer = helpers.getFluxContainer(store);
-
     var fakeWin = {
       'location': {
         'href': ('http://pay.dev/?access_token=' + accessToken +
@@ -34,14 +33,14 @@ describe('Transaction App', function() {
     };
 
     var container = TestUtils.renderIntoDocument(
-      <FluxContainer>
-        {function() {
+      <Provider store={store}>
+        {() => {
           return (
             <TransactionApp
               SignIn={FakeSignIn} Transaction={FakeTransaction} win={fakeWin} />
           );
         }}
-      </FluxContainer>
+      </Provider>
     );
     return TestUtils.findRenderedComponentWithType(
       container, TransactionApp
@@ -79,15 +78,15 @@ describe('Transaction App', function() {
     });
 
     var View = mountView();
+
     store.dispatch({
       type: actionTypes.USER_SIGNED_IN,
       user: user,
     });
 
-    var purchase = TestUtils.findRenderedComponentWithType(
+    assert.ok(TestUtils.findRenderedComponentWithType(
       View, FakeTransaction
-    );
-    assert.deepEqual(purchase.props.user, user);
+    ));
   });
 
   it('should skip sign-in for a donation product', function() {
