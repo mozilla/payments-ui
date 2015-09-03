@@ -15,7 +15,6 @@ export default class ProductPayChooser extends Component {
     payWithNewCard: PropTypes.func.isRequired,
     processPayment: PropTypes.func.isRequired,
     productId: PropTypes.string.isRequired,
-    // Amount to pay, which applies to things like donations.
     userDefinedAmount: PropTypes.string,
   }
 
