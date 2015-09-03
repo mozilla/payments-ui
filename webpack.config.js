@@ -6,8 +6,8 @@ var webpack = require('webpack');
 module.exports = {
   devtool: 'source-map',
   entry: {
-    'management': './public/js/apps/management/main.js',
-    'transaction': './public/js/apps/transaction/main.js',
+    'management': './public/js/apps/management/main.jsx',
+    'transaction': './public/js/apps/transaction/main.jsx',
   },
   failOnError: true,
   output: {

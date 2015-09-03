@@ -1,10 +1,9 @@
 import 'shims';
 
 import React, { Component, PropTypes } from 'react';
-import { Provider, Connector } from 'react-redux';
+import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import dataStore from 'data-store';
 import * as mgmtActions from 'actions/management';
 import * as payMethodActions from 'actions/pay-methods';
 import * as userActions from 'actions/user';
@@ -34,6 +33,9 @@ export default class ManagementApp extends Component {
     Management: PropTypes.func,
     PayMethods: PropTypes.func,
     SignIn: PropTypes.func,
+    dispatch: PropTypes.func,
+    management: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
     window: PropTypes.object.isRequired,
   }
 
@@ -44,61 +46,57 @@ export default class ManagementApp extends Component {
     window: window,
   }
 
-  selectData(state) {
-    return {
-      management: state.management,
-      user: state.user,
-    };
-  }
+  render() {
 
-  renderChild(connector) {
-    console.log('rendering management app at tab:', connector.management.tab);
+    const { dispatch, management, user } = this.props;
+
+    console.log('rendering management app at tab:', management.tab);
     var qs = parseQuery(this.props.window.location.href);
     var accessToken = qs.access_token;
     var boundMgmtActions = bindActionCreators(mgmtActions,
-                                              connector.dispatch);
-    var boundUserActions = bindActionCreators(userActions, connector.dispatch);
+                                              dispatch);
+    var boundUserActions = bindActionCreators(userActions, dispatch);
     var boundSubscriptionActions = bindActionCreators(subscriptionActions,
-                                                      connector.dispatch);
+                                                      dispatch);
     var boundPayMethodActions = bindActionCreators(payMethodActions,
-                                                   connector.dispatch);
+                                                   dispatch);
     var boundTransactionActions = bindActionCreators(transactionActions,
-                                                     connector.dispatch);
+                                                     dispatch);
     var children = [];
     var Management = this.props.Management;
     var PayMethods = this.props.PayMethods;
     var SignIn = this.props.SignIn;
 
-    if (connector.management.error) {
+    if (management.error) {
       children.push(
-        <ModalError {...boundMgmtActions} error={connector.management.error} />
+        <ModalError {...boundMgmtActions} error={management.error} />
       );
-    } else if (connector.management.view === 'SHOW_MY_ACCOUNT') {
+    } else if (management.view === 'SHOW_MY_ACCOUNT') {
       console.log('Showing pay methods');
       children.push((
         <MyAccount
           {...boundUserActions}
-          user={connector.user}
+          user={user}
         />
       ));
-    } else if (connector.management.view === 'SHOW_PAY_METHODS') {
+    } else if (management.view === 'SHOW_PAY_METHODS') {
       console.log('Showing pay methods');
       children.push((
         <PayMethods {...boundMgmtActions}
           {...boundPayMethodActions}
-          payMethods={connector.user.payMethods} />
+          payMethods={user.payMethods} />
       ));
-    } else if (connector.management.view === 'SHOW_SIGN_OUT') {
+    } else if (management.view === 'SHOW_SIGN_OUT') {
       console.log('Showing sign out');
       children.push((
         <SignOut
-          user={connector.user}
+          user={user}
           {...boundUserActions}
           {...boundMgmtActions}
         />
       ));
-    } else if (connector.management.view === 'SHOW_ADD_PAY_METHOD') {
-      if (!connector.user.braintreeToken) {
+    } else if (management.view === 'SHOW_ADD_PAY_METHOD') {
+      if (!user.braintreeToken) {
         children.push((
           <BraintreeToken {...boundUserActions} />
         ));
@@ -108,23 +106,23 @@ export default class ManagementApp extends Component {
             {...boundMgmtActions}
             {...boundPayMethodActions}
             {...boundUserActions}
-            braintreeToken={connector.user.braintreeToken}
+            braintreeToken={user.braintreeToken}
           />
         ));
       }
-    } else if (connector.management.view === 'SHOW_DEL_PAY_METHOD') {
+    } else if (management.view === 'SHOW_DEL_PAY_METHOD') {
       children.push((
         <DelPayMethod
-          payMethods={connector.user.payMethods}
+          payMethods={user.payMethods}
           {...boundMgmtActions}
           {...boundPayMethodActions}
         />
       ));
-    } else if (connector.management.view === 'SHOW_CONFIRM_DEL_PAY_METHOD') {
-      var mgmt = connector.management;
+    } else if (management.view === 'SHOW_CONFIRM_DEL_PAY_METHOD') {
+      var mgmt = management;
       children.push((
         <ConfirmDelPayMethod
-          payMethods={connector.user.payMethods}
+          payMethods={user.payMethods}
           payMethodUri={mgmt.viewData.payMethodUri}
           affectedSubscriptions={mgmt.viewData.affectedSubscriptions}
           {...boundMgmtActions}
@@ -132,18 +130,18 @@ export default class ManagementApp extends Component {
           {...boundSubscriptionActions}
         />
       ));
-    } else if (connector.management.view === 'SHOW_SUBS') {
+    } else if (management.view === 'SHOW_SUBS') {
       children.push((
         <Subscriptions
           {...boundSubscriptionActions}
-          payMethods={connector.user.payMethods}
-          userSubscriptions={connector.user.subscriptions}
+          payMethods={user.payMethods}
+          userSubscriptions={user.subscriptions}
         />
       ));
-    } else if (connector.management.view === 'SHOW_HISTORY') {
+    } else if (management.view === 'SHOW_HISTORY') {
       children.push((
         <History
-          transactions={connector.user.transactions}
+          transactions={user.transactions}
           {...boundTransactionActions}
         />
       ));
@@ -152,37 +150,31 @@ export default class ManagementApp extends Component {
       children.push(
         <SignIn
           accessToken={accessToken}
-          user={connector.user}
+          user={user}
           {...boundUserActions}
           {...boundMgmtActions}
         />
       );
     }
 
-
     return (<Management
               {...boundMgmtActions}
               {...boundUserActions}
-              tab={connector.management.tab}
-              user={connector.user}
-              view={connector.management.view}
-            >{children}</Management>);
-  }
-
-  render() {
-    return (
-      <Connector select={this.selectData}>
-        {(connector) => this.renderChild(connector)}
-      </Connector>
-    );
+              tab={management.tab}
+              user={user}
+              view={management.view}>
+                {children}
+            </Management>);
   }
 }
 
 
-export function init() {
-  React.render((
-    <Provider store={dataStore}>
-      {() => <ManagementApp/>}
-    </Provider>
-  ), document.getElementById('placeholder'));
+function select(state) {
+  return {
+    management: state.management,
+    user: state.user,
+  };
 }
+
+
+export default connect(select)(ManagementApp);

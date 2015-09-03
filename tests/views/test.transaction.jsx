@@ -1,5 +1,6 @@
 import React from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
+import { Provider } from 'react-redux';
 
 import * as helpers from '../helpers';
 
@@ -8,7 +9,7 @@ import * as transactionActions from 'actions/transaction';
 import { createReduxStore } from 'data-store';
 import { defaultState as defaultUser } from 'reducers/user';
 
-import Transaction from 'views/transaction';
+import { default as Transaction } from 'views/transaction';
 
 
 describe('Transaction', function() {
@@ -29,25 +30,23 @@ describe('Transaction', function() {
   });
 
   function mountView({...props} = {}) {
-    var FluxContainer = helpers.getFluxContainer(store);
-
     var container = TestUtils.renderIntoDocument(
-      <FluxContainer>
-        {function() {
+      <Provider store={store}>
+        {() => {
           return (
             <Transaction
               BraintreeToken={FakeBraintreeToken}
+              CompletePayment={FakeCompletePayment}
               ProductPay={FakeProductPay}
               ProductPayChooser={FakeProductPayChooser}
-              CompletePayment={FakeCompletePayment}
-              user={fakeUser}
               productId={productId}
               {...props}
             />
           );
         }}
-      </FluxContainer>
+      </Provider>
     );
+
     return TestUtils.findRenderedComponentWithType(
       container, Transaction
     );
@@ -69,9 +68,10 @@ describe('Transaction', function() {
 
   it('should show pay chooser when user has pay methods', function() {
     var payMethods = [{type: 'Visa'}];
+
     var View = mountView();
 
-    signInUser({payMethods: payMethods})
+    signInUser({payMethods: payMethods});
 
     var child = TestUtils.findRenderedComponentWithType(
       View, FakeProductPayChooser
@@ -105,6 +105,7 @@ describe('Transaction', function() {
   it('should render a user email on completion page', function() {
     var View = mountView();
 
+    signInUser({payMethods: []});
     store.dispatch(transactionActions.complete());
 
     var child = TestUtils.findRenderedComponentWithType(

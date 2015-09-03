@@ -105,40 +105,6 @@ export function findAllNodesByTag(component, tag){
 }
 
 
-export function getFluxContainer(store) {
-  //
-  // Get a container component to set context stubs so you can use it
-  // to wrap a component for testing.
-  // You'd only need this to test a component that uses the
-  // redux Connector component.
-  //
-
-  var FluxContainer = React.createClass({
-
-    displayName: 'FluxContainer',
-
-    propTypes: {
-      children: React.PropTypes.func.isRequired,
-    },
-
-    childContextTypes: {
-      store: React.PropTypes.object.isRequired,
-    },
-
-    getChildContext: function() {
-      return {store: store};
-    },
-
-    render() {
-      return this.props.children();
-    },
-
-  });
-
-  return FluxContainer;
-}
-
-
 export function fakeFetch({xhrError={}, returnedData={},
                            result='success'} = {}) {
   //
