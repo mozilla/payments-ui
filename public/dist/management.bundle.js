@@ -33105,9 +33105,16 @@ webpackJsonp([0,2],[
 	var actionTypes = _interopRequireWildcard(_constantsActionTypes);
 	
 	function error(debugMessage) {
+	  var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	
+	  var userMessage = _ref.userMessage;
+	
 	  return {
 	    type: actionTypes.APP_ERROR,
-	    error: { debugMessage: debugMessage }
+	    error: {
+	      debugMessage: debugMessage,
+	      userMessage: userMessage
+	    }
 	  };
 	}
 
@@ -40091,14 +40098,15 @@ webpackJsonp([0,2],[
 	  _createClass(ErrorMessage, [{
 	    key: 'render',
 	    value: function render() {
-	      console.log('rendering app error:', this.props.error);
+	      console.error('app error occurred:', this.props.error.debugMessage);
+	      var userMessage = this.props.error.userMessage || (0, _utils.gettext)('Internal error. Please try again later.');
 	      return _react2['default'].createElement(
 	        'div',
 	        { className: 'app-error' },
 	        _react2['default'].createElement(
 	          'p',
 	          { className: 'msg' },
-	          (0, _utils.gettext)('Internal error. Please try again later.')
+	          userMessage
 	        )
 	      );
 	    }
@@ -40624,9 +40632,7 @@ webpackJsonp([0,2],[
 	  switch (action.type) {
 	    case actionTypes.APP_ERROR:
 	      return Object.assign({}, state, {
-	        error: {
-	          debugMessage: action.error.debugMessage
-	        }
+	        error: action.error
 	      });
 	    case actionTypes.GOT_CSRF_TOKEN:
 	      return Object.assign({}, state, {

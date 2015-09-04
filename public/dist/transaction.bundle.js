@@ -32587,9 +32587,16 @@
 	var actionTypes = _interopRequireWildcard(_constantsActionTypes);
 	
 	function error(debugMessage) {
+	  var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	
+	  var userMessage = _ref.userMessage;
+	
 	  return {
 	    type: actionTypes.APP_ERROR,
-	    error: { debugMessage: debugMessage }
+	    error: {
+	      debugMessage: debugMessage,
+	      userMessage: userMessage
+	    }
 	  };
 	}
 
@@ -37790,14 +37797,15 @@
 	  _createClass(ErrorMessage, [{
 	    key: 'render',
 	    value: function render() {
-	      console.log('rendering app error:', this.props.error);
+	      console.error('app error occurred:', this.props.error.debugMessage);
+	      var userMessage = this.props.error.userMessage || (0, _utils.gettext)('Internal error. Please try again later.');
 	      return _react2['default'].createElement(
 	        'div',
 	        { className: 'app-error' },
 	        _react2['default'].createElement(
 	          'p',
 	          { className: 'msg' },
-	          (0, _utils.gettext)('Internal error. Please try again later.')
+	          userMessage
 	        )
 	      );
 	    }
@@ -38054,9 +38062,7 @@
 	  switch (action.type) {
 	    case actionTypes.APP_ERROR:
 	      return Object.assign({}, state, {
-	        error: {
-	          debugMessage: action.error.debugMessage
-	        }
+	        error: action.error
 	      });
 	    case actionTypes.GOT_CSRF_TOKEN:
 	      return Object.assign({}, state, {
@@ -38366,6 +38372,10 @@
 	
 	var _componentsError2 = _interopRequireDefault(_componentsError);
 	
+	var _componentsSpinner = __webpack_require__(257);
+	
+	var _componentsSpinner2 = _interopRequireDefault(_componentsSpinner);
+	
 	var _viewsSharedSignIn = __webpack_require__(269);
 	
 	var _viewsSharedSignIn2 = _interopRequireDefault(_viewsSharedSignIn);
@@ -38416,12 +38426,22 @@
 	    _classCallCheck(this, TransactionApp);
 	
 	    _get(Object.getPrototypeOf(TransactionApp.prototype), 'constructor', this).call(this, props);
+	    this.boundAppActions = (0, _redux.bindActionCreators)(appActions, props.dispatch);
+	    this.boundUserActions = (0, _redux.bindActionCreators)(userActions, props.dispatch);
 	    var qs = (0, _utils.parseQuery)(props.win.location.href);
-	    // TODO: we should validate/clean this input to raise early errors.
+	
+	    var isValid = true;
+	    try {
+	      this.product = products.get(qs.product);
+	    } catch (e) {
+	      this.boundAppActions.error('productId is invalid: ' + e, { userMessage: (0, _utils.gettext)('This product cannot be purchased') });
+	      isValid = false;
+	    }
+	
 	    this.state = {
 	      accessToken: qs.access_token,
+	      isValid: isValid,
 	      productId: qs.product,
-	      // This is an amount to pay, which applies to things like donations.
 	      userDefinedAmount: qs.amount
 	    };
 	  }
@@ -38432,35 +38452,40 @@
 	      var _props = this.props;
 	      var app = _props.app;
 	      var user = _props.user;
-	      var dispatch = _props.dispatch;
+	      var SignIn = _props.SignIn;
+	      var Transaction = _props.Transaction;
 	
 	      var state = this.state;
-	      var SignIn = this.props.SignIn;
-	      var Transaction = this.props.Transaction;
-	      var product = products.get(state.productId);
-	
-	      var signInRequired = true;
-	      if (product.user_identification === null || product.user_identification === 'email') {
-	        signInRequired = false;
-	      }
-	      console.log('sign-in required to transact product?', product.id, ':', signInRequired ? 'Yes' : 'No', '; user_identification=', product.user_identification);
 	
 	      if (app.error) {
 	        console.log('rendering app error');
 	        return _react2['default'].createElement(_componentsError2['default'], { error: app.error });
-	      } else if (signInRequired && !user.signedIn) {
-	        console.log('rendering sign-in');
-	        return _react2['default'].createElement(SignIn, _extends({
-	          accessToken: state.accessToken,
-	          allowUserSignIn: false,
-	          user: user
-	        }, (0, _redux.bindActionCreators)(userActions, dispatch), (0, _redux.bindActionCreators)(appActions, dispatch)));
+	      } else if (!state.isValid) {
+	        // This renders a temporary loading state while we wait for
+	        // redux to re-render the component with an error to display.
+	        return _react2['default'].createElement(_componentsSpinner2['default'], null);
 	      } else {
-	        console.log('rendering purchase flow');
-	        return _react2['default'].createElement(Transaction, {
-	          productId: state.productId,
-	          userDefinedAmount: state.userDefinedAmount
-	        });
+	
+	        var signInRequired = true;
+	        if (this.product.user_identification === null || this.product.user_identification === 'email') {
+	          signInRequired = false;
+	        }
+	        console.log('sign-in required to transact product?', this.product.id, ':', signInRequired ? 'Yes' : 'No', '; user_identification=', this.product.user_identification);
+	
+	        if (signInRequired && !user.signedIn) {
+	          console.log('rendering sign-in');
+	          return _react2['default'].createElement(SignIn, _extends({
+	            accessToken: state.accessToken,
+	            allowUserSignIn: false,
+	            user: user
+	          }, this.boundUserActions, this.boundAppActions));
+	        } else {
+	          console.log('rendering purchase flow');
+	          return _react2['default'].createElement(Transaction, {
+	            productId: this.product.id,
+	            userDefinedAmount: state.userDefinedAmount
+	          });
+	        }
 	      }
 	    }
 	  }, {
