@@ -4,6 +4,8 @@ import * as api from './api';
 import * as appActions from './app';
 import * as transactionActions from './transaction';
 
+import { gettext, arrayHasSubString } from 'utils';
+
 
 export function getUserSubscriptions(fetch=api.fetch) {
   return (dispatch, getState) => {
@@ -98,11 +100,19 @@ export function _createSubscription({dispatch, productId,
     console.log('Successfully subscribed + completed payment');
     dispatch(transactionActions.complete({userEmail: email}));
   }).fail($xhr => {
-    if (data.pay_method_nonce) {
-      dispatch({
-        type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
-        apiErrorResult: $xhr.responseJSON,
-      });
+    if ($xhr.status === 400 && $xhr.responseJSON &&
+        $xhr.responseJSON.error_response) {
+      var allErrors = $xhr.responseJSON.error_response.__all__;
+      if (allErrors && arrayHasSubString(allErrors, 'already subscribed')) {
+        dispatch(appActions.error('Subscription creation failed', {
+          userMessage: gettext('User is already subscribed to this product'),
+        }));
+      } else if (data.pay_method_nonce) {
+        dispatch({
+          type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
+          apiErrorResult: $xhr.responseJSON,
+        });
+      }
     } else {
       dispatch(appActions.error('Subscription creation failed'));
     }

@@ -165,3 +165,24 @@ describe('utils.validateEmailAsYouType', function() {
   });
 
 });
+
+describe('utils.arrayHasSubString', function() {
+
+  var list = [
+    'foo bar baz',
+    'test',
+  ];
+
+  it('should be true as string is present', function() {
+    assert.ok(utils.arrayHasSubString(list, 'test'));
+  });
+
+  it('should be true as substring is present', function() {
+    assert.ok(utils.arrayHasSubString(list, 'bar'));
+  });
+
+  it('should be false as substring is not present', function() {
+    assert.notOk(utils.arrayHasSubString(list, 'banana'));
+  });
+
+});
