@@ -37,7 +37,10 @@ describe('Transaction App', function() {
         {() => {
           return (
             <TransactionApp
-              SignIn={FakeSignIn} Transaction={FakeTransaction} win={fakeWin} />
+              SignIn={FakeSignIn}
+              Transaction={FakeTransaction}
+              win={fakeWin}
+            />
           );
         }}
       </Provider>
@@ -54,12 +57,12 @@ describe('Transaction App', function() {
 
   it('should render an error', function() {
     var View = mountView();
-    store.dispatch(appActions.error('this is some error'));
+    var appState = appActions.error('this is some error');
+    store.dispatch(appState);
     var error = TestUtils.findRenderedComponentWithType(
       View, ErrorMessage
     );
-    // Maybe expand this test later if we pass in custom properties.
-    assert.ok(error);
+    assert.deepEqual(error.props.error, appState.error);
   });
 
   it('should render a sign-in page', function() {
@@ -97,6 +100,14 @@ describe('Transaction App', function() {
     TestUtils.findRenderedComponentWithType(
       View, FakeTransaction
     );
+  });
+
+  it('should dispatch an error for unknown products', function() {
+    var View = mountView({productId: 'not-a-known-product-id'});
+    var error = TestUtils.findRenderedComponentWithType(
+      View, ErrorMessage
+    );
+    assert.ok(error);
   });
 
 });
