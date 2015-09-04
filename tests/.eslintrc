@@ -4,8 +4,7 @@
     "node": true,
   },
   "rules": {
-    "strict": 0,
-    "global-strict": 0,
+    "strict": [2, "never"],
   },
   "globals": {
     "assert": false,

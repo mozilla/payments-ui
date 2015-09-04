@@ -1,6 +1,3 @@
-'use strict';
-
-
 module.exports = function(grunt) {
   grunt.loadNpmTasks('cog');
   // load all grunt tasks matching the ['grunt-*', '@*/grunt-*'] patterns
