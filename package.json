@@ -44,7 +44,7 @@
     "grunt-karma": "0.11.2",
     "grunt-react": "0.12.2",
     "grunt-sass": "1.0.0",
-    "grunt-svg-sprite": "1.2.5",
+    "grunt-svg-sprite": "1.2.9",
     "grunt-webpack": "1.0.11",
     "json-loader": "0.5.2",
     "karma": "0.12.37",
