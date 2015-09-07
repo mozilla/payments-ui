@@ -1,5 +1,3 @@
-'use strict';
-
 var merge = require('lodash.merge');
 var webpack = require('webpack');
 var webpackConfig = require('../webpack.config');
