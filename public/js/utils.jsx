@@ -158,3 +158,13 @@ export function validateEmailAsYouType(email) {
     };
   }
 }
+
+export function arrayHasSubString(list, searchSubString) {
+  for (var i = 0; i < list.length; i += 1) {
+    var item = list[i] || '';
+    if (item.indexOf(searchSubString) > -1) {
+      return true;
+    }
+  }
+  return false;
+}

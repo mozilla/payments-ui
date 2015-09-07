@@ -119,11 +119,14 @@ describe('subscription actions', function() {
                     'trainee@yak-shavers.org');
     });
 
-    it('should dispatch an error action', function() {
+    it('should dispatch card submission errors', function() {
       var apiError = {error_response: 'some error'};
       var fetch = helpers.fakeFetch({
         result: 'fail',
-        xhrError: {responseJSON: apiError},
+        xhrError: {
+          status: 400,
+          responseJSON: apiError,
+        },
       });
       createSubscription({fetch: fetch});
 
@@ -132,6 +135,36 @@ describe('subscription actions', function() {
         type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
         apiErrorResult: apiError,
       });
+    });
+
+    it('should dispatch an already subscribed error', function() {
+      var fetch = helpers.fakeFetch({
+        result: 'fail',
+        xhrError: {
+          status: 400,
+          responseJSON: {
+            error_response: {
+              __all__: [
+                'user is already subscribed to this product',
+              ],
+            },
+          },
+        },
+      });
+      createSubscription({fetch: fetch});
+      var action = dispatchSpy.firstCall.args[0];
+      assert.equal(action.type, actionTypes.APP_ERROR);
+      assert.include(action.error.userMessage, 'User is already subscribed');
+    });
+
+    it('should dispatch a generic error', function() {
+      var fetch = helpers.fakeFetch({
+        result: 'fail',
+      });
+      createSubscription({fetch: fetch});
+      var action = dispatchSpy.firstCall.args[0];
+      assert.equal(action.type, actionTypes.APP_ERROR);
+      assert.include(action.error.debugMessage, 'Subscription creation failed');
     });
 
     it('should dispatch an error action with payMethodUri', function() {
