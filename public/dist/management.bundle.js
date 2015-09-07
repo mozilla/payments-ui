@@ -32154,6 +32154,8 @@ webpackJsonp([0,2],[
 	
 	var transactionActions = _interopRequireWildcard(_transaction);
 	
+	var _utils = __webpack_require__(204);
+	
 	function getUserSubscriptions() {
 	  var _this = this;
 	
@@ -32258,11 +32260,18 @@ webpackJsonp([0,2],[
 	    console.log('Successfully subscribed + completed payment');
 	    dispatch(transactionActions.complete({ userEmail: email }));
 	  }).fail(function ($xhr) {
-	    if (data.pay_method_nonce) {
-	      dispatch({
-	        type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
-	        apiErrorResult: $xhr.responseJSON
-	      });
+	    if ($xhr.status === 400 && $xhr.responseJSON && $xhr.responseJSON.error_response) {
+	      var allErrors = $xhr.responseJSON.error_response.__all__;
+	      if (allErrors && (0, _utils.arrayHasSubString)(allErrors, 'already subscribed')) {
+	        dispatch(appActions.error('Subscription creation failed', {
+	          userMessage: (0, _utils.gettext)('User is already subscribed to this product')
+	        }));
+	      } else if (data.pay_method_nonce) {
+	        dispatch({
+	          type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
+	          apiErrorResult: $xhr.responseJSON
+	        });
+	      }
 	    } else {
 	      dispatch(appActions.error('Subscription creation failed'));
 	    }
@@ -32700,6 +32709,7 @@ webpackJsonp([0,2],[
 	exports.getPayMethodFromUri = getPayMethodFromUri;
 	exports.isValidEmail = isValidEmail;
 	exports.validateEmailAsYouType = validateEmailAsYouType;
+	exports.arrayHasSubString = arrayHasSubString;
 	
 	function defaults(object, opt) {
 	  object = object || {};
@@ -32855,6 +32865,16 @@ webpackJsonp([0,2],[
 	      isValid: false
 	    };
 	  }
+	}
+	
+	function arrayHasSubString(list, searchSubString) {
+	  for (var i = 0; i < list.length; i += 1) {
+	    var item = list[i] || '';
+	    if (item.indexOf(searchSubString) > -1) {
+	      return true;
+	    }
+	  }
+	  return false;
 	}
 
 /***/ },

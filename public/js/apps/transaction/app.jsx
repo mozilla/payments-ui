@@ -58,14 +58,20 @@ export class TransactionApp extends Component {
     };
   }
 
-  renderChild() {
-    var { app, user, SignIn, Transaction } = this.props;
-    var state = this.state;
-
+  renderError() {
+    var { app } = this.props;
     if (app.error) {
       console.log('rendering app error');
       return <ErrorMessage error={app.error} />;
-    } else if (!state.isValid) {
+    }
+    return null;
+  }
+
+  renderChild() {
+    var { user, SignIn, Transaction } = this.props;
+    var state = this.state;
+
+    if (!state.isValid) {
       // This renders a temporary loading state while we wait for
       // redux to re-render the component with an error to display.
       return <Spinner />;
@@ -106,6 +112,7 @@ export class TransactionApp extends Component {
   render() {
     return (
       <main>
+        {this.renderError()}
         {this.renderChild()}
       </main>
     );
