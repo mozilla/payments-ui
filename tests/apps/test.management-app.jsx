@@ -60,9 +60,9 @@ describe('management/app', function() {
     var mgmt = TestUtils.findRenderedComponentWithType(
       view, FakeManagement
     );
-    // The first child should be the sign-in component.
+    // The second child should be the sign-in component.
     // Make sure it gets the access token.
-    var signIn = mgmt.props.children[0];
+    var signIn = mgmt.props.children[1];
     assert.equal(signIn.props.accessToken, token);
 
   });
@@ -76,7 +76,7 @@ describe('management/app', function() {
     var mgmt = TestUtils.findRenderedComponentWithType(
       view, FakeManagement
     );
-    var errorPane = mgmt.props.children[0];
+    var errorPane = mgmt.props.children[1];
     assert.deepEqual(errorPane.props.error, appError.error);
 
   });
