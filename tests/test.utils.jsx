@@ -186,3 +186,12 @@ describe('utils.arrayHasSubString', function() {
   });
 
 });
+
+
+describe('utils.getId', function() {
+
+  it('should produce a unique id', function() {
+    assert.notEqual(utils.getId(), utils.getId());
+  });
+
+});

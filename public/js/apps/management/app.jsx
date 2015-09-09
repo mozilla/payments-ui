@@ -1,9 +1,10 @@
-import 'shims';
+import 'babel-core/polyfill';
 
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import * as notificationActions from 'actions/notifications';
 import * as mgmtActions from 'actions/management';
 import * as payMethodActions from 'actions/pay-methods';
 import * as userActions from 'actions/user';
@@ -21,6 +22,7 @@ import { default as DefaultPayMethods } from 'views/management/pay-methods';
 
 import BraintreeToken from 'views/shared/braintree-token';
 import ModalError from 'views/shared/modal-error';
+import NotificationList from 'components/notification-list';
 import { default as DefaultSignIn } from 'views/shared/sign-in';
 import SignOut from 'views/shared/sign-out';
 
@@ -48,12 +50,13 @@ export default class ManagementApp extends Component {
   }
 
   render() {
-
     const { app, dispatch, management, user } = this.props;
 
     console.log('rendering management app at tab:', management.tab);
     var qs = parseQuery(this.props.window.location.href);
     var accessToken = qs.access_token;
+    var boundNotifyActions = bindActionCreators(notificationActions,
+                                                dispatch);
     var boundMgmtActions = bindActionCreators(mgmtActions,
                                               dispatch);
     var boundUserActions = bindActionCreators(userActions, dispatch);
@@ -67,6 +70,13 @@ export default class ManagementApp extends Component {
     var Management = this.props.Management;
     var PayMethods = this.props.PayMethods;
     var SignIn = this.props.SignIn;
+
+    children.push(
+      <NotificationList
+        notifications={app.notifications}
+        {...boundNotifyActions}
+      />
+    );
 
     if (app.error) {
       children.push(
