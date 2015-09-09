@@ -5,6 +5,8 @@ import { getId } from 'utils';
 export const initialAppState = {
   csrfToken: null,
   error: null,
+  // Notification is a mappable array e.g:
+  // [[key, notification], [key, notification], ...]
   notifications: [],
 };
 

@@ -8,8 +8,8 @@ export default class Notification extends Component {
 
   static propTypes = {
     autoHide: PropTypes.bool,
-    handleAutoHide: React.PropTypes.func,
-    handleDismissClick: React.PropTypes.func,
+    key: PropTypes.string.isRequired,
+    removeNotification: PropTypes.func.isRequired,
     text: PropTypes.string.isRequired,
     type: React.PropTypes.oneOf(['info', 'error']),
     userDismissable: React.PropTypes.bool,
@@ -24,8 +24,13 @@ export default class Notification extends Component {
   componentDidMount() {
     if (this.props.userDismissable === false &&
         this.props.autoHide === true) {
-      this.props.handleAutoHide({delay: 5000});
+      this.props.removeNotification(this.props.key, {delay: 5000});
     }
+  }
+
+  handleDismissClick = (e) => {
+    e.preventDefault();
+    this.props.removeNotification(this.props.key);
   }
 
   render() {
@@ -36,7 +41,7 @@ export default class Notification extends Component {
         <span className="text">{this.props.text}</span>
         { this.props.userDismissable ?
           <a href="#"
-            onClick={this.props.handleDismissClick}
+            onClick={this.handleDismissClick}
             className="dismiss">
             <span className="vh">{gettext('Dismiss')}</span>
           </a> : null }

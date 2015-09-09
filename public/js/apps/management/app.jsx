@@ -29,7 +29,6 @@ import SignOut from 'views/shared/sign-out';
 import { default as DefaultManagement } from 'views/management';
 
 
-
 export default class ManagementApp extends Component {
 
   static propTypes = {
@@ -56,8 +55,8 @@ export default class ManagementApp extends Component {
     console.log('rendering management app at tab:', management.tab);
     var qs = parseQuery(this.props.window.location.href);
     var accessToken = qs.access_token;
-    var boundNotificationActions = bindActionCreators(notificationActions,
-                                                     dispatch);
+    var boundNotifyActions = bindActionCreators(notificationActions,
+                                                dispatch);
     var boundMgmtActions = bindActionCreators(mgmtActions,
                                               dispatch);
     var boundUserActions = bindActionCreators(userActions, dispatch);
@@ -75,7 +74,7 @@ export default class ManagementApp extends Component {
     children.push(
       <NotificationList
         notifications={app.notifications}
-        {...boundNotificationActions}
+        {...boundNotifyActions}
       />
     );
 

@@ -7,7 +7,9 @@ export default class NotificationList extends Component {
 
   static propTypes = {
     TransitionGroup: PropTypes.node,
-    notifications: PropTypes.array,
+    // notifications is an Mapable array of 2 item arrays
+    // e.g: [[key, notificationObj], [key, notificationObj], ...]
+    notifications: PropTypes.array.isRequired,
     removeNotification: PropTypes.func.isRequired,
   }
 
@@ -18,14 +20,12 @@ export default class NotificationList extends Component {
   render() {
     var CSSTransitionGroup = this.props.TransitionGroup;
     var items = this.props.notifications.map((item) => {
-      // this.props.notifications is an array of 2 item arrays.
-      var key = item[0];
-      var val = item[1];
+      var [key, val] = item;
+
       return (
         <Notification
           key={key}
-          handleAutoHide={this.props.removeNotification.bind(this, key)}
-          handleDismissClick={this.props.removeNotification.bind(this, key)}
+          removeNotification={this.props.removeNotification}
           {...val} />
       );
     });

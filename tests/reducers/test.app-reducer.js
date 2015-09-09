@@ -69,11 +69,21 @@ describe('App Reducer', function() {
       data: {text: 'foo', type: 'info'},
     });
     var id = app.notifications[0][0];
-    var app = appReducer(initialAppState, {
+    assert.equal(app.notifications.length, 1);
+    var app2 = appReducer(app, {
       type: actionTypes.REMOVE_NOTIFICATION,
       id: id,
     });
-    assert.equal(app.notifications.length, 0);
+    assert.equal(app2.notifications.length, 0);
+  });
+
+  it('should not blow up removing a non-existant notification', function() {
+    assert.doesNotThrow(() => {
+      appReducer(initialAppState, {
+        type: actionTypes.REMOVE_NOTIFICATION,
+        id: 'blah',
+      });
+    });
   });
 
 });

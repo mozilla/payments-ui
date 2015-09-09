@@ -2,6 +2,7 @@ import React from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
 
 import Notification from 'components/notification';
+import { getId } from 'utils';
 
 import * as helpers from '../helpers';
 
@@ -9,18 +10,17 @@ import * as helpers from '../helpers';
 describe('Notification', function() {
 
   beforeEach(function() {
-    this.handleDismissClick = sinon.stub();
-    this.handleAutoHide = sinon.stub();
+    this.removeNotification = sinon.stub();
     this.getNotification = ({ autoHide=false, userDismissable=false,
                               type='info', text='hai' } = {}) => {
       return TestUtils.renderIntoDocument(
         <Notification
           text={text}
           type={type}
+          key={getId()}
           autoHide={autoHide}
           userDismissable={userDismissable}
-          handleDismissClick={this.handleDismissClick}
-          handleAutoHide={this.handleAutoHide}
+          removeNotification={this.removeNotification}
         />
       );
     };
@@ -50,15 +50,19 @@ describe('Notification', function() {
         .getDOMNode().getAttribute('class'), 'dismiss');
   });
 
-  it('should call handleAutoHide with delay', function() {
-    this.getNotification({autoHide: true});
-    assert.equal(this.handleAutoHide.firstCall.args[0].delay, 5000);
+  it('should call removeNotification with delay', function() {
+    var notification = this.getNotification({autoHide: true});
+    assert.equal(this.removeNotification.firstCall.args[0],
+                 notification.props.key);
+    assert.equal(this.removeNotification.firstCall.args[1].delay, 5000);
   });
 
-  it('should call handleDismissClick on click', function() {
+  it('should call removeNotificationClick on click', function() {
     var notification = this.getNotification({userDismissable: true});
     var link = helpers.findByTag(notification, 'a').getDOMNode();
-    TestUtils.Simulate.click(link);
-    assert.ok(this.handleDismissClick.called);
+    var prevDefault = sinon.stub();
+    TestUtils.Simulate.click(link, {preventDefault: prevDefault});
+    assert.ok(this.removeNotification.called);
+    assert.ok(prevDefault.called);
   });
 });

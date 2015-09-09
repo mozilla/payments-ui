@@ -143,10 +143,9 @@ export function fakeFetch({xhrError={}, returnedData={},
 }
 
 
-export function stubComponent(mockTagName) {
+export function stubComponent(mockTagName='div') {
   return class StubComponent extends Component {
     render() {
-      mockTagName = mockTagName || 'div';
       return React.DOM[mockTagName](null, this.props.children);
     }
   };
