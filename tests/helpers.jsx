@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
 
+import * as actionTypes from 'constants/action-types';
+
 
 export const testCards = {
   amex: '378282246310005',
@@ -173,8 +175,6 @@ export function doApiAction(deferredAction, dispatchSpy,
 }
 
 
-
-
 export class FakeBraintreeClient {
   tokenizeCard(config, callback) {
     console.log('resolving braintree tokenization');
@@ -188,4 +188,24 @@ export class FakeBraintreeClientError {
     console.log('resolving braintree tokenization with error');
     callback("I'm some error");
   }
+}
+
+export function assertNotificationType(action, notificationType) {
+  assert.equal(action.type, actionTypes.ADD_NOTIFICATION,
+               'action.type should be ADD_NOTIFICATION');
+  assert.equal(action.data.type, notificationType,
+               'action.data.type should be ' + notificationType);
+}
+
+export function assertNotificationTextContains(action, textSubString) {
+  assert.ok(typeof action.data.text === 'string',
+            'action.data.text should be a string');
+  assert.include(action.data.text, textSubString,
+                 'action.data.text should include substring');
+}
+
+export function assertNotificationErrorCode(action, errorCode) {
+  assertNotificationType(action, 'error');
+  assert.equal(action.data.errorCode, errorCode,
+               'action.data.errorCode must match errorCode');
 }

@@ -21,7 +21,6 @@ import History from 'views/management/history';
 import { default as DefaultPayMethods } from 'views/management/pay-methods';
 
 import BraintreeToken from 'views/shared/braintree-token';
-import ModalError from 'views/shared/modal-error';
 import NotificationList from 'components/notification-list';
 import { default as DefaultSignIn } from 'views/shared/sign-in';
 import SignOut from 'views/shared/sign-out';
@@ -78,11 +77,7 @@ export default class ManagementApp extends Component {
       />
     );
 
-    if (app.error) {
-      children.push(
-        <ModalError {...boundMgmtActions} error={app.error} />
-      );
-    } else if (management.view === 'SHOW_MY_ACCOUNT') {
+    if (management.view === 'SHOW_MY_ACCOUNT') {
       console.log('Showing pay methods');
       children.push((
         <MyAccount

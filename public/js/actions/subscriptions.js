@@ -1,7 +1,8 @@
 import * as actionTypes from 'constants/action-types';
+import * as errorCodes from 'constants/error-codes';
 
 import * as api from './api';
-import * as appActions from './app';
+import * as notificationActions from './notifications';
 import * as transactionActions from './transaction';
 
 import { gettext, arrayHasSubString } from 'utils';
@@ -28,7 +29,8 @@ export function getUserSubscriptions(fetch=api.fetch) {
       });
     }).fail(apiError => {
       console.log('error getting subscriptions:', apiError.responseJSON);
-      dispatch(appActions.error('failed to get subscriptions'));
+      dispatch(notificationActions.showError(
+        {errorCode: errorCodes.SUBS_GET_FAILED}));
     });
 
   };
@@ -60,9 +62,10 @@ export function getSubsByPayMethod(payMethodUri, fetch=api.fetch) {
         payMethodUri: payMethodUri,
       });
     }).fail(apiError => {
-      console.log('error getting filtered subscriptions:',
+      console.log('failed to get subscriptions by pay method:',
                   apiError.responseJSON);
-      dispatch(appActions.error('failed to get subscriptions by pay method'));
+      dispatch(notificationActions.showError(
+        {errorCode: errorCodes.SUBS_BY_PAY_METHOD_GET_FAILED}));
     });
 
   };
@@ -104,8 +107,10 @@ export function _createSubscription({dispatch, productId,
         $xhr.responseJSON.error_response) {
       var allErrors = $xhr.responseJSON.error_response.__all__;
       if (allErrors && arrayHasSubString(allErrors, 'already subscribed')) {
-        dispatch(appActions.error('Subscription creation failed', {
-          userMessage: gettext('User is already subscribed to this product'),
+        dispatch(notificationActions.showError({
+          text: gettext('User is already subscribed to this product'),
+          errorCode: errorCodes.ALREADY_SUBSCRIBED,
+          userDismissable: false,
         }));
       } else if (data.pay_method_nonce) {
         dispatch({
@@ -114,7 +119,8 @@ export function _createSubscription({dispatch, productId,
         });
       }
     } else {
-      dispatch(appActions.error('Subscription creation failed'));
+      dispatch(notificationActions.showError(
+        {errorCode: errorCodes.SUB_CREATION_FAILED}));
     }
   });
 }
@@ -141,6 +147,8 @@ export function updateSubPayMethod(subscriptionUri, newPayMethodUri,
     }).fail(() => {
       console.error('Failed to update subscription: ' + subscriptionUri +
                     ' to use payMethod: ' + newPayMethodUri);
+      dispatch(notificationActions.showError(
+        {errorCode: errorCodes.SUB_UPDATE_FAILED}));
     });
   };
 }

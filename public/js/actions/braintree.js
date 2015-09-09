@@ -1,6 +1,7 @@
 import braintree from 'braintree-web';
 
-import * as appActions from './app';
+import * as errorCodes from 'constants/error-codes';
+import * as notificationActions from './notifications';
 
 
 export function tokenizeCreditCard({dispatch, braintreeToken, creditCard,
@@ -25,7 +26,8 @@ export function tokenizeCreditCard({dispatch, braintreeToken, creditCard,
   }, (err, nonce) => {
     if (err) {
       console.error('Braintree tokenization error:', err);
-      dispatch(appActions.error('Braintree tokenization error'));
+      dispatch(notificationActions.showError(
+        {errorCode: errorCodes.BRAINTREE_TOKENIZATION_ERROR}));
     } else {
       callback(nonce);
     }

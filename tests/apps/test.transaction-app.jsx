@@ -7,9 +7,8 @@ import * as helpers from '../helpers';
 import { createReduxStore } from 'data-store';
 import { initialUserState } from 'reducers/user';
 import * as actionTypes from 'constants/action-types';
-import * as appActions from 'actions/app';
 import { default as TransactionApp } from 'apps/transaction/app';
-import ErrorMessage from 'components/error';
+import Notification from 'components/notification';
 
 
 describe('Transaction App', function() {
@@ -55,16 +54,6 @@ describe('Transaction App', function() {
     assert.equal(initialUserState.signedIn, false);
   });
 
-  it('should render an error', function() {
-    var View = mountView();
-    var appState = appActions.error('this is some error');
-    store.dispatch(appState);
-    var error = TestUtils.findRenderedComponentWithType(
-      View, ErrorMessage
-    );
-    assert.deepEqual(error.props.error, appState.error);
-  });
-
   it('should render a sign-in page', function() {
     var View = mountView();
     var signIn = TestUtils.findRenderedComponentWithType(
@@ -105,7 +94,7 @@ describe('Transaction App', function() {
   it('should dispatch an error for unknown products', function() {
     var View = mountView({productId: 'not-a-known-product-id'});
     var error = TestUtils.findRenderedComponentWithType(
-      View, ErrorMessage
+      View, Notification
     );
     assert.ok(error);
   });

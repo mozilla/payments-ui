@@ -1,5 +1,5 @@
 import * as actionTypes from 'constants/action-types';
-import * as appActions from 'actions/app';
+import * as errorCodes from 'constants/error-codes';
 import * as transactionActions from 'actions/transaction';
 
 import * as helpers from '../helpers';
@@ -100,8 +100,8 @@ describe('transactionActions', function() {
       });
       getUserTransactions({apiResult: apiResult});
       var action = dispatchSpy.secondCall.args[0];
-      assert.deepEqual(action,
-                       appActions.error('failed to get transactions'));
+      helpers.assertNotificationErrorCode(
+        action, errorCodes.TRANSACTIONS_GET_FAILED);
     });
 
   });
@@ -263,7 +263,8 @@ describe('transactionActions', function() {
                              payMethodUri: '/some/paymethod/123'});
 
       var action = dispatchSpy.firstCall.args[0];
-      assert.equal(action.type, actionTypes.APP_ERROR);
+      helpers.assertNotificationErrorCode(
+        action, errorCodes.ONE_TIME_PAYMENT_FAILED);
     });
 
   });
