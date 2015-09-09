@@ -1,4 +1,4 @@
-import 'shims';
+import 'babel-core/polyfill';
 
 import React, { Component, PropTypes } from 'react';
 
