@@ -22,7 +22,6 @@ module.exports = {
     entry: {
       // Explicit entries for the styleguide.
       'modal': './styleguide/jsx/modal',
-      'app-error': './styleguide/jsx/app-error',
       'card-form': './styleguide/jsx/card-form',
       'spinner': './styleguide/jsx/spinner',
     },
