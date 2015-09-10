@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 /**
  * 1. Set default font family to sans-serif.
@@ -666,6 +667,83 @@ label:focus ~ .input-help-focused {
 .pay-method-icon[class*="pmtype-"] {
   opacity: 1;
   transition: opacity 450ms;
+}
+
+.notification-list {
+  color: #fff;
+  left: 200px;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  right: 0;
+  text-align: center;
+  top: 0;
+  z-index: 30;
+}
+
+.transaction .notification-list {
+  position: static;
+  left: 20px;
+  right: 20px;
+  margin-bottom: 20px;
+}
+
+.notification {
+  list-style-type: none;
+  margin: 0;
+  padding: 0.5em;
+  position: relative;
+}
+
+.transaction .notification {
+  border-radius: 3px;
+}
+
+.notification.error {
+  background: rgba(214, 57, 32, 0.9);
+}
+
+.notification.info {
+  background: rgba(0, 150, 220, 0.9);
+}
+
+.notification .dismiss:after {
+  color: #fff;
+  content: '×';
+  display: block;
+  height: 2em;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2em;
+}
+
+.notification-enter {
+  opacity: 0.01;
+}
+
+.notification-enter.notification-enter-active {
+  opacity: 1;
+  transition: opacity 0.5s ease-in;
+}
+
+.notification-leave {
+  opacity: 1;
+}
+
+.notification-leave.notification-leave-active {
+  opacity: 0.01;
+  transition: opacity 0.5s ease-in;
+}
+
+.notification-appear {
+  opacity: 0.01;
+  transition: opacity 0.5s ease-in;
+}
+
+.notification-appear.notification-appear-active {
+  opacity: 1;
 }
 
 .no-results {
