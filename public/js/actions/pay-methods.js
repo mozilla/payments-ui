@@ -1,8 +1,9 @@
 import braintree from 'braintree-web';
 
 import * as actionTypes from 'constants/action-types';
+import * as errorCodes from 'constants/error-codes';
 import * as api from './api';
-import * as appActions from './app';
+import * as notificationActions from './notifications';
 import * as mgmtActions from './management';
 
 
@@ -30,7 +31,8 @@ export function delPayMethod(payMethodUri, fetch=api.fetch) {
       dispatch(mgmtActions.showPayMethods());
     }).fail(function() {
       console.log('Deleting pay method failed');
-      dispatch(appActions.error('Deleting pay method failed'));
+      dispatch(notificationActions.showError(
+        {errorCode: errorCodes.PAY_METHOD_DELETION_FAILED}));
     });
   };
 }
@@ -51,8 +53,9 @@ export function getPayMethods(fetch=api.fetch) {
         payMethods: data,
       });
     }).fail(function() {
-      console.log('Retrieving cards failed');
-      dispatch(appActions.error('Retrieving cards failed'));
+      console.log('Retrieving pay methods failed');
+      dispatch(notificationActions.showError(
+        {errorCode: errorCodes.PAY_METHOD_GET_FAILED}));
     });
   };
 }
@@ -71,7 +74,8 @@ export function addCreditCard(braintreeToken, creditCard, fetch=api.fetch,
     }, function(err, nonce) {
       if (err) {
         console.error('Braintree tokenization error:', err);
-        dispatch(appActions.error('Braintree tokenization error'));
+        dispatch(notificationActions.showError(
+          {errorCode: errorCodes.BRAINTREE_TOKENIZATION_ERROR}));
       } else {
         fetch({
           data: {

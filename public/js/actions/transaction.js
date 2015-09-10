@@ -1,9 +1,10 @@
 import braintree from 'braintree-web';
 
 import * as actionTypes from 'constants/action-types';
+import * as errorCodes from 'constants/error-codes';
 import * as products from 'products';
 
-import * as appActions from './app';
+import * as notificationActions from './notifications';
 import * as api from './api';
 import { tokenizeCreditCard } from './braintree';
 import { _createSubscription as
@@ -58,7 +59,9 @@ export function _processOneTimePayment({dispatch, productId, getState,
         apiErrorResult: $xhr.responseJSON,
       });
     } else {
-      dispatch(appActions.error('product sale failed'));
+      console.log('Product sale failed');
+      dispatch(notificationActions.showError(
+        {'errorCode': errorCodes.ONE_TIME_PAYMENT_FAILED}));
     }
   });
 }
@@ -128,7 +131,8 @@ export function getUserTransactions(fetch=api.fetch) {
       });
     }).fail(apiError => {
       console.log('error getting transactions:', apiError.responseJSON);
-      dispatch(appActions.error('failed to get transactions'));
+      dispatch(notificationActions.showError(
+        {errorCode: errorCodes.TRANSACTIONS_GET_FAILED}));
     });
   };
 }

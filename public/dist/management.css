@@ -249,11 +249,22 @@
   z-index: 30;
 }
 
+.transaction .notification-list {
+  position: static;
+  left: 20px;
+  right: 20px;
+  margin-bottom: 20px;
+}
+
 .notification {
   list-style-type: none;
   margin: 0;
   padding: 0.5em;
   position: relative;
+}
+
+.transaction .notification {
+  border-radius: 3px;
 }
 
 .notification.error {
