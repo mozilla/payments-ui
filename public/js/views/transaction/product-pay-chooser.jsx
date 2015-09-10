@@ -11,12 +11,11 @@ import tracking from 'tracking';
 export default class ProductPayChooser extends Component {
 
   static propTypes = {
-    // Amount to pay, which applies to things like donations.
-    amount: PropTypes.string,
     payMethods: PropTypes.array.isRequired,
     payWithNewCard: PropTypes.func.isRequired,
     processPayment: PropTypes.func.isRequired,
     productId: PropTypes.string.isRequired,
+    userDefinedAmount: PropTypes.string,
   }
 
   componentDidMount() {
@@ -25,7 +24,7 @@ export default class ProductPayChooser extends Component {
 
   handleSubmit = (payMethodUri) => {
     this.props.processPayment({productId: this.props.productId,
-                               amount: this.props.amount,
+                               userDefinedAmount: this.props.userDefinedAmount,
                                payMethodUri: payMethodUri});
   }
 
@@ -43,13 +42,14 @@ export default class ProductPayChooser extends Component {
       <div>
         <ProductDetail
           productId={this.props.productId}
-          price={this.props.amount}
+          userDefinedAmount={this.props.userDefinedAmount}
         />
         <PayMethodChoice
           payMethods={this.props.payMethods}
           productId={this.props.productId}
           submitButtonText={submitPrompt}
           submitHandler={this.handleSubmit}
+          useDropDown={true}
         />
         <a className="add-card" href="#"
           onClick={this.props.payWithNewCard}>

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-import CardChoice from 'components/pay-method-choice';
+import PayMethodChoice from 'components/pay-method-choice';
 
 import { default as tracking } from 'tracking';
 import { gettext, setTitle } from 'utils';
@@ -10,8 +10,8 @@ export default class DelPayMethod extends Component {
 
   static propTypes = {
     closeModal: PropTypes.func.isRequired,
-    delPayMethod: PropTypes.func.isRequired,
     payMethods: PropTypes.array.isRequired,
+    showConfirmDelPayMethod: PropTypes.func.isRequired,
     showPayMethods: PropTypes.func.isRequired,
   }
 
@@ -20,21 +20,21 @@ export default class DelPayMethod extends Component {
     tracking.setPage('/del-pay-method');
   }
 
-  handleSubmit = (card) => {
-    this.props.delPayMethod(card);
+  handleSubmit = (payMethod) => {
+    this.props.showConfirmDelPayMethod(payMethod);
   }
 
   render() {
     return (
       <div>
         <h1>{gettext('Delete Payment Method')}</h1>
+        <p>{gettext('Choose a payment method to delete. ' +
+                    "You'll confirm on the next step.")}</p>
         <div className="small-form">
-          <CardChoice
-            cssModifier='delete'
-            submitButtonText={gettext('Delete')}
-            submitButtonCSSModifier='warning'
-            submitHandler={this.handleSubmit}
+          <PayMethodChoice
             payMethods={this.props.payMethods}
+            submitButtonText={gettext('Continue')}
+            submitHandler={this.handleSubmit}
           />
         </div>
         <a href="#" className="back" onClick={this.props.showPayMethods}>

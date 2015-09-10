@@ -75,8 +75,8 @@ export default class CardInput extends Component {
     labelClassNames = labelClassNames.slice(0);
     // Only show invalid classname when invalid and there's a value.
     labelClassNames.push({
-      'invalid': (this.props.hasVal || this.props.showError) &&
-                  this.props.isValid === false,
+      invalid: (this.props.hasVal || this.props.showError) &&
+                this.props.isValid === false,
     });
     var labelClass = classNames(labelClassNames);
 
@@ -98,14 +98,23 @@ export default class CardInput extends Component {
                       errorModifier={this.props.errorModifier} /> : null }
         { showCardIcon ?
           <PayMethodIcon payMethodType={this.props.cardType} /> : null }
-        <MaskedInput
-          {...this.props.attrs}
-          id={this.props.id}
-          className={this.props.id + '-input'}
-          onChange={this.props.onChangeHandler}
-          pattern={pattern}
-          placeholder={placeholder}
-        />
+        {pattern ?
+          <MaskedInput
+            {...this.props.attrs}
+            id={this.props.id}
+            className={this.props.id + '-input'}
+            onChange={this.props.onChangeHandler}
+            pattern={pattern}
+            placeholder={placeholder}
+          /> :
+          <input
+            {...this.props.attrs}
+            id={this.props.id}
+            className={this.props.id + '-input'}
+            onChange={this.props.onChangeHandler}
+            placeholder={placeholder}
+          />
+        }
       </label>
     );
   }

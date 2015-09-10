@@ -1,10 +1,10 @@
-import 'shims';
+import 'babel-core/polyfill';
 
 import React, { Component, PropTypes } from 'react';
-import { Provider, Connector } from 'react-redux';
+import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import dataStore from 'data-store';
+import * as notificationActions from 'actions/notifications';
 import * as mgmtActions from 'actions/management';
 import * as payMethodActions from 'actions/pay-methods';
 import * as userActions from 'actions/user';
@@ -14,13 +14,14 @@ import { parseQuery } from 'utils';
 
 import AddPayMethod from 'views/management/add-pay-method';
 import DelPayMethod from 'views/management/del-pay-method';
+import ConfirmDelPayMethod from 'views/management/confirm-del-pay-method';
 import MyAccount from 'views/management/my-account';
 import Subscriptions from 'views/management/subscriptions';
 import History from 'views/management/history';
 import { default as DefaultPayMethods } from 'views/management/pay-methods';
 
 import BraintreeToken from 'views/shared/braintree-token';
-import ModalError from 'views/shared/modal-error';
+import NotificationList from 'components/notification-list';
 import { default as DefaultSignIn } from 'views/shared/sign-in';
 import SignOut from 'views/shared/sign-out';
 
@@ -33,6 +34,10 @@ export default class ManagementApp extends Component {
     Management: PropTypes.func,
     PayMethods: PropTypes.func,
     SignIn: PropTypes.func,
+    app: PropTypes.object.isRequired,
+    dispatch: PropTypes.func,
+    management: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
     window: PropTypes.object.isRequired,
   }
 
@@ -43,60 +48,61 @@ export default class ManagementApp extends Component {
     window: window,
   }
 
-  selectData(state) {
-    return {
-      management: state.management,
-      user: state.user,
-    };
-  }
+  render() {
+    const { app, dispatch, management, user } = this.props;
 
-  renderChild(connector) {
-    console.log('rendering management app at tab:', connector.management.tab);
+    console.log('rendering management app at tab:', management.tab);
     var qs = parseQuery(this.props.window.location.href);
     var accessToken = qs.access_token;
+    var boundNotifyActions = bindActionCreators(notificationActions,
+                                                dispatch);
     var boundMgmtActions = bindActionCreators(mgmtActions,
-                                              connector.dispatch);
-    var boundUserActions = bindActionCreators(userActions, connector.dispatch);
+                                              dispatch);
+    var boundUserActions = bindActionCreators(userActions, dispatch);
     var boundSubscriptionActions = bindActionCreators(subscriptionActions,
-                                                      connector.dispatch);
+                                                      dispatch);
     var boundPayMethodActions = bindActionCreators(payMethodActions,
-                                                   connector.dispatch);
+                                                   dispatch);
     var boundTransactionActions = bindActionCreators(transactionActions,
-                                                     connector.dispatch);
+                                                     dispatch);
     var children = [];
     var Management = this.props.Management;
     var PayMethods = this.props.PayMethods;
     var SignIn = this.props.SignIn;
 
-    if (connector.management.error) {
-      children.push(
-        <ModalError {...boundMgmtActions} error={connector.management.error} />
-      );
-    } else if (connector.management.view === 'SHOW_MY_ACCOUNT') {
+    children.push(
+      <NotificationList
+        notifications={app.notifications}
+        {...boundNotifyActions}
+      />
+    );
+
+    if (management.view === 'SHOW_MY_ACCOUNT') {
       console.log('Showing pay methods');
       children.push((
         <MyAccount
           {...boundUserActions}
-          user={connector.user}
+          user={user}
         />
       ));
-    } else if (connector.management.view === 'SHOW_PAY_METHODS') {
+    } else if (management.view === 'SHOW_PAY_METHODS') {
       console.log('Showing pay methods');
       children.push((
         <PayMethods {...boundMgmtActions}
-          payMethods={connector.user.payMethods} />
+          {...boundPayMethodActions}
+          payMethods={user.payMethods} />
       ));
-    } else if (connector.management.view === 'SHOW_SIGN_OUT') {
+    } else if (management.view === 'SHOW_SIGN_OUT') {
       console.log('Showing sign out');
       children.push((
         <SignOut
-          user={connector.user}
+          user={user}
           {...boundUserActions}
           {...boundMgmtActions}
         />
       ));
-    } else if (connector.management.view === 'SHOW_ADD_PAY_METHOD') {
-      if (!connector.user.braintreeToken) {
+    } else if (management.view === 'SHOW_ADD_PAY_METHOD') {
+      if (!user.braintreeToken) {
         children.push((
           <BraintreeToken {...boundUserActions} />
         ));
@@ -106,30 +112,42 @@ export default class ManagementApp extends Component {
             {...boundMgmtActions}
             {...boundPayMethodActions}
             {...boundUserActions}
-            braintreeToken={connector.user.braintreeToken}
+            braintreeToken={user.braintreeToken}
           />
         ));
       }
-    } else if (connector.management.view === 'SHOW_DEL_PAY_METHOD') {
+    } else if (management.view === 'SHOW_DEL_PAY_METHOD') {
       children.push((
         <DelPayMethod
-          payMethods={connector.user.payMethods}
+          payMethods={user.payMethods}
           {...boundMgmtActions}
           {...boundPayMethodActions}
         />
       ));
-    } else if (connector.management.view === 'SHOW_SUBSCRIPTIONS') {
+    } else if (management.view === 'SHOW_CONFIRM_DEL_PAY_METHOD') {
+      var mgmt = management;
+      children.push((
+        <ConfirmDelPayMethod
+          payMethods={user.payMethods}
+          payMethodUri={mgmt.viewData.payMethodUri}
+          affectedSubscriptions={mgmt.viewData.affectedSubscriptions}
+          {...boundMgmtActions}
+          {...boundPayMethodActions}
+          {...boundSubscriptionActions}
+        />
+      ));
+    } else if (management.view === 'SHOW_SUBS') {
       children.push((
         <Subscriptions
           {...boundSubscriptionActions}
-          payMethods={connector.user.payMethods}
-          userSubscriptions={connector.user.subscriptions}
+          payMethods={user.payMethods}
+          userSubscriptions={user.subscriptions}
         />
       ));
-    } else if (connector.management.view === 'SHOW_HISTORY') {
+    } else if (management.view === 'SHOW_HISTORY') {
       children.push((
         <History
-          transactions={connector.user.transactions}
+          transactions={user.transactions}
           {...boundTransactionActions}
         />
       ));
@@ -138,37 +156,32 @@ export default class ManagementApp extends Component {
       children.push(
         <SignIn
           accessToken={accessToken}
-          user={connector.user}
+          user={user}
           {...boundUserActions}
           {...boundMgmtActions}
         />
       );
     }
 
-
     return (<Management
               {...boundMgmtActions}
               {...boundUserActions}
-              tab={connector.management.tab}
-              user={connector.user}
-              view={connector.management.view}
-            >{children}</Management>);
-  }
-
-  render() {
-    return (
-      <Connector select={this.selectData}>
-        {(connector) => this.renderChild(connector)}
-      </Connector>
-    );
+              tab={management.tab}
+              user={user}
+              view={management.view}>
+                {children}
+            </Management>);
   }
 }
 
 
-export function init() {
-  React.render((
-    <Provider store={dataStore}>
-      {() => <ManagementApp/>}
-    </Provider>
-  ), document.getElementById('placeholder'));
+function select(state) {
+  return {
+    app: state.app,
+    management: state.management,
+    user: state.user,
+  };
 }
+
+
+export default connect(select)(ManagementApp);

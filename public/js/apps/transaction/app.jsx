@@ -1,26 +1,31 @@
-import 'shims';
+import 'babel-core/polyfill';
 
 import React, { Component, PropTypes } from 'react';
 
-import { Connector, Provider } from 'react-redux';
+import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import dataStore from 'data-store';
-import ErrorMessage from 'components/error';
+import * as errorCodes from 'constants/error-codes';
+import Spinner from 'components/spinner';
+import NotificationList from 'components/notification-list';
+
 import DefaultSignIn from 'views/shared/sign-in';
 import DefaultTransaction from 'views/transaction';
 
-import * as appActions from 'actions/app';
+import * as notificationActions from 'actions/notifications';
 import * as userActions from 'actions/user';
 import * as products from 'products';
-import { parseQuery } from 'utils';
+import { gettext, parseQuery } from 'utils';
 
 
-export default class TransactionApp extends Component {
+export class TransactionApp extends Component {
 
   static propTypes = {
     SignIn: PropTypes.func.isRequired,
     Transaction: PropTypes.func.isRequired,
+    app: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired,
     win: PropTypes.object,
   }
 
@@ -32,74 +37,98 @@ export default class TransactionApp extends Component {
 
   constructor(props) {
     super(props);
+    this.boundUserActions = bindActionCreators(userActions, props.dispatch);
+    this.boundNotificationActions = bindActionCreators(
+      notificationActions, props.dispatch);
     var qs = parseQuery(props.win.location.href);
-    // TODO: we should validate/clean this input to raise early errors.
+
+    var isValid = true;
+    try {
+      this.product = products.get(qs.product);
+    } catch(e) {
+      console.error('productId is invalid: ' + e);
+      this.boundNotificationActions.showError({
+        text: gettext('This product cannot be purchased'),
+        errorCode: errorCodes.PRODUCT_ID_INVALID,
+        userDismissable: false,
+      });
+      isValid = false;
+    }
+
     this.state = {
       accessToken: qs.access_token,
+      isValid: isValid,
       productId: qs.product,
-      // This is an amount to pay, which applies to things like donations.
-      amount: qs.amount,
+      userDefinedAmount: qs.amount,
     };
   }
 
-  selectData(state) {
-    return {
-      app: state.app,
-      user: state.user,
-    };
+  renderChild() {
+    var { user, SignIn, Transaction } = this.props;
+    var state = this.state;
+
+    if (!state.isValid) {
+      // This renders a temporary loading state while we wait for
+      // redux to re-render the component with an error to display.
+      return <Spinner />;
+    } else {
+
+      var signInRequired = true;
+      if (this.product.user_identification === null ||
+          this.product.user_identification === 'email') {
+        signInRequired = false;
+      }
+      console.log('sign-in required to transact product?', this.product.id, ':',
+                  (signInRequired ? 'Yes' : 'No'), '; user_identification=',
+                  this.product.user_identification);
+
+      if (signInRequired && !user.signedIn) {
+        console.log('rendering sign-in');
+        return (
+          <SignIn
+            accessToken={state.accessToken}
+            allowUserSignIn={false}
+            user={user}
+            {...this.boundUserActions }
+            {...this.boundAppActions }
+          />
+        );
+      } else {
+        console.log('rendering purchase flow');
+        return (
+          <Transaction
+            productId={this.product.id}
+            userDefinedAmount={state.userDefinedAmount}
+          />
+        );
+      }
+    }
   }
 
   render() {
-    var state = this.state;
-    var SignIn = this.props.SignIn;
-    var Transaction = this.props.Transaction;
-    var product = products.get(state.productId);
-    var signInRequired = product.seller.kind !== 'donations';
-    console.log('sign-in required to transact product?', state.productId,
-                signInRequired ? 'Yes' : 'No');
+    var { app, dispatch } = this.props;
+    var boundNotificationActions = bindActionCreators(
+      notificationActions, dispatch);
 
     return (
-      <main>
-        <Connector select={this.selectData}>
-          {connector => {
-            if (connector.app.error) {
-              console.log('rendering app error');
-              return <ErrorMessage error={connector.app.error} />;
-            } else if (signInRequired && !connector.user.signedIn) {
-              console.log('rendering sign-in');
-              return (
-                <SignIn
-                  accessToken={state.accessToken}
-                  allowUserSignIn={false}
-                  user={connector.user}
-                  {...bindActionCreators(userActions, connector.dispatch) }
-                  {...bindActionCreators(appActions, connector.dispatch) }
-                />
-              );
-            } else {
-              console.log('rendering purchase flow');
-              return (
-                <Transaction
-                  amount={state.amount}
-                  productId={state.productId}
-                  user={connector.user}
-                />
-              );
-            }
-          }}
-        </Connector>
+      <main className="transaction">
+        <NotificationList
+          notifications={app.notifications}
+          {...boundNotificationActions}
+        />
+        {this.renderChild()}
       </main>
     );
   }
 }
 
 
-export function init() {
-  React.render((
-    <Provider store={dataStore}>
-      {function() {
-        return <TransactionApp/>;
-      }}
-    </Provider>
-  ), document.body);
+function select(state) {
+  return {
+    app: state.app,
+    user: state.user,
+  };
 }
+
+
+export default connect(select)(TransactionApp);

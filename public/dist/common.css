@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 /**
  * 1. Set default font family to sans-serif.
@@ -404,19 +405,28 @@ main {
   width: 100%;
 }
 
+hr {
+  border: 1px solid #C8C8C8;
+  border-bottom: none;
+  border-right: none;
+  border-left: none;
+  margin: 2em 0;
+}
+
 * {
   box-sizing: border-box;
 }
 
 .app-error {
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.9);
   bottom: 0;
   height: 100%;
   left: 0;
+  padding: 10px;
   position: absolute;
   right: 0;
   top: 0;
-  z-index: 10;
+  z-index: 30;
 }
 
 .app-error .msg {
@@ -659,6 +669,83 @@ label:focus ~ .input-help-focused {
   transition: opacity 450ms;
 }
 
+.notification-list {
+  color: #fff;
+  left: 200px;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  right: 0;
+  text-align: center;
+  top: 0;
+  z-index: 30;
+}
+
+.transaction .notification-list {
+  position: static;
+  left: 20px;
+  right: 20px;
+  margin-bottom: 20px;
+}
+
+.notification {
+  list-style-type: none;
+  margin: 0;
+  padding: 0.5em;
+  position: relative;
+}
+
+.transaction .notification {
+  border-radius: 3px;
+}
+
+.notification.error {
+  background: rgba(214, 57, 32, 0.9);
+}
+
+.notification.info {
+  background: rgba(0, 150, 220, 0.9);
+}
+
+.notification .dismiss:after {
+  color: #fff;
+  content: '×';
+  display: block;
+  height: 2em;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2em;
+}
+
+.notification-enter {
+  opacity: 0.01;
+}
+
+.notification-enter.notification-enter-active {
+  opacity: 1;
+  transition: opacity 0.5s ease-in;
+}
+
+.notification-leave {
+  opacity: 1;
+}
+
+.notification-leave.notification-leave-active {
+  opacity: 0.01;
+  transition: opacity 0.5s ease-in;
+}
+
+.notification-appear {
+  opacity: 0.01;
+  transition: opacity 0.5s ease-in;
+}
+
+.notification-appear.notification-appear-active {
+  opacity: 1;
+}
+
 .no-results {
   padding: 2em 0;
 }
@@ -669,6 +756,11 @@ label:focus ~ .input-help-focused {
 
 .pay-method-item {
   position: relative;
+}
+
+.pay-method-item input[type=hidden] + label {
+  padding: 1em 0 1em 70px;
+  text-align: left;
 }
 
 .pay-method-item input[type=radio] {
@@ -716,8 +808,8 @@ label:focus ~ .input-help-focused {
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 18px;
-  margin-bottom: 1em;
-  padding: 0.5em 2em 0.5em 0.5em;
+  margin: 1em 0;
+  padding: 0.5em 1.35em 0.5em 0.5em;
   position: relative;
   width: 100%;
   max-width: 300px;
@@ -1075,6 +1167,10 @@ h4 {
 
 h5 {
   font-size: 110%;
+}
+
+.warn {
+  color: #d63920;
 }
 
 /*

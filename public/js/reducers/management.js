@@ -2,9 +2,9 @@ import * as actionTypes from 'constants/action-types';
 
 
 export const initialMgmtState = {
-  error: null,
   tab: null,
   view: null,
+  viewData: {},
 };
 
 
@@ -20,10 +20,22 @@ export default function management(state, action) {
         });
       }
       return state;
-    case actionTypes.APP_ERROR:
-      return Object.assign({}, initialMgmtState, {
-        error: {
-          debugMessage: action.error.debugMessage,
+    case actionTypes.GOT_SUBS_BY_PAY_METHOD:
+      return Object.assign({}, initialMgmtState, state, {
+        // This is short-lived data only relevant to the current
+        // operation.
+        viewData: {
+          affectedSubscriptions: action.subscriptions,
+          payMethodUri: action.payMethodUri,
+        },
+      });
+    case actionTypes.SHOW_CONFIRM_DEL_PAY_METHOD:
+      return Object.assign({}, initialMgmtState, state, {
+        // Ephemeral data for this operation only.
+        tab: 'pay-methods',
+        view: action.type,
+        viewData: {
+          payMethodUri: action.payMethodUri,
         },
       });
     case actionTypes.SHOW_MY_ACCOUNT:
@@ -59,7 +71,7 @@ export default function management(state, action) {
         tab: 'profile',
         view: action.type,
       });
-    case actionTypes.SHOW_SUBSCRIPTIONS:
+    case actionTypes.SHOW_SUBS:
       return Object.assign({}, initialMgmtState, {
         tab: 'subs',
         view: action.type,
@@ -70,6 +82,7 @@ export default function management(state, action) {
       });
     case actionTypes.CLOSE_MODAL:
       return initialMgmtState;
+
     default:
       return state;
   }

@@ -3,27 +3,27 @@ import React, { Component, PropTypes } from 'react';
 
 import CardInput from 'components/card-input';
 import SubmitButton from 'components/submit-button';
-import { gettext } from 'utils';
+import { gettext, validateEmailAsYouType } from 'utils';
 
 
 const defaultFieldAttrs = {
-  'autoComplete': 'off',
+  autoComplete: 'off',
   // inputMode is not yet supported in React.
   // See https://github.com/facebook/react/pull/3798
-  'inputMode': 'numeric',
-  'type': 'tel',
+  inputMode: 'numeric',
+  type: 'tel',
 };
 
 const errorKeyToFieldMap = {
-  '__all__': {
+  __all__: {
     field: 'card',
     error: 'declined',
   },
-  'fraud': {
+  fraud: {
     field: 'card',
     error: 'declined',
   },
-  'cvv': {
+  cvv: {
     field: 'cvv',
     error: 'invalid',
   },
@@ -31,38 +31,51 @@ const errorKeyToFieldMap = {
 
 const fieldProps = {
   card: {
-    'attrs': defaultFieldAttrs,
-    'classNames': ['card'],
-    'errors': {
+    attrs: defaultFieldAttrs,
+    classNames: ['card'],
+    errors: {
       invalid: gettext('Incorrect card number'),
       declined: gettext('Card was declined'),
     },
-    'id': 'card',
-    'placeholder': gettext('Card number'),
-    'validator': CardValidator.number,
+    id: 'card',
+    placeholder: gettext('Card number'),
+    validator: CardValidator.number,
+  },
+  email: {
+    attrs: {
+      type: 'email',
+    },
+    classNames: ['email'],
+    errors: {
+      invalid: gettext('Invalid email address'),
+    },
+    id: 'email',
+    pattern: null,
+    placeholder: gettext('Email address'),
+    validator: validateEmailAsYouType,
   },
   expiration: {
-    'attrs': defaultFieldAttrs,
-    'classNames': ['expiration'],
-    'errors': {
+    attrs: defaultFieldAttrs,
+    classNames: ['expiration'],
+    errors: {
       invalid: gettext('Invalid expiry date'),
     },
-    'id': 'expiration',
+    id: 'expiration',
     // Expiration pattern doesn't change based on card type.
-    'pattern': '11/11',
-    'placeholder': 'MM/YY',
-    'validator': CardValidator.expirationDate,
+    pattern: '11/11',
+    placeholder: 'MM/YY',
+    validator: CardValidator.expirationDate,
   },
   cvv: {
-    'attrs': defaultFieldAttrs,
-    'autocomplete': 'off',
-    'classNames': ['cvv'],
-    'errors': {
+    attrs: defaultFieldAttrs,
+    autocomplete: 'off',
+    classNames: ['cvv'],
+    errors: {
       invalid: gettext('Invalid CVV'),
     },
-    'errorModifier': 'right',
-    'id': 'cvv',
-    'validator': CardValidator.cvv,
+    errorModifier: 'right',
+    id: 'cvv',
+    validator: CardValidator.cvv,
   },
 };
 
@@ -72,6 +85,7 @@ export default class CardForm extends Component {
   static propTypes = {
     card: PropTypes.object,
     cvv: PropTypes.object,
+    emailFieldRequired: PropTypes.bool,
     expiration: PropTypes.object,
     handleCardSubmit: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired,
@@ -80,8 +94,8 @@ export default class CardForm extends Component {
   }
 
   static defaultProps = {
-    // This should always be overidden with a localized value.
-    submitPrompt: 'Submit',
+    emailFieldRequired: false,
+    submitPrompt: gettext('Submit'),
   }
 
   constructor(props) {
@@ -90,6 +104,7 @@ export default class CardForm extends Component {
       card: '',
       cardType: null,
       cvv: '',
+      email: '',
       errors: {},
       expiration: '',
       isSubmitting: false,
@@ -123,11 +138,16 @@ export default class CardForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.setState({isSubmitting: true});
-    this.props.handleCardSubmit({
+    var formData = {
       number: this.state.card,
       cvv: this.state.cvv,
       expiration: this.state.expiration,
-    });
+    };
+    var opts = {};
+    if (this.props.emailFieldRequired) {
+      opts.email = this.state.email;
+    }
+    this.props.handleCardSubmit(formData, opts);
   }
 
   mapErrorsToFields(errors) {
@@ -165,8 +185,11 @@ export default class CardForm extends Component {
     var formIsValid = true;
 
     // Update form validity based on fieldProps.
-    Object.keys(fieldProps).forEach(function(field) {
-      if (!fieldProps[field].isValid) {
+    Object.keys(fieldProps).forEach((field) => {
+      // Skip over the email field if it's not required.
+      if (field === 'email' && !this.props.emailFieldRequired) {
+        return;
+      } else if (!fieldProps[field].isValid) {
         formIsValid = false;
       }
     });
@@ -177,6 +200,10 @@ export default class CardForm extends Component {
         className="card-form"
         onSubmit={this.handleSubmit}>
         <div className="wrapper">
+          {this.props.emailFieldRequired ?
+           <CardInput {...fieldProps.email}
+             onChangeHandler={this.handleChange} /> : null}
+
           <CardInput {...fieldProps.card}
             cardType={this.state.cardType}
             onChangeHandler={this.handleChange} />
@@ -189,7 +216,7 @@ export default class CardForm extends Component {
         </div>
         <SubmitButton isDisabled={!formIsValid}
           showSpinner={this.state.isSubmitting}
-          text={this.props.submitPrompt} />
+          content={this.props.submitPrompt} />
       </form>
     );
   }

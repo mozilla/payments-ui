@@ -5,6 +5,7 @@ export const initialTransState = {
   completed: false,
   availablePayMethods: [],
   cardSubmissionErrors: null,
+  userEmail: undefined,
 };
 
 
@@ -13,6 +14,7 @@ export default function transaction(state, action) {
   if (action.type === actionTypes.COMPLETE_TRANSACTION) {
     return Object.assign({}, initialTransState, {
       completed: true,
+      userEmail: action.userEmail,
     });
   }
 

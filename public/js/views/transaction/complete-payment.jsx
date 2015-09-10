@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import ProductDetail from 'components/product-detail';
 import SubmitButton from 'components/submit-button';
 
+import * as products from 'products';
 import { gettext } from 'utils';
 import { default as tracking } from 'tracking';
 
@@ -10,8 +11,8 @@ import { default as tracking } from 'tracking';
 export default class CompletePayment extends Component {
 
   static propTypes = {
-    amount: React.PropTypes.string,
     productId: React.PropTypes.string.isRequired,
+    userDefinedAmount: React.PropTypes.string,
     userEmail: React.PropTypes.string.isRequired,
     win: React.PropTypes.object,
   }
@@ -27,14 +28,30 @@ export default class CompletePayment extends Component {
   handleClick = (e) => {
     e.preventDefault();
     var win = this.props.win;
-    if (win.parent !== window) {
+    var _parent = win.parent;
+
+    // TODO: wrap this so dead code elimination removes it.
+    // The try/catch is just to make the OK button work when served by
+    // webpack-dev-server.
+    try {
+      if (_parent.location.hostname === 'pay.webpack') {
+        console.log(
+          'Setting _parent to the parent of the webpack-dev-server iframe');
+        _parent = _parent.parent;
+      }
+    } catch (exc) {
+      console.log('Cannot introspect the location object of parent',
+                  exc.message);
+    }
+
+    if (_parent !== window) {
       // Note: the targetOrigin is wide open.
       // Nothing sensitive should be sent whilst
       // that's the case.
       console.log('Telling parent to close modal.');
       // Stringifying the object is necessary for
       // IE9 support.
-      win.parent.postMessage(JSON.stringify({
+      _parent.postMessage(JSON.stringify({
         event: 'purchase-completed',
       }), '*');
     } else {
@@ -49,15 +66,20 @@ export default class CompletePayment extends Component {
         <span className="email">{this.props.userEmail}</span>
       </p> : '');
 
+    var product = products.get(this.props.productId);
+    var completionMsg = (product.seller.kind === 'donations' ?
+                         gettext('Donation Sent') :
+                         gettext('Payment Accepted'));
+
     return (
       <div className="complete">
         <ProductDetail
-          price={this.props.amount}
           productId={this.props.productId}
+          userDefinedAmount={this.props.userDefinedAmount}
         />
-        <p className="accepted">{gettext('Payment Accepted')}</p>
+        <p className="accepted">{completionMsg}</p>
         {email}
-        <SubmitButton text={gettext('OK')}
+        <SubmitButton content={gettext('OK')}
                       onClick={this.handleClick} />
       </div>
     );

@@ -1,5 +1,5 @@
 module.exports = {
-  'supportedLanguages': [
+  supportedLanguages: [
     'ca',
     'cs',
     'cy',
