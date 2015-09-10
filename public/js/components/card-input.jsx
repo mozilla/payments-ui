@@ -75,8 +75,8 @@ export default class CardInput extends Component {
     labelClassNames = labelClassNames.slice(0);
     // Only show invalid classname when invalid and there's a value.
     labelClassNames.push({
-      'invalid': (this.props.hasVal || this.props.showError) &&
-                  this.props.isValid === false,
+      invalid: (this.props.hasVal || this.props.showError) &&
+                this.props.isValid === false,
     });
     var labelClass = classNames(labelClassNames);
 

@@ -7,23 +7,23 @@ import { gettext, validateEmailAsYouType } from 'utils';
 
 
 const defaultFieldAttrs = {
-  'autoComplete': 'off',
+  autoComplete: 'off',
   // inputMode is not yet supported in React.
   // See https://github.com/facebook/react/pull/3798
-  'inputMode': 'numeric',
-  'type': 'tel',
+  inputMode: 'numeric',
+  type: 'tel',
 };
 
 const errorKeyToFieldMap = {
-  '__all__': {
+  __all__: {
     field: 'card',
     error: 'declined',
   },
-  'fraud': {
+  fraud: {
     field: 'card',
     error: 'declined',
   },
-  'cvv': {
+  cvv: {
     field: 'cvv',
     error: 'invalid',
   },
@@ -31,51 +31,51 @@ const errorKeyToFieldMap = {
 
 const fieldProps = {
   card: {
-    'attrs': defaultFieldAttrs,
-    'classNames': ['card'],
-    'errors': {
+    attrs: defaultFieldAttrs,
+    classNames: ['card'],
+    errors: {
       invalid: gettext('Incorrect card number'),
       declined: gettext('Card was declined'),
     },
-    'id': 'card',
-    'placeholder': gettext('Card number'),
-    'validator': CardValidator.number,
+    id: 'card',
+    placeholder: gettext('Card number'),
+    validator: CardValidator.number,
   },
   email: {
-    'attrs': {
-      'type': 'email',
+    attrs: {
+      type: 'email',
     },
-    'classNames': ['email'],
-    'errors': {
+    classNames: ['email'],
+    errors: {
       invalid: gettext('Invalid email address'),
     },
-    'id': 'email',
-    'pattern': null,
-    'placeholder': gettext('Email address'),
-    'validator': validateEmailAsYouType,
+    id: 'email',
+    pattern: null,
+    placeholder: gettext('Email address'),
+    validator: validateEmailAsYouType,
   },
   expiration: {
-    'attrs': defaultFieldAttrs,
-    'classNames': ['expiration'],
-    'errors': {
+    attrs: defaultFieldAttrs,
+    classNames: ['expiration'],
+    errors: {
       invalid: gettext('Invalid expiry date'),
     },
-    'id': 'expiration',
+    id: 'expiration',
     // Expiration pattern doesn't change based on card type.
-    'pattern': '11/11',
-    'placeholder': 'MM/YY',
-    'validator': CardValidator.expirationDate,
+    pattern: '11/11',
+    placeholder: 'MM/YY',
+    validator: CardValidator.expirationDate,
   },
   cvv: {
-    'attrs': defaultFieldAttrs,
-    'autocomplete': 'off',
-    'classNames': ['cvv'],
-    'errors': {
+    attrs: defaultFieldAttrs,
+    autocomplete: 'off',
+    classNames: ['cvv'],
+    errors: {
       invalid: gettext('Invalid CVV'),
     },
-    'errorModifier': 'right',
-    'id': 'cvv',
-    'validator': CardValidator.cvv,
+    errorModifier: 'right',
+    id: 'cvv',
+    validator: CardValidator.cvv,
   },
 };
 

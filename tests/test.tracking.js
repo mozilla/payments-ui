@@ -14,8 +14,8 @@ describe('Tracking uninitialized', function() {
     assert.throws(function() {
       var t = new Tracking({enabled: true});
       t.sendEvent({
-        'category': 'cat',
-        'action': 'some-action',
+        category: 'cat',
+        action: 'some-action',
       });
     }, /Must call init\(\) first/);
   });

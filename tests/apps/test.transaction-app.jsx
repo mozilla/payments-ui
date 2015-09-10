@@ -25,9 +25,9 @@ describe('Transaction App', function() {
 
   function mountView({productId=defaultProductId} = {}) {
     var fakeWin = {
-      'location': {
-        'href': ('http://pay.dev/?access_token=' + accessToken +
-                 '&product=' + productId),
+      location: {
+        href: ('http://pay.dev/?access_token=' + accessToken +
+               '&product=' + productId),
       },
     };
 

@@ -9,20 +9,20 @@ import * as helpers from '../helpers';
 describe('Pay Method Dropdown', function() {
 
   var payMethods = [{
-      'id': 1,
-      'resource_uri': '/braintree/mozilla/paymethod/1/',
-      'truncated_id': '4444',
-      'type_name': 'MasterCard',
+      id: 1,
+      resource_uri: '/braintree/mozilla/paymethod/1/',
+      truncated_id: '4444',
+      type_name: 'MasterCard',
     }, {
-      'id': 2,
-      'resource_uri': '/braintree/mozilla/paymethod/2/',
-      'truncated_id': '1111',
-      'type_name': 'Visa',
+      id: 2,
+      resource_uri: '/braintree/mozilla/paymethod/2/',
+      truncated_id: '1111',
+      type_name: 'Visa',
     }, {
-      'id': 3,
-      'resource_uri': '/braintree/mozilla/paymethod/3/',
-      'truncated_id': '0000',
-      'type_name': 'Maestro',
+      id: 3,
+      resource_uri: '/braintree/mozilla/paymethod/3/',
+      truncated_id: '0000',
+      type_name: 'Maestro',
   }];
 
   beforeEach(function() {
