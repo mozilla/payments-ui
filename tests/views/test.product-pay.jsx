@@ -1,6 +1,8 @@
 import React from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
+import { Provider } from 'react-redux';
 
+import { createReduxStore } from 'data-store';
 import CardForm from 'components/card-form';
 import ProductPay from 'views/transaction/product-pay';
 
@@ -10,21 +12,33 @@ describe('ProductPay', function() {
   var fakePaymentProcessor;
   var defaultProductId = 'mozilla-concrete-brick';
   var braintreeToken = 'some-braintree-token';
+  var store;
   var userDefinedAmount = '10.00';
 
   beforeEach(function() {
     fakePaymentProcessor = sinon.spy();
+    store = createReduxStore();
   });
 
   function mountView({productId=defaultProductId} = {}) {
-    return TestUtils.renderIntoDocument(
-      <ProductPay
-        userDefinedAmount={userDefinedAmount}
-        braintreeToken={braintreeToken}
-        cardSubmissionErrors={{}}
-        productId={productId}
-        processPayment={fakePaymentProcessor}
-      />
+    var container = TestUtils.renderIntoDocument(
+      <Provider store={store}>
+        {() => {
+          return (
+            <ProductPay
+              userDefinedAmount={userDefinedAmount}
+              braintreeToken={braintreeToken}
+              cardSubmissionErrors={{}}
+              productId={productId}
+              processPayment={fakePaymentProcessor}
+            />
+          );
+        }}
+      </Provider>
+    );
+
+    return TestUtils.findRenderedComponentWithType(
+      container, ProductPay
     );
   }
 

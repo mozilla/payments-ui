@@ -1,6 +1,8 @@
 import React from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
+import { Provider } from 'react-redux';
 
+import { createReduxStore } from 'data-store';
 import PayMethodChoice from 'components/pay-method-choice';
 import ProductPayChooser from 'views/transaction/product-pay-chooser';
 
@@ -12,20 +14,32 @@ describe('ProductPayChooser', function() {
   var defaultProductId = 'mozilla-concrete-brick';
   var userDefinedAmount = '10.00';
   var savedVisa = {provider_id: '3vr3ym', type_name: 'Visa'};
+  var store;
 
   beforeEach(function() {
+    store = createReduxStore();
     fakePaymentProcessor = sinon.spy();
     payWithNewCardSpy = sinon.spy();
   });
 
   function mountView({productId=defaultProductId} = {}) {
-    return TestUtils.renderIntoDocument(
-      <ProductPayChooser
-        userDefinedAmount={userDefinedAmount}
-        payMethods={[savedVisa]}
-        payWithNewCard={payWithNewCardSpy}
-        processPayment={fakePaymentProcessor}
-        productId={productId} />
+    var container = TestUtils.renderIntoDocument(
+      <Provider store={store}>
+        {() => {
+          return (
+            <ProductPayChooser
+              userDefinedAmount={userDefinedAmount}
+              payMethods={[savedVisa]}
+              payWithNewCard={payWithNewCardSpy}
+              processPayment={fakePaymentProcessor}
+              productId={productId} />
+          );
+        }}
+      </Provider>
+    );
+
+    return TestUtils.findRenderedComponentWithType(
+      container, ProductPayChooser
     );
   }
 

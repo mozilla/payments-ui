@@ -22,10 +22,11 @@ export default class ProductPayChooser extends Component {
     tracking.setPage('/product-pay-chooser');
   }
 
-  handleSubmit = (payMethodUri) => {
+  handleSubmit = (payMethodUri, processingId) => {
     this.props.processPayment({productId: this.props.productId,
                                userDefinedAmount: this.props.userDefinedAmount,
-                               payMethodUri: payMethodUri});
+                               payMethodUri: payMethodUri,
+                               processingId: processingId});
   }
 
   render() {

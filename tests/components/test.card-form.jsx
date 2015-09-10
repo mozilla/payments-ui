@@ -1,9 +1,9 @@
 import React, { findDOMNode } from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
 
-import * as helpers from '../helpers';
+import { CardForm } from 'components/card-form';
 
-import CardForm from 'components/card-form';
+import * as helpers from '../helpers';
 
 
 describe('Card Form', function() {
@@ -16,7 +16,13 @@ describe('Card Form', function() {
     'mastercard',
     'visa',
   ];
+  var fakeProcessing;
   var handleCardSubmit;
+
+  beforeEach(function() {
+    fakeProcessing = {};
+    handleCardSubmit = sinon.spy();
+  });
 
   function mountView({errors=null, emailFieldRequired=false} = {}) {
     return TestUtils.renderIntoDocument(
@@ -24,18 +30,15 @@ describe('Card Form', function() {
         emailFieldRequired={emailFieldRequired}
         handleCardSubmit={handleCardSubmit}
         id="something"
+        processing={fakeProcessing}
         submissionErrors={errors}
       />
     );
   }
 
-  beforeEach(function() {
-    handleCardSubmit = sinon.spy();
-  });
-
   function testCard(cardType) {
-    var view = mountView();
     return function() {
+      var view = mountView();
       view.handleChange({
         target: {
           value: helpers.testCards[cardType],

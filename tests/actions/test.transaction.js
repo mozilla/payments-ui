@@ -1,5 +1,6 @@
 import * as actionTypes from 'constants/action-types';
 import * as errorCodes from 'constants/error-codes';
+import * as processingActions from 'actions/processing';
 import * as transactionActions from 'actions/transaction';
 
 import * as helpers from '../helpers';
@@ -122,6 +123,7 @@ describe('transactionActions', function() {
                              creditCard=fakeCreditCard,
                              createSubscription=fakeCreateSubscription,
                              payOnce=fakePayOnce,
+                             processingId='some-component-id',
                              ...args}) {
       var deferredAction = transactionActions.processPayment({
         productId: productId,
@@ -130,11 +132,19 @@ describe('transactionActions', function() {
         BraintreeClient: client,
         createSubscription: createSubscription,
         payOnce: payOnce,
+        processingId: processingId,
         ...args,
       });
 
       helpers.doApiAction(deferredAction, dispatchSpy);
     }
+
+    it('should start processing', function() {
+      var procId = 'some-id';
+      processPayment({processingId: procId});
+      var action = dispatchSpy.firstCall.args[0];
+      assert.deepEqual(action, processingActions.beginProcessing(procId));
+    });
 
     it('should create a subscription for recurring products', function() {
       processPayment({productId: 'mozilla-concrete-brick'});
@@ -190,17 +200,36 @@ describe('transactionActions', function() {
                                     productId=defaultProductId,
                                     payNonce='braintree-pay-nonce',
                                     getState=helpers.getAppStateWithCSRF,
-                                    payMethodUri} = {}) {
+                                    processingId='some-component-id',
+                                    ...props} = {}) {
       transactionActions._processOneTimePayment({
         dispatch: dispatchSpy,
         userDefinedAmount: userDefinedAmount,
         getState: getState,
         productId: productId,
         payNonce: payNonce,
-        payMethodUri: payMethodUri,
         fetch: fetch,
+        processingId: processingId,
+        ...props,
       });
     }
+
+    it('should stop processing on success', function() {
+      var procId = 'some-id';
+      processOneTimePayment({processingId: procId});
+
+      var action = dispatchSpy.firstCall.args[0];
+      assert.deepEqual(action, processingActions.stopProcessing(procId));
+    });
+
+    it('should stop processing on error', function() {
+      var procId = 'some-id';
+      var fetch = helpers.fakeFetch({result: 'fail'});
+      processOneTimePayment({processingId: procId, fetch: fetch});
+
+      var action = dispatchSpy.firstCall.args[0];
+      assert.deepEqual(action, processingActions.stopProcessing(procId));
+    });
 
     it('should create a sale with basic data', function() {
       var userDefinedAmount = '5.00';
@@ -246,7 +275,7 @@ describe('transactionActions', function() {
       });
       processOneTimePayment({fetch: fetch});
 
-      var action = dispatchSpy.firstCall.args[0];
+      var action = dispatchSpy.secondCall.args[0];
       assert.deepEqual(action, {
         type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
         apiErrorResult: apiError,
@@ -262,7 +291,7 @@ describe('transactionActions', function() {
       processOneTimePayment({fetch: fetch, payNonce: null,
                              payMethodUri: '/some/paymethod/123'});
 
-      var action = dispatchSpy.firstCall.args[0];
+      var action = dispatchSpy.secondCall.args[0];
       helpers.assertNotificationErrorCode(
         action, errorCodes.ONE_TIME_PAYMENT_FAILED);
     });

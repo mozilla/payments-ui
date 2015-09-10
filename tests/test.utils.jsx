@@ -194,4 +194,9 @@ describe('utils.getId', function() {
     assert.notEqual(utils.getId(), utils.getId());
   });
 
+  it('should add a prefix', function() {
+    var id = utils.getId({prefix: 'thing'});
+    assert.equal(id.indexOf('thing'), 0);
+  });
+
 });
