@@ -22,7 +22,7 @@ export default class SubmitButton extends Component {
     var { isDisabled, content, showSpinner, ...buttonAttrs } = this.props;
 
     var buttonClassNames = cx({
-      'spinner': showSpinner,
+      spinner: showSpinner,
     }, this.props.cssModifier);
 
     // If we're showing the spinner we want the

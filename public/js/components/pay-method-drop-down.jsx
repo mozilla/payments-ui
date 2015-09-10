@@ -143,7 +143,7 @@ export default class PayMethodDropDown extends Component {
     });
 
     var proxySelectClasses = cx('proxy-select', {
-      'active': this.state.isFocused,
+      active: this.state.isFocused,
     });
 
     return (

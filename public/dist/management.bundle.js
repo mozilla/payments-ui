@@ -36670,7 +36670,7 @@ webpackJsonp([0,2],[
 	'use strict';
 	
 	module.exports = {
-	  'supportedLanguages': ['ca', 'cs', 'cy', 'da', 'de', 'dsb', 'en', 'es', 'es-AR', 'es-CL', 'et', 'eu', 'ff', 'fr', 'fy', 'he', 'hsb', 'hu', 'id', 'it', 'ja', 'ko', 'lt', 'nb-NO', 'nl', 'pa', 'pl', 'pt', 'pt-BR', 'rm', 'ru', 'sk', 'sl', 'sq', 'sr', 'sr-LATN', 'sv', 'sv-SE', 'tr', 'uk', 'zh-CN', 'zh-TW'],
+	  supportedLanguages: ['ca', 'cs', 'cy', 'da', 'de', 'dsb', 'en', 'es', 'es-AR', 'es-CL', 'et', 'eu', 'ff', 'fr', 'fy', 'he', 'hsb', 'hu', 'id', 'it', 'ja', 'ko', 'lt', 'nb-NO', 'nl', 'pa', 'pl', 'pt', 'pt-BR', 'rm', 'ru', 'sk', 'sl', 'sq', 'sr', 'sr-LATN', 'sv', 'sv-SE', 'tr', 'uk', 'zh-CN', 'zh-TW'],
 	  tracking: {
 	    enabled: false,
 	    id: 'UA-35433268-60'
@@ -37202,7 +37202,7 @@ webpackJsonp([0,2],[
 	      });
 	    } else {
 	      console.log('Product sale failed');
-	      dispatch(notificationActions.showError({ 'errorCode': errorCodes.ONE_TIME_PAYMENT_FAILED }));
+	      dispatch(notificationActions.showError({ errorCode: errorCodes.ONE_TIME_PAYMENT_FAILED }));
 	    }
 	  });
 	}
@@ -37629,23 +37629,23 @@ webpackJsonp([0,2],[
 	var _utils = __webpack_require__(361);
 	
 	var defaultFieldAttrs = {
-	  'autoComplete': 'off',
+	  autoComplete: 'off',
 	  // inputMode is not yet supported in React.
 	  // See https://github.com/facebook/react/pull/3798
-	  'inputMode': 'numeric',
-	  'type': 'tel'
+	  inputMode: 'numeric',
+	  type: 'tel'
 	};
 	
 	var errorKeyToFieldMap = {
-	  '__all__': {
+	  __all__: {
 	    field: 'card',
 	    error: 'declined'
 	  },
-	  'fraud': {
+	  fraud: {
 	    field: 'card',
 	    error: 'declined'
 	  },
-	  'cvv': {
+	  cvv: {
 	    field: 'cvv',
 	    error: 'invalid'
 	  }
@@ -37653,51 +37653,51 @@ webpackJsonp([0,2],[
 	
 	var fieldProps = {
 	  card: {
-	    'attrs': defaultFieldAttrs,
-	    'classNames': ['card'],
-	    'errors': {
+	    attrs: defaultFieldAttrs,
+	    classNames: ['card'],
+	    errors: {
 	      invalid: (0, _utils.gettext)('Incorrect card number'),
 	      declined: (0, _utils.gettext)('Card was declined')
 	    },
-	    'id': 'card',
-	    'placeholder': (0, _utils.gettext)('Card number'),
-	    'validator': _cardValidator2['default'].number
+	    id: 'card',
+	    placeholder: (0, _utils.gettext)('Card number'),
+	    validator: _cardValidator2['default'].number
 	  },
 	  email: {
-	    'attrs': {
-	      'type': 'email'
+	    attrs: {
+	      type: 'email'
 	    },
-	    'classNames': ['email'],
-	    'errors': {
+	    classNames: ['email'],
+	    errors: {
 	      invalid: (0, _utils.gettext)('Invalid email address')
 	    },
-	    'id': 'email',
-	    'pattern': null,
-	    'placeholder': (0, _utils.gettext)('Email address'),
-	    'validator': _utils.validateEmailAsYouType
+	    id: 'email',
+	    pattern: null,
+	    placeholder: (0, _utils.gettext)('Email address'),
+	    validator: _utils.validateEmailAsYouType
 	  },
 	  expiration: {
-	    'attrs': defaultFieldAttrs,
-	    'classNames': ['expiration'],
-	    'errors': {
+	    attrs: defaultFieldAttrs,
+	    classNames: ['expiration'],
+	    errors: {
 	      invalid: (0, _utils.gettext)('Invalid expiry date')
 	    },
-	    'id': 'expiration',
+	    id: 'expiration',
 	    // Expiration pattern doesn't change based on card type.
-	    'pattern': '11/11',
-	    'placeholder': 'MM/YY',
-	    'validator': _cardValidator2['default'].expirationDate
+	    pattern: '11/11',
+	    placeholder: 'MM/YY',
+	    validator: _cardValidator2['default'].expirationDate
 	  },
 	  cvv: {
-	    'attrs': defaultFieldAttrs,
-	    'autocomplete': 'off',
-	    'classNames': ['cvv'],
-	    'errors': {
+	    attrs: defaultFieldAttrs,
+	    autocomplete: 'off',
+	    classNames: ['cvv'],
+	    errors: {
 	      invalid: (0, _utils.gettext)('Invalid CVV')
 	    },
-	    'errorModifier': 'right',
-	    'id': 'cvv',
-	    'validator': _cardValidator2['default'].cvv
+	    errorModifier: 'right',
+	    id: 'cvv',
+	    validator: _cardValidator2['default'].cvv
 	  }
 	};
 	
@@ -41081,7 +41081,7 @@ webpackJsonp([0,2],[
 	      labelClassNames = labelClassNames.slice(0);
 	      // Only show invalid classname when invalid and there's a value.
 	      labelClassNames.push({
-	        'invalid': (this.props.hasVal || this.props.showError) && this.props.isValid === false
+	        invalid: (this.props.hasVal || this.props.showError) && this.props.isValid === false
 	      });
 	      var labelClass = (0, _classnames2['default'])(labelClassNames);
 	
@@ -42043,7 +42043,7 @@ webpackJsonp([0,2],[
 	      var buttonAttrs = _objectWithoutProperties(_props, ['isDisabled', 'content', 'showSpinner']);
 	
 	      var buttonClassNames = (0, _classnames2['default'])({
-	        'spinner': showSpinner
+	        spinner: showSpinner
 	      }, this.props.cssModifier);
 	
 	      // If we're showing the spinner we want the
@@ -42169,11 +42169,11 @@ webpackJsonp([0,2],[
 	      }
 	      if (this.enabled) {
 	        this._ga('send', {
-	          'hitType': 'event',
-	          'eventCategory': opts.category,
-	          'eventAction': opts.action,
-	          'eventLabel': opts.label,
-	          'eventValue': opts.value
+	          hitType: 'event',
+	          eventCategory: opts.category,
+	          eventAction: opts.action,
+	          eventLabel: opts.label,
+	          eventValue: opts.value
 	        });
 	      }
 	      console.log(this.logPrefix, 'sendEvent', JSON.stringify(opts));
@@ -42819,7 +42819,7 @@ webpackJsonp([0,2],[
 	      });
 	
 	      var proxySelectClasses = (0, _classnames2['default'])('proxy-select', {
-	        'active': this.state.isFocused
+	        active: this.state.isFocused
 	      });
 	
 	      return _react2['default'].createElement(
@@ -44394,7 +44394,7 @@ webpackJsonp([0,2],[
 	    value: function render() {
 	
 	      var isDeleteDisabled = !this.props.payMethods || !this.props.payMethods.length;
-	      var deleteClasses = (0, _classnames2['default'])('delete', { 'disabled': isDeleteDisabled });
+	      var deleteClasses = (0, _classnames2['default'])('delete', { disabled: isDeleteDisabled });
 	
 	      return _react2['default'].createElement(
 	        'div',
@@ -46787,7 +46787,7 @@ webpackJsonp([0,2],[
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var classes = (0, _classnames2['default'])('notification', this.props.type, { 'autohide': this.props.autoHide });
+	      var classes = (0, _classnames2['default'])('notification', this.props.type, { autohide: this.props.autoHide });
 	      return _react2['default'].createElement(
 	        'li',
 	        { className: classes },
@@ -47114,7 +47114,7 @@ webpackJsonp([0,2],[
 	      for (var i = 0; i < navData.length; i += 1) {
 	        var navItem = navData[i];
 	        var isActive = _this.props.tab === navItem.className;
-	        var classes = (0, _classnames2['default'])('nav', navItem.className, { 'active': isActive });
+	        var classes = (0, _classnames2['default'])('nav', navItem.className, { active: isActive });
 	        nav.push(_react2['default'].createElement(
 	          'li',
 	          { className: classes, key: navItem.className },

@@ -49,7 +49,7 @@ export default class PayMethods extends Component {
 
     var isDeleteDisabled = !this.props.payMethods ||
       !this.props.payMethods.length;
-    var deleteClasses = cx('delete', {'disabled': isDeleteDisabled});
+    var deleteClasses = cx('delete', {disabled: isDeleteDisabled});
 
     return (
       <div>
