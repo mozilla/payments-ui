@@ -1,5 +1,5 @@
 import * as actionTypes from 'constants/action-types';
-import * as appActions from 'actions/app';
+import * as errorCodes from 'constants/error-codes';
 import * as transactionActions from 'actions/transaction';
 import * as subActions from 'actions/subscriptions';
 
@@ -62,8 +62,8 @@ describe('subscription actions', function() {
       getUserSubscriptions(fetch);
 
       var action = dispatchSpy.secondCall.args[0];
-      assert.deepEqual(action,
-                       appActions.error('failed to get subscriptions'));
+      helpers.assertNotificationErrorCode(
+        action, errorCodes.SUBS_GET_FAILED);
     });
 
   });
@@ -153,8 +153,8 @@ describe('subscription actions', function() {
       });
       createSubscription({fetch: fetch});
       var action = dispatchSpy.firstCall.args[0];
-      assert.equal(action.type, actionTypes.APP_ERROR);
-      assert.include(action.error.userMessage, 'User is already subscribed');
+      helpers.assertNotificationErrorCode(action, 'ALREADY_SUBSCRIBED');
+      helpers.assertNotificationTextContains(action, 'already subscribed');
     });
 
     it('should dispatch a generic error', function() {
@@ -163,8 +163,7 @@ describe('subscription actions', function() {
       });
       createSubscription({fetch: fetch});
       var action = dispatchSpy.firstCall.args[0];
-      assert.equal(action.type, actionTypes.APP_ERROR);
-      assert.include(action.error.debugMessage, 'Subscription creation failed');
+      helpers.assertNotificationErrorCode(action, 'SUB_CREATION_FAILED');
     });
 
     it('should dispatch an error action with payMethodUri', function() {
@@ -177,7 +176,7 @@ describe('subscription actions', function() {
                           payNonce: null,
                           payMethodUri: 'fake-pay-method-uri'});
       var action = dispatchSpy.firstCall.args[0];
-      assert.equal(action.type, actionTypes.APP_ERROR);
+      helpers.assertNotificationErrorCode(action, 'SUB_CREATION_FAILED');
     });
   });
 
@@ -243,7 +242,8 @@ describe('subscription actions', function() {
       });
       getSubsByPayMethod({payMethodUri: '/pay-method/2/', fetch: fetch});
       var action = dispatchSpy.secondCall.args[0];
-      assert.equal(action.type, actionTypes.APP_ERROR);
+      helpers.assertNotificationErrorCode(
+        action, errorCodes.SUBS_BY_PAY_METHOD_GET_FAILED);
     });
 
   });

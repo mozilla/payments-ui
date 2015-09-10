@@ -1,6 +1,7 @@
 import * as actionTypes from 'constants/action-types';
-import * as appActions from 'actions/app';
+import * as errorCodes from 'constants/error-codes';
 import * as payMethodActions from 'actions/pay-methods';
+
 import * as helpers from '../helpers';
 
 
@@ -42,12 +43,12 @@ describe('Pay Method Actions', function() {
       assert.equal(action.payMethods, data);
     });
 
-    it('should dispatch app error on failure', function() {
+    it('should dispatch an error notification on failure', function() {
       var { fetch } = setApiGetResult({fetchOpt: {result: 'fail'}});
       getPayMethods(fetch);
       var action = dispatchSpy.firstCall.args[0];
-      assert.deepEqual(action,
-                       appActions.error('Retrieving cards failed'));
+      helpers.assertNotificationErrorCode(
+        action, errorCodes.PAY_METHOD_GET_FAILED);
     });
 
   });
@@ -126,8 +127,8 @@ describe('Pay Method Actions', function() {
       var { fetch } = setApiPostResult();
       addCreditCard(fetch, FakeBraintreeClientError);
       var action = dispatchSpy.firstCall.args[0];
-      assert.deepEqual(action,
-                       appActions.error('Braintree tokenization error'));
+      helpers.assertNotificationErrorCode(
+        action, errorCodes.BRAINTREE_TOKENIZATION_ERROR);
     });
 
   });
@@ -172,9 +173,8 @@ describe('Pay Method Actions', function() {
       }});
       delPayMethod('whatever-uri', fetch);
       var action = dispatchSpy.firstCall.args[0];
-      assert.deepEqual(action,
-                       appActions.error('Deleting pay method failed'));
-
+      helpers.assertNotificationErrorCode(
+        action, errorCodes.PAY_METHOD_DELETION_FAILED);
     });
 
     it('should throw if empty payMethodUri supplied', function() {

@@ -1,12 +1,57 @@
 import * as actionTypes from 'constants/action-types';
+import * as errorCodes from 'constants/error-codes';
+
+import { gettext } from 'utils';
 
 
-export function addNotification(text, { type='info', userDismissable=false,
-                                autoHide=true } = {}) {
+export function _addNotification({ text, errorCode,
+                                   type='info', userDismissable,
+                                   autoHide } = {}) {
   return {
     type: actionTypes.ADD_NOTIFICATION,
-    data: { autoHide, text, type, userDismissable },
+    data: { autoHide, text, type, userDismissable, errorCode },
   };
+}
+
+export function showInfo({text, ...opts} = {}) {
+  opts.type = 'info';
+
+  if (!text) {
+    throw new Error('An info notification requires text');
+  } else {
+    opts.text = text;
+  }
+
+  // Default info type to being hidden on delay.
+  if (typeof opts.autoHide === 'undefined') {
+    opts.autoHide = true;
+  }
+
+  console.log('Showing info notification', opts);
+  return _addNotification({...opts});
+}
+
+export function showError({text, ...opts} = {}) {
+  opts.type = 'error';
+
+  if (!opts.errorCode || typeof errorCodes[opts.errorCode] === 'undefined') {
+    throw new Error('An error notification requires an errorCode ' +
+                    'defined in constants/error-codes');
+  }
+
+  if (!text) {
+    opts.text = gettext('Internal error. Please try again later.');
+  } else {
+    opts.text = text;
+  }
+
+  // Default to error notification being userDismissable.
+  if (typeof opts.userDismissable === 'undefined') {
+    opts.userDismissable = true;
+  }
+
+  console.log('Showing error notification', opts);
+  return _addNotification({...opts});
 }
 
 /*

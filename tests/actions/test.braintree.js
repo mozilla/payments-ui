@@ -1,5 +1,5 @@
-import * as appActions from 'actions/app';
 import * as braintreeActions from 'actions/braintree';
+import * as errorCodes from 'constants/error-codes';
 
 import * as helpers from '../helpers';
 
@@ -68,8 +68,8 @@ describe('braintreeActions', function() {
     it('should dispatch an error on tokenization failure', function() {
       tokenizeCreditCard({BraintreeClient: helpers.FakeBraintreeClientError});
       var action = dispatchSpy.firstCall.args[0];
-      assert.deepEqual(action,
-                       appActions.error('Braintree tokenization error'));
+      helpers.assertNotificationErrorCode(
+        action, errorCodes.BRAINTREE_TOKENIZATION_ERROR);
     });
 
   });

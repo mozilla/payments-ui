@@ -4,7 +4,6 @@ import { getId } from 'utils';
 
 export const initialAppState = {
   csrfToken: null,
-  error: null,
   // Notification is a mappable array e.g:
   // [[key, notification], [key, notification], ...]
   notifications: [],
@@ -13,10 +12,6 @@ export const initialAppState = {
 
 export default function app(state, action) {
   switch (action.type) {
-    case actionTypes.APP_ERROR:
-      return Object.assign({}, state, {
-        error: action.error,
-      });
     case actionTypes.GOT_CSRF_TOKEN:
       return Object.assign({}, state, {
         csrfToken: action.csrfToken,

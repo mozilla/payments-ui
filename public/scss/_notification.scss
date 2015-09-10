@@ -8,13 +8,26 @@
   text-align: center;
   top: 0;
   z-index: 30;
+
+  .transaction & {
+    position: static;
+    left: 20px;
+    right: 20px;
+    margin-bottom: 20px;
+  }
 }
+
+
 
 .notification {
   list-style-type: none;
   margin: 0;
   padding: 0.5em;
   position: relative;
+
+  .transaction & {
+    border-radius: 3px;
+  }
 
   &.error {
     background: transparentize($awooga-red, 0.1);

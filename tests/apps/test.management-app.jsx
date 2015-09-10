@@ -2,7 +2,6 @@ import React from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
 import { Provider } from 'react-redux';
 
-import * as appActions from 'actions/app';
 import { createReduxStore } from 'data-store';
 
 import ManagementApp from 'apps/management/app';
@@ -64,20 +63,6 @@ describe('management/app', function() {
     // Make sure it gets the access token.
     var signIn = mgmt.props.children[1];
     assert.equal(signIn.props.accessToken, token);
-
-  });
-
-  it('should display app errors', function() {
-    var view = mountView();
-
-    var appError = appActions.error('some error');
-    store.dispatch(appError);
-
-    var mgmt = TestUtils.findRenderedComponentWithType(
-      view, FakeManagement
-    );
-    var errorPane = mgmt.props.children[1];
-    assert.deepEqual(errorPane.props.error, appError.error);
 
   });
 

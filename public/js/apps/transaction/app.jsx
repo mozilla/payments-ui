@@ -5,12 +5,14 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import ErrorMessage from 'components/error';
+import * as errorCodes from 'constants/error-codes';
 import Spinner from 'components/spinner';
+import NotificationList from 'components/notification-list';
+
 import DefaultSignIn from 'views/shared/sign-in';
 import DefaultTransaction from 'views/transaction';
 
-import * as appActions from 'actions/app';
+import * as notificationActions from 'actions/notifications';
 import * as userActions from 'actions/user';
 import * as products from 'products';
 import { gettext, parseQuery } from 'utils';
@@ -35,18 +37,21 @@ export class TransactionApp extends Component {
 
   constructor(props) {
     super(props);
-    this.boundAppActions = bindActionCreators(appActions, props.dispatch);
     this.boundUserActions = bindActionCreators(userActions, props.dispatch);
+    this.boundNotificationActions = bindActionCreators(
+      notificationActions, props.dispatch);
     var qs = parseQuery(props.win.location.href);
 
     var isValid = true;
     try {
       this.product = products.get(qs.product);
     } catch(e) {
-      this.boundAppActions.error(
-        'productId is invalid: ' + e,
-        {userMessage: gettext('This product cannot be purchased')}
-      );
+      console.error('productId is invalid: ' + e);
+      this.boundNotificationActions.showError({
+        text: gettext('This product cannot be purchased'),
+        errorCode: errorCodes.PRODUCT_ID_INVALID,
+        userDismissable: false,
+      });
       isValid = false;
     }
 
@@ -56,15 +61,6 @@ export class TransactionApp extends Component {
       productId: qs.product,
       userDefinedAmount: qs.amount,
     };
-  }
-
-  renderError() {
-    var { app } = this.props;
-    if (app.error) {
-      console.log('rendering app error');
-      return <ErrorMessage error={app.error} />;
-    }
-    return null;
   }
 
   renderChild() {
@@ -110,9 +106,16 @@ export class TransactionApp extends Component {
   }
 
   render() {
+    var { app, dispatch } = this.props;
+    var boundNotificationActions = bindActionCreators(
+      notificationActions, dispatch);
+
     return (
-      <main>
-        {this.renderError()}
+      <main className="transaction">
+        <NotificationList
+          notifications={app.notifications}
+          {...boundNotificationActions}
+        />
         {this.renderChild()}
       </main>
     );

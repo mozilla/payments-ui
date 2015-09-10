@@ -1,8 +1,9 @@
 import * as actionTypes from 'constants/action-types';
+import * as errorCodes from 'constants/error-codes';
 import * as settings from 'settings';
 
 import * as api from './api';
-import * as appActions from './app';
+import * as notificationActions from './notifications';
 
 
 export function tokenSignIn(accessToken, fetch=api.fetch) {
@@ -31,10 +32,9 @@ export function tokenSignIn(accessToken, fetch=api.fetch) {
       });
 
     }).fail(apiError => {
-
       console.log('FxA token sign-in failure:', apiError.responseJSON);
-      dispatch(appActions.error('FxA token sign-in failed'));
-
+      dispatch(notificationActions.showError(
+        {errorCode: errorCodes.FXA_TOKEN_SIGN_IN_FAILURE}));
     });
   };
 }
@@ -92,12 +92,14 @@ export function userSignIn(FxaClient=window.FxaRelierClient, fetch=api.fetch) {
       })
       .fail(apiError => {
         console.error('API user sign-in failure:', apiError.responseJSON);
-        dispatch(appActions.error('API user sign-in failed'));
+        dispatch(notificationActions.showError(
+          {errorCode: errorCodes.API_SIGN_IN_FAILURE}));
       });
 
     }, fxaError => {
       console.error('FxA sign-in failure:', fxaError);
-      dispatch(appActions.error('FxA user sign-in failed'));
+      dispatch(notificationActions.showError(
+        {errorCode: errorCodes.FXA_SIGN_IN_FAILURE}));
     });
   };
 }
@@ -120,8 +122,8 @@ export function userSignOut(fetch=api.fetch) {
     }).fail(apiError => {
 
       console.log('API user sign-out failure:', apiError.responseJSON);
-      dispatch(appActions.error('API user sign-out failed'));
-
+      dispatch(notificationActions.showError(
+        {errorCode: errorCodes.API_SIGN_OUT_FAILURE}));
     });
   };
 }
@@ -149,7 +151,8 @@ export function getBraintreeToken(fetch=api.fetch) {
 
     }).fail(apiError => {
       console.log('failed to get braintree token', apiError.responseJSON);
-      dispatch(appActions.error('Failed to get a braintree token'));
+      dispatch(notificationActions.showError(
+        {errorCode: errorCodes.BRAINTREE_TOKEN_GET_FAILED}));
     });
   };
 }

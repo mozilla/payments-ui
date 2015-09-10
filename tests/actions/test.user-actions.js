@@ -1,5 +1,5 @@
 import * as actionTypes from 'constants/action-types';
-import * as appActions from 'actions/app';
+import * as errorCodes from 'constants/error-codes';
 import * as userActions from 'actions/user';
 
 import * as helpers from '../helpers';
@@ -96,11 +96,10 @@ describe('userActions', function() {
 
     it('should set app error on failure', function() {
       var { fetch } = setApiSignInResult({fetchOpt: {result: 'fail'}});
-
       tokenSignIn({fetch: fetch});
-
       var action = dispatchSpy.firstCall.args[0];
-      assert.deepEqual(action, appActions.error('FxA token sign-in failed'));
+      helpers.assertNotificationErrorCode(
+        action, errorCodes.FXA_TOKEN_SIGN_IN_FAILURE);
     });
 
   });
@@ -161,17 +160,17 @@ describe('userActions', function() {
       fxaSignIn.promise.reject(fxaError);
 
       var action = dispatchSpy.firstCall.args[0];
-      assert.deepEqual(action, appActions.error('FxA user sign-in failed'));
+      helpers.assertNotificationErrorCode(
+        action, errorCodes.FXA_SIGN_IN_FAILURE);
     });
 
     it('should dispatch an API sign-in error', function() {
       var { fetch } = setApiSignInResult({fetchOpt: {result: 'fail'}});
-
       signInAction(fetch);
       resolveSignIn();
-
       var action = dispatchSpy.firstCall.args[0];
-      assert.deepEqual(action, appActions.error('API user sign-in failed'));
+      helpers.assertNotificationErrorCode(
+        action, errorCodes.API_SIGN_IN_FAILURE);
     });
 
     it('should dispatch CSRF token', function() {
@@ -233,7 +232,8 @@ describe('userActions', function() {
       userSignOut(fetch);
 
       var action = dispatchSpy.firstCall.args[0];
-      assert.deepEqual(action, appActions.error('API user sign-out failed'));
+      helpers.assertNotificationErrorCode(
+        action, errorCodes.API_SIGN_OUT_FAILURE);
     });
 
   });
@@ -280,10 +280,9 @@ describe('userActions', function() {
 
       userActions.getBraintreeToken(fetch)(dispatchSpy);
 
-      assert.deepEqual(
-        dispatchSpy.firstCall.args[0],
-        appActions.error('Failed to get a braintree token')
-      );
+      var action = dispatchSpy.firstCall.args[0];
+      helpers.assertNotificationErrorCode(
+        action, errorCodes.BRAINTREE_TOKEN_GET_FAILED);
     });
 
   });
