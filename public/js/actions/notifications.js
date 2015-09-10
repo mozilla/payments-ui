@@ -27,6 +27,7 @@ export function showInfo({text, ...opts} = {}) {
     opts.autoHide = true;
   }
 
+  console.log('Showing info notification', opts);
   return _addNotification({...opts});
 }
 
@@ -49,6 +50,7 @@ export function showError({text, ...opts} = {}) {
     opts.userDismissable = true;
   }
 
+  console.log('Showing error notification', opts);
   return _addNotification({...opts});
 }
 
