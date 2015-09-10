@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
 import PayMethodList from 'components/pay-method-list';
-import PayMethodDropDown from 'components/pay-method-drop-down';
 import SubmitButton from 'components/submit-button';
 
 import { gettext } from 'utils';
@@ -16,32 +15,20 @@ export default class PayMethodChoice extends Component {
     submitButtonCSSModifier: PropTypes.string.isRequired,
     submitButtonText: PropTypes.string.isRequired,
     submitHandler: PropTypes.func.isRequired,
-    useDropDown: PropTypes.bool,
   }
 
   static defaultProps = {
     cssModifier: null,
     submitButtonText: gettext('Submit'),
     submitButtonModifier: null,
-    useDropDown: false,
   }
 
   constructor(props) {
     super(props);
-
-    var payMethodUri = null;
-    if (this.props.useDropDown) {
-      // TODO: Once a default pay method is possible this will need
-      // to be updated.
-      payMethodUri = this.props.payMethods[0].resource_uri;
-    } else {
-      payMethodUri = this.props.payMethods.length === 1 ?
-        this.props.payMethods[0].resource_uri : null;
-    }
-
     this.state = {
       isSubmitting: false,
-      payMethod: payMethodUri,
+      payMethod: (this.props.payMethods.length === 1 ?
+                  this.props.payMethods[0].resource_uri : null),
     };
   }
 
@@ -66,22 +53,14 @@ export default class PayMethodChoice extends Component {
 
     return (
       <form id="pay-method-choice" onSubmit={this.handleSubmit}>
-        {this.props.useDropDown === true ?
-          <PayMethodDropDown
-           onPayMethodChange={this.handlePayMethodChange}
-           payMethods={payMethodData}
-           showDefaultOption={false}
-          /> :
-          <PayMethodList
-            cssModifier={this.props.cssModifier}
-            payMethods={payMethodData}
-            onPayMethodChange={this.handlePayMethodChange}
-          />
-        }
+        <PayMethodList
+          cssModifier={this.props.cssModifier}
+          payMethods={payMethodData}
+          onPayMethodChange={this.handlePayMethodChange} />
         <SubmitButton isDisabled={!formIsValid}
           cssModifier={this.props.submitButtonCSSModifier}
           showSpinner={this.state.isSubmitting}
-          content={this.props.submitButtonText}
+          text={this.props.submitButtonText}
         />
       </form>
     );

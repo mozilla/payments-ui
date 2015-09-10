@@ -45,13 +45,13 @@ export default function user(state, action) {
     });
   }
 
-  if (action.type === actionTypes.LOADING_USER_SUBS) {
+  if (action.type === actionTypes.LOADING_USER_SUBSCRIPTIONS) {
     return Object.assign({}, initialUserState, state, {
       subscriptions: initialUserState.subscriptions,
     });
   }
 
-  if (action.type === actionTypes.GOT_USER_SUBS) {
+  if (action.type === actionTypes.GOT_USER_SUBSCRIPTIONS) {
     return Object.assign({}, initialUserState, state, {
       subscriptions: action.subscriptions,
     });

@@ -11,7 +11,7 @@ export default class PayMethodDropDown extends Component {
 
   static propTypes = {
     cssModifier: PropTypes.string,
-    onPayMethodChange: PropTypes.func,
+    onPayMethodChange: PropTypes.func.isRequired,
     payMethods: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number,
@@ -43,8 +43,7 @@ export default class PayMethodDropDown extends Component {
 
     // If there's default selected option and showDefaultOption is false
     // we set the "fake select" to the first option.
-    if ((!payMethodData || !Object.keys(payMethodData).length) &&
-        props.showDefaultOption === false) {
+    if (!payMethodData && !props.showDefaultOption) {
       payMethodData = props.payMethods[0];
     }
 
@@ -143,7 +142,7 @@ export default class PayMethodDropDown extends Component {
     });
 
     var proxySelectClasses = cx('proxy-select', {
-      active: this.state.isFocused,
+      'active': this.state.isFocused,
     });
 
     return (

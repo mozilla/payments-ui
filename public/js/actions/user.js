@@ -1,9 +1,8 @@
 import * as actionTypes from 'constants/action-types';
-import * as errorCodes from 'constants/error-codes';
 import * as settings from 'settings';
 
 import * as api from './api';
-import * as notificationActions from './notifications';
+import * as appActions from './app';
 
 
 export function tokenSignIn(accessToken, fetch=api.fetch) {
@@ -32,9 +31,10 @@ export function tokenSignIn(accessToken, fetch=api.fetch) {
       });
 
     }).fail(apiError => {
+
       console.log('FxA token sign-in failure:', apiError.responseJSON);
-      dispatch(notificationActions.showError(
-        {errorCode: errorCodes.FXA_TOKEN_SIGN_IN_FAILURE}));
+      dispatch(appActions.error('FxA token sign-in failed'));
+
     });
   };
 }
@@ -92,14 +92,12 @@ export function userSignIn(FxaClient=window.FxaRelierClient, fetch=api.fetch) {
       })
       .fail(apiError => {
         console.error('API user sign-in failure:', apiError.responseJSON);
-        dispatch(notificationActions.showError(
-          {errorCode: errorCodes.API_SIGN_IN_FAILURE}));
+        dispatch(appActions.error('API user sign-in failed'));
       });
 
     }, fxaError => {
       console.error('FxA sign-in failure:', fxaError);
-      dispatch(notificationActions.showError(
-        {errorCode: errorCodes.FXA_SIGN_IN_FAILURE}));
+      dispatch(appActions.error('FxA user sign-in failed'));
     });
   };
 }
@@ -122,8 +120,8 @@ export function userSignOut(fetch=api.fetch) {
     }).fail(apiError => {
 
       console.log('API user sign-out failure:', apiError.responseJSON);
-      dispatch(notificationActions.showError(
-        {errorCode: errorCodes.API_SIGN_OUT_FAILURE}));
+      dispatch(appActions.error('API user sign-out failed'));
+
     });
   };
 }
@@ -151,8 +149,7 @@ export function getBraintreeToken(fetch=api.fetch) {
 
     }).fail(apiError => {
       console.log('failed to get braintree token', apiError.responseJSON);
-      dispatch(notificationActions.showError(
-        {errorCode: errorCodes.BRAINTREE_TOKEN_GET_FAILED}));
+      dispatch(appActions.error('Failed to get a braintree token'));
     });
   };
 }

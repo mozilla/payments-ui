@@ -7,22 +7,22 @@ import { gettext } from 'utils';
 export default class SubmitButton extends Component {
 
   static propTypes = {
-    content: PropTypes.string,
     cssModifier: PropTypes.string,
     isDisabled: PropTypes.bool,
     showSpinner: PropTypes.bool,
+    text: PropTypes.string,
   }
 
   static defaultProps = {
     cssModifier: null,
-    content: gettext('Submit'),
+    text: gettext('Submit'),
   }
 
   render() {
-    var { isDisabled, content, showSpinner, ...buttonAttrs } = this.props;
+    var { isDisabled, text, showSpinner, ...buttonAttrs } = this.props;
 
     var buttonClassNames = cx({
-      spinner: showSpinner,
+      'spinner': showSpinner,
     }, this.props.cssModifier);
 
     // If we're showing the spinner we want the
@@ -35,7 +35,7 @@ export default class SubmitButton extends Component {
       <button {...buttonAttrs}
         className={buttonClassNames}
         disabled={isDisabled}
-        type="submit">{content}</button>
+        type="submit">{text}</button>
     );
   }
 }

@@ -1,20 +1,18 @@
 import braintree from 'braintree-web';
 
 import * as actionTypes from 'constants/action-types';
-import * as errorCodes from 'constants/error-codes';
 import * as products from 'products';
 
-import * as notificationActions from './notifications';
+import * as appActions from './app';
 import * as api from './api';
 import { tokenizeCreditCard } from './braintree';
-import { _createSubscription as
+import { createSubscription as
          defaultCreateSubscription } from './subscriptions';
 
 
-export function complete({userEmail} = {}) {
+export function complete() {
   return {
     type: actionTypes.COMPLETE_TRANSACTION,
-    userEmail: userEmail,
   };
 }
 
@@ -26,20 +24,14 @@ export function payWithNewCard() {
 }
 
 
-export function _processOneTimePayment({dispatch, productId, getState,
-                                        payNonce, payMethodUri,
-                                        fetch=api.fetch,
-                                        userDefinedAmount}) {
+export function processOneTimePayment({dispatch, productId, getState,
+                                       payNonce, payMethodUri,
+                                       fetch=api.fetch,
+                                       amount}) {
   var data = {
+    amount: amount,
     product_id: productId,
   };
-
-  if (userDefinedAmount) {
-    console.log('_processOneTimePayment was passed a userDefinedAmount',
-                userDefinedAmount);
-    data.amount = userDefinedAmount;
-  }
-
   data.paymethod = payMethodUri;
   data.nonce = payNonce;
 
@@ -59,9 +51,7 @@ export function _processOneTimePayment({dispatch, productId, getState,
         apiErrorResult: $xhr.responseJSON,
       });
     } else {
-      console.log('Product sale failed');
-      dispatch(notificationActions.showError(
-        {errorCode: errorCodes.ONE_TIME_PAYMENT_FAILED}));
+      dispatch(appActions.error('product sale failed'));
     }
   });
 }
@@ -71,18 +61,18 @@ export function processPayment({productId, braintreeToken, creditCard,
                                 payMethodUri,
                                 BraintreeClient=braintree.api.Client,
                                 createSubscription=defaultCreateSubscription,
-                                payOnce=_processOneTimePayment,
+                                payOnce=processOneTimePayment,
                                 ...args}) {
   return (dispatch, getState) => {
     var product = products.get(productId);
     var payForProduct;
 
     if (product.recurrence === 'monthly') {
-      console.log('calling _createSubscription for product',
+      console.log('calling createSubscription for product',
                   product.id);
       payForProduct = createSubscription;
     } else {
-      console.log('calling _processOneTimePayment for product',
+      console.log('calling processOneTimePayment for product',
                   product.id);
       payForProduct = payOnce;
     }
@@ -131,8 +121,7 @@ export function getUserTransactions(fetch=api.fetch) {
       });
     }).fail(apiError => {
       console.log('error getting transactions:', apiError.responseJSON);
-      dispatch(notificationActions.showError(
-        {errorCode: errorCodes.TRANSACTIONS_GET_FAILED}));
+      dispatch(appActions.error('failed to get transactions'));
     });
   };
 }

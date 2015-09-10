@@ -11,31 +11,25 @@ import { gettext } from 'utils';
 export default class ProductPay extends Component {
 
   static propTypes = {
+    // Amount to pay, which only applies to things like donations.
+    amount: PropTypes.string,
     braintreeToken: PropTypes.string.isRequired,
     cardSubmissionErrors: PropTypes.object,
     processPayment: PropTypes.func.isRequired,
     productId: PropTypes.string.isRequired,
-    userDefinedAmount: PropTypes.string,
   }
 
   componentDidMount() {
     tracking.setPage('/product-pay');
   }
 
-  handleCardSubmit = (creditCard, {email} = {}) => {
+  handleCardSubmit(creditCard) {
     console.log('submitting credit card to sign up for subscription',
                 this.props.productId);
-    var data = {
-      productId: this.props.productId,
-      creditCard: creditCard,
-      braintreeToken: this.props.braintreeToken,
-      userDefinedAmount: this.props.userDefinedAmount,
-    };
-    if (email) {
-      console.log('Card submission included an email address');
-      data.email = email;
-    }
-    this.props.processPayment(data);
+    this.props.processPayment({productId: this.props.productId,
+                               creditCard: creditCard,
+                               braintreeToken: this.props.braintreeToken,
+                               amount: this.props.amount});
   }
 
   render() {
@@ -43,7 +37,6 @@ export default class ProductPay extends Component {
     var submitPrompt;
     if (product.seller.kind === 'donations') {
       submitPrompt = gettext('Donate now');
-      var emailFieldRequired = product.user_identification === 'email';
     } else {
       // TODO: also handle non-recurring, non-donations here.
       submitPrompt = gettext('Subscribe');
@@ -53,15 +46,14 @@ export default class ProductPay extends Component {
       <div className="card-details">
         <ProductDetail
           productId={this.props.productId}
-          userDefinedAmount={this.props.userDefinedAmount}
+          price={this.props.amount}
         />
         <CardForm
-          emailFieldRequired={emailFieldRequired}
-          handleCardSubmit={this.handleCardSubmit}
-          id="braintree-form"
-          method="post"
           submissionErrors={this.props.cardSubmissionErrors}
           submitPrompt={submitPrompt}
+          handleCardSubmit={(card) => this.handleCardSubmit(card)}
+          id="braintree-form"
+          method="post"
         />
       </div>
     );

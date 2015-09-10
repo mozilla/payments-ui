@@ -26,7 +26,7 @@ export default class Modal extends Component {
   }
 
   render() {
-    var classes = cx(['modal', {active: true}]);
+    var classes = cx(['modal', {'active': true}]);
 
     return (
       <div className={classes} onClick={this.onClose}>

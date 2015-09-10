@@ -43,14 +43,12 @@ export default class Subscription extends Component {
         <div className="actions">
           <label className="vh"
             htmlFor="pm">{gettext('Change payment account')}</label>
-          {this.props.payMethods.length ?
-            <PayMethodDropDown
-              payMethods={this.props.payMethods}
-              selectId="pm"
-              selectedPayMethodResource={this.props.paymethod}
-            /> :
-            <p className="warn">{gettext('No payment methods available')}</p>
-          }
+          <PayMethodDropDown
+            payMethods={this.props.payMethods}
+            selectId="pm"
+            selectedPayMethodResource={this.props.paymethod}
+            showDefaultOption={false}
+          />
           <a className="cancel" href="#">{gettext('Cancel subscription')}</a>
         </div> : null}
       </div>

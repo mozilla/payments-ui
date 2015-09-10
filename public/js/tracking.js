@@ -59,11 +59,11 @@ export class Tracking {
     }
     if (this.enabled) {
       this._ga('send', {
-        hitType: 'event',
-        eventCategory: opts.category,
-        eventAction: opts.action,
-        eventLabel: opts.label,
-        eventValue: opts.value,
+        'hitType': 'event',
+        'eventCategory': opts.category,
+        'eventAction': opts.action,
+        'eventLabel': opts.label,
+        'eventValue': opts.value,
       });
     }
     console.log(this.logPrefix, 'sendEvent', JSON.stringify(opts));
