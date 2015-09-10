@@ -4,37 +4,9 @@ import * as errorCodes from 'constants/error-codes';
 import { gettext } from 'utils';
 
 
-export function addNotification({ text, errorCode,
-                                  type='info', userDismissable,
-                                  autoHide } = {}) {
-
-  if (type === 'error' && !text) {
-    text = gettext('Internal error. Please try again later.');
-  }
-
-  if (type === 'info' && !text) {
-    throw new Error('An info notification requires text');
-  }
-
-  // Default to error type being userDismissable.
-  if (type === 'error' && typeof userDismissable === 'undefined') {
-    userDismissable = true;
-  }
-
-  // Default info type to being hidden on delay.
-  if (type === 'info' && typeof autoHide === 'undefined') {
-    autoHide = true;
-  }
-
-  if (type === 'error' && (!errorCode ||
-                           typeof errorCodes[errorCode] === 'undefined')) {
-    console.error('errorCode', errorCode);
-    throw new Error('An error notification requires an errorCode ' +
-                    'defined in constants/error-codes');
-  }
-
-  console.log('autoHide', autoHide);
-  console.log('userDismissable', userDismissable);
+export function _addNotification({ text, errorCode,
+                                   type='info', userDismissable,
+                                   autoHide } = {}) {
   return {
     type: actionTypes.ADD_NOTIFICATION,
     data: { autoHide, text, type, userDismissable, errorCode },
@@ -43,14 +15,41 @@ export function addNotification({ text, errorCode,
 
 export function showInfo({text, ...opts} = {}) {
   opts.type = 'info';
-  opts.text = text;
-  return addNotification({...opts});
+
+  if (!text) {
+    throw new Error('An info notification requires text');
+  } else {
+    opts.text = text;
+  }
+
+  // Default info type to being hidden on delay.
+  if (typeof opts.autoHide === 'undefined') {
+    opts.autoHide = true;
+  }
+
+  return _addNotification({...opts});
 }
 
 export function showError({text, ...opts} = {}) {
   opts.type = 'error';
-  opts.text = text;
-  return addNotification({...opts});
+
+  if (!opts.errorCode || typeof errorCodes[opts.errorCode] === 'undefined') {
+    throw new Error('An error notification requires an errorCode ' +
+                    'defined in constants/error-codes');
+  }
+
+  if (!text) {
+    opts.text = gettext('Internal error. Please try again later.');
+  } else {
+    opts.text = text;
+  }
+
+  // Default to error notification being userDismissable.
+  if (typeof opts.userDismissable === 'undefined') {
+    opts.userDismissable = true;
+  }
+
+  return _addNotification({...opts});
 }
 
 /*

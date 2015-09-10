@@ -7,68 +7,47 @@ import * as helpers from '../helpers';
 
 describe('notificationActions', function() {
 
-  function addNotification(text, notification = {}) {
-      return notificationActions.addNotification(text, notification);
-  }
-
   function removeNotification(id) {
       return notificationActions.removeNotification(id);
   }
 
   it('should dispatch ADD_NOTIFICATION', function() {
-    var notification = {
-      type: 'error',
-      text: 'whatever',
+    var action = notificationActions.showError({
       errorCode: errorCodes.PRODUCT_ID_INVALID,
-    };
-    var action = addNotification(notification);
+      text: 'whatever',
+    });
     helpers.assertNotificationErrorCode(
       action, errorCodes.PRODUCT_ID_INVALID);
   });
 
   it('should default to autoHide for info notification', function() {
-    var notification = {
-      type: 'info',
-      text: 'whatever',
-    };
-    var action = addNotification(notification);
+    var action = notificationActions.showInfo({text: 'whatever'});
     assert.equal(action.data.autoHide, true);
   });
 
   it('should default to being dismissable for error notification', function() {
-    var notification = {
-      type: 'error',
-      text: 'whatever',
+    var action = notificationActions.showError({
       errorCode: errorCodes.PRODUCT_ID_INVALID,
-    };
-    var action = addNotification(notification);
+    });
     assert.equal(action.data.userDismissable, true);
   });
 
   it('should throw on missing text in info notification', function() {
     assert.throws(() => {
-      var notification = {
-        type: 'info',
-      };
-      addNotification(notification);
+      notificationActions.showInfo();
     }, Error, /requires text/);
   });
 
   it('should throw on missing errorCode in error', function() {
     assert.throws(() => {
-      var notification = {
-        type: 'error',
-      };
-      addNotification(notification);
+      notificationActions.showError();
     }, Error, /requires an errorCode/);
   });
 
   it('sets default error message', function() {
-    var notification = {
-      type: 'error',
+    var action = notificationActions.showError({
       errorCode: errorCodes.PRODUCT_ID_INVALID,
-    };
-    var action = addNotification(notification);
+    });
     assert.include(action.data.text, 'Internal error');
   });
 
