@@ -11,6 +11,20 @@
 This project comprises all styles, behaviour and interfaces for
 [mozilla/payments](https://github.com/mozilla/payments).
 
+
+## Grunt tasks
+
+Run tasks with `grunt` e.g. `grunt watch-static` or `grunt serve`.
+
+| Task name       | Description |
+| ------------ | --------------- |
+| build  | build all CSS/JS files for deployment |
+| serve  | watch CSS/JS for changes; serves static files via `webpack` dev server to enable [hot module reloading](http://webpack.github.io/docs/hot-module-replacement-with-webpack.html) |
+| test | run tests locally |
+| test-sauce | run full Sauce Labs test suite |
+| watch-email | watch email-specific static files for changes; updates CSS/JS on change |
+| watch-static | watch files for changes; updates CSS/JS on change |
+
 ## Developers
 
 ### Email Styles
@@ -18,7 +32,7 @@ This project comprises all styles, behaviour and interfaces for
 To get the right paths for the email CSS and rebuild files as they change run:
 
 ```
-DEV=1 grunt start-email
+DEV=1 grunt watch-email
 ```
 
 ### Dependency installation and updates
@@ -55,7 +69,7 @@ cases will be rare.
 
 If you're using [payments-env][payments-env]
 to run the complete payments system then you'll want to use
-`grunt start` on your host to watch for file changes.
+`grunt watch-static` on your host to watch for file changes.
 In other words, start docker to run all the things but keep a shell open
 on the host machine just to compile static assets for the docker VM to serve.
 
