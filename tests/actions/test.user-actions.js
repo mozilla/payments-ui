@@ -56,7 +56,7 @@ describe('userActions', function() {
 
     it('should set saved payment methods from sign-in', function() {
       var data = fakeSignInResult();
-      var payMethods = [{'provider_id': '3vr3ym'}];
+      var payMethods = [{provider_id: '3vr3ym'}];
       data.payment_methods = payMethods;
       var { fetch } = setApiSignInResult({data: data});
 
@@ -197,7 +197,7 @@ describe('userActions', function() {
 
     it('should set saved payment methods from sign-in', function() {
       var data = fakeSignInResult();
-      var payMethods = [{'provider_id': '3vr3ym'}];
+      var payMethods = [{provider_id: '3vr3ym'}];
       data.payment_methods = payMethods;
       var { fetch } = setApiSignInResult({data: data});
 

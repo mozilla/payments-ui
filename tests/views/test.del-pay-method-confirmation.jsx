@@ -12,41 +12,41 @@ describe('Confirm Delete Pay Methods', function() {
 
     this.fakePayMethods = [
       {
-        'id': 1,
-        'resource_uri': '/pay-method/1/',
-        'truncated_id': '4321',
-        'type_name': 'visa',
+        id: 1,
+        resource_uri: '/pay-method/1/',
+        truncated_id: '4321',
+        type_name: 'visa',
       }, {
-        'id': 2,
-        'resource_uri': '/pay-method/2/',
-        'truncated_id': '1234',
-        'type_name': 'amex',
+        id: 2,
+        resource_uri: '/pay-method/2/',
+        truncated_id: '1234',
+        type_name: 'amex',
       }, {
-        'id': 23,
-        'resource_uri': '/pay-method/3/',
-        'truncated_id': '4321',
-        'type_name': 'mastercard',
+        id: 23,
+        resource_uri: '/pay-method/3/',
+        truncated_id: '4321',
+        type_name: 'mastercard',
       },
     ];
 
     this.fakeSubs = [
       {
-        'id': 1,
-        'paymethod': '/pay-method/2/',
-        'resource_uri': '/sub/1/',
-        'seller_product': {
-          'public_id': 'mozilla-concrete-mortar',
-          'resource_pk': 1,
-          'resource_uri': '/generic/product/1/',
+        id: 1,
+        paymethod: '/pay-method/2/',
+        resource_uri: '/sub/1/',
+        seller_product: {
+          public_id: 'mozilla-concrete-mortar',
+          resource_pk: 1,
+          resource_uri: '/generic/product/1/',
         },
       }, {
-        'id': 2,
-        'paymethod': '/pay-method/2/',
-        'resource_uri': '/sub/2/',
-        'seller_product': {
-          'public_id': 'mozilla-concrete-brick',
-          'resource_pk': 2,
-          'resource_uri': '/generic/product/2/',
+        id: 2,
+        paymethod: '/pay-method/2/',
+        resource_uri: '/sub/2/',
+        seller_product: {
+          public_id: 'mozilla-concrete-brick',
+          resource_pk: 2,
+          resource_uri: '/generic/product/2/',
         },
       },
     ];

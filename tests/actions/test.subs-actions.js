@@ -191,14 +191,14 @@ describe('subscription actions', function() {
         returnedData: {
           subscriptions: [
             {
-              'id': 1,
-              'paymethod': '/pay-method/2/',
+              id: 1,
+              paymethod: '/pay-method/2/',
             }, {
-              'id': 2,
-              'paymethod': '/pay-method/3/',
+              id: 2,
+              paymethod: '/pay-method/3/',
             }, {
-              'id': 2,
-              'paymethod': '/pay-method/2/',
+              id: 2,
+              paymethod: '/pay-method/2/',
             },
           ],
         },

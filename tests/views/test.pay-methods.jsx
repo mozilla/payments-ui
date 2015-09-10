@@ -11,15 +11,15 @@ describe('Pay Methods', function() {
   beforeEach(function() {
     const fakeCards = [
       {
-        'id': 1,
-        'resource_uri': 'something',
-        'truncated_id': '4321',
-        'type_name': 'visa',
+        id: 1,
+        resource_uri: 'something',
+        truncated_id: '4321',
+        type_name: 'visa',
       }, {
-        'id': 2,
-        'resource_uri': 'whatever',
-        'truncated_id': '1234',
-        'type_name': 'amex',
+        id: 2,
+        resource_uri: 'whatever',
+        truncated_id: '1234',
+        type_name: 'amex',
       },
     ];
 

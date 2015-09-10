@@ -66,7 +66,7 @@ export default class Management extends Component {
     for (var i = 0; i < navData.length; i += 1) {
       var navItem = navData[i];
       var isActive = this.props.tab === navItem.className;
-      var classes = cx('nav', navItem.className, {'active': isActive});
+      var classes = cx('nav', navItem.className, {active: isActive});
       nav.push((
         <li className={classes} key={navItem.className}>
           <a href="#" onClick={this.props[navItem.action]}>

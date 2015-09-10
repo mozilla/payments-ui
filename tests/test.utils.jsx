@@ -98,7 +98,7 @@ describe('utils.configGetText', function() {
 
   it('should fallback', function() {
     assert.equal(
-      utils.configGetText({'en': 'hello'}, {'languages': ['fr']}),
+      utils.configGetText({en: 'hello'}, {languages: ['fr']}),
       'hello'
     );
   });
@@ -106,15 +106,15 @@ describe('utils.configGetText', function() {
   it('should go through choice', function() {
     assert.equal(
       utils.configGetText(
-        {'fr': 'bonjour', 'es': 'hola'},
-        {'languages': ['de', 'fr', 'es']}),
+        {fr: 'bonjour', es: 'hola'},
+        {languages: ['de', 'fr', 'es']}),
       'bonjour'
     );
   });
 
   it('should cope with missing navigator.languages', function() {
     assert.equal(
-      utils.configGetText({'fr': 'bonjour'}, {'language': 'fr'}),
+      utils.configGetText({fr: 'bonjour'}, {language: 'fr'}),
       'bonjour'
     );
   });

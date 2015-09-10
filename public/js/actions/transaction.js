@@ -61,7 +61,7 @@ export function _processOneTimePayment({dispatch, productId, getState,
     } else {
       console.log('Product sale failed');
       dispatch(notificationActions.showError(
-        {'errorCode': errorCodes.ONE_TIME_PAYMENT_FAILED}));
+        {errorCode: errorCodes.ONE_TIME_PAYMENT_FAILED}));
     }
   });
 }

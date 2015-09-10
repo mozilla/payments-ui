@@ -35,7 +35,7 @@ export default class Notification extends Component {
 
   render() {
     var classes = cx('notification', this.props.type,
-                     {'autohide': this.props.autoHide});
+                     {autohide: this.props.autoHide});
     return (
       <li className={classes}>
         <span className="text">{this.props.text}</span>

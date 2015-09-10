@@ -16,35 +16,35 @@ const cards = [
 ];
 
 const payMethodData = [{
-    'id': 1,
-    'resource_uri': '/braintree/mozilla/paymethod/1/',
-    'truncated_id': '4444',
-    'type_name': 'MasterCard',
+    id: 1,
+    resource_uri: '/braintree/mozilla/paymethod/1/',
+    truncated_id: '4444',
+    type_name: 'MasterCard',
   }, {
-    'id': 2,
-    'resource_uri': '/braintree/mozilla/paymethod/2/',
-    'truncated_id': '1111',
-    'type_name': 'Visa',
+    id: 2,
+    resource_uri: '/braintree/mozilla/paymethod/2/',
+    truncated_id: '1111',
+    type_name: 'Visa',
   }, {
-    'id': 3,
-    'resource_uri': '/braintree/mozilla/paymethod/3/',
-    'truncated_id': '0000',
-    'type_name': 'Maestro',
+    id: 3,
+    resource_uri: '/braintree/mozilla/paymethod/3/',
+    truncated_id: '0000',
+    type_name: 'Maestro',
   }, {
-    'id': 4,
-    'resource_uri': '/braintree/mozilla/paymethod/4/',
-    'truncated_id': '0000',
-    'type_name': 'JCB',
+    id: 4,
+    resource_uri: '/braintree/mozilla/paymethod/4/',
+    truncated_id: '0000',
+    type_name: 'JCB',
   }, {
-    'id': 5,
-    'resource_uri': '/braintree/mozilla/paymethod/5/',
-    'truncated_id': '0000',
-    'type_name': 'Discover',
+    id: 5,
+    resource_uri: '/braintree/mozilla/paymethod/5/',
+    truncated_id: '0000',
+    type_name: 'Discover',
   }, {
-    'id': 6,
-    'resource_uri': '/braintree/mozilla/paymethod/6/',
-    'truncated_id': '8431',
-    'type_name': 'American-Express',
+    id: 6,
+    resource_uri: '/braintree/mozilla/paymethod/6/',
+    truncated_id: '8431',
+    type_name: 'American-Express',
   },
 ];
 
@@ -97,7 +97,7 @@ describe('Pay Method Choice (List)', function() {
     };
     this.PayMethodChoice.handlePayMethodChange(event);
     assert.ok(this.PayMethodChoice.setState.calledWith({
-      'payMethod': 'whatevar',
+      payMethod: 'whatevar',
     }), 'setState should be called');
   });
 
@@ -154,7 +154,7 @@ describe('Pay Method Choice (DropDown)', function() {
     this.PayMethodChoice = TestUtils.renderIntoDocument(
       <PayMethodChoice
         payMethods={payMethodData}
-        useDropDown={true}
+        useDropDown
       />
     );
   });
@@ -180,7 +180,7 @@ describe('Single Pay Method (DropDown)', function() {
     this.PayMethodChoice = TestUtils.renderIntoDocument(
       <PayMethodChoice
         payMethods={singlePayMethodData}
-        useDropDown={true}
+        useDropDown
       />
     );
   });

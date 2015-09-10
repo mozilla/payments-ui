@@ -48,8 +48,8 @@ export class FakeSyncPromise {
 export const declinedError = {
   error_response: {
     braintree: {
-      '__all__': [
-        {'message': 'Do Not Honor', 'code': '2000'},
+      __all__: [
+        {message: 'Do Not Honor', code: '2000'},
       ],
     },
   },
@@ -59,8 +59,8 @@ export const declinedError = {
 export const cvvError = {
   error_response: {
     braintree: {
-      'cvv': [
-        {'message': 'Gateway Rejected: cvv', 'code': 'cvv'},
+      cvv: [
+        {message: 'Gateway Rejected: cvv', code: 'cvv'},
       ],
     },
   },
