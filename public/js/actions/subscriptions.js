@@ -3,6 +3,7 @@ import * as errorCodes from 'constants/error-codes';
 
 import * as api from './api';
 import * as notificationActions from './notifications';
+import * as processingActions from './processing';
 import * as transactionActions from './transaction';
 
 import { gettext, arrayHasSubString } from 'utils';
@@ -71,7 +72,7 @@ export function getSubsByPayMethod(payMethodUri, fetch=api.fetch) {
   };
 }
 
-export function _createSubscription({dispatch, productId,
+export function _createSubscription({dispatch, productId, processingId,
                                      getState, payNonce, payMethodUri,
                                      userDefinedAmount, email,
                                      fetch=api.fetch}) {
@@ -101,8 +102,10 @@ export function _createSubscription({dispatch, productId,
     csrfToken: getState().app.csrfToken,
   }).then(() => {
     console.log('Successfully subscribed + completed payment');
+    dispatch(processingActions.stopProcessing(processingId));
     dispatch(transactionActions.complete({userEmail: email}));
   }).fail($xhr => {
+    dispatch(processingActions.stopProcessing(processingId));
     if ($xhr.status === 400 && $xhr.responseJSON &&
         $xhr.responseJSON.error_response) {
       var allErrors = $xhr.responseJSON.error_response.__all__;

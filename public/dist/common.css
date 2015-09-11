@@ -417,28 +417,6 @@ hr {
   box-sizing: border-box;
 }
 
-.app-error {
-  background: rgba(255, 255, 255, 0.9);
-  bottom: 0;
-  height: 100%;
-  left: 0;
-  padding: 10px;
-  position: absolute;
-  right: 0;
-  top: 0;
-  z-index: 30;
-}
-
-.app-error .msg {
-  font-family: "Fira Sans", Helvetica, Arial, sans-serif;
-  color: #d63920;
-  margin: 0;
-  position: relative;
-  text-align: center;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
 .button {
   display: inline-block;
   text-decoration: none;

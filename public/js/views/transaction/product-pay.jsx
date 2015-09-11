@@ -18,14 +18,19 @@ export default class ProductPay extends Component {
     userDefinedAmount: PropTypes.string,
   }
 
+  static defaultProps = {
+    cardSubmissionErrors: null,
+  }
+
   componentDidMount() {
     tracking.setPage('/product-pay');
   }
 
-  handleCardSubmit = (creditCard, {email} = {}) => {
+  handleCardSubmit = (creditCard, processingId, {email} = {}) => {
     console.log('submitting credit card to sign up for subscription',
                 this.props.productId);
     var data = {
+      processingId: processingId,
       productId: this.props.productId,
       creditCard: creditCard,
       braintreeToken: this.props.braintreeToken,

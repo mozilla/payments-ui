@@ -21,9 +21,11 @@ export default class AddPayMethod extends Component {
     tracking.setPage('/add-pay-method');
   }
 
-  handleCardSubmit(creditCard) {
+  handleCardSubmit(creditCard, processingId) {
     console.log('submitting credit card as new pay method');
-    this.props.addCreditCard(this.props.braintreeToken, creditCard);
+    this.props.addCreditCard({braintreeToken: this.props.braintreeToken,
+                              creditCard: creditCard,
+                              processingId: processingId});
   }
 
   render() {
@@ -33,7 +35,7 @@ export default class AddPayMethod extends Component {
         <CardForm
           submissionErrors={this.props.cardSubmissionErrors}
           submitPrompt={gettext('Add')}
-          handleCardSubmit={(card) => this.handleCardSubmit(card)}
+          handleCardSubmit={this.handleCardSubmit.bind(this)}
           id="braintree-form"
           method="post"
         />

@@ -1,17 +1,21 @@
 import React, { Component, PropTypes } from 'react';
 
+import { connect } from 'react-redux';
+
 import PayMethodList from 'components/pay-method-list';
 import PayMethodDropDown from 'components/pay-method-drop-down';
 import SubmitButton from 'components/submit-button';
 
-import { gettext } from 'utils';
+import { getId, gettext } from 'utils';
 
 
-export default class PayMethodChoice extends Component {
+export class PayMethodChoice extends Component {
 
   static propTypes = {
     cssModifier: PropTypes.string,
+    dispatch: PropTypes.func.isRequired,
     payMethods: PropTypes.array.isRequired,
+    processing: PropTypes.object.isRequired,
     productId: PropTypes.string.isRequired,
     submitButtonCSSModifier: PropTypes.string.isRequired,
     submitButtonText: PropTypes.string.isRequired,
@@ -28,6 +32,7 @@ export default class PayMethodChoice extends Component {
 
   constructor(props) {
     super(props);
+    this.processingId = getId({prefix: 'PayMethodChoice'});
 
     var payMethodUri = null;
     if (this.props.useDropDown) {
@@ -40,15 +45,13 @@ export default class PayMethodChoice extends Component {
     }
 
     this.state = {
-      isSubmitting: false,
       payMethod: payMethodUri,
     };
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.setState({isSubmitting: true});
-    this.props.submitHandler(this.state.payMethod);
+    this.props.submitHandler(this.state.payMethod, this.processingId);
   }
 
   handlePayMethodChange = (e) => {
@@ -80,10 +83,20 @@ export default class PayMethodChoice extends Component {
         }
         <SubmitButton isDisabled={!formIsValid}
           cssModifier={this.props.submitButtonCSSModifier}
-          showSpinner={this.state.isSubmitting}
+          showSpinner={this.props.processing[this.processingId]}
           content={this.props.submitButtonText}
         />
       </form>
     );
   }
 }
+
+
+function select(state) {
+  return {
+    processing: state.processing,
+  };
+}
+
+
+export default connect(select)(PayMethodChoice);
