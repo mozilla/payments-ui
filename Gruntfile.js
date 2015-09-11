@@ -11,14 +11,19 @@ module.exports = function(grunt) {
 
   grunt.initConfig(configs);
 
-  grunt.registerTask('copy-deps', ['clean:deps', 'copy']);
-  grunt.registerTask('build-styleguide', ['sass', 'webpack:styleguide', 'cog']);
-  grunt.registerTask('publish-styleguide',
+  grunt.registerTask('copy-deps', 'Copy dep from node_modules into the tree',
+                     ['clean:deps', 'copy']);
+  grunt.registerTask('build-styleguide', 'Build the styleguide',
+                     ['sass', 'webpack:styleguide', 'cog']);
+  grunt.registerTask('publish-styleguide', 'Publish the styleguide to gh-pages',
                      ['build-styleguide', 'gh-pages:styleguide']);
-  grunt.registerTask('styleguide', ['build-styleguide', 'devserver',
-                                    'concurrent:styleguide']);
+  grunt.registerTask('watch-styleguide',
+                     'Build and watch the styleguide for changes',
+                     ['build-styleguide', 'devserver',
+                      'concurrent:styleguide']);
 
-  grunt.registerTask('publish-docker', function() {
+  grunt.registerTask('publish-docker', 'Used by travis to push a branch with ' +
+                     'built assets for docker to build from', function() {
     // Require the build
     this.requires(['build']);
 
@@ -34,16 +39,13 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('build', ['clean:dist', 'sass', 'webpack']);
-
-  // The dev server used for live reloading in the browser.
   grunt.registerTask('serve', 'Dev server with webpack hot module reloading',
     ['clean:dist', 'sass:dev', 'webpack-dev-server:start', 'watch:sass']);
-  // Used to serve email CSS.
-  grunt.registerTask('watch-email',
+  grunt.registerTask('watch-email', 'Watches and rebuilds email CSS',
     ['clean:dist', 'sass:email', 'webpack:dev', 'watch:sassemail']);
-  // Regular grunt server, used when running inside the payments-env docker.
-  grunt.registerTask('watch-static',
+  grunt.registerTask('watch-static', 'Watches and rebuilds JS + CSS',
     ['clean:dist', 'sass:dev', 'webpack:dev', 'watch:sass']);
+
   // Legacy tasks still used by payments-env, see:
   // https://github.com/mozilla/payments-ui/issues/361
   grunt.registerTask('start', 'Deprecated; use `watch-static` instead',
@@ -59,11 +61,14 @@ module.exports = function(grunt) {
     grunt.task.run('watch-email');
   });
 
-  grunt.registerTask('test', ['karma:run', 'eslint', 'csslint:lax']);
+  grunt.registerTask('test', 'Run the unit tests',
+                     ['karma:run', 'eslint', 'csslint:lax']);
 
   // Conditionally run saucelabs tests if we have the
   // secure vars or a normal test run if not.
-  grunt.registerTask('test-ci', function() {
+  grunt.registerTask('test-ci', 'Used by travis to run the the tests ' +
+    'conditionally on sauce-labs when credentials are present', function() {
+
     if (process.env.TRAVIS_SECURE_ENV_VARS === 'true') {
       grunt.log.writeln('Running full SauceLabs test suite');
       grunt.task.run('test-sauce');
@@ -73,5 +78,6 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('test-sauce', ['karma:sauce', 'eslint', 'csslint:lax']);
+  grunt.registerTask('test-sauce', 'Run the unit tests on sauce labs',
+                     ['karma:sauce', 'eslint', 'csslint:lax']);
 };
