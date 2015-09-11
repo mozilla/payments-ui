@@ -5,6 +5,7 @@ import * as errorCodes from 'constants/error-codes';
 import * as api from './api';
 import * as notificationActions from './notifications';
 import * as mgmtActions from './management';
+import * as processingActions from './processing';
 
 
 export function delPayMethod(payMethodUri, fetch=api.fetch) {
@@ -61,9 +62,11 @@ export function getPayMethods(fetch=api.fetch) {
 }
 
 
-export function addCreditCard(braintreeToken, creditCard, fetch=api.fetch,
-                              BraintreeClient=braintree.api.Client) {
+export function addCreditCard({braintreeToken, creditCard, fetch=api.fetch,
+                               BraintreeClient=braintree.api.Client,
+                               processingId}) {
   return (dispatch, getState) => {
+    dispatch(processingActions.beginProcessing(processingId));
     var client = new BraintreeClient({
       clientToken: braintreeToken,
     });
@@ -86,6 +89,7 @@ export function addCreditCard(braintreeToken, creditCard, fetch=api.fetch,
         }, {
           csrfToken: getState().app.csrfToken,
         }).then(data => {
+          dispatch(processingActions.stopProcessing(processingId));
           console.log('Successfully added a pay method. API Result:', data);
           dispatch({
             type: actionTypes.GOT_PAY_METHODS,
@@ -93,6 +97,7 @@ export function addCreditCard(braintreeToken, creditCard, fetch=api.fetch,
           });
           dispatch(mgmtActions.showPayMethods());
         }).fail($xhr => {
+          dispatch(processingActions.stopProcessing(processingId));
           dispatch({
             type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
             apiErrorResult: $xhr.responseJSON,

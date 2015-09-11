@@ -6,6 +6,7 @@ import * as products from 'products';
 
 import * as notificationActions from './notifications';
 import * as api from './api';
+import * as processingActions from './processing';
 import { tokenizeCreditCard } from './braintree';
 import { _createSubscription as
          defaultCreateSubscription } from './subscriptions';
@@ -28,7 +29,7 @@ export function payWithNewCard() {
 
 export function _processOneTimePayment({dispatch, productId, getState,
                                         payNonce, payMethodUri,
-                                        fetch=api.fetch,
+                                        fetch=api.fetch, processingId,
                                         userDefinedAmount}) {
   var data = {
     product_id: productId,
@@ -50,9 +51,11 @@ export function _processOneTimePayment({dispatch, productId, getState,
   }, {
     csrfToken: getState().app.csrfToken,
   }).then(() => {
+    dispatch(processingActions.stopProcessing(processingId));
     console.log('Successfully completed sale');
     dispatch(complete());
   }).fail($xhr => {
+    dispatch(processingActions.stopProcessing(processingId));
     if (data.nonce) {
       dispatch({
         type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
@@ -68,12 +71,13 @@ export function _processOneTimePayment({dispatch, productId, getState,
 
 
 export function processPayment({productId, braintreeToken, creditCard,
-                                payMethodUri,
+                                payMethodUri, processingId,
                                 BraintreeClient=braintree.api.Client,
                                 createSubscription=defaultCreateSubscription,
                                 payOnce=_processOneTimePayment,
                                 ...args}) {
   return (dispatch, getState) => {
+    dispatch(processingActions.beginProcessing(processingId));
     var product = products.get(productId);
     var payForProduct;
 
@@ -90,6 +94,7 @@ export function processPayment({productId, braintreeToken, creditCard,
     var payArgs = {
       dispatch: dispatch,
       getState: getState,
+      processingId: processingId,
       productId: productId,
       ...args,
     };

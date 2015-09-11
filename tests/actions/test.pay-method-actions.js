@@ -1,6 +1,7 @@
 import * as actionTypes from 'constants/action-types';
 import * as errorCodes from 'constants/error-codes';
 import * as payMethodActions from 'actions/pay-methods';
+import * as processingActions from 'actions/processing';
 
 import * as helpers from '../helpers';
 
@@ -72,10 +73,15 @@ describe('Pay Method Actions', function() {
       }
     }
 
-    function addCreditCard(fetch, client=FakeBraintreeClient) {
-      var deferredAction = payMethodActions.addCreditCard(
-        'braintree-token', fakeCard, fetch, client
-      );
+    function addCreditCard({fetch, client=FakeBraintreeClient,
+                            processingId='some-component-id'}) {
+      var deferredAction = payMethodActions.addCreditCard({
+        braintreeToken: 'braintree-token',
+        creditCard: fakeCard,
+        fetch: fetch,
+        BraintreeClient: client,
+        processingId: processingId,
+      });
       helpers.doApiAction(deferredAction, dispatchSpy);
     }
 
@@ -88,24 +94,40 @@ describe('Pay Method Actions', function() {
       };
     }
 
+    it('should begin processing', function() {
+      var { fetch } = setApiPostResult();
+      var procId = 'some-id';
+      addCreditCard({fetch: fetch, processingId: procId});
+      var action = dispatchSpy.firstCall.args[0];
+      assert.deepEqual(action, processingActions.beginProcessing(procId));
+    });
+
+    it('should stop processing', function() {
+      var { fetch } = setApiPostResult();
+      var procId = 'some-id';
+      addCreditCard({fetch: fetch, processingId: procId});
+      var action = dispatchSpy.secondCall.args[0];
+      assert.deepEqual(action, processingActions.stopProcessing(procId));
+    });
+
     it('should dispatch a GOT_PAY_METHODS action', function() {
       var { fetch } = setApiPostResult();
-      addCreditCard(fetch);
-      var action = dispatchSpy.firstCall.args[0];
+      addCreditCard({fetch: fetch});
+      var action = dispatchSpy.thirdCall.args[0];
       assert.equal(action.type, actionTypes.GOT_PAY_METHODS);
     });
 
     it('should dispatch a SHOW_PAY_METHODS action on success', function() {
       var { fetch } = setApiPostResult();
-      addCreditCard(fetch);
-      var action = dispatchSpy.secondCall.args[0];
+      addCreditCard({fetch: fetch});
+      var action = dispatchSpy.getCall(3).args[0];
       assert.equal(action.type, actionTypes.SHOW_PAY_METHODS);
     });
 
     it('should dispatch payment methods', function() {
       var { fetch, data } = setApiPostResult();
-      addCreditCard(fetch);
-      var action = dispatchSpy.firstCall.args[0];
+      addCreditCard({fetch: fetch});
+      var action = dispatchSpy.thirdCall.args[0];
       assert.equal(action.payMethods, data.payment_methods);
     });
 
@@ -115,8 +137,8 @@ describe('Pay Method Actions', function() {
         result: 'fail',
         xhrError: {responseJSON: apiError},
       }});
-      addCreditCard(fetch);
-      var action = dispatchSpy.firstCall.args[0];
+      addCreditCard({fetch: fetch});
+      var action = dispatchSpy.thirdCall.args[0];
       assert.deepEqual(action, {
         type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
         apiErrorResult: apiError,
@@ -125,8 +147,8 @@ describe('Pay Method Actions', function() {
 
     it('should dispatch an error on tokenization failure', function() {
       var { fetch } = setApiPostResult();
-      addCreditCard(fetch, FakeBraintreeClientError);
-      var action = dispatchSpy.firstCall.args[0];
+      addCreditCard({fetch, client: FakeBraintreeClientError});
+      var action = dispatchSpy.secondCall.args[0];
       helpers.assertNotificationErrorCode(
         action, errorCodes.BRAINTREE_TOKENIZATION_ERROR);
     });

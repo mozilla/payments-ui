@@ -1,7 +1,7 @@
 import React from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
 
-import PayMethodChoice from 'components/pay-method-choice';
+import { PayMethodChoice } from 'components/pay-method-choice';
 
 import * as helpers from '../helpers';
 
@@ -54,9 +54,13 @@ const singlePayMethodData = [payMethodData[0]];
 describe('Pay Method Choice (List)', function() {
 
   beforeEach(function() {
+    var fakeProcessing = {};
     this.PayMethodChoice = TestUtils.renderIntoDocument(
-      <PayMethodChoice payMethods={payMethodData}
-        cssModifier='whatevar-modifier' />
+      <PayMethodChoice
+        payMethods={payMethodData}
+        cssModifier='whatevar-modifier'
+        processing={fakeProcessing}
+      />
     );
     sinon.spy(this.PayMethodChoice, 'setState');
   });
@@ -130,8 +134,12 @@ describe('Pay Method Choice (List)', function() {
 describe('Single Pay Method (List)', function() {
 
   beforeEach(function() {
+    var fakeProcessing = {};
     this.PayMethodChoice = TestUtils.renderIntoDocument(
-      <PayMethodChoice payMethods={singlePayMethodData} />
+      <PayMethodChoice
+        payMethods={singlePayMethodData}
+        processing={fakeProcessing}
+      />
     );
   });
 
@@ -151,9 +159,11 @@ describe('Single Pay Method (List)', function() {
 describe('Pay Method Choice (DropDown)', function() {
 
   beforeEach(function() {
+    var fakeProcessing = {};
     this.PayMethodChoice = TestUtils.renderIntoDocument(
       <PayMethodChoice
         payMethods={payMethodData}
+        processing={fakeProcessing}
         useDropDown
       />
     );
@@ -177,9 +187,11 @@ describe('Pay Method Choice (DropDown)', function() {
 describe('Single Pay Method (DropDown)', function() {
 
   beforeEach(function() {
+    var fakeProcessing = {};
     this.PayMethodChoice = TestUtils.renderIntoDocument(
       <PayMethodChoice
         payMethods={singlePayMethodData}
+        processing={fakeProcessing}
         useDropDown
       />
     );

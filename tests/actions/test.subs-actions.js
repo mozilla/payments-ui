@@ -1,5 +1,6 @@
 import * as actionTypes from 'constants/action-types';
 import * as errorCodes from 'constants/error-codes';
+import * as processingActions from 'actions/processing';
 import * as transactionActions from 'actions/transaction';
 import * as subActions from 'actions/subscriptions';
 
@@ -79,6 +80,7 @@ describe('subscription actions', function() {
     function createSubscription({fetch=fakeFetch,
                                  payNonce='braintree-pay-nonce',
                                  getState=helpers.getAppStateWithCSRF,
+                                 processingId='some-component-id',
                                  ...allParams} = {}) {
       subActions._createSubscription({
         dispatch: dispatchSpy,
@@ -86,14 +88,32 @@ describe('subscription actions', function() {
         productId: 'product-id',
         payNonce: payNonce,
         fetch: fetch,
+        processingId: processingId,
         ...allParams,
       });
     }
 
+    it('should stop processing on success', function() {
+      var procId = 'some-id';
+      createSubscription({processingId: procId});
+
+      var action = dispatchSpy.firstCall.args[0];
+      assert.deepEqual(action, processingActions.stopProcessing(procId));
+    });
+
+    it('should stop processing on error', function() {
+      var fetch = helpers.fakeFetch({result: 'fail'});
+      var procId = 'some-id';
+      createSubscription({processingId: procId, fetch: fetch});
+
+      var action = dispatchSpy.firstCall.args[0];
+      assert.deepEqual(action, processingActions.stopProcessing(procId));
+    });
+
     it('should dispatch a completion action', function() {
       createSubscription();
 
-      var action = dispatchSpy.firstCall.args[0];
+      var action = dispatchSpy.secondCall.args[0];
       assert.deepEqual(action, transactionActions.complete());
     });
 
@@ -101,7 +121,7 @@ describe('subscription actions', function() {
       var email = 'someone@somewhere.org';
       createSubscription({email: email});
 
-      var action = dispatchSpy.firstCall.args[0];
+      var action = dispatchSpy.secondCall.args[0];
       assert.deepEqual(
         action,
         transactionActions.complete({userEmail: email})
@@ -130,7 +150,7 @@ describe('subscription actions', function() {
       });
       createSubscription({fetch: fetch});
 
-      var action = dispatchSpy.firstCall.args[0];
+      var action = dispatchSpy.secondCall.args[0];
       assert.deepEqual(action, {
         type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
         apiErrorResult: apiError,
@@ -152,7 +172,7 @@ describe('subscription actions', function() {
         },
       });
       createSubscription({fetch: fetch});
-      var action = dispatchSpy.firstCall.args[0];
+      var action = dispatchSpy.secondCall.args[0];
       helpers.assertNotificationErrorCode(action, 'ALREADY_SUBSCRIBED');
       helpers.assertNotificationTextContains(action, 'already subscribed');
     });
@@ -162,7 +182,7 @@ describe('subscription actions', function() {
         result: 'fail',
       });
       createSubscription({fetch: fetch});
-      var action = dispatchSpy.firstCall.args[0];
+      var action = dispatchSpy.secondCall.args[0];
       helpers.assertNotificationErrorCode(action, 'SUB_CREATION_FAILED');
     });
 
@@ -175,7 +195,7 @@ describe('subscription actions', function() {
       createSubscription({fetch: fetch,
                           payNonce: null,
                           payMethodUri: 'fake-pay-method-uri'});
-      var action = dispatchSpy.firstCall.args[0];
+      var action = dispatchSpy.secondCall.args[0];
       helpers.assertNotificationErrorCode(action, 'SUB_CREATION_FAILED');
     });
   });

@@ -1,9 +1,11 @@
 import CardValidator from 'card-validator';
 import React, { Component, PropTypes } from 'react';
 
+import { connect } from 'react-redux';
+
 import CardInput from 'components/card-input';
 import SubmitButton from 'components/submit-button';
-import { gettext, validateEmailAsYouType } from 'utils';
+import { getId, gettext, validateEmailAsYouType } from 'utils';
 
 
 const defaultFieldAttrs = {
@@ -80,15 +82,17 @@ const fieldProps = {
 };
 
 
-export default class CardForm extends Component {
+export class CardForm extends Component {
 
   static propTypes = {
     card: PropTypes.object,
     cvv: PropTypes.object,
+    dispatch: PropTypes.func.isRequired,
     emailFieldRequired: PropTypes.bool,
     expiration: PropTypes.object,
     handleCardSubmit: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired,
+    processing: PropTypes.object.isRequired,
     submissionErrors: PropTypes.object,
     submitPrompt: PropTypes.string,
   }
@@ -100,6 +104,7 @@ export default class CardForm extends Component {
 
   constructor(props) {
     super(props);
+    this.processingId = getId({prefix: 'CardForm'});
     this.state = {
       card: '',
       cardType: null,
@@ -107,7 +112,6 @@ export default class CardForm extends Component {
       email: '',
       errors: {},
       expiration: '',
-      isSubmitting: false,
     };
   }
 
@@ -137,7 +141,6 @@ export default class CardForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.setState({isSubmitting: true});
     var formData = {
       number: this.state.card,
       cvv: this.state.cvv,
@@ -147,13 +150,12 @@ export default class CardForm extends Component {
     if (this.props.emailFieldRequired) {
       opts.email = this.state.email;
     }
-    this.props.handleCardSubmit(formData, opts);
+    this.props.handleCardSubmit(formData, this.processingId, opts);
   }
 
   mapErrorsToFields(errors) {
     console.log('mapping submission errors to form fields', errors);
-    // TODO: map non-braintree errors like __all__
-    // TODO: map braintree errors for unexpected fields (such as `plan_id`)
+    // Note that __all__ errors will be rendered as notifications instead.
     if (errors.error_response && errors.error_response.braintree) {
       var apiErrors = errors.error_response.braintree;
       // Iterate over the error object and create a new data
@@ -190,6 +192,8 @@ export default class CardForm extends Component {
       if (field === 'email' && !this.props.emailFieldRequired) {
         return;
       } else if (!fieldProps[field].isValid) {
+        console.log('credit card form field is invalid:',
+                    fieldProps[field]);
         formIsValid = false;
       }
     });
@@ -215,9 +219,19 @@ export default class CardForm extends Component {
             onChangeHandler={this.handleChange} />
         </div>
         <SubmitButton isDisabled={!formIsValid}
-          showSpinner={this.state.isSubmitting}
+          showSpinner={this.props.processing[this.processingId]}
           content={this.props.submitPrompt} />
       </form>
     );
   }
 }
+
+
+function select(state) {
+  return {
+    processing: state.processing,
+  };
+}
+
+
+export default connect(select)(CardForm);
