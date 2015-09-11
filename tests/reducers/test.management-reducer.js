@@ -36,6 +36,15 @@ describe('management reducer', () => {
     );
   });
 
+  it('stores card submission errors', () => {
+    var apiError = {error_response: 'invalid monkey name'};
+    var state = Object.assign({}, initialMgmtState, {
+      type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
+      cardSubmissionErrors: apiError,
+    });
+    assert.deepEqual(state.cardSubmissionErrors, apiError);
+  });
+
   it('preserves tab on error', () => {
     var existingState = Object.assign({}, initialMgmtState, {
       tab: 'pay-methods',

@@ -4,6 +4,8 @@ import { Provider } from 'react-redux';
 
 import { createReduxStore } from 'data-store';
 
+import * as actionTypes from 'constants/action-types';
+import * as mgmtActions from 'actions/management';
 import ManagementApp from 'apps/management/app';
 
 import * as helpers from '../helpers';
@@ -63,6 +65,27 @@ describe('management/app', function() {
     // Make sure it gets the access token.
     var signIn = mgmt.props.children[1];
     assert.equal(signIn.props.accessToken, token);
+
+  });
+
+  it('should pass in card submission errors', function() {
+    store.dispatch({
+      type: actionTypes.GOT_BRAINTREE_TOKEN,
+      braintreeToken: 'some-token',
+    });
+    store.dispatch(mgmtActions.showAddPayMethod());
+    var apiError = {error_response: 'some error'};
+    store.dispatch({
+      type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
+      apiErrorResult: apiError,
+    });
+    var view = mountView();
+
+    var mgmt = TestUtils.findRenderedComponentWithType(
+      view, FakeManagement
+    );
+    var addPayMethod = mgmt.props.children[1];
+    assert.equal(addPayMethod.props.cardSubmissionErrors, apiError);
 
   });
 

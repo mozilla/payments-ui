@@ -112,6 +112,7 @@ export default class ManagementApp extends Component {
             {...boundMgmtActions}
             {...boundPayMethodActions}
             {...boundUserActions}
+            cardSubmissionErrors={management.cardSubmissionErrors}
             braintreeToken={user.braintreeToken}
           />
         ));
