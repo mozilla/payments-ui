@@ -5,6 +5,7 @@ export const initialMgmtState = {
   tab: null,
   view: null,
   viewData: {},
+  cardSubmissionErrors: null,
 };
 
 

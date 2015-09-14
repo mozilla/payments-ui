@@ -45110,7 +45110,8 @@
 	var initialMgmtState = {
 	  tab: null,
 	  view: null,
-	  viewData: {}
+	  viewData: {},
+	  cardSubmissionErrors: null
 	};
 	
 	exports.initialMgmtState = initialMgmtState;

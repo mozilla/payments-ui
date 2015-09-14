@@ -21741,6 +21741,7 @@ webpackJsonp([0,2],[
 	          children.push(_react2['default'].createElement(_viewsSharedBraintreeToken2['default'], boundUserActions));
 	        } else {
 	          children.push(_react2['default'].createElement(_viewsManagementAddPayMethod2['default'], _extends({}, boundMgmtActions, boundPayMethodActions, boundUserActions, {
+	            cardSubmissionErrors: management.cardSubmissionErrors,
 	            braintreeToken: user.braintreeToken
 	          })));
 	        }
@@ -47524,7 +47525,8 @@ webpackJsonp([0,2],[
 	var initialMgmtState = {
 	  tab: null,
 	  view: null,
-	  viewData: {}
+	  viewData: {},
+	  cardSubmissionErrors: null
 	};
 	
 	exports.initialMgmtState = initialMgmtState;
