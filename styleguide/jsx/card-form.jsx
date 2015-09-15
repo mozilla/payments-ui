@@ -1,5 +1,4 @@
-'use strict';
+import React from 'react';
+import { CardForm } from 'components/card-form';
 
-var React = require('react');
-var CardForm = require('components/card-form');
-React.render(<CardForm />, document.getElementById('view'));
+React.render(<CardForm processing={{}} />, document.getElementById('view'));

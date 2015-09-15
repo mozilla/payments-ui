@@ -1,8 +1,7 @@
-'use strict';
+import React from 'react';
+import Modal from 'components/modal';
+import { CardForm } from 'components/card-form';
 
-var React = require('react');
-var Modal = require('components/modal');
-var CardForm = require('components/card-form');
-React.render(<Modal showModal={true} tite="New Card Details" >
-               <CardForm />
+React.render(<Modal showModal tite="New Card Details" >
+               <CardForm processing={{}}/>
              </Modal>, document.getElementById('modal'));

@@ -1,5 +1,5 @@
 module.exports = function(grunt) {
-  grunt.loadNpmTasks('cog');
+  grunt.loadNpmTasks('cog-style-guide');
   // load all grunt tasks matching the ['grunt-*', '@*/grunt-*'] patterns
   require('load-grunt-tasks')(grunt);
 
