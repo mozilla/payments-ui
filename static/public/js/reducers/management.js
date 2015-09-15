@@ -2,9 +2,10 @@ import * as actionTypes from 'constants/action-types';
 
 
 export const initialMgmtState = {
-  error: null,
   tab: null,
   view: null,
+  viewData: {},
+  cardSubmissionErrors: null,
 };
 
 
@@ -20,10 +21,22 @@ export default function management(state, action) {
         });
       }
       return state;
-    case actionTypes.APP_ERROR:
-      return Object.assign({}, initialMgmtState, {
-        error: {
-          debugMessage: action.error.debugMessage,
+    case actionTypes.GOT_SUBS_BY_PAY_METHOD:
+      return Object.assign({}, initialMgmtState, state, {
+        // This is short-lived data only relevant to the current
+        // operation.
+        viewData: {
+          affectedSubscriptions: action.subscriptions,
+          payMethodUri: action.payMethodUri,
+        },
+      });
+    case actionTypes.SHOW_CONFIRM_DEL_PAY_METHOD:
+      return Object.assign({}, initialMgmtState, state, {
+        // Ephemeral data for this operation only.
+        tab: 'pay-methods',
+        view: action.type,
+        viewData: {
+          payMethodUri: action.payMethodUri,
         },
       });
     case actionTypes.SHOW_MY_ACCOUNT:
@@ -36,6 +49,9 @@ export default function management(state, action) {
         tab: 'pay-methods',
         view: action.type,
       });
+    case actionTypes.SHOW_SIGN_IN:
+      // Reset all view/tab state which will trigger a sign-in screen.
+      return Object.assign({}, initialMgmtState);
     case actionTypes.SHOW_ADD_PAY_METHOD:
       return Object.assign({}, initialMgmtState, {
         tab: 'pay-methods',
@@ -51,17 +67,23 @@ export default function management(state, action) {
         tab: 'history',
         view: action.type,
       });
-    case actionTypes.SHOW_SUBSCRIPTIONS:
+    case actionTypes.SHOW_SIGN_OUT:
+      return Object.assign({}, initialMgmtState, {
+        tab: 'profile',
+        view: action.type,
+      });
+    case actionTypes.SHOW_SUBS:
       return Object.assign({}, initialMgmtState, {
         tab: 'subs',
         view: action.type,
       });
     case actionTypes.CREDIT_CARD_SUBMISSION_ERRORS:
-      return Object.assign({}, initialMgmtState, {
+      return Object.assign({}, state, {
         cardSubmissionErrors: action.apiErrorResult,
       });
     case actionTypes.CLOSE_MODAL:
       return initialMgmtState;
+
     default:
       return state;
   }

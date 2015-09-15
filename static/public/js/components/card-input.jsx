@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { Component, PropTypes } from 'react';
 
-import CardIcon from 'components/card-icon';
+import PayMethodIcon from 'components/pay-method-icon';
 import InputError from 'components/input-error';
 import MaskedInput from 'react-maskedinput';
 
@@ -75,8 +75,8 @@ export default class CardInput extends Component {
     labelClassNames = labelClassNames.slice(0);
     // Only show invalid classname when invalid and there's a value.
     labelClassNames.push({
-      'invalid': (this.props.hasVal || this.props.showError) &&
-                  this.props.isValid === false,
+      invalid: (this.props.hasVal || this.props.showError) &&
+                this.props.isValid === false,
     });
     var labelClass = classNames(labelClassNames);
 
@@ -96,15 +96,25 @@ export default class CardInput extends Component {
         { this.props.showError ?
           <InputError errorMessage={this.props.errorMessage}
                       errorModifier={this.props.errorModifier} /> : null }
-        { showCardIcon ? <CardIcon cardType={this.props.cardType} /> : null }
-        <MaskedInput
-          {...this.props.attrs}
-          id={this.props.id}
-          className={this.props.id + '-input'}
-          onChange={this.props.onChangeHandler}
-          pattern={pattern}
-          placeholder={placeholder}
-        />
+        { showCardIcon ?
+          <PayMethodIcon payMethodType={this.props.cardType} /> : null }
+        {pattern ?
+          <MaskedInput
+            {...this.props.attrs}
+            id={this.props.id}
+            className={this.props.id + '-input'}
+            onChange={this.props.onChangeHandler}
+            pattern={pattern}
+            placeholder={placeholder}
+          /> :
+          <input
+            {...this.props.attrs}
+            id={this.props.id}
+            className={this.props.id + '-input'}
+            onChange={this.props.onChangeHandler}
+            placeholder={placeholder}
+          />
+        }
       </label>
     );
   }

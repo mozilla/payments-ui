@@ -7,6 +7,7 @@ export const initialUserState = {
   payMethods: [],
   braintreeToken: null,
   subscriptions: null,
+  transactions: null,
 };
 
 
@@ -15,6 +16,18 @@ export default function user(state, action) {
   if (action.type === actionTypes.USER_SIGNED_OUT) {
     return Object.assign({}, initialUserState, {
       signedIn: false,
+    });
+  }
+
+  if (action.type === actionTypes.LOADING_USER_TRANSACTIONS) {
+    return Object.assign({}, initialUserState, state, {
+      transactions: initialUserState.transactions,
+    });
+  }
+
+  if (action.type === actionTypes.GOT_USER_TRANSACTIONS) {
+    return Object.assign({}, initialUserState, state, {
+      transactions: action.transactions,
     });
   }
 
@@ -32,13 +45,13 @@ export default function user(state, action) {
     });
   }
 
-  if (action.type === actionTypes.LOADING_USER_SUBSCRIPTIONS) {
+  if (action.type === actionTypes.LOADING_USER_SUBS) {
     return Object.assign({}, initialUserState, state, {
       subscriptions: initialUserState.subscriptions,
     });
   }
 
-  if (action.type === actionTypes.GOT_USER_SUBSCRIPTIONS) {
+  if (action.type === actionTypes.GOT_USER_SUBS) {
     return Object.assign({}, initialUserState, state, {
       subscriptions: action.subscriptions,
     });

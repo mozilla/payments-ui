@@ -1,9 +1,11 @@
 import braintree from 'braintree-web';
 
 import * as actionTypes from 'constants/action-types';
+import * as errorCodes from 'constants/error-codes';
 import * as api from './api';
-import * as appActions from './app';
+import * as notificationActions from './notifications';
 import * as mgmtActions from './management';
+import * as processingActions from './processing';
 
 
 export function delPayMethod(payMethodUri, fetch=api.fetch) {
@@ -12,14 +14,16 @@ export function delPayMethod(payMethodUri, fetch=api.fetch) {
     throw new Error('payMethodUri is undefined');
   }
 
-  return dispatch => {
-    fetch({
+  return (dispatch, getState) => {
+    return fetch({
       method: 'post',
       url: '/braintree/paymethod/delete/',
       data: {
         pay_method_uri: payMethodUri,
       },
       context: this,
+    }, {
+      csrfToken: getState().app.csrfToken,
     }).then(function(data) {
       dispatch({
         type: actionTypes.GOT_PAY_METHODS,
@@ -28,7 +32,8 @@ export function delPayMethod(payMethodUri, fetch=api.fetch) {
       dispatch(mgmtActions.showPayMethods());
     }).fail(function() {
       console.log('Deleting pay method failed');
-      dispatch(appActions.error('Deleting pay method failed'));
+      dispatch(notificationActions.showError(
+        {errorCode: errorCodes.PAY_METHOD_DELETION_FAILED}));
     });
   };
 }
@@ -36,27 +41,32 @@ export function delPayMethod(payMethodUri, fetch=api.fetch) {
 
 export function getPayMethods(fetch=api.fetch) {
   // Note: not currently used as payMethods
-  // are added to user state upon login.
-  return dispatch => {
+  // are added to user state upon sign-in.
+  return (dispatch, getState) => {
     fetch({
       method: 'get',
       url: '/braintree/mozilla/paymethod/',
+    }, {
+      csrfToken: getState().app.csrfToken,
     }).then(function(data) {
       dispatch({
         type: actionTypes.GOT_PAY_METHODS,
         payMethods: data,
       });
     }).fail(function() {
-      console.log('Retrieving cards failed');
-      dispatch(appActions.error('Retrieving cards failed'));
+      console.log('Retrieving pay methods failed');
+      dispatch(notificationActions.showError(
+        {errorCode: errorCodes.PAY_METHOD_GET_FAILED}));
     });
   };
 }
 
 
-export function addCreditCard(braintreeToken, creditCard, fetch=api.fetch,
-                              BraintreeClient=braintree.api.Client) {
-  return (dispatch) => {
+export function addCreditCard({braintreeToken, creditCard, fetch=api.fetch,
+                               BraintreeClient=braintree.api.Client,
+                               processingId}) {
+  return (dispatch, getState) => {
+    dispatch(processingActions.beginProcessing(processingId));
     var client = new BraintreeClient({
       clientToken: braintreeToken,
     });
@@ -67,7 +77,8 @@ export function addCreditCard(braintreeToken, creditCard, fetch=api.fetch,
     }, function(err, nonce) {
       if (err) {
         console.error('Braintree tokenization error:', err);
-        dispatch(appActions.error('Braintree tokenization error'));
+        dispatch(notificationActions.showError(
+          {errorCode: errorCodes.BRAINTREE_TOKENIZATION_ERROR}));
       } else {
         fetch({
           data: {
@@ -75,7 +86,10 @@ export function addCreditCard(braintreeToken, creditCard, fetch=api.fetch,
           },
           url: '/braintree/paymethod/',
           method: 'post',
+        }, {
+          csrfToken: getState().app.csrfToken,
         }).then(data => {
+          dispatch(processingActions.stopProcessing(processingId));
           console.log('Successfully added a pay method. API Result:', data);
           dispatch({
             type: actionTypes.GOT_PAY_METHODS,
@@ -83,6 +97,7 @@ export function addCreditCard(braintreeToken, creditCard, fetch=api.fetch,
           });
           dispatch(mgmtActions.showPayMethods());
         }).fail($xhr => {
+          dispatch(processingActions.stopProcessing(processingId));
           dispatch({
             type: actionTypes.CREDIT_CARD_SUBMISSION_ERRORS,
             apiErrorResult: $xhr.responseJSON,

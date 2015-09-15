@@ -1,6 +1,5 @@
 .subscription-list {
-    margin: 0;
-    max-width: 600px;
+    margin: 1em 0;
     padding: 0;
 
     li {
@@ -14,52 +13,86 @@
         }
     }
 
+    &.compact {
+        margin-bottom: 2em;
+
+        li {
+            border-top: none;
+            margin: 1em 0 0;
+            padding: 1em 0 0;
+        }
+
+        .product {
+            max-width: 100%;
+
+            .description {
+                display: inline;
+            }
+
+            .price {
+                border-top: none;
+                display: inline;
+
+                &:before {
+                    content: ' – ';
+                }
+            }
+        }
+    }
 }
 
+
+
+
 .subscription {
+    overflow: hidden;
+
+    .proxy-select {
+        margin-top: 0;
+    }
 
     .product {
-        float: left;
+        max-width: 50%;
 
         img {
             display: block;
-            width: 50px;
             float: left;
-            margin-right: 10px;
+            margin-right: 20px;
+            width: 50px;
+        }
+
+        .meta {
+            float: left;
+            width: calc(100% - 70px);
         }
 
         .seller {
-            padding: 0;
-            margin: 0 0 0.1em 0;
             font-weight: normal;
-            float: left;
-            white-space: nowrap;
+            margin: 0 0 0.1em 0;
             overflow: hidden;
+            padding: 0;
             text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .description {
+            margin: 0 0 1em;
             text-align: left;
         }
+
+        .next-payment,
+        .price {
+            border-top: 1px solid $heading-border;
+            display: block;
+            padding: 0.5em 0;
+        }
     }
 
-    .price {
+    .actions,
+    .cancel,
+    .change-pay-account {
         float: right;
     }
-
-    nav {
-        clear: both;
-        .cancel {
-            float: left;
-        }
-        .change-pay-account {
-            float: right;
-        }
-    }
-
-    &:after {
-        content: "";
-        display: table;
-        clear: both;
-    }
 }
+
+

@@ -4,6 +4,7 @@
 .management {
 
     background: $management-grey;
+    border-top: 2px solid white;
 
     #tabzilla {
         margin-right: 30px;
@@ -44,7 +45,7 @@
         max-width: 300px;
     }
 
-    .card-list {
+    .pay-method-list {
         margin-bottom: 2em;
     }
 
@@ -95,6 +96,11 @@
       margin: 0 0 0 200px;
       width: auto;
       max-width: 800px;
+
+      &.no-sidebar {
+          margin: 0 auto;
+          text-align: center;
+      }
     }
 
     .sidebar {
@@ -166,8 +172,29 @@
         a:hover {
             background: $hover-grey;
             color: #fff;
-
         }
 
+        .signout {
+            bottom: 15px;
+            left: 15px;
+            position: absolute;
+            right: 15px;
+
+            a:link {
+                border-radius: 2px;
+                border: 1px solid $hover-grey;
+                padding: 0.5em;
+                text-align: center;
+                transition: all 0.3s;
+
+                &:focus,
+                &:hover,
+                &:active {
+                    color: #fff;
+                    background: none;
+                    border: 1px solid $ship-grey;
+                }
+            }
+        }
     }
 }

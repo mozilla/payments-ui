@@ -1,96 +1,98 @@
 import React, { Component, PropTypes } from 'react';
 
 import { bindActionCreators } from 'redux';
-import { Connector } from 'react-redux';
+import { connect } from 'react-redux';
 
 import * as transactionActions from 'actions/transaction';
 import * as userActions from 'actions/user';
-import * as subscriptionActions from 'actions/subscriptions';
 
 import DefaultBraintreeToken from 'views/shared/braintree-token';
 
-import DefaultAddSubscription from 'views/transaction/add-subscription';
-import DefaultCardListing from 'views/transaction/card-listing';
+import DefaultProductPay from 'views/transaction/product-pay';
+import DefaultProductPayChooser from 'views/transaction/product-pay-chooser';
 import DefaultCompletePayment from 'views/transaction/complete-payment';
 
 
-export default class Transaction extends Component {
+export class Transaction extends Component {
 
   static propTypes = {
-    AddSubscription: PropTypes.func.isRequired,
     BraintreeToken: PropTypes.func.isRequired,
-    CardListing: PropTypes.func.isRequired,
     CompletePayment: PropTypes.func.isRequired,
+    ProductPay: PropTypes.func.isRequired,
+    ProductPayChooser: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
     productId: PropTypes.string.isRequired,
+    transaction: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
+    userDefinedAmount: PropTypes.string,
   }
 
   static defaultProps = {
-    AddSubscription: DefaultAddSubscription,
-    CardListing: DefaultCardListing,
-    CompletePayment: DefaultCompletePayment,
     BraintreeToken: DefaultBraintreeToken,
+    CompletePayment: DefaultCompletePayment,
+    ProductPay: DefaultProductPay,
+    ProductPayChooser: DefaultProductPayChooser,
   }
 
-  selectData(state) {
-    return {
-      transaction: state.transaction,
-      user: state.user,
-    };
-  }
+  render() {
+    var { dispatch, transaction, user, ...props } = this.props;
 
-  renderChild(connector) {
-    var props = this.props;
     var BraintreeToken = props.BraintreeToken;
     var CompletePayment = props.CompletePayment;
-    var CardListing = props.CardListing;
-    var AddSubscription = props.AddSubscription;
+    var ProductPayChooser = props.ProductPayChooser;
+    var ProductPay = props.ProductPay;
+    var { processPayment } = bindActionCreators(transactionActions,
+                                                dispatch);
+    var userEmail = (transaction.userEmail ?
+                     transaction.userEmail : user.email);
 
-    if (connector.transaction.completed) {
+    if (transaction.completed) {
       return (
         <CompletePayment
           productId={props.productId}
-          userEmail={props.user.email} />
+          userDefinedAmount={props.userDefinedAmount}
+          userEmail={userEmail} />
       );
-    } else if (connector.transaction.availablePayMethods.length > 0) {
+    } else if (transaction.availablePayMethods.length > 0) {
       console.log('rendering card listing');
-      var { createSubscription } = bindActionCreators(subscriptionActions,
-                                                      connector.dispatch);
       return (
-        <CardListing
-          createSubscription={createSubscription}
+        <ProductPayChooser
+          processPayment={processPayment}
           productId={props.productId}
-          payMethods={connector.transaction.availablePayMethods}
-          {...bindActionCreators(transactionActions, connector.dispatch)}
+          payMethods={transaction.availablePayMethods}
+          userDefinedAmount={props.userDefinedAmount}
+          {...bindActionCreators(transactionActions, dispatch)}
         />
       );
-    } else if (!connector.user.braintreeToken) {
+    } else if (!user.braintreeToken) {
       console.log('Retreiving Braintree Token');
       return (
         <BraintreeToken
-          {...bindActionCreators(userActions, connector.dispatch) }
+          {...bindActionCreators(userActions, dispatch) }
         />
       );
     } else {
       console.log('rendering card entry');
-      var { createSubscription } = bindActionCreators(subscriptionActions,
-                                                      connector.dispatch);
       return (
-        <AddSubscription
-          cardSubmissionErrors={connector.transaction.cardSubmissionErrors}
-          braintreeToken={connector.user.braintreeToken}
-          createSubscription={createSubscription}
+        <ProductPay
+          userDefinedAmount={props.userDefinedAmount}
+          cardSubmissionErrors={transaction.cardSubmissionErrors}
+          braintreeToken={user.braintreeToken}
+          processPayment={processPayment}
           productId={props.productId}
         />
       );
     }
   }
-
-  render () {
-    return (
-      <Connector select={this.selectData}>
-        {(connector) => this.renderChild(connector)}
-      </Connector>
-    );
-  }
 }
+
+
+function select(state) {
+  return {
+    transaction: state.transaction,
+    user: state.user,
+  };
+}
+
+
+export default connect(select)(Transaction);

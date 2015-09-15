@@ -143,7 +143,7 @@ label:focus ~ .input-help-focused {
   opacity: 1;
 }
 
-.card-icon {
+.pay-method-icon {
     opacity: 0;
     position: absolute;
     right: 8px;
@@ -152,7 +152,7 @@ label:focus ~ .input-help-focused {
     z-index: 10;
 }
 
-.card-icon[class*="cctype-"] {
+.pay-method-icon[class*="pmtype-"] {
     opacity: 1;
     transition: opacity $medium-transition;
 }

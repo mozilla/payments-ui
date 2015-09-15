@@ -1,18 +1,24 @@
 import React, { Component, PropTypes } from 'react';
 import cx from 'classnames';
 
-import CardList from 'components/card-list';
+import PayMethodList from 'components/pay-method-list';
 
-import { gettext, isDisabled } from 'utils';
+import { gettext, isDisabled, setTitle } from 'utils';
 
 
 export default class PayMethods extends Component {
 
   static propTypes = {
+    getPayMethods: PropTypes.func.isRequired,
     payMethods: PropTypes.array.isRequired,
     showAddPayMethod: PropTypes.func.isRequired,
     showDelPayMethod: PropTypes.func.isRequired,
   };
+
+  componentDidMount() {
+    setTitle(gettext('Payment Methods'));
+    this.props.getPayMethods();
+  }
 
   handleAddPayMethod = e => {
     e.preventDefault();
@@ -31,7 +37,7 @@ export default class PayMethods extends Component {
   renderChild() {
     if (this.props.payMethods && this.props.payMethods.length) {
       return (
-        <CardList cards={this.props.payMethods} />
+        <PayMethodList payMethods={this.props.payMethods} />
       );
     }
     return (<p className="no-results">
@@ -43,18 +49,23 @@ export default class PayMethods extends Component {
 
     var isDeleteDisabled = !this.props.payMethods ||
       !this.props.payMethods.length;
-    var deleteClasses = cx('button', 'quiet', 'delete',
-                           {'disabled': isDeleteDisabled});
+    var deleteClasses = cx('delete', {disabled: isDeleteDisabled});
 
     return (
       <div>
         <h1>{gettext('Payment Methods')}</h1>
         <div className="small-form">
           {this.renderChild()}
-          <a className="button quiet add-pay-method" href="#"
-            onClick={this.handleAddPayMethod}>{gettext('Add a new card')}</a>
-          <a className={deleteClasses} href="#"
-            onClick={this.handleDelPayMethod}>{gettext('Delete')}</a>
+          <div className="row">
+            <div className="col">
+              <a className="add-pay-method" href="#"
+                onClick={this.handleAddPayMethod}>
+                  {gettext('Add a new card')}</a>
+            </div>
+            <a className={deleteClasses} href="#"
+              onClick={this.handleDelPayMethod}>
+                {gettext('Delete Pay Methods')}</a>
+          </div>
         </div>
       </div>
     );

@@ -1,23 +1,28 @@
 import * as actionTypes from 'constants/action-types';
+import * as errorCodes from 'constants/error-codes';
 import * as settings from 'settings';
 
-import * as defaultApi from './api';
-import * as appActions from './app';
+import * as api from './api';
+import * as notificationActions from './notifications';
 
 
-export function tokenSignIn(accessToken, api=defaultApi) {
+export function tokenSignIn(accessToken, fetch=api.fetch) {
   return dispatch => {
-    api.fetch({
+    fetch({
       data: {
         access_token: accessToken,
       },
       method: 'post',
       url: '/auth/sign-in/',
+    }, {
+      csrfToken: false,
     }).then(data => {
 
-      api.setCSRFToken(data.csrf_token);
+      dispatch({
+        type: actionTypes.GOT_CSRF_TOKEN,
+        csrfToken: data.csrf_token,
+      });
 
-      console.log('login succeeded, setting user');
       dispatch({
         type: actionTypes.USER_SIGNED_IN,
         user: {
@@ -27,16 +32,15 @@ export function tokenSignIn(accessToken, api=defaultApi) {
       });
 
     }).fail(apiError => {
-
       console.log('FxA token sign-in failure:', apiError.responseJSON);
-      dispatch(appActions.error('FxA token sign-in failed'));
-
+      dispatch(notificationActions.showError(
+        {errorCode: errorCodes.FXA_TOKEN_SIGN_IN_FAILURE}));
     });
   };
 }
 
 
-export function userSignIn(FxaClient=window.FxaRelierClient, api=defaultApi) {
+export function userSignIn(FxaClient=window.FxaRelierClient, fetch=api.fetch) {
   return dispatch => {
     console.log('signing in FxA user');
 
@@ -59,18 +63,23 @@ export function userSignIn(FxaClient=window.FxaRelierClient, api=defaultApi) {
       console.log('FxA sign-in succeeded:', fxaResult);
       console.log('requesting token for code', fxaResult.code);
 
-      api.fetch({
+      fetch({
         type: 'post',
         url: '/auth/sign-in/',
         data: {
           authorization_code: fxaResult.code,
           client_id: settings.fxaClientId,
         },
+      }, {
+        csrfToken: false,
       })
       .then(apiResult => {
         console.log('API sign-in suceeded; result:', apiResult);
 
-        api.setCSRFToken(apiResult.csrf_token);
+        dispatch({
+          type: actionTypes.GOT_CSRF_TOKEN,
+          csrfToken: apiResult.csrf_token,
+        });
 
         dispatch({
           type: actionTypes.USER_SIGNED_IN,
@@ -83,22 +92,26 @@ export function userSignIn(FxaClient=window.FxaRelierClient, api=defaultApi) {
       })
       .fail(apiError => {
         console.error('API user sign-in failure:', apiError.responseJSON);
-        dispatch(appActions.error('API user sign-in failed'));
+        dispatch(notificationActions.showError(
+          {errorCode: errorCodes.API_SIGN_IN_FAILURE}));
       });
 
     }, fxaError => {
       console.error('FxA sign-in failure:', fxaError);
-      dispatch(appActions.error('FxA user sign-in failed'));
+      dispatch(notificationActions.showError(
+        {errorCode: errorCodes.FXA_SIGN_IN_FAILURE}));
     });
   };
 }
 
 
-export function userSignOut(fetch=defaultApi.fetch) {
-  return dispatch => {
+export function userSignOut(fetch=api.fetch) {
+  return (dispatch, getState) => {
     fetch({
       method: 'post',
       url: '/auth/sign-out/',
+    }, {
+      csrfToken: getState().app.csrfToken,
     }).then(() => {
       console.log('API user sign-out succeeded');
 
@@ -109,27 +122,37 @@ export function userSignOut(fetch=defaultApi.fetch) {
     }).fail(apiError => {
 
       console.log('API user sign-out failure:', apiError.responseJSON);
-      dispatch(appActions.error('API user sign-out failed'));
-
+      dispatch(notificationActions.showError(
+        {errorCode: errorCodes.API_SIGN_OUT_FAILURE}));
     });
   };
 }
 
 
-export function getBraintreeToken(fetch=defaultApi.fetch) {
+export function getBraintreeToken(fetch=api.fetch) {
   console.log('Requesting braintree token');
   return dispatch => {
     fetch({
       method: 'post',
       url: '/braintree/token/generate/',
+    }, {
+      csrfToken: false,
     }).then(data => {
+
+      dispatch({
+        type: actionTypes.GOT_CSRF_TOKEN,
+        csrfToken: data.csrf_token,
+      });
+
       dispatch({
         type: actionTypes.GOT_BRAINTREE_TOKEN,
         braintreeToken: data.token,
       });
+
     }).fail(apiError => {
       console.log('failed to get braintree token', apiError.responseJSON);
-      dispatch(appActions.error('Failed to get a braintree token'));
+      dispatch(notificationActions.showError(
+        {errorCode: errorCodes.BRAINTREE_TOKEN_GET_FAILED}));
     });
   };
 }

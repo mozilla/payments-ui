@@ -1,11 +1,10 @@
-.card-list {
-  margin: 0;
-  padding: 0;
-
-  .card-item {
-    list-style-type: none;
-    margin: 10px 0;
+.pay-method-item {
     position: relative;
+
+    input[type=hidden] + label {
+        padding: 1em 0 1em 70px;
+        text-align: left;
+    }
 
     input[type=radio] {
       opacity: 0;
@@ -33,17 +32,7 @@
       width: 100%;
     }
 
-    .card-icon {
+    .pay-method-icon {
       left: 15px;
     }
-  }
-}
-
-.delete .card-item input[type=radio] {
-   &:checked + label,
-   &:hover + label,
-   &:focus + label {
-     border: 1px solid $awooga-red;
-     background: #fff;
-   }
 }

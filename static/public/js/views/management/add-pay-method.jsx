@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import CardForm from 'components/card-form';
 
 import { default as tracking } from 'tracking';
-import { gettext } from 'utils';
+import { gettext, setTitle } from 'utils';
 
 
 export default class AddPayMethod extends Component {
@@ -17,22 +17,25 @@ export default class AddPayMethod extends Component {
   }
 
   componentDidMount() {
+    setTitle(gettext('Add Payment Method'));
     tracking.setPage('/add-pay-method');
   }
 
-  handleCardSubmit(creditCard) {
+  handleCardSubmit(creditCard, processingId) {
     console.log('submitting credit card as new pay method');
-    this.props.addCreditCard(this.props.braintreeToken, creditCard);
+    this.props.addCreditCard({braintreeToken: this.props.braintreeToken,
+                              creditCard: creditCard,
+                              processingId: processingId});
   }
 
   render() {
     return (
       <div className="card-details">
-        <h1>{gettext('Add Card')}</h1>
+        <h1>{gettext('Add Payment Method')}</h1>
         <CardForm
           submissionErrors={this.props.cardSubmissionErrors}
           submitPrompt={gettext('Add')}
-          handleCardSubmit={(card) => this.handleCardSubmit(card)}
+          handleCardSubmit={this.handleCardSubmit.bind(this)}
           id="braintree-form"
           method="post"
         />
