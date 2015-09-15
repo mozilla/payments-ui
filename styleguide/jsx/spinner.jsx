@@ -1,5 +1,4 @@
-'use strict';
+import React from 'react';
+import Spinner from 'components/spinner';
 
-var React = require('react');
-var Spinner = require('components/spinner');
 React.render(<Spinner />, document.getElementById('view'));
