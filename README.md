@@ -38,9 +38,10 @@ DEV=1 grunt watch-email
 ### Dependency installation and updates
 
 Install [grunt-cli](http://gruntjs.com/)
-globally with `npm install -g grunt-cli`
+globally with `npm install -g grunt-cli`.
 Then run `npm install` to install the local deps needed for development.
 
+Dependencies are automatically kept up-to-date using [greenkeeper](http://greenkeeper.io/).
 
 #### npm deps only
 
