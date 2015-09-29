@@ -20672,16 +20672,12 @@ webpackJsonp([0,2],[
 	  var storeShape = _utilsCreateStoreShape2['default'](PropTypes);
 	
 	  return function connect(mapStateToProps, mapDispatchToProps, mergeProps) {
-	    var options = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
-	
 	    var shouldSubscribe = Boolean(mapStateToProps);
 	    var finalMapStateToProps = mapStateToProps || defaultMapStateToProps;
 	    var finalMapDispatchToProps = _utilsIsPlainObject2['default'](mapDispatchToProps) ? _utilsWrapActionCreators2['default'](mapDispatchToProps) : mapDispatchToProps || defaultMapDispatchToProps;
 	    var finalMergeProps = mergeProps || defaultMergeProps;
 	    var shouldUpdateStateProps = finalMapStateToProps.length > 1;
 	    var shouldUpdateDispatchProps = finalMapDispatchToProps.length > 1;
-	    var _options$pure = options.pure;
-	    var pure = _options$pure === undefined ? true : _options$pure;
 	
 	    // Helps track hot reloading.
 	    var version = nextVersion++;
@@ -20714,32 +20710,7 @@ webpackJsonp([0,2],[
 	        _inherits(Connect, _Component);
 	
 	        Connect.prototype.shouldComponentUpdate = function shouldComponentUpdate(nextProps, nextState) {
-	          if (!pure) {
-	            this.updateStateProps(nextProps);
-	            this.updateDispatchProps(nextProps);
-	            this.updateState(nextProps);
-	            return true;
-	          }
-	
-	          var storeChanged = nextState.storeState !== this.state.storeState;
-	          var propsChanged = !_utilsShallowEqual2['default'](nextProps, this.props);
-	          var mapStateProducedChange = false;
-	          var dispatchPropsChanged = false;
-	
-	          if (storeChanged || propsChanged && shouldUpdateStateProps) {
-	            mapStateProducedChange = this.updateStateProps(nextProps);
-	          }
-	
-	          if (propsChanged && shouldUpdateDispatchProps) {
-	            dispatchPropsChanged = this.updateDispatchProps(nextProps);
-	          }
-	
-	          if (propsChanged || mapStateProducedChange || dispatchPropsChanged) {
-	            this.updateState(nextProps);
-	            return true;
-	          }
-	
-	          return false;
+	          return !_utilsShallowEqual2['default'](this.state.props, nextState.props);
 	        };
 	
 	        _createClass(Connect, null, [{
@@ -20775,8 +20746,9 @@ webpackJsonp([0,2],[
 	
 	          this.stateProps = computeStateProps(this.store, props);
 	          this.dispatchProps = computeDispatchProps(this.store, props);
-	          this.state = { storeState: null };
-	          this.updateState();
+	          this.state = {
+	            props: this.computeNextState()
+	          };
 	        }
 	
 	        Connect.prototype.computeNextState = function computeNextState() {
@@ -20812,7 +20784,12 @@ webpackJsonp([0,2],[
 	        Connect.prototype.updateState = function updateState() {
 	          var props = arguments.length <= 0 || arguments[0] === undefined ? this.props : arguments[0];
 	
-	          this.nextState = this.computeNextState(props);
+	          var nextState = this.computeNextState(props);
+	          if (!_utilsShallowEqual2['default'](nextState, this.state.props)) {
+	            this.setState({
+	              props: nextState
+	            });
+	          }
 	        };
 	
 	        Connect.prototype.isSubscribed = function isSubscribed() {
@@ -20837,18 +20814,28 @@ webpackJsonp([0,2],[
 	          this.trySubscribe();
 	        };
 	
+	        Connect.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+	          if (!_utilsShallowEqual2['default'](nextProps, this.props)) {
+	            if (shouldUpdateStateProps) {
+	              this.updateStateProps(nextProps);
+	            }
+	
+	            if (shouldUpdateDispatchProps) {
+	              this.updateDispatchProps(nextProps);
+	            }
+	
+	            this.updateState(nextProps);
+	          }
+	        };
+	
 	        Connect.prototype.componentWillUnmount = function componentWillUnmount() {
 	          this.tryUnsubscribe();
 	        };
 	
 	        Connect.prototype.handleChange = function handleChange() {
-	          if (!this.unsubscribe) {
-	            return;
+	          if (this.updateStateProps()) {
+	            this.updateState();
 	          }
-	
-	          this.setState({
-	            storeState: this.store.getState()
-	          });
 	        };
 	
 	        Connect.prototype.getWrappedInstance = function getWrappedInstance() {
@@ -20857,7 +20844,7 @@ webpackJsonp([0,2],[
 	
 	        Connect.prototype.render = function render() {
 	          return React.createElement(WrappedComponent, _extends({ ref: 'wrappedInstance'
-	          }, this.nextState));
+	          }, this.state.props));
 	        };
 	
 	        return Connect;
