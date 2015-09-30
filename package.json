@@ -9,7 +9,7 @@
     "classnames": "2.1.4",
     "connect-fonts-clearsans": "0.0.1",
     "connect-fonts-firasans": "0.0.4",
-    "events": "1.0.2",
+    "events": "1.1.0",
     "fecha": "0.2.2",
     "jquery": "2.1.4",
     "mozilla-payments-config": "0.0.13",
