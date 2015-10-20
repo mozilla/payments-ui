@@ -21301,13 +21301,16 @@ webpackJsonp([0,2],[
 	      throw sanityError;
 	    }
 	
+	    var hasChanged = false;
 	    var finalState = _utilsMapValues2['default'](finalReducers, function (reducer, key) {
-	      var newState = reducer(state[key], action);
-	      if (typeof newState === 'undefined') {
+	      var previousStateForKey = state[key];
+	      var nextStateForKey = reducer(previousStateForKey, action);
+	      if (typeof nextStateForKey === 'undefined') {
 	        var errorMessage = getUndefinedStateErrorMessage(key, action);
 	        throw new Error(errorMessage);
 	      }
-	      return newState;
+	      hasChanged = hasChanged || nextStateForKey !== previousStateForKey;
+	      return nextStateForKey;
 	    });
 	
 	    if (process.env.NODE_ENV !== 'production') {
@@ -21317,7 +21320,7 @@ webpackJsonp([0,2],[
 	      }
 	    }
 	
-	    return finalState;
+	    return hasChanged ? finalState : state;
 	  };
 	}
 	
