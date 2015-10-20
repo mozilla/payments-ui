@@ -50,7 +50,7 @@ export default class ProductPayChooser extends Component {
           productId={this.props.productId}
           submitButtonText={submitPrompt}
           submitHandler={this.handleSubmit}
-          useDropDown={true}
+          useDropDown
         />
         <a className="add-card" href="#"
           onClick={this.props.payWithNewCard}>
