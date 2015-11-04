@@ -255,7 +255,7 @@
   z-index: 2;
 }
 
-@media (-webkit-min-device-pixel-ratio: 1.5), (min--moz-device-pixel-ratio: 1.5), (-o-min-device-pixel-ratio: 3/2), (min-resolution: 1.5dppx) {
+@media (-webkit-min-device-pixel-ratio: 1.5), (min--moz-device-pixel-ratio: 1.5), (-o-min-device-pixel-ratio: 3 / 2), (min-resolution: 1.5dppx) {
   #tabzilla a {
     background-image: url("../media/img/tabzilla-static-high-res.png");
     -webkit-background-size: 147px 37px;
@@ -350,25 +350,21 @@
   font-size: 14px;
 }
 
-.management button.quiet:focus,
-.management button.quiet:active,
-.management button.quiet:hover,
+.management button.quiet:focus, .management button.quiet:active, .management button.quiet:hover,
 .management .button.quiet:focus,
 .management .button.quiet:active,
 .management .button.quiet:hover {
   background: #EBEBEB;
 }
 
-.management button.quiet:disabled,
-.management button.quiet.disabled,
+.management button.quiet:disabled, .management button.quiet.disabled,
 .management .button.quiet:disabled,
 .management .button.quiet.disabled {
   opacity: 0.5;
   background: inherit;
 }
 
-.management button.quiet:disabled:focus,
-.management button.quiet.disabled:focus,
+.management button.quiet:disabled:focus, .management button.quiet.disabled:focus,
 .management .button.quiet:disabled:focus,
 .management .button.quiet.disabled:focus {
   box-shadow: none;
@@ -445,10 +441,10 @@
   width: 100%;
 }
 
-.active .management .sidebar a:link,
-.active .management .sidebar a:visited,
-.active .management .sidebar a:hover,
-.active .management .sidebar a:active {
+.active .management .sidebar a:link, .active
+.management .sidebar a:visited, .active
+.management .sidebar a:hover, .active
+.management .sidebar a:active {
   color: #fff;
 }
 
@@ -473,9 +469,7 @@
   transition: all 0.3s;
 }
 
-.management .sidebar .signout a:link:focus,
-.management .sidebar .signout a:link:hover,
-.management .sidebar .signout a:link:active {
+.management .sidebar .signout a:link:focus, .management .sidebar .signout a:link:hover, .management .sidebar .signout a:link:active {
   color: #fff;
   background: none;
   border: 1px solid #c1c1c1;

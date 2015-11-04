@@ -195,9 +195,7 @@ button {
   line-height: 1.5em;
 }
 
-.button:active,
-.button:hover,
-.button:focus,
+.button:active, .button:hover, .button:focus,
 a.button:active,
 a.button:hover,
 a.button:focus,
@@ -215,8 +213,7 @@ button:focus {
   outline: none;
 }
 
-.button:disabled,
-.button.disabled,
+.button:disabled, .button.disabled,
 a.button:disabled,
 a.button.disabled,
 button:disabled,
