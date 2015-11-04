@@ -29,7 +29,7 @@
     "chai": "3.3.0",
     "cog-style-guide": "0.0.2",
     "eslint": "1.7.2",
-    "eslint-plugin-react": "3.6.3",
+    "eslint-plugin-react": "3.7.0",
     "grunt": "0.4.5",
     "grunt-concurrent": "2.0.3",
     "grunt-contrib-clean": "0.6.0",
