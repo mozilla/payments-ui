@@ -37269,7 +37269,7 @@
 		"description": {
 			"en": "Brick"
 		}
-	}
+	};
 
 /***/ },
 /* 383 */
@@ -37299,7 +37299,7 @@
 		"description": {
 			"en": "Mortar"
 		}
-	}
+	};
 
 /***/ },
 /* 384 */
@@ -37327,7 +37327,7 @@
 		"description": {
 			"en": "Donation"
 		}
-	}
+	};
 
 /***/ },
 /* 385 */
@@ -37355,7 +37355,7 @@
 		"description": {
 			"en": "Recurring Donation"
 		}
-	}
+	};
 
 /***/ },
 /* 386 */
