@@ -37700,7 +37700,7 @@ webpackJsonp([0,2],[
 		"description": {
 			"en": "Brick"
 		}
-	}
+	};
 
 /***/ },
 /* 383 */
@@ -37730,7 +37730,7 @@ webpackJsonp([0,2],[
 		"description": {
 			"en": "Mortar"
 		}
-	}
+	};
 
 /***/ },
 /* 384 */
@@ -37758,7 +37758,7 @@ webpackJsonp([0,2],[
 		"description": {
 			"en": "Donation"
 		}
-	}
+	};
 
 /***/ },
 /* 385 */
@@ -37786,7 +37786,7 @@ webpackJsonp([0,2],[
 		"description": {
 			"en": "Recurring Donation"
 		}
-	}
+	};
 
 /***/ },
 /* 386 */
