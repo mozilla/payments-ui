@@ -48,7 +48,7 @@
     "karma": "0.13.11",
     "karma-chai": "0.1.0",
     "karma-firefox-launcher": "0.1.7",
-    "karma-mocha": "0.2.0",
+    "karma-mocha": "0.2.1",
     "karma-mocha-reporter": "1.1.1",
     "karma-sauce-launcher": "0.2.14",
     "karma-sinon": "1.0.4",
