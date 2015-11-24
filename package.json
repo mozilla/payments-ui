@@ -42,7 +42,7 @@
     "grunt-i18n-abide": "0.0.16",
     "grunt-karma": "0.12.0",
     "grunt-sass": "1.0.0",
-    "grunt-svg-sprite": "1.2.14",
+    "grunt-svg-sprite": "1.2.15",
     "grunt-webpack": "1.0.11",
     "json-loader": "0.5.3",
     "karma": "0.13.11",
