@@ -20,7 +20,7 @@
     "react-maskedinput": "2.0.0",
     "react-redux": "3.1.0",
     "redux": "3.0.3",
-    "redux-thunk": "0.1.0"
+    "redux-thunk": "1.0.0"
   },
   "devDependencies": {
     "babel-core": "5.8.34",
