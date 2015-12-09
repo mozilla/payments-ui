@@ -38293,8 +38293,8 @@ webpackJsonp([0,2],[
 	module.exports = {
 	  number: __webpack_require__(390),
 	  expirationDate: __webpack_require__(431),
-	  expirationMonth: __webpack_require__(433),
-	  expirationYear: __webpack_require__(434),
+	  expirationMonth: __webpack_require__(434),
+	  expirationYear: __webpack_require__(433),
 	  cvv: __webpack_require__(435),
 	  postalCode: __webpack_require__(436)
 	};
@@ -39984,8 +39984,8 @@ webpackJsonp([0,2],[
 /***/ function(module, exports, __webpack_require__) {
 
 	var parseDate = __webpack_require__(432);
-	var expirationMonth = __webpack_require__(433);
-	var expirationYear = __webpack_require__(434);
+	var expirationMonth = __webpack_require__(434);
+	var expirationYear = __webpack_require__(433);
 	var isString = __webpack_require__(391);
 	
 	function verification(isValid, isPotentiallyValid, month, year) {
@@ -40032,10 +40032,12 @@ webpackJsonp([0,2],[
 
 /***/ },
 /* 432 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
+	var expirationYear = __webpack_require__(433);
+	
 	function parseDate(value) {
-	  var month, len;
+	  var month, len, year, yearValid;
 	
 	  if (value.match('/')) {
 	    value = value.split(/\s*\/\s*/g);
@@ -40046,7 +40048,16 @@ webpackJsonp([0,2],[
 	    };
 	  }
 	
-	  len = value[0] === '0' || value.length > 5 || value.length === 4 || value.length === 3 ? 2 : 1;
+	  len = value[0] === '0' || value.length > 5 || value.length === 4 ? 2 : 1;
+	
+	  if (value.length === 3 && value[0] === '1') {
+	    year = value.substr(1, 2);
+	    yearValid = expirationYear(year);
+	    if (!yearValid.isValid) {
+	      len = 2;
+	    }
+	  }
+	
 	  month = value.substr(0, len);
 	
 	  return {
@@ -40060,48 +40071,6 @@ webpackJsonp([0,2],[
 
 /***/ },
 /* 433 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var isString = __webpack_require__(391);
-	
-	function verification(isValid, isPotentiallyValid, isValidForThisYear) {
-	  return {
-	    isValid: isValid,
-	    isPotentiallyValid: isPotentiallyValid,
-	    isValidForThisYear: isValidForThisYear || false
-	  };
-	}
-	
-	function expirationMonth(value) {
-	  var month, result;
-	  var currentMonth = new Date().getMonth() + 1;
-	
-	  if (!isString(value)) {
-	    return verification(false, false);
-	  }
-	  if ((value.replace(/\s/g, '') === '') || (value === '0')) {
-	    return verification(false, true);
-	  }
-	  if (!/^\d*$/.test(value)) {
-	    return verification(false, false);
-	  }
-	
-	  month = parseInt(value, 10);
-	
-	  if (isNaN(value)) {
-	    return verification(false, false);
-	  }
-	
-	  result = month > 0 && month < 13;
-	
-	  return verification(result, result, result && month >= currentMonth);
-	}
-	
-	module.exports = expirationMonth;
-
-
-/***/ },
-/* 434 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var isString = __webpack_require__(391);
@@ -40162,6 +40131,48 @@ webpackJsonp([0,2],[
 	}
 	
 	module.exports = expirationYear;
+
+
+/***/ },
+/* 434 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isString = __webpack_require__(391);
+	
+	function verification(isValid, isPotentiallyValid, isValidForThisYear) {
+	  return {
+	    isValid: isValid,
+	    isPotentiallyValid: isPotentiallyValid,
+	    isValidForThisYear: isValidForThisYear || false
+	  };
+	}
+	
+	function expirationMonth(value) {
+	  var month, result;
+	  var currentMonth = new Date().getMonth() + 1;
+	
+	  if (!isString(value)) {
+	    return verification(false, false);
+	  }
+	  if ((value.replace(/\s/g, '') === '') || (value === '0')) {
+	    return verification(false, true);
+	  }
+	  if (!/^\d*$/.test(value)) {
+	    return verification(false, false);
+	  }
+	
+	  month = parseInt(value, 10);
+	
+	  if (isNaN(value)) {
+	    return verification(false, false);
+	  }
+	
+	  result = month > 0 && month < 13;
+	
+	  return verification(result, result, result && month >= currentMonth);
+	}
+	
+	module.exports = expirationMonth;
 
 
 /***/ },
