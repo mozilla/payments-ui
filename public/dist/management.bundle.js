@@ -21069,14 +21069,8 @@ webpackJsonp([0,2],[
 	   */
 	  function subscribe(listener) {
 	    listeners.push(listener);
-	    var isSubscribed = true;
 	
 	    return function unsubscribe() {
-	      if (!isSubscribed) {
-	        return;
-	      }
-	
-	      isSubscribed = false;
 	      var index = listeners.indexOf(listener);
 	      listeners.splice(index, 1);
 	    };
@@ -21172,7 +21166,6 @@ webpackJsonp([0,2],[
 	var fnToString = function fnToString(fn) {
 	  return Function.prototype.toString.call(fn);
 	};
-	var objStringValue = fnToString(Object);
 	
 	/**
 	 * @param {any} obj The object to inspect.
@@ -21192,7 +21185,7 @@ webpackJsonp([0,2],[
 	
 	  var constructor = proto.constructor;
 	
-	  return typeof constructor === 'function' && constructor instanceof constructor && fnToString(constructor) === objStringValue;
+	  return typeof constructor === 'function' && constructor instanceof constructor && fnToString(constructor) === fnToString(Object);
 	}
 	
 	module.exports = exports['default'];
@@ -21210,17 +21203,17 @@ webpackJsonp([0,2],[
 	
 	var _createStore = __webpack_require__(166);
 	
-	var _isPlainObject = __webpack_require__(167);
+	var _utilsIsPlainObject = __webpack_require__(167);
 	
-	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
+	var _utilsIsPlainObject2 = _interopRequireDefault(_utilsIsPlainObject);
 	
-	var _mapValues = __webpack_require__(169);
+	var _utilsMapValues = __webpack_require__(169);
 	
-	var _mapValues2 = _interopRequireDefault(_mapValues);
+	var _utilsMapValues2 = _interopRequireDefault(_utilsMapValues);
 	
-	var _pick = __webpack_require__(170);
+	var _utilsPick = __webpack_require__(170);
 	
-	var _pick2 = _interopRequireDefault(_pick);
+	var _utilsPick2 = _interopRequireDefault(_utilsPick);
 	
 	/* eslint-disable no-console */
 	
@@ -21239,7 +21232,7 @@ webpackJsonp([0,2],[
 	    return 'Store does not have a valid reducer. Make sure the argument passed ' + 'to combineReducers is an object whose values are reducers.';
 	  }
 	
-	  if (!_isPlainObject2['default'](inputState)) {
+	  if (!_utilsIsPlainObject2['default'](inputState)) {
 	    return 'The ' + argumentName + ' has unexpected type of "' + ({}).toString.call(inputState).match(/\s([a-z|A-Z]+)/)[1] + '". Expected argument to be an object with the following ' + ('keys: "' + reducerKeys.join('", "') + '"');
 	  }
 	
@@ -21286,7 +21279,7 @@ webpackJsonp([0,2],[
 	 */
 	
 	function combineReducers(reducers) {
-	  var finalReducers = _pick2['default'](reducers, function (val) {
+	  var finalReducers = _utilsPick2['default'](reducers, function (val) {
 	    return typeof val === 'function';
 	  });
 	  var sanityError;
@@ -21297,7 +21290,7 @@ webpackJsonp([0,2],[
 	    sanityError = e;
 	  }
 	
-	  var defaultState = _mapValues2['default'](finalReducers, function () {
+	  var defaultState = _utilsMapValues2['default'](finalReducers, function () {
 	    return undefined;
 	  });
 	
@@ -21309,7 +21302,7 @@ webpackJsonp([0,2],[
 	    }
 	
 	    var hasChanged = false;
-	    var finalState = _mapValues2['default'](finalReducers, function (reducer, key) {
+	    var finalState = _utilsMapValues2['default'](finalReducers, function (reducer, key) {
 	      var previousStateForKey = state[key];
 	      var nextStateForKey = reducer(previousStateForKey, action);
 	      if (typeof nextStateForKey === 'undefined') {
@@ -21397,9 +21390,9 @@ webpackJsonp([0,2],[
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _mapValues = __webpack_require__(169);
+	var _utilsMapValues = __webpack_require__(169);
 	
-	var _mapValues2 = _interopRequireDefault(_mapValues);
+	var _utilsMapValues2 = _interopRequireDefault(_utilsMapValues);
 	
 	function bindActionCreator(actionCreator, dispatch) {
 	  return function () {
@@ -21435,10 +21428,11 @@ webpackJsonp([0,2],[
 	  }
 	
 	  if (typeof actionCreators !== 'object' || actionCreators === null || actionCreators === undefined) {
+	    // eslint-disable-line no-eq-null
 	    throw new Error('bindActionCreators expected an object or a function, instead received ' + (actionCreators === null ? 'null' : typeof actionCreators) + '. ' + 'Did you write "import ActionCreators from" instead of "import * as ActionCreators from"?');
 	  }
 	
-	  return _mapValues2['default'](actionCreators, function (actionCreator) {
+	  return _utilsMapValues2['default'](actionCreators, function (actionCreator) {
 	    return bindActionCreator(actionCreator, dispatch);
 	  });
 	}
@@ -21594,8 +21588,6 @@ webpackJsonp([0,2],[
 	 * This source code is licensed under the BSD-style license found in the
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule invariant
 	 */
 	
 	'use strict';
@@ -21629,9 +21621,9 @@ webpackJsonp([0,2],[
 	      var args = [a, b, c, d, e, f];
 	      var argIndex = 0;
 	      error = new Error(
-	        'Invariant Violation: ' +
 	        format.replace(/%s/g, function() { return args[argIndex++]; })
 	      );
+	      error.name = 'Invariant Violation';
 	    }
 	
 	    error.framesToPop = 1; // we don't care about invariant's own frame
