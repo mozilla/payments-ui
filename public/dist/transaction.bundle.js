@@ -44164,9 +44164,10 @@
 
 	'use strict';
 	
-	exports.__esModule = true;
-	exports['default'] = thunkMiddleware;
-	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = thunkMiddleware;
 	function thunkMiddleware(_ref) {
 	  var dispatch = _ref.dispatch;
 	  var getState = _ref.getState;
@@ -44177,8 +44178,6 @@
 	    };
 	  };
 	}
-	
-	module.exports = exports['default'];
 
 /***/ },
 /* 486 */
