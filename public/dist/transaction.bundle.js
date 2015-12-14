@@ -44178,6 +44178,7 @@
 	    };
 	  };
 	}
+	module.exports = exports['default'];
 
 /***/ },
 /* 486 */
