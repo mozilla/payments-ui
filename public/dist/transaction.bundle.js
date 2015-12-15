@@ -39666,17 +39666,6 @@
 	  return false;
 	}
 	
-	function min(array) {
-	  var minimum = DEFAULT_LENGTH;
-	  var i = 0;
-	
-	  for (; i < array.length; i++) {
-	    minimum = array[i] < minimum ? array[i] : minimum;
-	  }
-	
-	  return minimum;
-	}
-	
 	function max(array) {
 	  var maximum = DEFAULT_LENGTH;
 	  var i = 0;
@@ -39699,7 +39688,7 @@
 	  if (!isString(value)) { return verification(false, false); }
 	  if (!/^\d*$/.test(value)) { return verification(false, false); }
 	  if (includes(maxLength, value.length)) { return verification(true, true); }
-	  if (value.length < min(maxLength)) { return verification(false, true); }
+	  if (value.length < Math.min.apply(null, maxLength)) { return verification(false, true); }
 	  if (value.length > max(maxLength)) { return verification(false, false); }
 	
 	  return verification(true, true);
