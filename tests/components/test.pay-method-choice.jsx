@@ -58,7 +58,7 @@ describe('Pay Method Choice (List)', function() {
     this.PayMethodChoice = TestUtils.renderIntoDocument(
       <PayMethodChoice
         payMethods={payMethodData}
-        cssModifier='whatevar-modifier'
+        cssModifier="whatevar-modifier"
         processing={fakeProcessing}
       />
     );

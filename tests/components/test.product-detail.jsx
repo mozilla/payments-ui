@@ -88,7 +88,7 @@ describe('ProductDetail Exceptions', function() {
   it('should throw error with invalid product', function() {
     assert.throws(function() {
       TestUtils.renderIntoDocument(
-        <ProductDetail productId='not-real-product' />
+        <ProductDetail productId="not-real-product" />
       );
     }, /Invalid product/);
   });
