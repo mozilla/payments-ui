@@ -38,7 +38,7 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('build', ['clean:dist', 'sass', 'webpack']);
+  grunt.registerTask('build', ['clean:dist', 'copy-deps', 'sass', 'webpack']);
   grunt.registerTask('serve', 'Dev server with webpack hot module reloading',
     ['clean:dist', 'sass:dev', 'webpack-dev-server:start', 'watch:sass']);
   grunt.registerTask('watch-email', 'Watches and rebuilds email CSS',
