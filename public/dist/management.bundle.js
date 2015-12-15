@@ -40775,7 +40775,7 @@ webpackJsonp([0,2],[
 /* 442 */
 /***/ function(module, exports) {
 
-	'use strict';
+	'use strict'
 	
 	function extend(dest, src) {
 	  if (src) {
@@ -40814,13 +40814,13 @@ webpackJsonp([0,2],[
 	  return merged
 	}
 	
-	var PLACEHOLDER = '_'
 	var ESCAPE_CHAR = '\\'
 	
 	var DIGIT_RE = /^\d$/
 	var LETTER_RE = /^[A-Za-z]$/
 	var ALPHANNUMERIC_RE = /^[\dA-Za-z]$/
 	
+	var DEFAULT_PLACEHOLDER_CHAR = '_'
 	var DEFAULT_FORMAT_CHARACTERS = {
 	  '*': {
 	    validate: function(char) { return ALPHANNUMERIC_RE.test(char) }
@@ -40845,9 +40845,13 @@ webpackJsonp([0,2],[
 	 * @param {string} source
 	 * @patam {?Object} formatCharacters
 	 */
-	function Pattern(source, formatCharacters) {
-	  if (!(this instanceof Pattern)) { return new Pattern(source) }
+	function Pattern(source, formatCharacters, placeholderChar) {
+	  if (!(this instanceof Pattern)) {
+	    return new Pattern(source, formatCharacters, placeholderChar)
+	  }
 	
+	  /** Placeholder character */
+	  this.placeholderChar = placeholderChar || DEFAULT_PLACEHOLDER_CHAR
 	  /** Format character definitions. */
 	  this.formatCharacters = formatCharacters || DEFAULT_FORMAT_CHARACTERS
 	  /** Pattern definition string with escape characters. */
@@ -40914,7 +40918,7 @@ webpackJsonp([0,2],[
 	    if (this.isEditableIndex(i)) {
 	      valueBuffer[i] = (value.length > valueIndex && this.isValidAtIndex(value[valueIndex], i)
 	                        ? this.transform(value[valueIndex], i)
-	                        : PLACEHOLDER)
+	                        : this.placeholderChar)
 	      valueIndex++
 	    }
 	    else {
@@ -40958,6 +40962,7 @@ webpackJsonp([0,2],[
 	  options = extend({
 	    formatCharacters: null,
 	    pattern: null,
+	    placeholderChar: DEFAULT_PLACEHOLDER_CHAR,
 	    selection: {start: 0, end: 0},
 	    value: ''
 	  }, options)
@@ -40966,6 +40971,11 @@ webpackJsonp([0,2],[
 	    throw new Error('InputMask: you must provide a pattern.')
 	  }
 	
+	  if (options.placeholderChar.length !== 1) {
+	    throw new Error('InputMask: placeholderChar should be a single character.')
+	  }
+	
+	  this.placeholderChar = options.placeholderChar
 	  this.formatCharacters = mergeFormatCharacters(options.formatCharacters)
 	  this.setPattern(options.pattern, {
 	    value: options.value,
@@ -40993,11 +41003,9 @@ webpackJsonp([0,2],[
 	
 	  var inputIndex = this.selection.start
 	
-	  // If a range of characters was selected and it includes the first editable
-	  // character, make sure any input given is applied to it.
-	  if (this.selection.start !== this.selection.end &&
-	      this.selection.start < this.pattern.firstEditableIndex &&
-	      this.selection.end > this.pattern.firstEditableIndex) {
+	  // If the cursor or selection is prior to the first editable character, make
+	  // sure any input given is applied to it.
+	  if (inputIndex < this.pattern.firstEditableIndex) {
 	    inputIndex = this.pattern.firstEditableIndex
 	  }
 	
@@ -41014,7 +41022,7 @@ webpackJsonp([0,2],[
 	  var end = this.selection.end - 1
 	  while (end > inputIndex) {
 	    if (this.pattern.isEditableIndex(end)) {
-	      this.value[end] = PLACEHOLDER
+	      this.value[end] = this.placeholderChar
 	    }
 	    end--
 	  }
@@ -41036,9 +41044,9 @@ webpackJsonp([0,2],[
 	    this._history.splice(this._historyIndex, this._history.length - this._historyIndex)
 	    this._historyIndex = null
 	  }
-	  if (this._lastOp != 'input' ||
-	      selectionBefore.start != selectionBefore.end ||
-	      this._lastSelection != null && selectionBefore.start != this._lastSelection.start) {
+	  if (this._lastOp !== 'input' ||
+	      selectionBefore.start !== selectionBefore.end ||
+	      this._lastSelection !== null && selectionBefore.start !== this._lastSelection.start) {
 	    this._history.push({value: valueBefore, selection: selectionBefore, lastOp: this._lastOp})
 	  }
 	  this._lastOp = 'input'
@@ -41062,12 +41070,10 @@ webpackJsonp([0,2],[
 	  var selectionBefore = copy(this.selection)
 	  var valueBefore = this.getValue()
 	
-	  var format
-	
 	  // No range selected - work on the character preceding the cursor
 	  if (this.selection.start === this.selection.end) {
 	    if (this.pattern.isEditableIndex(this.selection.start - 1)) {
-	      this.value[this.selection.start - 1] = PLACEHOLDER
+	      this.value[this.selection.start - 1] = this.placeholderChar
 	    }
 	    this.selection.start--
 	    this.selection.end--
@@ -41077,7 +41083,7 @@ webpackJsonp([0,2],[
 	    var end = this.selection.end - 1
 	    while (end >= this.selection.start) {
 	      if (this.pattern.isEditableIndex(end)) {
-	        this.value[end] = PLACEHOLDER
+	        this.value[end] = this.placeholderChar
 	      }
 	      end--
 	    }
@@ -41089,9 +41095,9 @@ webpackJsonp([0,2],[
 	    // Took more input after undoing, so blow any subsequent history away
 	    this._history.splice(this._historyIndex, this._history.length - this._historyIndex)
 	  }
-	  if (this._lastOp != 'backspace' ||
-	      selectionBefore.start != selectionBefore.end ||
-	      this._lastSelection != null && selectionBefore.start != this._lastSelection.start) {
+	  if (this._lastOp !== 'backspace' ||
+	      selectionBefore.start !== selectionBefore.end ||
+	      this._lastSelection !== null && selectionBefore.start !== this._lastSelection.start) {
 	    this._history.push({value: valueBefore, selection: selectionBefore, lastOp: this._lastOp})
 	  }
 	  this._lastOp = 'backspace'
@@ -41136,7 +41142,7 @@ webpackJsonp([0,2],[
 	    this.selection.start = this.pattern.firstEditableIndex
 	  }
 	
-	  for (var i = 0, l = input.length;
+	  for (i = 0, l = input.length;
 	       i < l && this.selection.start <= this.pattern.lastEditableIndex;
 	       i++) {
 	    var valid = this.input(input.charAt(i))
@@ -41176,9 +41182,9 @@ webpackJsonp([0,2],[
 	    // Add a new history entry if anything has changed since the last one, so we
 	    // can redo back to the initial state we started undoing from.
 	    var value = this.getValue()
-	    if (historyItem.value != value ||
-	        historyItem.selection.start != this.selection.start ||
-	        historyItem.selection.end != this.selection.end) {
+	    if (historyItem.value !== value ||
+	        historyItem.selection.start !== this.selection.start ||
+	        historyItem.selection.end !== this.selection.end) {
 	      this._history.push({value: value, selection: copy(this.selection), lastOp: this._lastOp, startUndo: true})
 	    }
 	  }
@@ -41218,7 +41224,7 @@ webpackJsonp([0,2],[
 	    selection: {start: 0, end: 0},
 	    value: ''
 	  }, options)
-	  this.pattern = new Pattern(pattern, this.formatCharacters)
+	  this.pattern = new Pattern(pattern, this.formatCharacters, this.placeholderChar)
 	  this.setValue(options.value)
 	  this.emptyValue = this.pattern.formatValue([]).join('')
 	  this.selection = options.selection
@@ -41241,11 +41247,24 @@ webpackJsonp([0,2],[
 	}
 	
 	InputMask.prototype.setValue = function setValue(value) {
+	  if (value == null) {
+	    value = ''
+	  }
 	  this.value = this.pattern.formatValue(value.split(''))
 	}
 	
 	InputMask.prototype.getValue = function getValue() {
 	  return this.value.join('')
+	}
+	
+	InputMask.prototype.getRawValue = function getRawValue() {
+	  var rawValue = []
+	  for (var i = 0; i < this.value.length; i++) {
+	    if (this.pattern._editableIndices[i] === true) {
+	      rawValue.push(this.value[i])
+	    }
+	  }
+	  return rawValue.join('')
 	}
 	
 	InputMask.prototype._resetHistory = function _resetHistory() {
@@ -41258,6 +41277,7 @@ webpackJsonp([0,2],[
 	InputMask.Pattern = Pattern
 	
 	module.exports = InputMask
+
 
 /***/ },
 /* 443 */
