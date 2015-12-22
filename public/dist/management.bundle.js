@@ -43149,7 +43149,9 @@ webpackJsonp([0,2],[
 			if( this.getSetting('header') )
 				contents.unshift( this.renderHeader( cols ) );
 	
-			return $.table({ className: this.getSetting( 'classPrefix' ) + 'Table' }, contents );
+			var tableClass = this.props.className || this.getSetting( 'classPrefix' ) + 'Table';
+	
+			return $.table({ className: tableClass }, contents );
 		},
 	
 		renderHeader: function( cols ){
@@ -43168,7 +43170,7 @@ webpackJsonp([0,2],[
 				})
 			;
 	
-			return $.thead({ key: 'th'},
+			return $.thead({ key: 'th' },
 				$.tr({ className: prefix + 'Header' }, cells )
 			);
 		},
@@ -43181,10 +43183,10 @@ webpackJsonp([0,2],[
 			;
 	
 			if( !items || !items.length )
-				return $.tbody({}, [$.tr({}, $.td({}, this.getSetting('noRowsMessage') ))]);
+				return $.tbody({key:'body'}, [$.tr({}, $.td({}, this.getSetting('noRowsMessage') ))]);
 	
 			var rows = items.map( function( item ){
-				var key = me.getKey( item );
+				var key = me.getKey( item, i );
 				return React.createElement(Row, {
 					key: key,
 					reactKey: key,
@@ -43197,7 +43199,7 @@ webpackJsonp([0,2],[
 				});
 			});
 	
-			return $.tbody({}, rows);
+			return $.tbody({key:'body'}, rows);
 		},
 	
 		getItemField: function( item, field ){
@@ -43251,7 +43253,7 @@ webpackJsonp([0,2],[
 			});
 		},
 	
-		getKey: function( item ){
+		getKey: function( item, i ){
 			var field = this.props.settings && this.props.settings.keyField;
 			if( field && item[ field ] )
 				return item[ field ];
@@ -43261,6 +43263,8 @@ webpackJsonp([0,2],[
 	
 			if( item._id )
 				return item._id;
+	
+			return i;
 		},
 	
 		shouldComponentUpdate: function(){
@@ -43328,7 +43332,8 @@ webpackJsonp([0,2],[
 	
 			return $.tr({
 				className: className,
-				onClick: me.onClickRow
+				onClick: me.onClickRow,
+				key: this.props.reactKey
 			}, cells );
 		},
 	
