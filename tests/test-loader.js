@@ -3,8 +3,7 @@
 // See: https://github.com/webpack/karma-webpack#alternative-usage
 import 'babel-core/polyfill';
 
-// silence logging in components
-var logLevels = ['log', 'warn', 'info', 'error'];
+var logLevels = ['log', 'warn', 'info', 'error', 'debug'];
 logLevels.forEach(function(level) {
   console[level] = function() {};
 });
