@@ -44,5 +44,6 @@ module.exports = {
   webpack: newWebpackConfig,
   webpackServer: {
     noInfo: true,
+    quiet: true,
   },
 };
