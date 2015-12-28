@@ -46592,10 +46592,6 @@ webpackJsonp([0,2],[
 
 	'use strict';
 	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = thunkMiddleware;
 	function thunkMiddleware(_ref) {
 	  var dispatch = _ref.dispatch;
 	  var getState = _ref.getState;
@@ -46606,7 +46602,8 @@ webpackJsonp([0,2],[
 	    };
 	  };
 	}
-	module.exports = exports['default'];
+	
+	module.exports = thunkMiddleware;
 
 /***/ },
 /* 486 */
