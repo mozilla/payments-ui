@@ -39509,25 +39509,30 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var expirationYear = __webpack_require__(433);
+	var isArray = __webpack_require__(406);
 	
 	function parseDate(value) {
 	  var month, len, year, yearValid;
 	
-	  if (value.match('/')) {
+	  if (/\//.test(value)) {
 	    value = value.split(/\s*\/\s*/g);
+	  } else if (/\s/.test(value)) {
+	    value = value.split(/ +/g);
+	  }
 	
+	  if (isArray(value)) {
 	    return {
 	      month: value[0],
 	      year: value.slice(1).join()
 	    };
 	  }
 	
-	  len = value[0] === '0' || value.length > 5 || value.length === 4 ? 2 : 1;
+	  len = value[0] === '0' || value.length > 5 ? 2 : 1;
 	
-	  if (value.length === 3 && value[0] === '1') {
-	    year = value.substr(1, 2);
+	  if (value[0] === '1') {
+	    year = value.substr(1);
 	    yearValid = expirationYear(year);
-	    if (!yearValid.isValid) {
+	    if (!yearValid.isPotentiallyValid) {
 	      len = 2;
 	    }
 	  }
@@ -39536,7 +39541,7 @@
 	
 	  return {
 	    month: month,
-	    year: value.substr(month.length, 4)
+	    year: value.substr(month.length)
 	  };
 	}
 	
