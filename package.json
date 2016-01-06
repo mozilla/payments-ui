@@ -4,7 +4,7 @@
   "description": "The client-side front-end for fxa payments.",
   "main": "index.js",
   "dependencies": {
-    "braintree-web": "2.17.5",
+    "braintree-web": "2.17.6",
     "card-validator": "2.2.4",
     "classnames": "2.2.2",
     "connect-fonts-clearsans": "0.0.1",
