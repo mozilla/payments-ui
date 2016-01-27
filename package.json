@@ -39,7 +39,7 @@
     "grunt-devserver": "0.6.0",
     "grunt-eslint": "17.3.1",
     "grunt-gh-pages": "0.10.0",
-    "grunt-i18n-abide": "0.0.16",
+    "grunt-i18n-abide": "0.0.18",
     "grunt-karma": "0.12.1",
     "grunt-sass": "1.0.0",
     "grunt-svg-sprite": "1.2.18",
