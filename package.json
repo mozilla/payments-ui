@@ -60,7 +60,7 @@
     "lodash.merge": "3.3.2",
     "mocha": "2.4.2",
     "mozilla-payments-saucelabs-browsers": "0.0.1",
-    "node-libs-browser": "0.5.3",
+    "node-libs-browser": "1.0.0",
     "payment-icons": "0.0.6",
     "react-hot-loader": "1.3.0",
     "sinon": "1.17.3",
