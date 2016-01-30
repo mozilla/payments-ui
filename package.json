@@ -19,7 +19,7 @@
     "react-json-table": "0.0.3",
     "react-maskedinput": "2.0.0",
     "react-redux": "3.1.2",
-    "redux": "3.1.4",
+    "redux": "3.1.5",
     "redux-thunk": "1.0.3"
   },
   "devDependencies": {
