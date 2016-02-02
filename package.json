@@ -15,7 +15,7 @@
     "mozilla-payments-config": "0.0.13",
     "mozilla-tabzilla": "0.4.0",
     "normalize.css": "3.0.3",
-    "react": "0.13.3",
+    "react": "0.14.6",
     "react-json-table": "0.0.3",
     "react-maskedinput": "2.0.0",
     "react-redux": "3.1.2",
