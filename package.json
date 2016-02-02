@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "babel-core": "5.8.34",
-    "babel-eslint": "4.1.6",
+    "babel-eslint": "4.1.8",
     "babel-loader": "5.4.0",
     "chai": "3.5.0",
     "cog-style-guide": "0.0.2",
