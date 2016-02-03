@@ -56,7 +56,7 @@
     "karma-webpack": "1.7.0",
     "load-grunt-configs": "0.4.3",
     "load-grunt-tasks": "3.4.0",
-    "lodash.defaults": "3.1.2",
+    "lodash.defaults": "4.0.1",
     "lodash.merge": "4.0.3",
     "mocha": "2.4.5",
     "mozilla-payments-saucelabs-browsers": "0.0.1",
