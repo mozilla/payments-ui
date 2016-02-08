@@ -37986,7 +37986,7 @@
 	}
 	
 	function cardNumber(value) {
-	  var potentialTypes, cardType, valid, i, maxLength;
+	  var potentialTypes, cardType, isPotentiallyValid, isValid, i, maxLength;
 	
 	  if (isNumber(value)) {
 	    value = String(value);
@@ -38009,24 +38009,21 @@
 	  cardType = potentialTypes[0];
 	
 	  if (cardType.type === 'unionpay') {  // UnionPay is not Luhn 10 compliant
-	    valid = true;
+	    isValid = true;
 	  } else {
-	    valid = luhn10(value);
-	  }
-	
-	  for (i = 0; i < cardType.lengths.length; i++) {
-	    if (cardType.lengths[i] === value.length) {
-	      return verification(cardType, valid, valid);
-	    }
+	    isValid = luhn10(value);
 	  }
 	
 	  maxLength = Math.max.apply(null, cardType.lengths);
 	
-	  if (value.length < maxLength) {
-	    return verification(cardType, true, false);
+	  for (i = 0; i < cardType.lengths.length; i++) {
+	    if (cardType.lengths[i] === value.length) {
+	      isPotentiallyValid = (value.length !== maxLength) || isValid;
+	      return verification(cardType, isPotentiallyValid, isValid);
+	    }
 	  }
 	
-	  return verification(cardType, false, false);
+	  return verification(cardType, value.length < maxLength, false);
 	}
 	
 	module.exports = cardNumber;
@@ -39680,13 +39677,13 @@
 	  monthValid = expirationMonth(date.month);
 	  yearValid = expirationYear(date.year);
 	
-	  if (yearValid.isValid) {
+	  if (monthValid.isValid) {
 	    if (yearValid.isCurrentYear) {
 	      isValidForThisYear = monthValid.isValidForThisYear;
 	      return verification(isValidForThisYear, isValidForThisYear, date.month, date.year);
 	    }
 	
-	    if (monthValid.isValid) {
+	    if (yearValid.isValid) {
 	      return verification(true, true, date.month, date.year);
 	    }
 	  }
