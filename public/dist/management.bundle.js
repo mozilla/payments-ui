@@ -38532,7 +38532,7 @@ webpackJsonp([0,2],[
 	}
 	
 	function cardNumber(value) {
-	  var potentialTypes, cardType, isPotentiallyValid, isValid, i, maxLength;
+	  var potentialTypes, cardType, valid, i, maxLength;
 	
 	  if (isNumber(value)) {
 	    value = String(value);
@@ -38555,21 +38555,24 @@ webpackJsonp([0,2],[
 	  cardType = potentialTypes[0];
 	
 	  if (cardType.type === 'unionpay') {  // UnionPay is not Luhn 10 compliant
-	    isValid = true;
+	    valid = true;
 	  } else {
-	    isValid = luhn10(value);
+	    valid = luhn10(value);
+	  }
+	
+	  for (i = 0; i < cardType.lengths.length; i++) {
+	    if (cardType.lengths[i] === value.length) {
+	      return verification(cardType, valid, valid);
+	    }
 	  }
 	
 	  maxLength = Math.max.apply(null, cardType.lengths);
 	
-	  for (i = 0; i < cardType.lengths.length; i++) {
-	    if (cardType.lengths[i] === value.length) {
-	      isPotentiallyValid = (value.length !== maxLength) || isValid;
-	      return verification(cardType, isPotentiallyValid, isValid);
-	    }
+	  if (value.length < maxLength) {
+	    return verification(cardType, true, false);
 	  }
 	
-	  return verification(cardType, value.length < maxLength, false);
+	  return verification(cardType, false, false);
 	}
 	
 	module.exports = cardNumber;
@@ -40223,13 +40226,13 @@ webpackJsonp([0,2],[
 	  monthValid = expirationMonth(date.month);
 	  yearValid = expirationYear(date.year);
 	
-	  if (monthValid.isValid) {
+	  if (yearValid.isValid) {
 	    if (yearValid.isCurrentYear) {
 	      isValidForThisYear = monthValid.isValidForThisYear;
 	      return verification(isValidForThisYear, isValidForThisYear, date.month, date.year);
 	    }
 	
-	    if (yearValid.isValid) {
+	    if (monthValid.isValid) {
 	      return verification(true, true, date.month, date.year);
 	    }
 	  }
