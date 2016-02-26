@@ -1,6 +1,10 @@
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 [![Build Status](https://travis-ci.org/mozilla/payments-ui.svg?branch=master)](https://travis-ci.org/mozilla/payments-ui)
 [![Dependency Status](https://david-dm.org/mozilla/payments-ui.svg)](https://david-dm.org/mozilla/payments-ui)
 [![devDependency Status](https://david-dm.org/mozilla/payments-ui/dev-status.svg)](https://david-dm.org/mozilla/payments-ui#info=devDependencies)
+
+
+*Note* This project is no longer maintained.
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/moz-payments-ui.svg)](https://saucelabs.com/u/moz-payments-ui)
 
