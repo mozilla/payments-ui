@@ -44259,7 +44259,7 @@ webpackJsonp([0,2],[
 	      dateObj = new Date(dateObj);
 	    }
 	
-	    if (Object.prototype.toString.call(dateObj) !== '[object Date]' || isNaN(dateObj.getTime())) {
+	    if (!dateObj || typeof dateObj !== 'object' && typeof dateObj.getDate !== 'function') {
 	      throw new Error('Invalid Date in fecha.format');
 	    }
 	
@@ -44325,12 +44325,6 @@ webpackJsonp([0,2],[
 	
 	    format = fecha.masks[format] || format;
 	
-	    // Avoid regular expression denial of service, fail early for really long strings
-	    // https://www.owasp.org/index.php/Regular_expression_Denial_of_Service_-_ReDoS
-	    if (dateStr.length > 1000) {
-	      return false;
-	    }
-	
 	    isValid = true;
 	    dateInfo = {};
 	    format.replace(token, function ($0) {
@@ -44373,7 +44367,6 @@ webpackJsonp([0,2],[
 	    return date;
 	  };
 	
-	  /* istanbul ignore next */
 	  if (typeof module !== 'undefined' && module.exports) {
 	    module.exports = fecha;
 	  } else if (true) {
