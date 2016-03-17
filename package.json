@@ -40,7 +40,7 @@
     "grunt-eslint": "18.0.0",
     "grunt-gh-pages": "0.10.0",
     "grunt-i18n-abide": "0.0.20",
-    "grunt-karma": "0.12.1",
+    "grunt-karma": "0.12.2",
     "grunt-sass": "1.1.0",
     "grunt-svg-sprite": "1.2.18",
     "grunt-webpack": "1.0.11",
