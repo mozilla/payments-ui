@@ -29,7 +29,7 @@ module.exports = {
   },
   plugins: [
     new webpack.optimize.CommonsChunkPlugin('commons.js',
-                                            ['management', 'payment']),
+                                            ['management', 'transaction']),
   ],
   resolve: {
     // you can now require('file') instead of require('file.json')
