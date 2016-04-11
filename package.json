@@ -17,7 +17,7 @@
     "normalize.css": "4.0.0",
     "react": "0.13.3",
     "react-json-table": "0.0.3",
-    "react-maskedinput": "2.0.0",
+    "react-maskedinput": "3.1.2",
     "react-redux": "3.1.2",
     "redux": "3.3.1",
     "redux-thunk": "1.0.3"
