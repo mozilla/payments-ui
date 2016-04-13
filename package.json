@@ -38,7 +38,7 @@
     "grunt-contrib-watch": "1.0.0",
     "grunt-devserver": "0.6.0",
     "grunt-eslint": "18.0.0",
-    "grunt-gh-pages": "0.10.0",
+    "grunt-gh-pages": "1.1.0",
     "grunt-i18n-abide": "0.0.20",
     "grunt-karma": "0.12.2",
     "grunt-sass": "1.1.0",
