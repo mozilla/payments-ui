@@ -39080,8 +39080,6 @@ webpackJsonp([0,2],[
 /* 391 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	
 	module.exports = {
 	  number: __webpack_require__(392),
 	  expirationDate: __webpack_require__(421),
@@ -39096,8 +39094,6 @@ webpackJsonp([0,2],[
 /* 392 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	
 	var isString = __webpack_require__(393);
 	var extend = __webpack_require__(395);
 	var luhn10 = __webpack_require__(418);
@@ -39141,7 +39137,7 @@ webpackJsonp([0,2],[
 	
 	  for (i = 0; i < cardType.lengths.length; i++) {
 	    if (cardType.lengths[i] === value.length) {
-	      isPotentiallyValid = value.length !== maxLength || isValid;
+	      isPotentiallyValid = (value.length !== maxLength) || isValid;
 	      return verification(cardType, isPotentiallyValid, isValid);
 	    }
 	  }
@@ -40098,9 +40094,7 @@ webpackJsonp([0,2],[
 /* 418 */
 /***/ function(module, exports) {
 
-	'use strict';
 	/*eslint-disable*/
-	
 	module.exports = function luhn10(a,b,c,d,e) {
 	  for(d = +a[b = a.length-1], e=0; b--;)
 	  c = +a[b], d += ++e % 2 ? 2 * c % 10 + (c > 4) : c;
@@ -40283,8 +40277,6 @@ webpackJsonp([0,2],[
 /* 421 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	
 	var parseDate = __webpack_require__(422);
 	var expirationMonth = __webpack_require__(424);
 	var expirationYear = __webpack_require__(423);
@@ -40336,8 +40328,6 @@ webpackJsonp([0,2],[
 /* 422 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	
 	var expirationYear = __webpack_require__(423);
 	var isArray = __webpack_require__(408);
 	
@@ -40382,8 +40372,6 @@ webpackJsonp([0,2],[
 /* 423 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	
 	var isString = __webpack_require__(393);
 	var maxYear = 19;
 	
@@ -40448,8 +40436,6 @@ webpackJsonp([0,2],[
 /* 424 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	
 	var isString = __webpack_require__(393);
 	
 	function verification(isValid, isPotentiallyValid, isValidForThisYear) {
@@ -40467,7 +40453,7 @@ webpackJsonp([0,2],[
 	  if (!isString(value)) {
 	    return verification(false, false);
 	  }
-	  if (value.replace(/\s/g, '') === '' || value === '0') {
+	  if ((value.replace(/\s/g, '') === '') || (value === '0')) {
 	    return verification(false, true);
 	  }
 	  if (!/^\d*$/.test(value)) {
@@ -40492,8 +40478,6 @@ webpackJsonp([0,2],[
 /* 425 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	
 	var isString = __webpack_require__(393);
 	var DEFAULT_LENGTH = 3;
 	
@@ -40542,8 +40526,6 @@ webpackJsonp([0,2],[
 /* 426 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	
 	var isString = __webpack_require__(393);
 	
 	function verification(isValid, isPotentiallyValid) {
