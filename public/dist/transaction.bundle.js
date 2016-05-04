@@ -38550,6 +38550,8 @@
 /* 391 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	module.exports = {
 	  number: __webpack_require__(392),
 	  expirationDate: __webpack_require__(421),
@@ -38564,6 +38566,8 @@
 /* 392 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var isString = __webpack_require__(393);
 	var extend = __webpack_require__(395);
 	var luhn10 = __webpack_require__(418);
@@ -38607,7 +38611,7 @@
 	
 	  for (i = 0; i < cardType.lengths.length; i++) {
 	    if (cardType.lengths[i] === value.length) {
-	      isPotentiallyValid = (value.length !== maxLength) || isValid;
+	      isPotentiallyValid = value.length !== maxLength || isValid;
 	      return verification(cardType, isPotentiallyValid, isValid);
 	    }
 	  }
@@ -39564,7 +39568,9 @@
 /* 418 */
 /***/ function(module, exports) {
 
+	'use strict';
 	/*eslint-disable*/
+	
 	module.exports = function luhn10(a,b,c,d,e) {
 	  for(d = +a[b = a.length-1], e=0; b--;)
 	  c = +a[b], d += ++e % 2 ? 2 * c % 10 + (c > 4) : c;
@@ -39627,7 +39633,7 @@
 	  {
 	    niceType: 'Discover',
 	    type: 'discover',
-	    pattern: discoverPattern(),
+	    pattern: '^6(0|01|011\\d*|5\\d*|4|4[4-9]\\d*)?$',
 	    gaps: [4, 8, 12],
 	    lengths: [16, 19],
 	    code: {
@@ -39691,27 +39697,6 @@
 	  return result;
 	};
 	
-	function unionPayAndDiscoverPattern() {
-	  var i, firstPattern, secondPattern, thirdPattern;
-	  var firstPatternBins = [];
-	
-	  for (i = 622126; i <= 622925; i++) { firstPatternBins.push(i); }
-	
-	  firstPattern = '^(' + firstPatternBins.join('|') + ')\\d*$';
-	  secondPattern = '^(62[4-6])\\d*$';
-	  thirdPattern = '^(628[2-9])\\d*$';
-	
-	  return [firstPattern, secondPattern, thirdPattern].join('|');
-	}
-	
-	function nonUnionPayAndDiscoverPattern() {
-	  return '(^6(0|01|011\\d*|5\\d*|4|4[4-9]\\d*)?$)';
-	}
-	
-	function discoverPattern() {
-	  return [unionPayAndDiscoverPattern(), nonUnionPayAndDiscoverPattern()].join('|');
-	}
-	
 	function clone(x) {
 	  return JSON.parse(JSON.stringify(x));
 	}
@@ -39768,6 +39753,8 @@
 /* 421 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var parseDate = __webpack_require__(422);
 	var expirationMonth = __webpack_require__(424);
 	var expirationYear = __webpack_require__(423);
@@ -39819,6 +39806,8 @@
 /* 422 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var expirationYear = __webpack_require__(423);
 	var isArray = __webpack_require__(408);
 	
@@ -39863,6 +39852,8 @@
 /* 423 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var isString = __webpack_require__(393);
 	var maxYear = 19;
 	
@@ -39927,6 +39918,8 @@
 /* 424 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var isString = __webpack_require__(393);
 	
 	function verification(isValid, isPotentiallyValid, isValidForThisYear) {
@@ -39944,7 +39937,7 @@
 	  if (!isString(value)) {
 	    return verification(false, false);
 	  }
-	  if ((value.replace(/\s/g, '') === '') || (value === '0')) {
+	  if (value.replace(/\s/g, '') === '' || value === '0') {
 	    return verification(false, true);
 	  }
 	  if (!/^\d*$/.test(value)) {
@@ -39969,6 +39962,8 @@
 /* 425 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var isString = __webpack_require__(393);
 	var DEFAULT_LENGTH = 3;
 	
@@ -40017,6 +40012,8 @@
 /* 426 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var isString = __webpack_require__(393);
 	
 	function verification(isValid, isPotentiallyValid) {
