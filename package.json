@@ -23,7 +23,7 @@
     "redux-thunk": "1.0.3"
   },
   "devDependencies": {
-    "babel-core": "5.8.34",
+    "babel-core": "6.6.0",
     "babel-eslint": "5.0.0",
     "babel-loader": "5.4.0",
     "chai": "3.5.0",
