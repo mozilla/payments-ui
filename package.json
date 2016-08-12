@@ -55,7 +55,7 @@
     "karma-sourcemap-loader": "0.3.6",
     "karma-webpack": "1.7.0",
     "load-grunt-configs": "0.4.3",
-    "load-grunt-tasks": "3.4.0",
+    "load-grunt-tasks": "3.5.2",
     "lodash.defaults": "4.0.1",
     "lodash.merge": "4.3.0",
     "mocha": "2.4.5",
