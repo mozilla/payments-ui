@@ -58,7 +58,7 @@
     "load-grunt-tasks": "3.4.0",
     "lodash.defaults": "4.0.1",
     "lodash.merge": "4.3.0",
-    "mocha": "2.4.5",
+    "mocha": "3.1.0",
     "mozilla-payments-saucelabs-browsers": "0.0.1",
     "node-libs-browser": "1.0.0",
     "payment-icons": "0.0.7",
